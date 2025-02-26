@@ -36,6 +36,7 @@
 
 // forward declarations
 
+using namespace std;
 class HINtuple
 {
       // ---------- friend classes and functions ---------------

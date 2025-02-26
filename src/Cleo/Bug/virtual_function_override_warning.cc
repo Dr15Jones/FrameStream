@@ -5,7 +5,7 @@
 // It works ok though!
 #include "Experiment/Experiment.h"
 
-#include <iostream.h>
+#include <iostream>
 
 class Base
 {

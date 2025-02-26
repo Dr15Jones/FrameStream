@@ -18,7 +18,7 @@
 
 // system include files
 #include <assert.h>
-#include <fstream.h>
+#include <fstream>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdexcept>

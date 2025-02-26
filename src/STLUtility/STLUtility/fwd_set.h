@@ -119,9 +119,9 @@
 
 #include <set>
 
-#ifndef NO_STD_NAMESPACE_BUG
+//#ifndef NO_STD_NAMESPACE_BUG
 using namespace std;
-#endif // NO_STD_NAMESPACE_BUG
+//#endif // NO_STD_NAMESPACE_BUG
 
 #include "STLUtility/fwd_multiset.h"
 

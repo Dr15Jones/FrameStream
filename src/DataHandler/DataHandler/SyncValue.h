@@ -83,7 +83,7 @@
 
 
 // system include files
-#include "iostream.h"
+#include <iostream>
 
 // user include files
 #include "Experiment/types.h"
@@ -93,7 +93,7 @@
 class SyncValue
 {
       // friend classses and functions
-      friend ostream& operator<< ( ostream& os, const SyncValue& iSyncValue );
+      friend std::ostream& operator<< ( std::ostream& os, const SyncValue& iSyncValue );
 
    public:
       // constants, enums and typedefs
@@ -154,8 +154,8 @@ class SyncValue
 
 // inline function definitions
 inline 
-ostream& 
-operator<< ( ostream& os, const SyncValue& iSyncValue )
+std::ostream& 
+operator<< ( std::ostream& os, const SyncValue& iSyncValue )
 {
    os << "run/event/time=" 
       << iSyncValue.runNumber() << "/" 

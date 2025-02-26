@@ -24,7 +24,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
 #include <ctype.h>
 
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)

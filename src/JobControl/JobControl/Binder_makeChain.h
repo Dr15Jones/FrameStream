@@ -41,7 +41,7 @@ makeChain( Chainable<T>,
   	   const string& iName,
 	   const Stream::Set& iBindStreams )
 {
-   typedef Chainable<T>::DataBinderType BinderType;
+   typedef typename Chainable<T>::DataBinderType BinderType;
    return new ChainSourceBinder< BinderType >( iName, iBindStreams );
 }
 
@@ -51,7 +51,7 @@ addSourceToChain( Chainable<T>,
 		  DataSourceBinder& ioChainBinder,
 		  DataSourceBinder& iDataBinder )
 {
-   typedef Chainable<T>::DataBinderType BinderType;
+   typedef typename Chainable<T>::DataBinderType BinderType;
    ((ChainSourceBinder< BinderType >&)ioChainBinder).
       addSource( (BinderType&)iDataBinder );
 

@@ -38,9 +38,10 @@
 //
 // constants, enums and typedefs
 //
-
+/*
 #if !defined(NO_ITERATOR_TRAITS_BUG)
 template 
 iterator_traits<string::iterator>::difference_type
 std::count(string::iterator, string::iterator, const char&);
 #endif
+*/

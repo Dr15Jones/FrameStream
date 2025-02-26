@@ -38,6 +38,7 @@
 // forward declarations
 class HIHistoManager;
 
+using namespace std;
 class HIHist 
 {
       // ---------- friend classes and functions ---------------

@@ -75,6 +75,7 @@
 #  include <map>
 #endif
 
+/*
 typedef string _multimap_key_ ;
 typedef MessageLog::Logger* _multimap_contents_ ;
 typedef less< _multimap_key_ > _multimap_compare_ ;
@@ -91,3 +92,4 @@ template class rb_tree<string, pair<const string, MessageLog::Logger*>, select1s
 template class less<string > ;
 template operator!=(rb_tree<string, pair<string const, MessageLog::Logger *>, select1st<pair<string const, MessageLog::Logger *>, string >, less<string > >::iterator const &, rb_tree<string, pair<string const, MessageLog::Logger *>, select1st<pair<string const, MessageLog::Logger *>, string >, less<string > >::iterator const &) ;
 #endif
+*/

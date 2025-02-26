@@ -26,6 +26,6 @@
 #include <string>
 #include <set>
 
-typedef string _set_contents_ ;
-typedef less< _set_contents_ > _set_compare_ ;
+typedef std::string _set_contents_ ;
+typedef std::less< _set_contents_ > _set_compare_ ;
 #include "STLUtility/instantiate_set.h"

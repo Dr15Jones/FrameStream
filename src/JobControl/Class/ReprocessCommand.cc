@@ -96,6 +96,7 @@
 // STL classes
 #include <vector>
 #include <set>
+#include <cstring>
 
 //
 // constants, enums and typedefs

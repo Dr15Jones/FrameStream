@@ -195,9 +195,9 @@ UTIdentifier< ID , T >::findIndex( const ID& iID )
 {
    Count returnValue;
    
-   _utidentifier_counts_::const_iterator itEnd = 
+   typename _utidentifier_counts_::const_iterator itEnd = 
       idToIndexMap().end();
-   _utidentifier_counts_::const_iterator itFind = 
+   typename _utidentifier_counts_::const_iterator itFind = 
       idToIndexMap().find( iID );
 
    if( itFind != itEnd ){
@@ -206,7 +206,7 @@ UTIdentifier< ID , T >::findIndex( const ID& iID )
       //Have to add
       returnValue = idToIndexMap().size();
       
-      idToIndexMap().insert( _utidentifier_counts_::value_type(
+      idToIndexMap().insert( typename _utidentifier_counts_::value_type(
 	 iID, returnValue ));
 
       idList().push_back( iID );

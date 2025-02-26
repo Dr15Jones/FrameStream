@@ -98,7 +98,7 @@ OrderedMap< Key, Item >::insert(
 }
 
 template< class Key, class Item >
-OrderedMap< Key, Item >::size_type
+typename OrderedMap< Key, Item >::size_type
 OrderedMap< Key, Item >::erase( const Key& iKey )
 {
    size_type how_many = 0;
@@ -117,7 +117,7 @@ OrderedMap< Key, Item >::erase( const Key& iKey )
 template< class Key, class Item >
 void
 OrderedMap< Key, Item >::erase( 
-   OrderedMap< Key, Item >::iterator iWhich )
+   typename OrderedMap< Key, Item >::iterator iWhich )
 {
    m_items.erase( iWhich );
 }
@@ -126,14 +126,14 @@ OrderedMap< Key, Item >::erase(
 template< class Key, class Item >
 void
 OrderedMap< Key, Item >::erase( 
-   OrderedMap< Key, Item >::iterator iBegin, 
-   OrderedMap< Key, Item >::iterator iEnd )
+   typename OrderedMap< Key, Item >::iterator iBegin, 
+   typename OrderedMap< Key, Item >::iterator iEnd )
 {
    m_items.erase( iBegin, iEnd );
 }
 
 template< class Key, class Item >
-OrderedMap< Key, Item >::iterator
+typename OrderedMap< Key, Item >::iterator
 OrderedMap< Key, Item >::find( const Key& iKey )
 {
    // really would need to find all occurrences (for now only first)
@@ -145,14 +145,14 @@ OrderedMap< Key, Item >::find( const Key& iKey )
 }
 
 template< class Key, class Item >
-OrderedMap< Key, Item >::iterator
+typename OrderedMap< Key, Item >::iterator
 OrderedMap< Key, Item >::begin()
 {
    return m_items.begin();
 }
 
 template< class Key, class Item >
-OrderedMap< Key, Item >::iterator
+typename OrderedMap< Key, Item >::iterator
 OrderedMap< Key, Item >::end()
 {
    return m_items.end();
@@ -162,7 +162,7 @@ OrderedMap< Key, Item >::end()
 // const member functions
 //
 template< class Key, class Item >
-OrderedMap< Key, Item >::const_iterator
+typename OrderedMap< Key, Item >::const_iterator
 OrderedMap< Key, Item >::find( const Key& iKey ) const
 {
    // really would need to find all occurrences (for now only first)
@@ -192,14 +192,14 @@ OrderedMap< Key, Item >::list() const
 }
 
 template< class Key, class Item >
-OrderedMap< Key, Item >::const_iterator
+typename OrderedMap< Key, Item >::const_iterator
 OrderedMap< Key, Item >::begin() const
 {
    return m_items.begin();
 }
 
 template< class Key, class Item >
-OrderedMap< Key, Item >::const_iterator
+typename OrderedMap< Key, Item >::const_iterator
 OrderedMap< Key, Item >::end() const
 {
    return m_items.end();

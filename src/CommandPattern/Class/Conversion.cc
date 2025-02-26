@@ -45,7 +45,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <ctype.h>
-#include <strstream.h>
+#include <strstream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 

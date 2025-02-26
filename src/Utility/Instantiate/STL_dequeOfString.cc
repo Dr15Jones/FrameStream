@@ -34,5 +34,7 @@
 #include <string>
 #include <deque>
 
+using namespace std;
+
 typedef string _deque_contents_;
 #include "STLUtility/instantiate_deque.h"

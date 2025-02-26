@@ -130,6 +130,7 @@
 // system include files
 #include <stdexcept>
 #include <stdlib.h>
+#include <cstring>
 
 // user include files
 
@@ -194,8 +195,9 @@ class DAException : public DAExceptionBase
 	 : m_message( const_cast<char*>(iMessage) ), 
 	   m_ownMemory( iOwnMemory ) {
 	 if( true == m_ownMemory && 0 != iMessage ) {
-	    m_message = new char[strlen(iMessage)+1];
-	    strcpy( m_message, iMessage );
+	    auto temp = new char[strlen(iMessage)+1];
+	    strcpy( temp, iMessage );
+            m_message = temp;
 	 }
       }
       virtual ~DAException() { 
@@ -211,8 +213,9 @@ class DAException : public DAExceptionBase
 	 m_message(iRHS.m_message), m_ownMemory(iRHS.m_ownMemory)
       {
 	 if( m_ownMemory) {
-	    m_message = new char[strlen(iRHS.m_message)+1];
-	    strcpy( m_message, iRHS.m_message );
+	    auto temp = new char[strlen(iRHS.m_message)+1];
+	    strcpy( temp, iRHS.m_message );
+            m_message = temp;
 	 }
       }
 
@@ -247,7 +250,7 @@ class DAException : public DAExceptionBase
 	 m_ownMemory = iFrom.m_ownMemory;
 	 iFrom.m_ownMemory = ownMemory;
 
-	 char* message = m_message;
+	 const char* message = m_message;
 	 m_message = iFrom.m_message;
 	 iFrom.m_message = message;
       }
@@ -255,7 +258,7 @@ class DAException : public DAExceptionBase
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      char* m_message;
+      const char* m_message;
       DABoolean m_ownMemory;
 
       // ---------- static data members ------------------------

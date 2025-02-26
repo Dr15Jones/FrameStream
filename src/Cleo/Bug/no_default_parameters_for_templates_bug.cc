@@ -25,7 +25,7 @@
 //
 #include "Experiment/Experiment.h"
 
-#include <iostream.h>
+#include <iostream>
 
 #if defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG)
 template < class T , class U > class Junk

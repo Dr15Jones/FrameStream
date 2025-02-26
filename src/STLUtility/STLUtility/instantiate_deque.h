@@ -45,7 +45,7 @@
 //
 
 #include <deque>
-
+/*
 #if ( defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) )
 #  pragma define_template deque< _deque_contents_ >
 
@@ -144,7 +144,7 @@ std::fill(std::deque<_deque_contents_,
 	  const _deque_contents_&);
 
 #endif
-
-#endif /* PRAGMA_TEMPLATE_INSTANTIATION_BUG && __DECCXX */
+*/
+//#endif /* PRAGMA_TEMPLATE_INSTANTIATION_BUG && __DECCXX */
 
 #endif /* STLUTILITY_INSTANTIATE_DEQUE_H */

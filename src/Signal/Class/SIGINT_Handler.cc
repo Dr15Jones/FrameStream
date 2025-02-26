@@ -28,7 +28,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <iostream.h>
+#include <iostream>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -60,6 +60,7 @@
 //
 // constants, enums and typedefs
 //
+using namespace std;
 
 static const char* const kFacilityString = "Signal.SIGINT_Handler" ;
 

@@ -125,9 +125,10 @@ istream& operator>>( istream& iIStream, BinderType& iBinderType ) ;
 // user include files
 #include "Utility/UTIdentifierLess.h"
 
+namespace std {
 template<>
 class less< BinderType > : public UTIdentifierLess< string, BinderBase >
 {
 };
-
+}
 #endif /* JOBCONTROL_BINDERTYPE_H */

@@ -1,4 +1,4 @@
-#include <iostream.h>
+#include <iostream>
 #if !defined(FILENAME_ONLY) /* relative path includes */
 #include "ToolBox/Include/bug7_deccxx.h"
 #include "ToolBox/Include/bug2_mwerks.h"

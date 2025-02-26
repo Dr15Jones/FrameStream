@@ -34,6 +34,8 @@
 #include "HistogramInterface/HINumberWithErrors.h"
 
 // forward declarations
+using namespace std;
+
 
 class DummyNumberWithErrors : public HINumberWithErrors
 {

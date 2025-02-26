@@ -37,8 +37,8 @@
 #endif /* OLD_CXX_STRING_CLASS_BUG */
 #include <map>
 
-typedef string _map_key_ ;
+typedef std::string _map_key_ ;
 typedef unsigned int _map_contents_ ;
-typedef less< _map_key_ > _map_compare_ ;
+typedef std::less< _map_key_ > _map_compare_ ;
 
 #include "STLUtility/instantiate_map.h"

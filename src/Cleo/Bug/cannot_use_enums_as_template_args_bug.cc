@@ -23,7 +23,7 @@
 //
 #include "Experiment/Experiment.h"
 
-#include <iostream.h>
+#include <iostream>
 
 enum Choices { zero, one, two };
 

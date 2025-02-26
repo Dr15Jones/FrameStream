@@ -100,8 +100,8 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <iostream.h>
-#include <iomanip.h>
+#include <iostream>
+#include <iomanip>
 #include <assert.h>
 #include <stdlib.h>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)

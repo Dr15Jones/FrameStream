@@ -44,6 +44,7 @@
 /* system include files */
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /* gnu readline support */
 #include <readline/readline.h>

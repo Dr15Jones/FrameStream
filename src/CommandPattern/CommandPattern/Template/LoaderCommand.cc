@@ -51,7 +51,7 @@
 
 #include "Experiment/Experiment.h"
 // system include files
-#include <iostream.h>
+#include <iostream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <vector>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
@@ -63,6 +63,7 @@
 
 // STL classes
 #include <vector>
+#include <cstring>
 
 //
 // constants, enums and typedefs

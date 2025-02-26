@@ -71,7 +71,7 @@
 //
 
 #include <map>
-
+/*
 #if ( defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) )
 
 #  pragma define_template map< _map_key_ ,  _map_contents_ , _map_compare_ >
@@ -114,9 +114,9 @@ void __distance(rb_tree<_map_key_ , pair< const _map_key_ ,  _map_contents_ > , 
 		bidirectional_iterator_tag) {
    while (first != last) { ++first; ++n; }
 }
-
-#endif /* NO_ALLOCATOR_IN_STL_DECLARATION_BUG */
-
+*/
+//#endif /* NO_ALLOCATOR_IN_STL_DECLARATION_BUG */
+/*
 
 #else
 
@@ -216,10 +216,11 @@ template void std:: STLUTILITY_FUNC(distance) (
 typedef STL_MAP_COMP( _map_key_ , _map_contents_ , _map_compare_ )::const_iterator _equal_iterator1_type_;
 typedef _equal_iterator1_type_ _equal_iterator2_type_;
 #include "STLUtility/instantiate_equal.h"
-#endif /* DO_EQUAL_INSTANTIATION */
+*/
+//#endif /* DO_EQUAL_INSTANTIATION */
 
-#endif /* NO_IMPLICIT_INSTANTIATION && __DECCXX */
+//#endif /* NO_IMPLICIT_INSTANTIATION && __DECCXX */
 
-#endif /* PRAGMA_TEMPLATE_INSTANTIATION_BUG && __DECCXX */
+//#endif /* PRAGMA_TEMPLATE_INSTANTIATION_BUG && __DECCXX */
 
 #endif /* STLUTILITY_INSTANTIATE_MAP_H */

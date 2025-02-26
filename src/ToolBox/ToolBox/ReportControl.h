@@ -77,8 +77,8 @@
 //
 
 // system include files
-#include <iostream.h>
-#include <strstream.h>
+#include <iostream>
+#include <strstream>
 
 // user include files
 #include <string>

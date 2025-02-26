@@ -45,7 +45,7 @@
 static const char* const kFacilityString 
 = "JobControl::LoaderCommand< SinkFormatMap >";
 
-int
+template<> int
 LoaderCommand< SourceFormatMap >::interactHandler()
 {
    report( ERROR, kFacilityString ) 

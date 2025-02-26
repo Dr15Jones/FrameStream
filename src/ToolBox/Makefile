@@ -76,7 +76,6 @@ EXE =
 #----------------------------------------
 
 DIR_LIST := 	Class \
-		Fortran \
 		Instantiate \
 		$(XTRA_DIR)
 

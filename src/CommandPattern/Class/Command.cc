@@ -65,7 +65,7 @@
 
 // system include files
 #include <assert.h>
-#include <iostream.h>
+#include <iostream>
 #include <stdlib.h>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 //#include <vector>

@@ -49,6 +49,7 @@
 // You may have to uncomment some of these or other stl headers
 // depending on what other header files you include (e.g. FrameAccess etc.)!
 #include <string>
+#include <cstring>
 //#include <vector>
 //#include <set>
 //#include <map>

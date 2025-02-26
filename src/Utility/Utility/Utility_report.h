@@ -25,7 +25,7 @@
 //
 
 // system include files
-#include <iostream.h>
+#include <iostream>
 
 // user include files
 #include "Utility/Severity.h"
@@ -33,11 +33,11 @@
 // forward declarations
 #include "C++Std/fwd_string.h"
 
-ostream& report(Severity severity) ;
-ostream& report(Severity severity,
+std::ostream& report(Severity severity) ;
+std::ostream& report(Severity severity,
 		const char* facility) ;
-ostream& report(Severity severity,
-		const string& facility) ;
+std::ostream& report(Severity severity,
+                     const std::string& facility) ;
 
 // inline function definitions
 

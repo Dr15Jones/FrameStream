@@ -30,7 +30,7 @@
 
 typedef UInt32 _map_key_ ;
 typedef void * _map_contents_ ;
-typedef less< _map_key_ > _map_compare_ ;
+typedef std::less< _map_key_ > _map_compare_ ;
 
 #include "STLUtility/instantiate_map.h"
 

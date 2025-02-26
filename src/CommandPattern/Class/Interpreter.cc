@@ -52,6 +52,7 @@
 
 // STL classes
 #include <string>
+#include <cstring>
 
 //
 // constants, enums and typedefs

@@ -50,6 +50,8 @@
 #include <vector>
 #include <algorithm>
 
+using namespace std;
+
 // forward declarations
 
 #if ( defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) )

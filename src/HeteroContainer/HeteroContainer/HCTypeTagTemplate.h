@@ -60,7 +60,7 @@ class HCTypeTagTemplate : public HCTypeTag< Group >
 
       // ---------- static member functions --------------------
       static unsigned int classValue() {
-	 static unsigned int theValue = nextValue( className() );
+        static unsigned int theValue = HCTypeTag<Group>::nextValue( className() );
 	 return theValue; }
 
       static const char* className();
@@ -88,12 +88,12 @@ class HCTypeTagTemplate : public HCTypeTag< Group >
 
 // easy way to custom build the className method
 #define HCTYPETAGTEMPLATE_CLASSNAME( Tname, group ) \
-const char* \
+  template<> const char*                              \
 HCTypeTagTemplate< Tname, group >::className() \
 { return #Tname ; }
 
 #define HCTYPETAGTEMPLATE_CLASSNAME_1_COMMA( Tname1, Tname2, group ) \
-const char* \
+  template<> const char*                                               \
 HCTypeTagTemplate< Tname1,Tname2 , group >::className() \
 { return #Tname1 "," #Tname2 ; }
 

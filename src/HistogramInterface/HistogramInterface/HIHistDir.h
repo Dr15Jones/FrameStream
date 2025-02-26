@@ -51,14 +51,14 @@ class HINumberWithErrors;
 #define HIDIR_FUNCS(_type_, _prefix_) \
 public:\
 const_ ## _prefix_ ## _iterator _prefix_ ## _begin() const { \
-   return reinterpret_cast<const_ ## _prefix_ ## _iterator >(m_ ## _prefix_ ## List.begin()); } \
+  return reinterpret_cast<std::vector<_type_*> const*>(&m_ ## _prefix_ ## List)->begin(); } \
 const_ ## _prefix_ ## _iterator _prefix_ ## _end() const { \
-   return reinterpret_cast<const_ ## _prefix_ ## _iterator> (m_ ## _prefix_ ## List.end()); } \
+  return reinterpret_cast<std::vector<_type_*> const*> (&m_ ## _prefix_ ## List)->end(); } \
 protected: \
 _prefix_ ## _iterator _prefix_ ## _begin() { \
-   return reinterpret_cast< _prefix_ ## _iterator >(m_ ## _prefix_ ## List.begin()); } \
+  return reinterpret_cast< std::vector<_type_*>*>(&m_ ## _prefix_ ## List)->begin(); } \
 _prefix_ ## _iterator _prefix_ ## _end() { \
-   return reinterpret_cast< _prefix_ ## _iterator> (m_ ## _prefix_ ## List.end()); } \
+  return reinterpret_cast< std::vector<_type_*>*> (&m_ ## _prefix_ ## List)->end(); } \
 void _prefix_ ## Empty(); \
 private: \
 _type_* insert( _type_ * iEntry ) { m_ ## _prefix_ ## List.push_back(iEntry); return iEntry; }\

@@ -209,7 +209,7 @@ ExceptionControlCommand::continueEventLoopHandler()
 #ifndef NO_UPPERCASE_MANIP_BUG /* "uppercase()" not supported yet */
       // always convert to uppercase to forgive case typos
       ostrstream uppercaseStream;
-      uppercaseStream << uppercase() << setting;
+      uppercaseStream << uppercase << setting;
       string uppercaseSetting( uppercaseStream.str() );
 #else
       string uppercaseSetting( 

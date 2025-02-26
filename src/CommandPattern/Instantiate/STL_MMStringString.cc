@@ -79,9 +79,9 @@
 #  include <map>
 #endif                    
 
-typedef string _multimap_key_ ;
-typedef string _multimap_contents_ ;
-typedef less< _multimap_key_ > _multimap_compare_ ;
+typedef std::string _multimap_key_ ;
+typedef std::string _multimap_contents_ ;
+typedef std::less< _multimap_key_ > _multimap_compare_ ;
 
 #include "STLUtility/instantiate_multimap.h"
 

@@ -233,9 +233,10 @@ istream& operator>>( istream& iIStream, StreamType& iStreamType ) ;
 // user include files
 #include "Utility/UTIdentifierLess.h"
 
+namespace std {
 template<>
 struct less< StreamType> : public UTIdentifierLess< string, Stream >
 {
 };
-
+}
 #endif /* DATAHANDLER_STREAMTYPE_H */

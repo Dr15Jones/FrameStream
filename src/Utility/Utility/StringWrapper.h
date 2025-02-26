@@ -44,6 +44,7 @@
 #endif /* OLD_CXX_STRING_CLASS_BUG */
 
 // forward declarations
+using namespace std;
 
 class StringWrapper
 {

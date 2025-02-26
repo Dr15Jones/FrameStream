@@ -39,8 +39,9 @@
 
 typedef SourceManager::Token _map_key_ ;
 typedef BinderBase* _map_contents_ ;
-typedef less< _map_key_ > _map_compare_ ;
+typedef std::less< _map_key_ > _map_compare_ ;
 
+/*
 #if !defined(__GNUG__) || ( __GNUC__ == 2 && __GNUC_MINOR__ >= 80 )
 #include "STLUtility/instantiate_map.h"
 #else
@@ -50,4 +51,4 @@ template class rb_tree<string, pair<const string, BinderBase*>, select1st<pair<c
 //template class less<string > ;
 template operator!=(rb_tree<string, pair<string const, BinderBase*>, select1st<pair<string const, BinderBase*>, string >, less<string > >::iterator const &, rb_tree<string, pair<string const, BinderBase*>, select1st<pair<string const, BinderBase*>, string >, less<string > >::iterator const &) ;
 #endif
-
+*/

@@ -58,7 +58,7 @@
 #include <string>
 
 // forward declarations
-
+using namespace std;
       
 class StringUtil
 {

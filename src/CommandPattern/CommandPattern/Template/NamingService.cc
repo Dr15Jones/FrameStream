@@ -123,7 +123,7 @@ NamingService< T >::registerObject( const string& iName,
 {
    DABoolean returnValue = true;
 
-   _naming_service_namemap_::iterator itFind = m_name2Object.find( iName );
+   typename _naming_service_namemap_::iterator itFind = m_name2Object.find( iName );
    if( m_name2Object.end() == itFind )
    {
       m_name2Object[ iName ] = iObject;
@@ -145,7 +145,7 @@ NamingService< T >::deregisterObject( const string& iName )
 {
    DABoolean returnValue = true;
 
-   _naming_service_namemap_::iterator itFind = m_name2Object.find( iName );
+   typename _naming_service_namemap_::iterator itFind = m_name2Object.find( iName );
    if( m_name2Object.end() == itFind )
    {
       report( ERROR, kNamingServiceFacilityString )
@@ -170,7 +170,7 @@ NamingService< T >::resolve( const string& iName )
 {
    T* returnValue = 0;
 
-   _naming_service_namemap_::iterator itFind = m_name2Object.find( iName );
+   typename _naming_service_namemap_::iterator itFind = m_name2Object.find( iName );
    if( m_name2Object.end() != itFind )
    {
       returnValue = (*itFind).second;

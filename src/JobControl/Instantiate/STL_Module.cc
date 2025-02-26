@@ -50,8 +50,8 @@
 
 class Module ;
 
-typedef string _map_key_ ;
+typedef std::string _map_key_ ;
 typedef Module* _map_contents_ ;
-typedef less< _map_key_ > _map_compare_;
+typedef std::less< _map_key_ > _map_compare_;
 
 #include "STLUtility/instantiate_map.h"

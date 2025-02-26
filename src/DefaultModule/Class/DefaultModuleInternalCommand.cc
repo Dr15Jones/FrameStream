@@ -51,6 +51,7 @@
 //#include <map>
 //#include <algorithm>
 //#include <utility>
+#include <cstring>
 
 //
 // constants, enums and typedefs

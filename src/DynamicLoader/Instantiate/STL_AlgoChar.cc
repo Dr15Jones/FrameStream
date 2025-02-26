@@ -62,10 +62,11 @@
 #else
 #define STD_PREFIX
 #endif
+/*
 // for g++ or MetroWerks
-template vector< char >::iterator STD_PREFIX find( vector< char>::iterator, 
-					vector< char>::iterator, 
-					const char& );
+//template vector< char >::iterator STD_PREFIX find( vector< char>::iterator, 
+//					vector< char>::iterator, 
+//					const char& );
 
 #if defined( NEED_NAMESPACE_TO_INSTANTIATE_OVERLOADED_FUNCTION_BUG )
 template void std::count ( vector< char>::iterator, 
@@ -87,5 +88,6 @@ template pair<const char*, const char* > mismatch ( const char*,
 						    const char*, 
 						    const char* );
 #endif
+*/
 #endif /* (defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX)) */
 

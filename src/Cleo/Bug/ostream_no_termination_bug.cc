@@ -8,7 +8,7 @@
 #include <strstream.h>
 #endif
 
-#include <iostream.h>
+#include <iostream>
 
 int main()
 {

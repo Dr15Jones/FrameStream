@@ -53,6 +53,7 @@
 
 #include <set>
 
+/*
 #if ( defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) )
 
 #  pragma define_template set< _set_contents_ , _set_compare_ >
@@ -95,9 +96,9 @@ void __distance(rb_tree< _set_contents_, _set_contents_ , ident< _set_contents_ 
 		bidirectional_iterator_tag) {
    while (first != last) { ++first; ++n; }
 }
-
-#endif /* NO_ALLOCATOR_IN_STL_DECLARATION_BUG */
-
+*/
+//#endif /* NO_ALLOCATOR_IN_STL_DECLARATION_BUG */
+/*
 #else
 
 #include "STLUtility/fwd_set.h"
@@ -174,9 +175,9 @@ template void std:: STLUTILITY_FUNC(distance) (
                     std::allocator<_set_contents_> >::const_iterator,
    unsigned long&,
    std::bidirectional_iterator_tag);
-   
-#endif /* NO_IMPLICIT_INSTANTIATION && __DECCXX */
+*/  
+//#endif /* NO_IMPLICIT_INSTANTIATION && __DECCXX */
 
-#endif /* PRAGMA_TEMPLATE_INSTANTIATION_BUG && __DECCXX */
+//#endif /* PRAGMA_TEMPLATE_INSTANTIATION_BUG && __DECCXX */
 
 #endif /* STLUTILITY_INSTANTIATE_SET_H */

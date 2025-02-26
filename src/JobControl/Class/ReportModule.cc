@@ -49,7 +49,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -179,7 +179,7 @@ ReportModule::setReportLevel( const string& iSeverityString,
 #ifndef NO_UPPERCASE_MANIP_BUG /* "uppercase()" not supported yet */
    // always convert to uppercase to forgive case typos
    ostrstream uppercaseStream;
-   uppercaseStream << uppercase() << iSeverityString;
+   uppercaseStream << uppercase << iSeverityString;
    string uppercaseSeverityString( uppercaseStream.str() );
 #else
    string uppercaseSeverityString( 

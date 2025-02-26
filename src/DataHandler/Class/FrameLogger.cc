@@ -31,7 +31,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <iomanip.h>
+#include <iomanip>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <string>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */

@@ -121,7 +121,7 @@ Loader< T >::load( const string& iName )
       << "trying to load \"" << iName << "\"..." << endl;
 
    // check that iName doesn't already exist!
-   _loader_loaded_map_::iterator findName = m_loadedMap.find( iName );
+   typename _loader_loaded_map_::iterator findName = m_loadedMap.find( iName );
    if( m_loadedMap.end() != findName ) {
       report( INFO, kLoaderFacilityString )
 	 << iName << " has already been loaded" << endl;
@@ -153,7 +153,7 @@ Loader< T >::load( const string& iName )
    {
       // put in Object list
       m_loadedMap.insert( 
-	 _loader_loaded_map_::value_type( loadedAsName, object ) 
+	 typename _loader_loaded_map_::value_type( loadedAsName, object ) 
 	 );
       
       // and also active _loader_loaded_
@@ -173,15 +173,15 @@ Loader< T >::unload( const string& iName )
    DABoolean returnValue = true;
 
    // now find in active Object list
-   _loader_loaded_::iterator which = m_loaded.begin();
-   _loader_loaded_::iterator end = m_loaded.end();
+   typename _loader_loaded_::iterator which = m_loaded.begin();
+   typename _loader_loaded_::iterator end = m_loaded.end();
    while( which != end && !( *which == iName ) ) ++which;
 
    // and erase
    if( which != m_loaded.end() )
    { 
       // erase from _loader_loaded_map_
-      _loader_loaded_map_::iterator iter = m_loadedMap.find( iName );
+      typename _loader_loaded_map_::iterator iter = m_loadedMap.find( iName );
       if( iter != m_loadedMap.end() )
       {
 	 T* object = (*iter).second;
@@ -217,7 +217,7 @@ Loader< T >::fetch( const string& iName )
 {
    T* object = 0;
 
-   _loader_loaded_map_::iterator iter = m_loadedMap.find( iName );
+   typename _loader_loaded_map_::iterator iter = m_loadedMap.find( iName );
    if( iter != m_loadedMap.end() )
    {
       object = (*iter).second;
@@ -247,8 +247,8 @@ Loader< T >::reorder( const string& iListString )
       string nextItem( items.nextElement() );
 
       // find in our copied list
-      _loader_loaded_::iterator which = copyOfLoaded.begin();
-      _loader_loaded_::iterator end = copyOfLoaded.end();
+      typename _loader_loaded_::iterator which = copyOfLoaded.begin();
+      typename _loader_loaded_::iterator end = copyOfLoaded.end();
       while( which != end && !( *which == nextItem ) ) ++which;
       // and either give error message if not found or erase
       if( which == copyOfLoaded.end() )
@@ -269,8 +269,8 @@ Loader< T >::reorder( const string& iListString )
    if( false == copyOfLoaded.empty() )
    {
       string errorMessage( "Left-overs:\n" );
-      _loader_loaded_::iterator which = copyOfLoaded.begin();
-      _loader_loaded_::iterator end = copyOfLoaded.end();
+      typename _loader_loaded_::iterator which = copyOfLoaded.begin();
+      typename _loader_loaded_::iterator end = copyOfLoaded.end();
       for( ; which != end; ++which )
       {
 	 errorMessage += *which + string( " " );
@@ -302,7 +302,7 @@ Loader< T >::fetch( const string& iName ) const
 {
    const T* object = 0;
 
-   _loader_loaded_map_::iterator iter = m_loadedMap.find( iName );
+   typename _loader_loaded_map_::iterator iter = m_loadedMap.find( iName );
    if( iter != m_loadedMap.end() )
    {
       object = (*iter).second;
@@ -329,8 +329,8 @@ Loader< T >::listLoaded() const
 {
    string returnValue;
 
-   _loader_loaded_::const_iterator end( m_loaded.end() );
-   for( _loader_loaded_::const_iterator iter = m_loaded.begin();
+   typename _loader_loaded_::const_iterator end( m_loaded.end() );
+   for( typename _loader_loaded_::const_iterator iter = m_loaded.begin();
         iter != end;
         ++iter )
    {

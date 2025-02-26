@@ -62,6 +62,7 @@
 
 // STL classes
 #include <set>
+#include <cstring>
 
 //
 // constants, enums and typedefs

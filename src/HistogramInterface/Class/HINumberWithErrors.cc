@@ -50,6 +50,7 @@
 //#include <algorithm>
 //#include <utility>
 
+using namespace std;
 //
 // constants, enums and typedefs
 //

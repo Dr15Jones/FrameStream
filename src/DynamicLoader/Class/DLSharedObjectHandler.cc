@@ -19,7 +19,7 @@
 
 // system include files
 #include <assert.h>
-#include <iostream.h>
+#include <iostream>
 #include <stdio.h>
 #if !defined(D_AIX)
 #include <dlfcn.h>

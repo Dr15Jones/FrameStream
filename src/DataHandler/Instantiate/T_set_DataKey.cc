@@ -37,6 +37,6 @@
 // constants, enums and typedefs
 //
 typedef DataKey _set_contents_ ;
-typedef less< DataKey > _set_compare_ ;
+typedef std::less< DataKey > _set_compare_ ;
 
 #include "STLUtility/instantiate_set.h"

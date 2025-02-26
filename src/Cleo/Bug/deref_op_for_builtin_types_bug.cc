@@ -4,7 +4,7 @@
 // overloading the -> operator for builtin types, but ok for user-defined types
 
 #include "Experiment/Experiment.h"
-#include <iostream.h>
+#include <iostream>
 
 class MyClass
 {

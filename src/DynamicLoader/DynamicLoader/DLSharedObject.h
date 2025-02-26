@@ -31,6 +31,7 @@
 // user include files
 
 // forward declarations
+using namespace std;
 
 class DLSharedObject
 {

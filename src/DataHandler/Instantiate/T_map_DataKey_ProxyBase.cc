@@ -40,6 +40,6 @@ class ProxyBase;
 
 typedef DataKey _map_key_;
 typedef const ProxyBase* _map_contents_ ;
-typedef less< DataKey > _map_compare_ ;
+typedef std::less< DataKey > _map_compare_ ;
 
 #include "STLUtility/instantiate_map.h"

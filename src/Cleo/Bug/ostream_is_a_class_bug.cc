@@ -35,7 +35,7 @@
 
 #include "Experiment/Experiment.h"
 
-#include <iostream.h>
+#include <iostream>
 
 #if defined(OSTREAM_IS_A_CLASS_BUG)
 class ostream ;

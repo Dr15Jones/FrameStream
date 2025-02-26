@@ -21,7 +21,7 @@
 // system include files
 #include <stdlib.h>
 #include <assert.h>
-#include <strstream.h>
+#include <strstream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 

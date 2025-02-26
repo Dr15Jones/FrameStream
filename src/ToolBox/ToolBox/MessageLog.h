@@ -118,8 +118,8 @@
 #define NILEFT_MESSAGELOG_H_
 
 // Include files
-#include <iostream.h>
-#include <strstream.h>
+#include <iostream>
+#include <strstream>
 #include "Utility/Severity.h"
 
 #if defined(OLD_CXX_STRING_CLASS_BUG)
@@ -134,6 +134,7 @@
 class Messenger;
 
 // Class declaration
+using namespace std;
 
 class MessageLog {
    public:

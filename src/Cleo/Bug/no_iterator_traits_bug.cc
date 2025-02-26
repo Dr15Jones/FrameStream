@@ -23,7 +23,7 @@
 // first submission
 //
 #include "Experiment/Experiment.h"
-#include <iostream.h>
+#include <iostream>
 #include <iterator>
 
 #if !defined(NO_STD_NAMESPACE_BUG)

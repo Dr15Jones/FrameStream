@@ -3,7 +3,7 @@
 
 // system include files
 #include "Experiment/Experiment.h"
-#include <iostream.h>
+#include <iostream>
 #include <string>
 
 #if !defined(NO_STD_NAMESPACE_BUG)

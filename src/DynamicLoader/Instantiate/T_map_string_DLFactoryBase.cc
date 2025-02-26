@@ -34,7 +34,7 @@
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 #include <map>
 #include <string>
-
+using namespace std;
 // user include files
 //#include "Experiment/report.h"
 //#include "DynamicLoader/DLFactoryBase.h"

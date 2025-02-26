@@ -63,6 +63,7 @@
 #include <map>
 #endif
 
+/*
 #if ( defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) )
 
 #  pragma define_template multimap< _multimap_key_ ,  _multimap_contents_ , _multimap_compare_ >
@@ -105,10 +106,11 @@ void __distance(rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap
 		bidirectional_iterator_tag) {
    while (first != last) { ++first; ++n; }
 }
+*/
+/*
+  #endif *//* NO_ALLOCATOR_IN_STL_DECLARATION_BUG */
 
-#endif /* NO_ALLOCATOR_IN_STL_DECLARATION_BUG */
-
-
+/*
 #else
 
 #include "STLUtility/fwd_map.h"
@@ -209,8 +211,8 @@ template void std:: STLUTILITY_FUNC(distance) (
    unsigned long&, 
    std::bidirectional_iterator_tag);
 
-#endif /* NO_IMPLICIT_INSTANTIATION && __DECCXX */
+   #endif */ /* NO_IMPLICIT_INSTANTIATION && __DECCXX */
 
-#endif /* PRAGMA_TEMPLATE_INSTANTIATION_BUG && __DECCXX */
+//#endif /* PRAGMA_TEMPLATE_INSTANTIATION_BUG && __DECCXX */
 
 #endif /* STLUTILITY_INSTANTIATE_MULTIMAP_H */

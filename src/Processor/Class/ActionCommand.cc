@@ -16,7 +16,7 @@
 //
 #include "Experiment/Experiment.h"
 // system include files
-#include <iostream.h>
+#include <iostream>
 #include <stdlib.h>
 #include <assert.h>
 

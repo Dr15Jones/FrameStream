@@ -97,9 +97,9 @@
 #endif /* STL_ALLOCATOR_TWO */
 
 #if !defined(STL_MAP)
-#  define STL_MAP( k , c ) map< k , c >
-#  define STL_MAP_COMP( k , c , l ) map< k , c , l >
-#  define STL_MAP_COMP_ALLOC( k , c , l , a ) map< k , c , l , a >
+#  define STL_MAP( k , c ) std::map< k , c >
+#  define STL_MAP_COMP( k , c , l ) std::map< k , c , l >
+#  define STL_MAP_COMP_ALLOC( k , c , l , a ) std::map< k , c , l , a >
 
 #if defined(NO_ALLOCATOR_IN_STL_DECLARATION_BUG)
 
@@ -141,9 +141,9 @@
 
 #include <map>
 
-#ifndef NO_STD_NAMESPACE_BUG
+//#ifndef NO_STD_NAMESPACE_BUG
 using namespace std;
-#endif // NO_STD_NAMESPACE_BUG
+//#endif // NO_STD_NAMESPACE_BUG
 
 #include "STLUtility/fwd_multimap.h"
 

@@ -152,7 +152,7 @@ DLFactoryManager<T>::fetch( const string& iName,
 			    DLMultiFactoryChooserBase& iChooser,
 			    string& oShortName )
 {
-   DLFactoryBase* returnValue = 0;
+   DLFactoryBase* returnValue = nullptr;
 
    oShortName = m_soh.shortName( iName );
 
@@ -186,7 +186,7 @@ DLFactoryManager<T>::fetch( const string& iName,
 					     false,        // no verbose error reports
 					     symbol );
 
-	 if( true == status )
+	 if( false == status )
 	 {
 	    returnValue = new DLDynamicallyLoadedFactory( 
 	       reinterpret_cast<DLDynamicallyLoadedFactory::FactoryFcn>(symbol) );
@@ -202,7 +202,7 @@ DLFactoryManager<T>::fetch( const string& iName,
       }
       
       // if no symbol "make<Object>" found
-      if( false == returnValue )
+      if( nullptr == returnValue )
       {
 	 report( ERROR, kDLFactoryManagerFacilityString )
 	    << symbolErrorMesg( iName )

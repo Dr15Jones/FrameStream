@@ -23,7 +23,7 @@
 // first submission
 //
 #include "Experiment/Experiment.h"
-#include <iostream.h>
+#include <iostream>
 
 #if !defined(NO_TEMPLATED_MEMBER_FUNCTIONS_BUG)
 class MyPrinter {

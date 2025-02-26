@@ -24,7 +24,7 @@
 //
 //
 
-#include <iostream.h>
+#include <iostream>
 
 // one way around it is to define typename to nothing
 //#if defined(__DECCXX)

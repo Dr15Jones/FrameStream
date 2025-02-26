@@ -18,7 +18,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <iostream.h>
+#include <iostream>
 #include <assert.h>
 #include <stddef.h>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)

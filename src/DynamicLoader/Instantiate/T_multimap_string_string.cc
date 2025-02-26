@@ -82,6 +82,7 @@
 #  include <map>
 #endif                    
 
+using namespace std;
 typedef string _multimap_key_ ;
 typedef string _multimap_contents_ ;
 typedef less< _multimap_key_ > _multimap_compare_ ;

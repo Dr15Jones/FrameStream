@@ -29,8 +29,8 @@
 //
 
 // system include files
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 
 // user include files
 #include "CommandPattern/Module.h"

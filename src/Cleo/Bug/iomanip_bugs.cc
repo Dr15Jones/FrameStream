@@ -7,7 +7,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <iostream.h>
+#include <iostream>
 #include <iomanip.h>
 
 #ifdef NO_STD_NAMESPACE_BUG

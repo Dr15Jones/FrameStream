@@ -26,7 +26,7 @@
 #define HAVE_NO_CORBA
 
 //NOTE ISTREAM and OSTREAM are a class because we include
-//  iostream.h instead of using iostream
+//  iostream instead of using iostream
 #define ISTREAM_IS_A_CLASS_BUG
 #define OSTREAM_IS_A_CLASS_BUG
 

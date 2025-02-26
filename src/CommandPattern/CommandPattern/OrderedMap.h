@@ -43,8 +43,8 @@ class OrderedMap
 	    Key first;
 	    Item second;
       };
-      typedef _OrderedMap_items_::iterator iterator;
-      typedef _OrderedMap_items_::const_iterator const_iterator;
+      typedef typename _OrderedMap_items_::iterator iterator;
+      typedef typename _OrderedMap_items_::const_iterator const_iterator;
       typedef unsigned int size_type;
 
       // Constructors and destructor

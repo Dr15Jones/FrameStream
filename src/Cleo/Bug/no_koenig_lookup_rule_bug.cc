@@ -3,7 +3,7 @@
 
 // system include files
 #include "Experiment/Experiment.h"
-#include <iostream.h>
+#include <iostream>
 
 #if !defined(NO_NAMESPACE_BUG)
 namespace N {

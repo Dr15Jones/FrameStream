@@ -78,8 +78,8 @@
 #endif /* STL_ALLOCATOR */
 
 #if !defined(STL_VECTOR)
-#  define STL_VECTOR( c ) vector< c >
-#  define STL_VECTOR_ALLOC( c , a ) vector< c , a >
+#  define STL_VECTOR( c ) std::vector< c >
+#  define STL_VECTOR_ALLOC( c , a ) std::vector< c , a >
 
 #if defined(NO_ALLOCATOR_IN_STL_DECLARATION_BUG)
 #  undef STL_VECTOR_ALLOC

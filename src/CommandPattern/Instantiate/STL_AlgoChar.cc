@@ -44,7 +44,7 @@
 #include <algorithm>
 
 // forward declarations
-
+/*
 #if ( defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) )
 // for AXP
 //
@@ -84,5 +84,6 @@ template pair<const char*, const char* > mismatch ( const char*,
 						    const char*, 
 						    const char* );
 #endif
-#endif /* (defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX)) */
+*/
+//#endif /* (defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX)) */
 
