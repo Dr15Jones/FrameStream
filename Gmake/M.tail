@@ -81,7 +81,7 @@
 MAKE 	:= 	gmake
 MAKEFILE:=	Makefile
 
-PWD     := $(shell pawd)
+PWD     := $(shell pwd)
 # always puts /usr/local/bin first (important for some programs, e.g. "test")
 PATH	:= /usr/local/bin:${PATH}
 
@@ -110,10 +110,10 @@ ifeq "$(TK_DIR)" ""
 endif
 # can't use := here! because used "above"
 ifeq "$(TCL_VERS)" ""
-  TCL_VERS = 8.2
+  TCL_VERS = 8.6
 endif
 ifeq "$(TK_VERS)" ""
-  TK_VERS  = 8.2
+  TK_VERS  = 8.6
 endif
 
 # if not specified, use clib version of cleoii libraries
@@ -577,7 +577,7 @@ CLEOBAG := $(patsubst %,-l%$(CLEO_G),$(CLEO_LIBS))
 NILEBAG := $(patsubst %,-l%$(CLEO_G),$(NILE_LIBS))
 CERNBAG := $(patsubst %,-l%$(CERN_G),$(CERN_LIBS))
 SYSBAG  := $(patsubst %,-l%,$(SYS_LIBS))
-COMPBAG := $(patsubst %,-l%,$(F77LIBS) $(CXXLIBS) $(CCLIBS) $(MATHLIBS))
+COMPBAG := $(patsubst %,-l%,$(CXXLIBS) $(CCLIBS) $(MATHLIBS))
 
 LOCALLIBDIR := $(localshlib) $(locallib)
 LOCALLIBDIR += $(patsubst %,%/$(CXX),$(prefix)/shlib)
@@ -773,10 +773,12 @@ endif
 #   if non-standard Makefile make prepare '-f' option
 #   if CXX code, add CXX include file to list.
 #-------------------------------------------------------
-MAKEDEPEND = $(shell ls $(C3_OTHER)/bin/$(OS_NAME)/cleo_makedepend)
-ifeq "$(MAKEDEPEND)" ""
-  MAKEDEPEND = cleo_makedepend
-endif
+#CDJ
+#MAKEDEPEND = $(shell ls $(C3_OTHER)/bin/$(OS_NAME)/cleo_makedepend)
+#ifeq "$(MAKEDEPEND)" ""
+#  MAKEDEPEND = cleo_makedepend
+#endif
+MAKEDEPEND = makedepend
 
 ifeq "$(strip $(MAKEFILE))" ""
   USER_MFILE := 
@@ -1223,8 +1225,7 @@ $(DEP_SUFFIX_FORMAT) : %.cc $(INCLUDE_LINK)
 	@-$(SHELL) -ec \
 	'$(CXX_DEP) $(CLEO_DEFS) $(CXXFLAGS) $(LIST_INCS) $(CXX_INCS) $< \
 	| $(FILTER_INCLUDES) \
-	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) \
-	$@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
+	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) $@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
 #$(DEP_SUFFIX_FORMAT) : %.c  $(MAKEF_COMPILE_DEP) $(INCLUDE_LINK)
 $(DEP_SUFFIX_FORMAT) : %.c $(INCLUDE_LINK)
 	@echo "--> creating dependency file $@ for $<"
