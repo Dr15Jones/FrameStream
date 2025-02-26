@@ -3,4 +3,4 @@ setenv COMM_INC ${COMM_LIB}/include
 setenv C3_GMAKE ${FS_LIB}/Gmake
 setenv USER_SRC ${FS_LIB}/src
 setenv C3_OTHER ${FS_LIB}/other_sources
-
+setenv C3_INC ${FS_LIB}/src
