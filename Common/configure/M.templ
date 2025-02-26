@@ -1,0 +1,48 @@
+####
+## Makefile template
+## $Id: M.templ,v 1.7 1998/11/25 21:05:08 aw Exp $
+####
+
+###
+# Fixed head of Makefile
+#
+# Comment out these lines, if you use the lines following
+# the next comment, meaning you are using Makefile.in templates!!
+#
+src_root=.
+srcdir=.
+#
+# Uncomment these lines if you run a configure
+# script to generate your Makefiles from Makefile.in!!
+#
+#src_root=@top_srcdir@
+#srcdir=@srcdir@
+#prefix=@prefix@
+#exec_prefix=@exec_prefix@
+#bindir=@bindir@
+#libdir=@libdir@
+#includedir=@includedir@
+#
+# Leave INSTALL unchanged, please...
+#
+INSTALL = $(COM_EXE)/install -c
+#
+include $(COM_GMAKE)/common_head.mk
+#
+###
+# Adjustable definitions
+#
+# Tailor your Makefile.in to the needs of this directory!
+
+
+#
+# Uncomment these lines if you run a configure
+# script to generate your Makefiles from Makefile.in!!
+#
+#GUARD_MAKEFILE = Makefile
+#include $(COM_GMAKE)/guard_make.mk
+#
+###
+##  You normally do not change anything after this line
+###
+include $(COM_GMAKE)/common_tail.mk

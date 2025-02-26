@@ -1,0 +1,3 @@
+	$(SHELL) -ec '$(CC) $(CFLAGS) $(DEBUG) $(DEPSWITCH) \
+ $< | $(AWK) -f $${COM_GMAKE}/makesingle.awk - | $(AWK) -f $(dep_root)/makedep.awk - | sort -u > $@ '
+

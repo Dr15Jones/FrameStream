@@ -1,0 +1,80 @@
+#
+# Rules for compilation of bdl files and dependent code
+#
+# Special variable for bdl generated subdir template clean
+ifneq ($(BDLNAMES),)
+TEMPLATESUBDIRS=idl client server
+endif
+# bdl precompilation checks on client header
+bdlidlconstants : idl/$(BDLNAME).idl
+
+bdlidlsnapshots : idl/S_$(BDLNAME).idl
+
+ifeq ($(CONSTANTS_DDL_PREFIX),CODI)
+ idl/$(BDLNAME).idl : $(BDLNAME).bdl $(firstword $(BDLCOMPILE)) $(BDL_PATH)/bdlCompiler/$(MACHNAME)/bin/bdl_GetInfo $(BDL_PATH)/bdlCompiler/$(MACHNAME)/bin/bdl_WriteCode
+	$(BDLCOMPILE) $(BDLNAME)
+
+idl/S_$(BDLNAME).idl : $(BDLNAME).bdl $(firstword $(BDLCOMPILE_SS)) $(BDL_PATH)/bdlCompiler/$(MACHNAME)/bin/bdl_GetInfo $(BDL_PATH)/bdlCompiler/$(MACHNAME)/bin/bdl_WriteCode
+	$(BDLCOMPILE_SS) $(BDLNAME)
+
+bdlconstserverobject : $(CONSTANTS_DDL_PREFIX)$(BDLNAME)_new$(DOTO) $(BDLNAME)ConstantsServer$(DOTO)
+
+else
+ idl/$(BDLNAME).idl : $(BDLNAME).bdl $(firstword $(BDLCOMPILE)) $(BDL_PATH)/bdlCompiler/$(MACHNAME)/bin/bdl_GetInfo $(BDL_PATH)/bdlCompiler/$(MACHNAME)/bin/bdl_WriteCodeNew
+	$(BDLCOMPILE) $(BDLNAME)
+
+idl/S_$(BDLNAME).idl : $(BDLNAME).bdl $(firstword $(BDLCOMPILE_SS)) $(BDL_PATH)/bdlCompiler/$(MACHNAME)/bin/bdl_GetInfo $(BDL_PATH)/bdlCompiler/$(MACHNAME)/bin/bdl_WriteCodeNew
+	$(BDLCOMPILE_SS) $(BDLNAME)
+
+bdlconstserverobject : $(CONSTANTS_DDL_PREFIX)$(BDLNAME)_new$(DOTO) $(BDLNAME)ConstantsServer$(DOTO) $(BDLNAME)ConstantsServerNew$(DOTO)
+
+endif
+
+# bdl rules for the client objects
+ifeq ($(HAVECORBA),all)
+bdlconstclientobjects : DB$(BDLNAME)$(DOTO) DB$(BDLNAME)Factory$(DOTO) DB$(BDLNAME)Utilities$(DOTO)
+
+bdlsnapclientobjects : DB$(BDLNAME)$(DOTO) DB$(BDLNAME)Factory$(DOTO) DB$(BDLNAME)Utilities$(DOTO)
+
+else
+bdlconstclientobjects : DB$(BDLNAME)$(DOTO)
+
+bdlsnapclientobjects : DB$(BDLNAME)$(DOTO)
+
+endif
+
+DB$(BDLNAME)$(DOTO) : DB$(BDLNAME).cc
+	$(CXXRULES)
+
+DBS_$(BDLNAME)$(DOTO) : DBS_$(BDLNAME).cc
+	$(CXXRULES)
+
+DB$(BDLNAME)Factory$(DOTO) : DB$(BDLNAME)Factory.cc
+	$(CXXRULES)
+
+DBS_$(BDLNAME)Factory$(DOTO) : DBS_$(BDLNAME)Factory.cc
+	$(CXXRULES)
+
+DB$(BDLNAME)Utilities$(DOTO) : DB$(BDLNAME)Utilities.cc
+	$(CXXRULES)
+
+DBS_$(BDLNAME)Utilities$(DOTO) : DBS_$(BDLNAME)Utilities.cc
+	$(CXXRULES)
+
+# bdl rules for the server objects
+
+bdlsnapserverobject : S_$(BDLNAME)SnapshotServer$(DOTO)
+
+$(CONSTANTS_DDL_PREFIX)$(BDLNAME)_new$(DOTO) : $(CONSTANTS_DDL_PREFIX)$(BDLNAME)_new.cc
+	$(CXXRULES)
+
+$(BDLNAME)ConstantsServer$(DOTO) : $(BDLNAME)ConstantsServer.cc
+	$(CXXRULES)
+
+# bdl rules for the objy init execs
+#bdldbinit : $(BDLNAME)ObjyInit$(DOTX)
+#	@$(BDLNAME)ObjyInit$(DOTX)
+#	@echo "Called FD init application for $(BDLNAME) type."
+#$(BDLNAME)ObjyInit$(DOTX) : $(BDLNAME)ObjyInit$(DOTO) $(DB_BOOT)
+#$(BDLNAME)ObjyInit$(DOTO) : $(BDLNAME)ObjyInit.cc
+#	$(CXXRULES)

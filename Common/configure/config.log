@@ -1,0 +1,173 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:658: checking host system type
+configure:679: checking target system type
+configure:697: checking build system type
+configure:793: checking for a BSD compatible install
+configure:913: checking for find
+configure:951: checking for mkdirhier
+configure:980: checking whether make sets ${MAKE}
+configure:1038: checking for C compiler
+configure:1045: checking for cc
+configure:1193: checking how to run the C preprocessor
+configure:1214: cc -E  conftest.c >/dev/null 2>conftest.out
+configure:1323: checking for C++ compiler
+configure:1330: checking for cxx
+configure:1437: checking whether '-PIC' option should be used
+configure:1580: checking how to run the C++ preprocessor
+configure:1598: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:1633: checking which link command to use for C++
+configure:1647: checking Features of cxx
+configure:1661: checking whether C++ understands exceptions
+configure:1687: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
+configure:1725: checking Do we use exceptions for this setup
+configure:1757: checking how to get dependencies from compiler
+configure:1825: checking for multithreading
+configure:2068: checking for working const
+configure:2122: cc -c   conftest.c 1>&5
+cc: Warning: configure, line 2098: The scalar variable "t" is fetched but not initialized. (uninit1)
+  *t++ = 0;
+---^
+cc: Warning: configure, line 2113: The scalar variable "b" is fetched but not initialized. (uninit1)
+  struct s *b; b->j = 5;
+---------------^
+configure:2143: checking whether byte ordering is bigendian
+configure:2161: cc -c   conftest.c 1>&5
+configure:2176: cc -c   conftest.c 1>&5
+cc: Error: configure, line 2171: In this declaration, "not" must specify a type. (badparsedecl)
+ not big endian
+-^
+configure: failed program was:
+#line 2165 "configure"
+#include "confdefs.h"
+#include <sys/types.h>
+#include <sys/param.h>
+int main() {
+
+#if BYTE_ORDER != BIG_ENDIAN
+ not big endian
+#endif
+; return 0; }
+configure:2258: checking whether char is unsigned
+configure:2297: cc -o conftest    conftest.c  1>&5
+configure: failed program was:
+#line 2287 "configure"
+#include "confdefs.h"
+/* volatile prevents gcc2 from optimizing the test away on sparcs.  */
+#if !defined(__STDC__) || __STDC__ != 1
+#define volatile
+#endif
+main() {
+  volatile char c = 255; exit(c < 0);
+}
+configure:2321: checking size of signed char
+configure:2340: cc -o conftest    conftest.c  1>&5
+configure:2360: checking size of unsigned char
+configure:2379: cc -o conftest    conftest.c  1>&5
+configure:2399: checking size of unsigned short
+configure:2418: cc -o conftest    conftest.c  1>&5
+configure:2438: checking size of unsigned int
+configure:2457: cc -o conftest    conftest.c  1>&5
+configure:2477: checking size of unsigned long
+configure:2496: cc -o conftest    conftest.c  1>&5
+configure:2516: checking size of unsigned long long
+configure:2535: cc -o conftest    conftest.c  1>&5
+configure:2555: checking for long double
+configure:2574: cc -o conftest    conftest.c  1>&5
+cc: Info: configure, line 2569: In this declaration, type long double has the same representation as type double on this platform and is treated as a synonym for type double in this compilation mode. (longdoubleny1)
+long double foo = 0.0;
+^
+configure:2757: checking for stdlib.h
+configure:2767: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:2797: checking for stddef.h
+configure:2807: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:2838: checking for stdio.h
+configure:2848: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:2879: checking for vsnprintf()
+configure:2892: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
+cxx: Error: configure, line 2888: identifier "vsnprintf" is undefined
+{vsnprintf(NULL,0,"",5);}
+-^
+cxx: Info: 1 error detected in the compilation of "conftest.C".
+configure: failed program was:
+#line 2885 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+int main() {
+{vsnprintf(NULL,0,"",5);}
+; return 0; }
+configure:2913: checking for out_waiting()
+configure:2923: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
+configure:2942: checking for errno.h
+configure:2952: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:2982: checking for unistd.h
+configure:2992: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3022: checking for sysent.h
+configure:3032: cxx -E  conftest.C >/dev/null 2>conftest.out
+cxx: Error: configure, line 3028: could not open source file "sysent.h"
+#include <sysent.h>
+-------------------^
+cxx: Info: 1 error detected in the compilation of "conftest.C".
+configure: failed program was:
+#line 3027 "configure"
+#include "confdefs.h"
+#include <sysent.h>
+configure:3063: checking for mawk
+configure:3063: checking for gawk
+configure:3143: checking for string.h
+configure:3153: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3184: checking whether reentrant string API is available
+configure:3201: cxx -o conftest  -ptr Templates$(DBGEXT)   conftest.C  1>&5
+cxx: Error: configure, line 3197: identifier "strtok_r" is undefined
+char* last; char* tst; tst = strtok_r(NULL, NULL, &last);
+-----------------------------^
+cxx: Info: 1 error detected in the compilation of "conftest.C".
+configure: failed program was:
+#line 3194 "configure"
+#include "confdefs.h"
+#include <string.h>
+int main() {
+char* last; char* tst; tst = strtok_r(NULL, NULL, &last);
+; return 0; }
+configure:3227: checking where 'sys_errlist' is defined
+configure:3239: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
+cxx: Error: configure, line 3235: identifier "sys_errlist" is undefined
+ sys_errlist[0]; 
+-^
+cxx: Info: 1 error detected in the compilation of "conftest.C".
+configure: failed program was:
+#line 3232 "configure"
+#include "confdefs.h"
+ #include <stdio.h> 
+int main() {
+ sys_errlist[0]; 
+; return 0; }
+configure:3263: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
+configure:3302: checking for sys/msg.h
+configure:3312: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3343: checking for pthread.h
+configure:3353: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3383: checking for synch.h
+configure:3393: cxx -E  conftest.C >/dev/null 2>conftest.out
+cxx: Error: configure, line 3389: could not open source file "synch.h"
+#include <synch.h>
+------------------^
+cxx: Info: 1 error detected in the compilation of "conftest.C".
+configure: failed program was:
+#line 3388 "configure"
+#include "confdefs.h"
+#include <synch.h>
+configure:3423: checking for tis.h
+configure:3433: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3485: checking for time.h
+configure:3495: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3580: checking trying to recognize local timezone EST
+configure:3686: checking for semaphore.h
+configure:3696: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3735: checking for NT services
+configure:3764: checking for insure
+configure:3764: checking for insight
+configure:3805: checking for default debug/optimization setup
+configure:3936: checking for crypt.h
+configure:3946: cxx -E  conftest.C >/dev/null 2>conftest.out

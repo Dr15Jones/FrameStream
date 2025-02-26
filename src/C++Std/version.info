@@ -1,0 +1,21 @@
+
+Module : C++Std
+Date   : Mon Apr 16 21:13:48 2001
+User   : cleo3
+Old Tag: v01_00_00
+New Tag: v01_01_00
+Message: now only include string since C++ standard says no forward decleration of items in std namespace
+
+Module : C++Std
+Date   : Fri Sep  7 12:50:52 2001
+User   : cleo3
+Old Tag: v01_01_00
+New Tag: v02_00_00
+Message: updated for Solaris 8
+
+Module : C++Std
+Date   : Tue Sep 11 13:44:11 2001
+User   : cdj
+Old Tag: v02_00_00
+New Tag: v02_01_00
+Message: added fwd_ifstream.h

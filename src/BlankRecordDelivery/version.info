@@ -1,0 +1,14 @@
+
+Module : BlankRecordDelivery
+Date   : Fri Feb 25 15:59:56 2000
+User   : cdj
+Old Tag: v01_01_00
+New Tag: v01_02_00
+Message: default time is now run=1 event=0
+
+Module : BlankRecordDelivery
+Date   : Fri Sep  7 14:44:48 2001
+User   : cleo3
+Old Tag: v01_02_00
+New Tag: v01_03_00
+Message: switched to using NO_STL_TEMPLATED_MEMBER_FUNCTIONS_BUG

@@ -1,0 +1,24 @@
+/FAAutoEraseAllPtr.h/1.1/Fri Nov 17 15:45:34 2000//
+/FAConstPtrTable.h/1.2/Sat Jun 17 20:13:27 2000//
+/FAConstants.h/1.4/Fri Apr 21 17:49:29 2000//
+/FAInserter.h/1.4/Tue Apr 17 01:08:35 2001//
+/FAItem.h/1.6/Fri Dec 10 14:17:47 1999//
+/FANonSeqConstants.h/1.4/Fri Dec 10 14:20:58 1999//
+/FAPtrTable.h/1.13/Wed Jan  3 22:50:16 2001//
+/FAPtrTableInsertItr.h/1.3/Thu Apr  6 14:56:44 2000//
+/FATable.h/1.12/Fri Sep  7 17:47:20 2001//
+/FATableItr.h/1.16/Fri Sep  7 17:47:20 2001//
+/FAVoidPtrContainer.h/1.6/Fri Sep  7 17:47:20 2001//
+/ValueProxy.h/1.2/Fri Sep 25 19:57:55 1998//
+/extract.h/1.5/Thu Apr  9 23:19:37 1998//
+/insert.h/1.6/Thu May  7 19:45:34 1998//
+/instantiate_CLEOConstants.h/1.1/Fri May  7 01:26:31 1999//
+/instantiate_FAItem.h/1.1/Wed Apr 22 20:24:00 1998//
+/instantiate_FATable.h/1.3/Tue Dec 26 21:10:18 2000//
+/instantiate_FAVoidPtrContainer_integral_type.h/1.2/Wed Dec 27 20:57:35 2000//
+/instantiate_constant.h/1.1/Fri May  7 01:26:32 1999//
+/instantiate_macros.h/1.3/Fri May  7 01:26:32 1999//
+/instantiate_many.h/1.11/Wed Sep 30 15:44:48 1998//
+/instantiate_nonseqconstant.h/1.1/Fri May  7 01:26:33 1999//
+/instantiate_one.h/1.12/Wed Sep 30 15:44:48 1998//
+D/Template////

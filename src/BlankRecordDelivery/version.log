@@ -1,0 +1,5 @@
+Library: BlankRecordDelivery
+
+v01_00_00 : Initial implementation
+
+v01_01_00 : Added ManyRunsStops and ManyEventsStops

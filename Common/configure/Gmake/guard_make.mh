@@ -1,0 +1,6 @@
+# Guard Makefile
+$(GUARD_MAKEFILE) : $(GUARD_MAKEFILE).in $(src_root)/config.status
+	cd $(src_root); ./config.status
+
+config.status : $(src_root)/configure
+	cd $(src_root); ./config.status --recheck

@@ -1,0 +1,42 @@
+
+Module : DAException
+Date   : Mon Dec  6 11:12:18 1999
+User   : mkl
+Old Tag: 
+New Tag: v01_00_00
+Message: reimport due to name change: CleoException-->DAException
+
+Module : DAException
+Date   : Fri Dec 10 09:03:04 1999
+User   : cdj
+Old Tag: v01_00_00
+New Tag: v01_01_00
+Message: added DANoDataException
+
+Module : DAException
+Date   : Sat Dec 18 11:35:45 1999
+User   : mkl
+Old Tag: v01_01_00
+New Tag: v01_02_00
+Message: doxygenized code pieces
+
+Module : DAException
+Date   : Mon Sep 18 18:37:17 2000
+User   : mkl
+Old Tag: v01_02_00
+New Tag: v01_02_01
+Message: need to allocate strlen+1
+
+Module : DAException
+Date   : Thu Mar  1 12:36:19 2001
+User   : cdj
+Old Tag: v01_02_01
+New Tag: v01_02_02
+Message: fixed bug which happened when we don't own the memory
+
+Module : DAException
+Date   : Fri Mar  2 12:42:19 2001
+User   : cdj
+Old Tag: v01_02_02
+New Tag: v01_02_03
+Message: need to cast const of const char* input so we can assign it to our char*

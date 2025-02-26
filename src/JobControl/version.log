@@ -1,0 +1,9 @@
+Library: JobControl
+
+v01_00_00: first submission
+
+v01_01_00: emptysource command now has manyTime sub command
+
+v01_02_00: new Source/SinkFormatModule files (to be able
+               to interact with them once loaded)
+           bug fix setting of active streams in multiple sources

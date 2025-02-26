@@ -1,0 +1,13 @@
+# ddl rules for Objectivity
+ddlobject : $(DDLNAME)_ddl$(DOTO)
+
+$(DDLNAME)_ddl$(DOTO) : $(DDLNAME)_ddl.cc
+	$(CXXRULES)
+
+$(DDLNAME)_ddl$(DOTO) : $(DDLNAME).hh
+
+$(DDLNAME).hh $(DDLNAME)_ddl.cc : $(DB_BOOT) $(DDLNAME).ddl
+	chmod g+w .
+	$(OODDLX) $(INCLUDES) $(DDLFLAGS) $(EXTRADEFINES) $(DDLNAME).ddl $(DB_BOOT)
+#	mv $(DDLNAME).hh $(DDLNAME)_uncorrected.hh
+#	cat $(DDLNAME)_uncorrected.hh|sed 's/enum //g' >$(DDLNAME).hh

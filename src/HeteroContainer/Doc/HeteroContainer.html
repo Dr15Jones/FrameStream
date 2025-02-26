@@ -1,0 +1,235 @@
+<HTML>
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 2.0 Win">
+  <TITLE>HeteroContainer Package</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1>The HeteroContainer Package</H1>
+
+<P>The HeteroContainer Package provides the utilities for the construction
+of type safe heterogenious containers.</P>
+
+<H2>Requirements.</H2>
+
+<P>When one first thinks about how an Event object should be written, one
+usually thinks of adding accessor functions for each of the types of data
+that an Event should have. But over time, those accessors could change and
+each change would force people to recompile their code. In addition, people
+may want to add their own information to an Event. This could be done through
+inheritance (e.g. MyEvent inheriting from Event) but if you are handed an
+Event, how would you know if it actually a MyEvent? These problems can be
+overcome if one can use a type-safe heterogenious container.</P>
+
+<P>When retrieving data from a heterogenious container, knowing just the
+'Type' (i.e. class) of the data to be retrieved is not enough since we might
+want to store multiple instances of a 'Type' in the container. E.g. we might
+want a list of 'good' and a list of 'bad' Tracks. Therefore in addition
+to the 'Type' of the data, we also need to specify 'Usage'. But that still
+is not sufficient. Since we want to allow multiple algorithms to create
+the same data, we also need to specify how the data was produced.</P>
+
+<P>The actual class stored in the container may be different than 'Type'.
+In the Record we don't actually store Tracks, instead we store Proxy&lt;
+Track &gt;.</P>
+
+<P>It would also be very useful to be able to get a listing of all the items
+held by the container. This listing should be able to generate human readable
+information.</P>
+
+<P>With the above use case in mind, we find that a heterogeneous container
+must have the following properties:</P>
+
+<UL>
+  <LI>be able to 'insert' and 'find' objects in a typesafe manner
+  <LI>allow an addtional Tag to distinguish between different objects of
+  the same type. The actually implementation of the Tag should be customizable
+  to the exact problem being solved.
+  <LI>allow the ItemType to be different (but related to) Type.
+  <LI>provide a human readable list of the container's contents.
+</UL>
+
+<H2>Design.</H2>
+
+<P>In order to find an item within the container we need to know its associated
+Type and its Tag. Since these always appear together, it makes sense to
+group the Type and Tag into a Key. To simplify the mental model we will
+refer to Type by a TypeTag and therefore a Key holds two tags, a TypeTag
+and an IdTag. Since the IdTag can be specialized it means the Key can also
+be specialized.</P>
+
+<P>Different problems will want to use different heterogeneous containters
+with different storage strategies: e.g. one might want to optimize size
+over speed while another problem needs speed over size. This implies that
+we should allow the user to specialize the storage strategy used by the
+HeteroContainer.</P>
+
+<P>Type-safety for the heterogeneous container can be achieved through the
+use of templates. The best way would be to use templated member functions
+on the HeteroContainer class. Unfortunately not all of our compilers can
+handle templated member functions, therefore we will need to use templated
+helper classes.</P>
+
+<P>The HeteroContainer is specified by three template arguments:</P>
+
+<UL>
+  <LI>Storage: a homogeneous container which can hold a pointer to the base
+  class of all the different items (or a void*). The Storage class must be
+  able to retrieve an item using the Key
+  <LI>Key: the specific lookup key
+  <LI>IdTag: the specific IdTag
+</UL>
+
+<P>To allow typesafe access to the items within the Container, the helper
+class takes two additional template argument:</P>
+
+<UL>
+  <LI>ItemType: it is the class type of the item being inserted/found
+  <LI>Type: use to build the TypeTag. ItemType should somehow be derivable
+  from Type, e.g. ItemType is actually a templated class that uses Type as
+  one of its template parameters.
+</UL>
+
+<H3>concepts</H3>
+
+<P>To summarize the concepts used in the design</P>
+
+<DL>
+  <DT>Key
+  <DD>object used to identify an item within the container. The Key holds
+  a TypeTag and an IdTag.
+  <DT>TypeTag
+  <DD>used to identify the class Type of an item.
+  <DT>IdTag
+  <DD>used to distinguish between two items of the same Type.
+  <DD>&nbsp;
+</DL>
+
+<H3>classes</H3>
+
+<P>The following are brief descriptions of the classes that make up the
+design of the HeteroContainer facility. The classes that makeup the design
+are shown in the accompanying class diagram.</P>
+
+<DL>
+  <DT><B>HCTypeTag&lt; <I>Group</I> &gt;</B>
+  <DD>holds the unsigned int used to identify a type and has a pointer to
+  the class types name (NOTE: TypeTag holds onto the const char* and will
+  not delete it). The static function nextValue() is used by inheriting classes
+  to assign a unique number to a type. The template parameter Group is used
+  to allow different instances of HCTypeTag&lt;&gt; to not have to use the
+  same type to integer conversion.
+  <DL>
+    <DT><B>HCTypeTagTemplate&lt;<I>Type, Group</I>&gt;</B>
+    <DD>Its constructor sets the unsigned int and const char* needed by TypeTag.
+    The static method classValue() holds the unsigned int that corresponds
+    to Type. The static method className() returns the name of the class Type.
+  </DL>
+  <DT><B>HCMethods&lt; <I>Type, ItemType, Storage, Key, IdTag</I> &gt;</B>
+  <DL>
+    <DT>This class holds the templated member methods we would have if compilers
+    supported templated member methods. The static methods are
+  </DL>
+  <UL>
+    <LI><TT>Key makeKey( const IdTag&amp; )</TT> : constructs a Key from an
+    IdTag and the Type.
+    <LI><TT>bool insert( Storage&amp;, ItemType*, const IdTag&amp; )</TT> :
+    inserts an item of type into the container . This function uses makeKey(...).
+    False is returned if an item of that Type and same IdTag is already in
+    the container.
+    <LI><TT>ItemType* find( Storage&amp;, const IdTag&amp; )</TT> : finds an
+    item of type Type with IdTag. Returns 0 if no item was found.
+  </UL>
+  <DD>The methods needed by each of the template parameter classes are
+  <DL>
+    <DT><B><I>Type</I></B>
+    <DD>Type should somehow be related to ItemType
+    <DT><B><I>ItemType</I></B>
+    <DD>ItemType* must have implicit conversion to what ever type the Storage
+    class can hold.
+    <DT><B><I>Storage</I></B>
+    <DD>This is a container which holds items of type base class for ItemType*
+    (we will call this base class ItemBase) and has the following methods
+    <UL>
+      <LI><TT>bool insert( const Key&amp;, ItemBase* )</TT>
+      <LI><TT>ItemBase* find( const Key&amp; )</TT>
+    </UL>
+    <DT><B><I>Key</I></B>
+    <DD>must have the following methods
+    <UL>
+      <LI><TT>Key( const TypeTag&lt;Key&gt;&amp;, const IdTag&amp; )</TT>
+      <LI><TT>Key( const Key&amp; )</TT>
+      <LI><TT>Key&amp; operator=( const Key&amp; )</TT>
+      <LI><TT>const TypeTag&lt; Key &gt;&amp; typeTag() const</TT>
+    </UL>
+    <DD>plus any comparison methods needed by Storage.
+    <DT><B><I>IdTag</I></B>
+    <DD>must have the following methods
+    <UL>
+      <LI><TT>IdTag( const IdTag&amp; )</TT>
+      <LI><TT>IdTag&amp; operator=( const IdTag&amp; )</TT>
+    </UL>
+    <DD>plus any comparison methods needed by Key.
+  </DL>
+  <DT>&nbsp;
+</DL>
+
+<H2>Use Example</H2>
+
+<P>To understand the implication of this design, we can quickly show how
+this would work with Record. The main idea would be to create a helper class
+called RecordMethods which specializes HCMethods for use with a Record.
+This class is simply</P>
+
+<BLOCKQUOTE>
+  <P><TT>template&lt; class T &gt;</TT></P>
+  <P><TT>class RecordMethods : public HCMethods&lt; T, Proxy&lt;T&gt;, Record,
+  DataKey, DataTags &gt; {</TT></P>
+  <P><TT>private:</TT></P>
+  <BLOCKQUOTE>
+    <P><TT>RecordMethods();</TT></P>
+  </BLOCKQUOTE>
+  <P><TT>};</TT></P>
+</BLOCKQUOTE>
+
+<P>then to insert a proxy into a Record you just say</P>
+
+<BLOCKQUOTE>
+  <P><TT>//set up the variables</TT></P>
+  <P><TT>Proxy&lt; Foo &gt;* myProxy;</TT></P>
+  <P><TT>...</TT></P>
+  <P><TT>RecordMethods&lt;Foo&gt;::insert( iRecord, myProxy, myTags);</TT></P>
+</BLOCKQUOTE>
+
+<P>to retrieve from a Record is also simple</P>
+
+<BLOCKQUOTE>
+  <P><TT>Proxy&lt;Foo&gt;* myProxy = RecordMethods&lt;Foo&gt;::find( iRecord,
+  myTags );</TT></P>
+</BLOCKQUOTE>
+
+<P>These templates can also be used by FortranInterfacer within its FIExtractorDictionary
+class. The FIExtractorDictionary could use the helper class FIEDMethods
+which is initialized as</P>
+
+<BLOCKQUOTE>
+  <P><TT>template&lt; class T&gt;</TT></P>
+  <P><TT>class FIEDMethods :: public HCMethods&lt; T, T, HCMapStorage&lt;_fortraninterfacer_map_&gt;,
+  FIKey, string &gt;</TT></P>
+</BLOCKQUOTE>
+
+<P>where HCMapStorage&lt;...&gt; is an adapter to allow you to easily use
+an STL map as your storage method.</P>
+
+<P><HR ALIGN=LEFT></P>
+
+<ADDRESS><A HREF="/cdj@mail.lns.cornell.edu/">Chris Jones &lt;cdj@mail.lns.cornell.edu&gt;</A></ADDRESS>
+
+<P>$Id: HeteroContainer.html,v 1.1.1.1 1998/09/23 14:13:13 cdj Exp $ <!--
+$Log: HeteroContainer.html,v $
+Revision 1.1.1.1  1998/09/23 14:13:13  cdj
+first submission
+
+-->
+</BODY>
+</HTML>

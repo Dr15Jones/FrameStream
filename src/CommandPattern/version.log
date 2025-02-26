@@ -1,0 +1,6 @@
+Library: JobControl
+
+v01_00_00: first submission
+
+v01_00_01: SharedObjectHandler::load changed report to cerr << dlerror: 
+           else crashes with egcs

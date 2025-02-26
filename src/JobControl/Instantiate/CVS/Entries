@@ -1,0 +1,23 @@
+/STL_DataSinkBinder.cc/1.5/Wed Apr  1 17:59:43 1998//
+/STL_DataSourceBinder.cc/1.5/Wed Apr  1 17:59:43 1998//
+/STL_Module.cc/1.5/Wed Apr  1 17:59:44 1998//
+/STL_SinkFormat.cc/1.3/Wed Dec  2 05:55:12 1998//
+/STL_SourceFormat.cc/1.3/Wed Dec  2 05:55:16 1998//
+/STL_SummaryCounter.cc/1.1/Wed Jul 29 20:06:51 1998//
+/T_Binder.cc/1.2/Wed Sep 23 19:01:17 1998//
+/T_DummySourceBinder.cc/1.2/Mon Nov  9 19:33:20 1998//
+/T_FormatCommand.cc/1.2/Tue Nov 10 03:52:25 1998//
+/T_FormatMap.cc/1.2/Wed Dec  2 05:55:18 1998//
+/T_Loader.cc/1.3/Fri Dec  1 20:30:54 2000//
+/T_LoaderCommand_SinkFormatMap.cc/1.3/Wed Dec  2 05:55:25 1998//
+/T_LoaderCommand_SourceFormatMap.cc/1.3/Wed Dec  2 05:55:27 1998//
+/T_OrderedMap_string_BinderBaseP.cc/1.1/Wed Apr 14 21:16:27 1999//
+/T_OrderedMap_string_DataSinkBinderP.cc/1.1/Wed Apr 14 21:16:27 1999//
+/T_UTIdStringBinder.cc/1.2/Thu Jul  2 14:23:05 1998//
+/T_count_string_iterator.cc/1.1/Fri Jun 15 21:06:26 2001//
+/T_map_string_ReportModule_LogAndStreamStruct.cc/1.2/Mon Sep  6 22:20:12 1999//
+/T_mmap_StreamType_BinderBaseP.cc/1.1/Sat Apr 24 16:22:49 1999//
+/T_mmap_StreamType_ConstBinderBaseP.cc/1.1/Fri Apr 30 18:15:23 1999//
+/T_mmap_StreamType_DataSourceDescriptorP.cc/1.1/Sat Apr 24 16:22:51 1999//
+/T_set_DataSourceDescriptor.cc/1.1/Sat Apr 24 16:22:52 1999//
+D

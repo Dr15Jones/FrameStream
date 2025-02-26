@@ -1,0 +1,14 @@
+
+Module : DataStorage
+Date   : Mon Dec  6 16:47:06 1999
+User   : mkl
+Old Tag: v01_00_00
+New Tag: v01_01_00
+Message: added 'contains( StreamType )' method
+
+Module : DataStorage
+Date   : Fri Jun 15 17:05:30 2001
+User   : cdj
+Old Tag: v01_01_00
+New Tag: v02_00_00
+Message: can now specify data (not) to store in a sink

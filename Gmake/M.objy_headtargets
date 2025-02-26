@@ -1,0 +1,13 @@
+# ;-*-Mode: makefile-*-
+# ======================================================
+# Objectivity makefile additions
+#
+# Author: Martin Lohner
+# ------------------------------------------------------
+
+# --------- Targets ---------------------------------------------
+make_fd: $(OB_BOOTFILE)
+	gmake depend            # need to run depend
+	gmake production        # and production in separate invocations!
+
+depend: clean_depends

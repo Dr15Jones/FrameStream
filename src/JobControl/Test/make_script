@@ -1,0 +1,15 @@
+#!/usr/local/bin/bash -vx
+
+# first remake library
+#(cd /home/mkl/work/cleo3/build_g++/JobControl/; \
+#gmake production DEBUG=y)
+
+# now make test exe
+#g++ -g -I/home/mkl/work/cleo3/JobControl \
+#-I/home/mkl/work/cleo3/Utility -I/home/mkl/work/cleo3/ \
+#main_testStringUtil.cc \
+#/home/mkl/work/cleo3/build_g++/lib/libJobControl_g.a -o a.out
+
+g++ -g -c -I/home/mkl/work/cleo3/include ../Class/AsyncInterrupt.cc
+g++ -g -I/home/mkl/work/cleo3/include main_TestAsyncInput.cc \
+AsyncInterrupt.o /home/mkl/work/cleo3/build_g++/lib/libToolBox.a -o a.out

@@ -1,0 +1,21 @@
+
+Module : DefaultModule
+Date   : Mon Feb 22 17:56:15 1999
+User   : mkl
+Old Tag: 
+New Tag: v01_00_00
+Message: first version
+
+Module : DefaultModule
+Date   : Mon Apr 26 14:42:37 1999
+User   : mkl
+Old Tag: v01_00_00
+New Tag: v01_00_01
+Message: improved help documentation
+
+Module : DefaultModule
+Date   : Thu Jun  1 13:51:13 2000
+User   : mkl
+Old Tag: v01_00_01
+New Tag: v01_01_00
+Message: switch all Suez messages to SYSTEM level
