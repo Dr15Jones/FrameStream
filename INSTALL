@@ -5,6 +5,7 @@ then
 	gmake
 Setup the third party libraries
 	cd other_sources
+        get a copy of Tcl&Tk 8.6 and put them in a directory named tcltk
 	gmake
 Setup the necessary environment variables
 	source set_env
