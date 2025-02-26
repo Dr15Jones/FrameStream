@@ -100,17 +100,20 @@ ALLDEPFILES = $(CXXSOURCES:.cxx=.d) $(CCSOURCES:.cc=.d) $(CSOURCES:.c=.d)
 $(ALLDEPCXXFILES): %.d : %.cxx
 
 	$(SHELL) -ec '$(CXX) $(CXXFLAGS) $(DEBUG) $(DEPSWITCH) \
- $< | $(AWK) -f $(dep_root)/makedep.awk - | sort -u > $@ '
+ $< | $(AWK) -f $${COM_GMAKE}/makesingle.awk - | $(AWK) -f $(dep_root)/makedep.awk - | sort -u > $@ '
+
 
 $(ALLDEPCCFILES): %.d : %.cc
 
 	$(SHELL) -ec '$(CXX) $(CXXFLAGS) $(DEBUG) $(DEPSWITCH) \
- $< | $(AWK) -f $(dep_root)/makedep.awk - | sort -u > $@ '
+ $< | $(AWK) -f $${COM_GMAKE}/makesingle.awk - | $(AWK) -f $(dep_root)/makedep.awk - | sort -u > $@ '
+
 
 $(ALLDEPCFILES): %.d : %.c
 
 	$(SHELL) -ec '$(CC) $(CFLAGS) $(DEBUG) $(DEPSWITCH) \
- $< | $(AWK) -f $(dep_root)/makedep.awk - | sort -u > $@ '
+ $< | $(AWK) -f $${COM_GMAKE}/makesingle.awk - | $(AWK) -f $(dep_root)/makedep.awk - | sort -u > $@ '
+
 
 depend : $(SUBDEPEND) $(PREDEPHEADER) $(ALLDEPFILES) $(DEPFILE)
 	@gmake CONSIDEREDDOTD=$(ALLDEPFILES) $(DEPFILE)
@@ -229,7 +232,7 @@ admininstall :
 	  $(INSTALL_PROGRAM) $$p $(prefix)/admin/$(machsubname); \
 	done
 
-INSTALLEDADDLIB = $(addprefix $(libdir)/alphaev6-dec-osf4.0f/, $(LIBRARY))
+INSTALLEDADDLIB = $(addprefix $(libdir)/x86_64-unknown-linux-gnu/, $(LIBRARY))
 libinstall: $(INSTALLEDADDLIB)
 
 addlibinstall: $(INSTALLEDADDLIB)

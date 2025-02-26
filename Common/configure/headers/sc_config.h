@@ -29,7 +29,7 @@
 #define HAVE_SYSENT_H 0
 #define HAVE_PTHREAD_H 1
 #define HAVE_SYNCH_H 0
-#define HAVE_TIS_H 1
+#define HAVE_TIS_H 0
 #define HAVE_SEMAPHORE_H 1
 #define HAVE_SYS_SEM_H 0
 #define HAVE_SYS_MSG_H 1
@@ -37,7 +37,7 @@
 #define CLASH_SYSENT_UNISTD 0
 
 /* Where do correct types come from */
-#define USE_SYS_ERRLIST_IN_STDIO_H 0
+#define USE_SYS_ERRLIST_IN_STDIO_H 1
 #define USE_SYS_ERRLIST_IN_SOURCE  0
 
 /* C++ Exceptions */
@@ -62,12 +62,12 @@
 */
 #define HAVE_RWLOCK_SUPPORT 0
 #define HAVE_VSNPRINTF 0
-#define HAVE_OUTWAITING 1
+#define HAVE_OUTWAITING 0
 #define USE_PTHREAD_START_T 0
 #define USE_RWLOCK_T 0
 #define USE_TISRWLOCK_T 0
 #define USE_LOCALTIME_R 0
-#define USE_STRTOK_R 0
+#define USE_STRTOK_R 1
 #define USE_HARD_EXIT_CALL 0
 /*
 ** Special switches for platform dependent bug repairs
@@ -87,7 +87,7 @@
 #define FOUND_TIMEZONE 1
 
 #if (FOUND_TIMEZONE == 1)
-#define AC_TIMEZONE_STRING "EST5EDT:M4.1.0:M10.5.0"
+#define AC_TIMEZONE_STRING "CST6CDT:M4.1.0:M10.5.0"
 #endif
 
 /*

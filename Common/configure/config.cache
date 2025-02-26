@@ -12,37 +12,36 @@
 # config.status only pays attention to the cache file if you give it the
 # --recheck option to rerun configure.
 #
-ac_cv_c_bigendian=${ac_cv_c_bigendian='no'}
-ac_cv_c_char_unsigned=${ac_cv_c_char_unsigned='no'}
-ac_cv_c_const=${ac_cv_c_const='yes'}
-ac_cv_c_long_double=${ac_cv_c_long_double='yes'}
-ac_cv_header_crypt_h=${ac_cv_header_crypt_h='yes'}
-ac_cv_header_errno_h=${ac_cv_header_errno_h='yes'}
-ac_cv_header_pthread_h=${ac_cv_header_pthread_h='yes'}
-ac_cv_header_semaphore_h=${ac_cv_header_semaphore_h='yes'}
-ac_cv_header_stddef_h=${ac_cv_header_stddef_h='yes'}
-ac_cv_header_stdio_h=${ac_cv_header_stdio_h='yes'}
-ac_cv_header_stdlib_h=${ac_cv_header_stdlib_h='yes'}
-ac_cv_header_string_h=${ac_cv_header_string_h='yes'}
-ac_cv_header_synch_h=${ac_cv_header_synch_h='no'}
-ac_cv_header_sys_msg_h=${ac_cv_header_sys_msg_h='yes'}
-ac_cv_header_sysent_h=${ac_cv_header_sysent_h='no'}
-ac_cv_header_time_h=${ac_cv_header_time_h='yes'}
-ac_cv_header_tis_h=${ac_cv_header_tis_h='yes'}
-ac_cv_header_unistd_h=${ac_cv_header_unistd_h='yes'}
-ac_cv_path_install=${ac_cv_path_install='/usr/local/bin/install -c'}
-ac_cv_prog_AWK=${ac_cv_prog_AWK='gawk'}
-ac_cv_prog_CC=${ac_cv_prog_CC='cc'}
+ac_cv_c_bigendian=${ac_cv_c_bigendian=no}
+ac_cv_c_char_unsigned=${ac_cv_c_char_unsigned=no}
+ac_cv_c_const=${ac_cv_c_const=yes}
+ac_cv_c_long_double=${ac_cv_c_long_double=yes}
+ac_cv_header_crypt_h=${ac_cv_header_crypt_h=yes}
+ac_cv_header_errno_h=${ac_cv_header_errno_h=yes}
+ac_cv_header_pthread_h=${ac_cv_header_pthread_h=yes}
+ac_cv_header_semaphore_h=${ac_cv_header_semaphore_h=yes}
+ac_cv_header_stddef_h=${ac_cv_header_stddef_h=yes}
+ac_cv_header_stdio_h=${ac_cv_header_stdio_h=yes}
+ac_cv_header_stdlib_h=${ac_cv_header_stdlib_h=yes}
+ac_cv_header_string_h=${ac_cv_header_string_h=yes}
+ac_cv_header_synch_h=${ac_cv_header_synch_h=no}
+ac_cv_header_sys_msg_h=${ac_cv_header_sys_msg_h=yes}
+ac_cv_header_sysent_h=${ac_cv_header_sysent_h=no}
+ac_cv_header_time_h=${ac_cv_header_time_h=yes}
+ac_cv_header_tis_h=${ac_cv_header_tis_h=no}
+ac_cv_header_unistd_h=${ac_cv_header_unistd_h=yes}
+ac_cv_path_install=${ac_cv_path_install='/usr/bin/install -c'}
+ac_cv_prog_AWK=${ac_cv_prog_AWK=gawk}
+ac_cv_prog_CC=${ac_cv_prog_CC=cc}
 ac_cv_prog_CPP=${ac_cv_prog_CPP='cc -E'}
-ac_cv_prog_CXX=${ac_cv_prog_CXX='cxx'}
-ac_cv_prog_CXXCPP=${ac_cv_prog_CXXCPP='cxx -E'}
-ac_cv_prog_FIND=${ac_cv_prog_FIND='find'}
-ac_cv_prog_MKDIRHIER=${ac_cv_prog_MKDIRHIER='mkdirhier'}
-ac_cv_prog_ac_pre_INSIGHT=${ac_cv_prog_ac_pre_INSIGHT='insight'}
-ac_cv_prog_make_make_set=${ac_cv_prog_make_make_set='yes'}
-ac_cv_sizeof_signed_char=${ac_cv_sizeof_signed_char='1'}
-ac_cv_sizeof_unsigned_char=${ac_cv_sizeof_unsigned_char='1'}
-ac_cv_sizeof_unsigned_int=${ac_cv_sizeof_unsigned_int='4'}
-ac_cv_sizeof_unsigned_long=${ac_cv_sizeof_unsigned_long='8'}
-ac_cv_sizeof_unsigned_long_long=${ac_cv_sizeof_unsigned_long_long='8'}
-ac_cv_sizeof_unsigned_short=${ac_cv_sizeof_unsigned_short='2'}
+ac_cv_prog_CXX=${ac_cv_prog_CXX=g++}
+ac_cv_prog_CXXCPP=${ac_cv_prog_CXXCPP='g++ -E'}
+ac_cv_prog_FIND=${ac_cv_prog_FIND=find}
+ac_cv_prog_MKDIRHIER=${ac_cv_prog_MKDIRHIER=mkdirhier}
+ac_cv_prog_make_make_set=${ac_cv_prog_make_make_set=yes}
+ac_cv_sizeof_signed_char=${ac_cv_sizeof_signed_char=1}
+ac_cv_sizeof_unsigned_char=${ac_cv_sizeof_unsigned_char=1}
+ac_cv_sizeof_unsigned_int=${ac_cv_sizeof_unsigned_int=4}
+ac_cv_sizeof_unsigned_long=${ac_cv_sizeof_unsigned_long=8}
+ac_cv_sizeof_unsigned_long_long=${ac_cv_sizeof_unsigned_long_long=8}
+ac_cv_sizeof_unsigned_short=${ac_cv_sizeof_unsigned_short=2}

@@ -14,30 +14,32 @@ configure:1193: checking how to run the C preprocessor
 configure:1214: cc -E  conftest.c >/dev/null 2>conftest.out
 configure:1323: checking for C++ compiler
 configure:1330: checking for cxx
-configure:1437: checking whether '-PIC' option should be used
+configure:1330: checking for CC
+configure:1330: checking for CL
+configure:1330: checking for g++
+configure:1452: checking GNU compiler version
 configure:1580: checking how to run the C++ preprocessor
-configure:1598: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:1598: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:1633: checking which link command to use for C++
-configure:1647: checking Features of cxx
+configure:1647: checking Features of g++
 configure:1661: checking whether C++ understands exceptions
-configure:1687: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
+configure:1687: g++ -c   conftest.C 1>&5
 configure:1725: checking Do we use exceptions for this setup
 configure:1757: checking how to get dependencies from compiler
 configure:1825: checking for multithreading
 configure:2068: checking for working const
 configure:2122: cc -c   conftest.c 1>&5
-cc: Warning: configure, line 2098: The scalar variable "t" is fetched but not initialized. (uninit1)
-  *t++ = 0;
----^
-cc: Warning: configure, line 2113: The scalar variable "b" is fetched but not initialized. (uninit1)
-  struct s *b; b->j = 5;
----------------^
 configure:2143: checking whether byte ordering is bigendian
 configure:2161: cc -c   conftest.c 1>&5
 configure:2176: cc -c   conftest.c 1>&5
-cc: Error: configure, line 2171: In this declaration, "not" must specify a type. (badparsedecl)
- not big endian
--^
+configure: In function 'main':
+configure:2171:2: error: unknown type name 'not'; did you mean 'ino_t'?
+ #include <sys/param.h>
+  ^~~
+  ino_t
+configure:2171:10: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'endian'
+ #include <sys/param.h>
+          ^~~~~~
 configure: failed program was:
 #line 2165 "configure"
 #include "confdefs.h"
@@ -51,6 +53,21 @@ int main() {
 ; return 0; }
 configure:2258: checking whether char is unsigned
 configure:2297: cc -o conftest    conftest.c  1>&5
+configure:2292:1: warning: return type defaults to 'int' [-Wimplicit-int]
+ /* volatile prevents gcc2 from optimizing the test away on sparcs.  */
+ ^~~~
+configure: In function 'main':
+configure:2293:26: warning: implicit declaration of function 'exit' [-Wimplicit-function-declaration]
+ #if !defined(__STDC__) || __STDC__ != 1
+                          ^~~~
+configure:2293:26: warning: incompatible implicit declaration of built-in function 'exit'
+configure:2293:26: note: include '<stdlib.h>' or provide a declaration of 'exit'
+configure:2288:1:
++#include <stdlib.h>
+ else
+configure:2293:26:
+ #if !defined(__STDC__) || __STDC__ != 1
+                          ^~~~
 configure: failed program was:
 #line 2287 "configure"
 #include "confdefs.h"
@@ -63,33 +80,160 @@ main() {
 }
 configure:2321: checking size of signed char
 configure:2340: cc -o conftest    conftest.c  1>&5
+configure:2331:1: warning: return type defaults to 'int' [-Wimplicit-int]
+   cat > conftest.$ac_ext <<EOF
+ ^ ~~
+configure: In function 'main':
+configure:2334:11: warning: implicit declaration of function 'exit' [-Wimplicit-function-declaration]
+ #include <stdio.h>
+           ^~~~
+configure:2334:11: warning: incompatible implicit declaration of built-in function 'exit'
+configure:2334:11: note: include '<stdlib.h>' or provide a declaration of 'exit'
+configure:2331:1:
++#include <stdlib.h>
+   cat > conftest.$ac_ext <<EOF
+configure:2334:11:
+ #include <stdio.h>
+           ^~~~
+configure:2336:3: warning: incompatible implicit declaration of built-in function 'exit'
+ {
+   ^   
+configure:2336:3: note: include '<stdlib.h>' or provide a declaration of 'exit'
 configure:2360: checking size of unsigned char
 configure:2379: cc -o conftest    conftest.c  1>&5
+configure:2370:1: warning: return type defaults to 'int' [-Wimplicit-int]
+   cat > conftest.$ac_ext <<EOF
+ ^ ~~
+configure: In function 'main':
+configure:2373:11: warning: implicit declaration of function 'exit' [-Wimplicit-function-declaration]
+ #include <stdio.h>
+           ^~~~
+configure:2373:11: warning: incompatible implicit declaration of built-in function 'exit'
+configure:2373:11: note: include '<stdlib.h>' or provide a declaration of 'exit'
+configure:2370:1:
++#include <stdlib.h>
+   cat > conftest.$ac_ext <<EOF
+configure:2373:11:
+ #include <stdio.h>
+           ^~~~
+configure:2375:3: warning: incompatible implicit declaration of built-in function 'exit'
+ {
+   ^   
+configure:2375:3: note: include '<stdlib.h>' or provide a declaration of 'exit'
 configure:2399: checking size of unsigned short
 configure:2418: cc -o conftest    conftest.c  1>&5
+configure:2409:1: warning: return type defaults to 'int' [-Wimplicit-int]
+   cat > conftest.$ac_ext <<EOF
+ ^ ~~
+configure: In function 'main':
+configure:2412:11: warning: implicit declaration of function 'exit' [-Wimplicit-function-declaration]
+ #include <stdio.h>
+           ^~~~
+configure:2412:11: warning: incompatible implicit declaration of built-in function 'exit'
+configure:2412:11: note: include '<stdlib.h>' or provide a declaration of 'exit'
+configure:2409:1:
++#include <stdlib.h>
+   cat > conftest.$ac_ext <<EOF
+configure:2412:11:
+ #include <stdio.h>
+           ^~~~
+configure:2414:3: warning: incompatible implicit declaration of built-in function 'exit'
+ {
+   ^   
+configure:2414:3: note: include '<stdlib.h>' or provide a declaration of 'exit'
 configure:2438: checking size of unsigned int
 configure:2457: cc -o conftest    conftest.c  1>&5
+configure:2448:1: warning: return type defaults to 'int' [-Wimplicit-int]
+   cat > conftest.$ac_ext <<EOF
+ ^ ~~
+configure: In function 'main':
+configure:2451:11: warning: implicit declaration of function 'exit' [-Wimplicit-function-declaration]
+ #include <stdio.h>
+           ^~~~
+configure:2451:11: warning: incompatible implicit declaration of built-in function 'exit'
+configure:2451:11: note: include '<stdlib.h>' or provide a declaration of 'exit'
+configure:2448:1:
++#include <stdlib.h>
+   cat > conftest.$ac_ext <<EOF
+configure:2451:11:
+ #include <stdio.h>
+           ^~~~
+configure:2453:3: warning: incompatible implicit declaration of built-in function 'exit'
+ {
+   ^   
+configure:2453:3: note: include '<stdlib.h>' or provide a declaration of 'exit'
 configure:2477: checking size of unsigned long
 configure:2496: cc -o conftest    conftest.c  1>&5
+configure:2487:1: warning: return type defaults to 'int' [-Wimplicit-int]
+   cat > conftest.$ac_ext <<EOF
+ ^ ~~
+configure: In function 'main':
+configure:2490:11: warning: implicit declaration of function 'exit' [-Wimplicit-function-declaration]
+ #include <stdio.h>
+           ^~~~
+configure:2490:11: warning: incompatible implicit declaration of built-in function 'exit'
+configure:2490:11: note: include '<stdlib.h>' or provide a declaration of 'exit'
+configure:2487:1:
++#include <stdlib.h>
+   cat > conftest.$ac_ext <<EOF
+configure:2490:11:
+ #include <stdio.h>
+           ^~~~
+configure:2492:3: warning: incompatible implicit declaration of built-in function 'exit'
+ {
+   ^   
+configure:2492:3: note: include '<stdlib.h>' or provide a declaration of 'exit'
 configure:2516: checking size of unsigned long long
 configure:2535: cc -o conftest    conftest.c  1>&5
+configure:2526:1: warning: return type defaults to 'int' [-Wimplicit-int]
+   cat > conftest.$ac_ext <<EOF
+ ^ ~~
+configure: In function 'main':
+configure:2529:11: warning: implicit declaration of function 'exit' [-Wimplicit-function-declaration]
+ #include <stdio.h>
+           ^~~~
+configure:2529:11: warning: incompatible implicit declaration of built-in function 'exit'
+configure:2529:11: note: include '<stdlib.h>' or provide a declaration of 'exit'
+configure:2526:1:
++#include <stdlib.h>
+   cat > conftest.$ac_ext <<EOF
+configure:2529:11:
+ #include <stdio.h>
+           ^~~~
+configure:2531:3: warning: incompatible implicit declaration of built-in function 'exit'
+ {
+   ^   
+configure:2531:3: note: include '<stdlib.h>' or provide a declaration of 'exit'
 configure:2555: checking for long double
 configure:2574: cc -o conftest    conftest.c  1>&5
-cc: Info: configure, line 2569: In this declaration, type long double has the same representation as type double on this platform and is treated as a synonym for type double in this compilation mode. (longdoubleny1)
-long double foo = 0.0;
-^
+configure: In function 'main':
+configure:2571:1: warning: implicit declaration of function 'exit' [-Wimplicit-function-declaration]
+ int main() {
+ ^~~~
+configure:2571:1: warning: incompatible implicit declaration of built-in function 'exit'
+configure:2571:1: note: include '<stdlib.h>' or provide a declaration of 'exit'
+configure:2567:1:
++#include <stdlib.h>
+ else
+configure:2571:1:
+ int main() {
+ ^~~~
 configure:2757: checking for stdlib.h
-configure:2767: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:2767: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:2797: checking for stddef.h
-configure:2807: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:2807: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:2838: checking for stdio.h
-configure:2848: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:2848: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:2879: checking for vsnprintf()
-configure:2892: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
-cxx: Error: configure, line 2888: identifier "vsnprintf" is undefined
-{vsnprintf(NULL,0,"",5);}
--^
-cxx: Info: 1 error detected in the compilation of "conftest.C".
+configure:2892: g++ -c   conftest.C 1>&5
+configure: In function 'int main()':
+configure:2888:22: error: invalid conversion from 'int' to '__va_list_tag*' [-fpermissive]
+ #line 2885 "configure"
+                      ^
+In file included from configure:2886:
+/usr/include/stdio.h:359:57: note:   initializing argument 4 of 'int vsnprintf(char*, size_t, const char*, __va_list_tag*)'
+         const char *__restrict __format, __gnuc_va_list __arg)
+                                          ~~~~~~~~~~~~~~~^~~~~
 configure: failed program was:
 #line 2885 "configure"
 #include "confdefs.h"
@@ -98,17 +242,28 @@ int main() {
 {vsnprintf(NULL,0,"",5);}
 ; return 0; }
 configure:2913: checking for out_waiting()
-configure:2923: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
+configure:2923: g++ -c   conftest.C 1>&5
+configure:2917:10: fatal error: iostream.h: No such file or directory
+ 
+          ^           
+compilation terminated.
+configure: failed program was:
+#line 2916 "configure"
+#include "confdefs.h"
+#include <iostream.h>
+int main() {
+{cout.rdbuf()->out_waiting();}
+; return 0; }
 configure:2942: checking for errno.h
-configure:2952: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:2952: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:2982: checking for unistd.h
-configure:2992: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:2992: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:3022: checking for sysent.h
-configure:3032: cxx -E  conftest.C >/dev/null 2>conftest.out
-cxx: Error: configure, line 3028: could not open source file "sysent.h"
-#include <sysent.h>
--------------------^
-cxx: Info: 1 error detected in the compilation of "conftest.C".
+configure:3032: g++ -E  conftest.C >/dev/null 2>conftest.out
+configure:3028:10: fatal error: sysent.h: No such file or directory
+ else
+          ^         
+compilation terminated.
 configure: failed program was:
 #line 3027 "configure"
 #include "confdefs.h"
@@ -116,58 +271,43 @@ configure: failed program was:
 configure:3063: checking for mawk
 configure:3063: checking for gawk
 configure:3143: checking for string.h
-configure:3153: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3153: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:3184: checking whether reentrant string API is available
-configure:3201: cxx -o conftest  -ptr Templates$(DBGEXT)   conftest.C  1>&5
-cxx: Error: configure, line 3197: identifier "strtok_r" is undefined
-char* last; char* tst; tst = strtok_r(NULL, NULL, &last);
------------------------------^
-cxx: Info: 1 error detected in the compilation of "conftest.C".
-configure: failed program was:
-#line 3194 "configure"
-#include "confdefs.h"
-#include <string.h>
-int main() {
-char* last; char* tst; tst = strtok_r(NULL, NULL, &last);
-; return 0; }
+configure:3201: g++ -o conftest    conftest.C  1>&5
 configure:3227: checking where 'sys_errlist' is defined
-configure:3239: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
-cxx: Error: configure, line 3235: identifier "sys_errlist" is undefined
- sys_errlist[0]; 
--^
-cxx: Info: 1 error detected in the compilation of "conftest.C".
-configure: failed program was:
-#line 3232 "configure"
-#include "confdefs.h"
- #include <stdio.h> 
-int main() {
- sys_errlist[0]; 
-; return 0; }
-configure:3263: cxx -c  -ptr Templates$(DBGEXT)  conftest.C 1>&5
+configure:3239: g++ -c   conftest.C 1>&5
 configure:3302: checking for sys/msg.h
-configure:3312: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3312: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:3343: checking for pthread.h
-configure:3353: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3353: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:3383: checking for synch.h
-configure:3393: cxx -E  conftest.C >/dev/null 2>conftest.out
-cxx: Error: configure, line 3389: could not open source file "synch.h"
-#include <synch.h>
-------------------^
-cxx: Info: 1 error detected in the compilation of "conftest.C".
+configure:3393: g++ -E  conftest.C >/dev/null 2>conftest.out
+configure:3389:10: fatal error: synch.h: No such file or directory
+ else
+          ^        
+compilation terminated.
 configure: failed program was:
 #line 3388 "configure"
 #include "confdefs.h"
 #include <synch.h>
 configure:3423: checking for tis.h
-configure:3433: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3433: g++ -E  conftest.C >/dev/null 2>conftest.out
+configure:3429:10: fatal error: tis.h: No such file or directory
+ else
+          ^      
+compilation terminated.
+configure: failed program was:
+#line 3428 "configure"
+#include "confdefs.h"
+#include <tis.h>
 configure:3485: checking for time.h
-configure:3495: cxx -E  conftest.C >/dev/null 2>conftest.out
-configure:3580: checking trying to recognize local timezone EST
+configure:3495: g++ -E  conftest.C >/dev/null 2>conftest.out
+configure:3580: checking trying to recognize local timezone CST
 configure:3686: checking for semaphore.h
-configure:3696: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3696: g++ -E  conftest.C >/dev/null 2>conftest.out
 configure:3735: checking for NT services
 configure:3764: checking for insure
 configure:3764: checking for insight
 configure:3805: checking for default debug/optimization setup
 configure:3936: checking for crypt.h
-configure:3946: cxx -E  conftest.C >/dev/null 2>conftest.out
+configure:3946: g++ -E  conftest.C >/dev/null 2>conftest.out

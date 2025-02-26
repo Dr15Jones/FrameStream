@@ -20,7 +20,7 @@ cxx_root_transform=s/x/x/
 java_root_transform=s/x/x/
 #
 CC=cc
-CXX=cxx
+CXX=g++
 LDXX=$(DO_QUANTIFY) $(DO_PURIFY) ${CXX}
 LD=
 NM=nm
@@ -36,15 +36,15 @@ MTCOMPILEOPTION=
 MTLINKOPTION=
 MTLIBS=
 MTEXT=
-DEBUG=-O2 
-DEBUG_OPTSW=-O2
+DEBUG= 
+DEBUG_OPTSW=
 DEBUG_DBGSW=-g
-DEBUG_EXT=-g
-CFLAGS=$(EXTRADEFINES) -DHAVE_CONFIG_H    -kPIC `echo $(INCLUDES) | sed '$(cxx_root_transform)'`
-CXXFLAGS=$(EXTRADEFINES) -DHAVE_CONFIG_H   -ptr Templates$(DBGEXT)  -kPIC `echo $(INCLUDES) | sed '$(cxx_root_transform)'`
+DEBUG_EXT=
+CFLAGS=$(EXTRADEFINES) -DHAVE_CONFIG_H    `echo $(INCLUDES) | sed '$(cxx_root_transform)'`
+CXXFLAGS=$(EXTRADEFINES) -DHAVE_CONFIG_H    `echo $(INCLUDES) | sed '$(cxx_root_transform)'`
 # LDFLAGS and LDXXFLAGS dont need $(EXTRADEFINES)
 LDFLAGS=`echo "$(LOCALLIBS) $(LIBDIRS)" | sed '$(cxx_root_transform)'` 
-LDXXFLAGS= `echo "$(LOCALLIBS) $(LIBDIRS)" | sed '$(cxx_root_transform)'` -ptr Templates$(DBGEXT) -call_shared -o 
+LDXXFLAGS= `echo "$(LOCALLIBS) $(LIBDIRS)" | sed '$(cxx_root_transform)'` -o
 RANLIB=@RANLIB@
 AR=ar
 AR_LINK=ar rv
@@ -65,14 +65,14 @@ INSTALL_PROGRAM=${INSTALL}
 INSTALL_DATA=${INSTALL} -m 644
 INSTALL_HEADER=${INSTALL} -m 644
 INSTALL_LIBRARY=${INSTALL} -m 644
-TEMPLATEDIR=Templates$(DBGEXT)
-TEMPLATELINKDIR=Templates$(DBGEXT)
+TEMPLATEDIR=none
+TEMPLATELINKDIR=none
 #
-machsubname=alphaev6-dec-osf4.0f
-CPU=dec
-b_transform=s/\/bin/\/bin\/alphaev6-dec-osf4.0f/
-l_transform=s/\/lib/\/lib\/alphaev6-dec-osf4.0f/
-i_transform=s/\/include/\/include\/alphaev6-dec-osf4.0f/
+machsubname=x86_64-unknown-linux-gnu
+CPU=unknown
+b_transform=s/\/bin/\/bin\/x86_64-unknown-linux-gnu/
+l_transform=s/\/lib/\/lib\/x86_64-unknown-linux-gnu/
+i_transform=s/\/include/\/include\/x86_64-unknown-linux-gnu/
 list_transform=s/x/x/
 #
 OEXT=.o
@@ -85,7 +85,7 @@ PRELIB=lib
 LINKLIBOPT=-l
 GNUEXT=
 OUTSWITCH=-o
-CSWITCH=-Hf
+CSWITCH=-c
 DEPSWITCH=-M
 PREDEPHEADER=none
 LINKEXT=$(DBGEXT)
@@ -136,7 +136,7 @@ IDLSOURCE=@IDLSOURCE@
 IDLOBJECTS=@IDLOBJECTS@
 #
 LIBRARY = $(PRELIB)$(LIBNAME)$(GNUEXT)$(DOTA)
-ONLINEDIRS = ${exec_prefix}/lib/alphaev6-dec-osf4.0f
+ONLINEDIRS = ${exec_prefix}/lib/x86_64-unknown-linux-gnu
 #
 # Override if used!
 DEPFILE=none
@@ -167,8 +167,8 @@ SERVICE_OBJ=
 
 ## Insight
 # Special InSight commands
-INSIGHT_CXX=insight -D__INSIGHT__ 
-INSIGHT_LDXX=insight -D__INSIGHT__ 
+INSIGHT_CXX=
+INSIGHT_LDXX=
 INSEXT=-ins
 
 #

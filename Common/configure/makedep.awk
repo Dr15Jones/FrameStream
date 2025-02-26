@@ -82,12 +82,12 @@ BEGIN {
 {
  split($1, name, ".");
 
- root = substr($2,1,1);
+ root = substr($3,1,1);
  if (root != "/")
  {
-  printf("%s$(DOTO) : %s\n", name[1], $2);
-  printf("%s.d : %s\n", name[1], $2);
-  printf("depend.mh : %s\n", $2);
+  printf("%s$(DOTO) : %s\n", name[1], $3);
+  printf("%s.d : %s\n", name[1], $3);
+  printf("depend.mh : %s\n", $3);
  }
  else
  {
@@ -97,7 +97,7 @@ BEGIN {
   cnt = 0;
   for (cnt in exactDir)
   {
-   idx = index($2, exactHeader[cnt]);
+   idx = index($3, exactHeader[cnt]);
    if (idx != 0)
    {
     printf("%s$(DOTO) : %s/%s\n", name[1], exactDir[cnt], exactHeader[cnt]);
@@ -118,11 +118,11 @@ BEGIN {
   cnt = 0;
   for (cnt in externList)
   {
-    idx = index($2, externCmp[cnt]);
+    idx = index($3, externCmp[cnt]);
     if (idx != 0)
     {
 # Is there any other '/', then this is wrong
-      later = substr($2, idx+length(externCmp[cnt]))
+      later = substr($3, idx+length(externCmp[cnt]))
       idxs = index(later, "/")
       if (idxs == 0)
       {
@@ -138,8 +138,8 @@ BEGIN {
 # Anything matched?
   if (matchedExtern)
   {
-   base = index($2, matchedEntry)+length(matchedEntry)+1;
-   after = substr($2, base, length($2)-base+1);
+   base = index($3, matchedEntry)+length(matchedEntry)+1;
+   after = substr($3, base, length($3)-base+1);
    if (length(matchedDir) > 0)
     matchedDir= "/" matchedDir;
 
@@ -166,7 +166,7 @@ BEGIN {
     packagebs = ENVIRON[ packageBase[cntL] ];
     replacedir = "$("packageRoot[cntL]")"
 
-    prefx = index($2,packagebs)
+    prefx = index($3,packagebs)
     if (prefx != 0)
       break;
    }
@@ -174,10 +174,10 @@ BEGIN {
    if (prefx != 0)
    {
     # We are including our own prefixed headers
-    incl = index($2, "/include")+8;
-    after = substr($2, incl, length($2)-incl+1);
+    incl = index($3, "/include")+8;
+    after = substr($3, incl, length($3)-incl+1);
 
-    if (index(after,"alphaev6-dec-osf4.0f") == 0)
+    if (index(after,"x86_64-unknown-linux-gnu") == 0)
     {
      printf("%s$(DOTO) : %s%s\n", name[1], replacedir, after);
      printf("%s.d : %s%s\n", name[1], replacedir, after);
@@ -185,7 +185,7 @@ BEGIN {
     }
     else
     {
-     mach = index(after,"alphaev6-dec-osf4.0f") + length("alphaev6-dec-osf4.0f");
+     mach = index(after,"x86_64-unknown-linux-gnu") + length("x86_64-unknown-linux-gnu");
      orbinc = substr(after, mach, length(after)-mach+1);
 
      @MAKEDEPIDLMATCHING@
