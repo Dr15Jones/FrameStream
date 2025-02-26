@@ -1,0 +1,11 @@
+.*.d
+*.o
+lib*.a
+src/bin
+src/lib
+src/include
+other_sources/lib
+other_sources/tcltk
+Common/Gmake
+Common/bin
+Common/include
