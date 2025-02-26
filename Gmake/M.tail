@@ -333,6 +333,8 @@ ifeq "$(OS_NAME)" "Linux"
   MAP := -Wl,-M
   CXX_INCS += -I/usr/include/g++
   F77LIBS := g2c
+  CXXFLAGS += -fPIC
+  CFLAGS   += -fPIC
 #if a fortran name already has an underscore in it, g77 will
 #  append 2 underscores to the end of the name.  This breaks
 #  our fortran <-> C routines

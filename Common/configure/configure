@@ -1462,13 +1462,16 @@ EOF
         *8.*GCC*) 	cat >> confdefs.h <<\EOF
 #define CXX_USE_STD_NAMESPACE 1
 EOF
-;;
+                        ;;
 	*)		{ echo "configure: error: Unsupported version $ac_cxx_gnuversion" 1>&2; exit 1; };;
     esac
     echo "$ac_t""$ac_cxx_gnuversion" 1>&6
 
     case "$target" in
 	*-*-osf*)	LDXXFLAGS="-Wl,-call_shared $LDXXFLAGS";;
+        *)       EXTCFLAGS="$EXTCFLAGS -fPIC"
+      EXTCXXFLAGS="$EXTCXXFLAGS -fPIC";;
+
     esac
   fi
 
