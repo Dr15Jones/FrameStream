@@ -129,7 +129,10 @@ typedef STL_MULTIMAP( string, MessageLog::Logger* ) LogMap;
 
 // Map to match a facility to a set of loggers
 //MessageLog::LogMap MessageLog::_loggers;
-static LogMap* l_loggers;
+static LogMap* l_loggers() {
+  static LogMap* s_logmap = new LogMap;
+  return s_logmap;
+}
 
 // flag whether default log streams have been initialized
 //bool MessageLog::_init = false;
@@ -138,10 +141,7 @@ static bool l_init = false;
 inline static void
 initML()
 {
-   if (!l_init) {
-      l_init = true;
-      l_loggers = new LogMap ;
-   }
+  l_loggers();
 }
 
 //
@@ -238,9 +238,9 @@ MessageLog::Log(Severity severity,
    // dispatch is hierarchical, so work our way down the dots, trying
    // each shortening.
    while (fac.length() > 0) {
-      if ((*l_loggers).find(fac) != (*l_loggers).end()) {
-	 LogMap::iterator i = (*l_loggers).lower_bound(fac);
-	 while (i != (*l_loggers).end() && (*i).first == fac) {
+      if ((*l_loggers()).find(fac) != (*l_loggers()).end()) {
+	 LogMap::iterator i = (*l_loggers()).lower_bound(fac);
+	 while (i != (*l_loggers()).end() && (*i).first == fac) {
 	    (*i++).second->Log(severity, facility, logmsg, messenger);
 	 }
       }
@@ -287,7 +287,7 @@ void
 MessageLog::Tie(const string& facility, MessageLog::Logger& logger)
 {
    initML(); // could be called before any instance constructed
-   (*l_loggers).insert(LogMap::value_type(facility, &logger));
+   (*l_loggers()).insert(LogMap::value_type(facility, &logger));
 }
 
 //
@@ -297,11 +297,11 @@ void
 MessageLog::UnTie(MessageLog::Logger& logger)
 {
    initML(); // could be called before any instance constructed
-   LogMap::iterator i = (*l_loggers).begin();
-   while (i != (*l_loggers).end()) {
+   LogMap::iterator i = (*l_loggers()).begin();
+   while (i != (*l_loggers()).end()) {
       LogMap::iterator j = i++;
       if ((*j).second == &logger) {
-	 (*l_loggers).erase(j);
+	 (*l_loggers()).erase(j);
       }
    }
 }
@@ -312,11 +312,11 @@ MessageLog::UnTie(MessageLog::Logger& logger)
 Severity
 MessageLog::leastSeverity() const
 {
-   assert(l_loggers != 0);
+   assert(l_loggers() != 0);
    Severity least = EMERGENCY;
 
-   LogMap::iterator i = (*l_loggers).begin();
-   while (i != (*l_loggers).end()) {
+   LogMap::iterator i = (*l_loggers()).begin();
+   while (i != (*l_loggers()).end()) {
       Severity s = (*i).second->getSeverity();
       if (s > least) {
 	 least = s;
