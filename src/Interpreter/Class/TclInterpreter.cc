@@ -20,8 +20,8 @@
 // system include files
 #include <stdlib.h>
 #include <assert.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <string>
@@ -44,7 +44,7 @@
 #include <string>
 #include <vector>
 #include <deque>
-
+#include <cstring>
 
 //
 // constants, enums and typedefs
@@ -104,8 +104,8 @@ Tk_AppInit( Tcl_Interp* interp )
     elseif [ tcl_file exists /nfs/cleo3/current/cvssrc/Suez/gui.tcl] \
     {tcl_source /nfs/cleo3/current/cvssrc/Suez/gui.tcl} \
     else {puts \"Could not find suez gui startup file\"}");
-   //    tcl_RcFileName = new char[strlen(interp->result)+1];
-   //    strcpy(tcl_RcFileName, interp->result);
+   //    tcl_RcFileName = new char[strlen(Tcl_GetStringResult(interp))+1];
+   //    strcpy(tcl_RcFileName, Tcl_GetStringResult(interp));
 
    return status;
 }
@@ -153,7 +153,7 @@ TclInterpreter::TclInterpreter()
 
    // register all tcl commands with gnu readline
    Tcl_GlobalEval( m_tclInterpreter, "info commands" );
-   StringTokenizer commands( m_tclInterpreter->result );
+   StringTokenizer commands( Tcl_GetStringResult(m_tclInterpreter) );
 
    while( commands.hasMoreElements() ) {
 
@@ -182,7 +182,7 @@ TclInterpreter::TclInterpreter()
    //Tcl_GlobalEval( "rename source tcl_source" );
    Tcl_CreateCommand( m_tclInterpreter, 
 		      (char*)s_sourceCommandString,
-		      (Tcl_CmdProc*)&TclInterpreter::sourceCommand,
+		      (Tcl_CmdProc*)&TclInterpreter::sourceCommand_,
 		      (ClientData)0,
 		      (Tcl_CmdDeleteProc*) NULL );  
    Readline::registerCommand( s_sourceCommandString );
@@ -349,17 +349,17 @@ TclInterpreter::loop( )
       // result = Tcl_RecordAndEval( m_tclInterpreter,
       //                             Tcl_DStringValue( &cmd ), 0 );
       if( TCL_ERROR == result ) {
-         if( 0 != strlen( m_tclInterpreter->result ) ) {
+         if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
    	    report( ::SYSTEM, kFacilityString )
-   	       << "Tcl_Eval error: " << m_tclInterpreter->result << endl;
+   	       << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
          }
       }
       else {
          if( Command::COMMAND_EXIT == result ) {
 	    exitRequested = true;
          } 
-         else if( 0 != strlen( m_tclInterpreter->result ) ) {
-   	    cout << m_tclInterpreter->result << endl;
+         else if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
+   	    cout << Tcl_GetStringResult(m_tclInterpreter) << endl;
          }
       }
    }
@@ -422,9 +422,9 @@ TclInterpreter::runCommandFile( const char* filename )
    int result = Tcl_Eval( m_tclInterpreter, 
 			  (char*)command.c_str() );
    if( TCL_ERROR == result ) {
-      if( 0 != strlen( m_tclInterpreter->result ) ) {
+      if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
 	 report( ::SYSTEM, kFacilityString )
-	    << "Tcl_Eval error: " << m_tclInterpreter->result << endl;
+	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
       }
    }
 
@@ -438,9 +438,9 @@ TclInterpreter::runCommand( char* command )
    int result = Tcl_Eval( m_tclInterpreter,
 			  command );
    if( TCL_ERROR == result ) {
-      if( 0 != strlen( m_tclInterpreter->result ) ) {
+      if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
 	 report( ::SYSTEM, kFacilityString )
-	    << "Tcl_Eval error: " << m_tclInterpreter->result << endl;
+	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
       }
    }
 
@@ -469,9 +469,9 @@ TclInterpreter::runCommand( int argc, char* argv[] )
    delete [] c_command;
 
    if( TCL_ERROR == result ) {
-      if( 0 != strlen( m_tclInterpreter->result ) ) {
+      if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
 	 report( ::SYSTEM, kFacilityString )
-	    << "Tcl_Eval error: " << m_tclInterpreter->result << endl;
+	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
       }
    }
 
@@ -667,8 +667,8 @@ TclInterpreter::sourceCommand( const char* iFileName)
 
 	 pPrompt = &prompt;
 
-	 if( 0 != strlen( m_tclInterpreter->result) ) {
-	    cout << m_tclInterpreter->result << endl;
+	 if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter)) ) {
+	    cout << Tcl_GetStringResult(m_tclInterpreter) << endl;
 	 }
       } else {
 	 //the command prompt can not change while the command is
@@ -683,7 +683,7 @@ TclInterpreter::sourceCommand( const char* iFileName)
 }
 
 int
-TclInterpreter::sourceCommand( ClientData clientData, 
+TclInterpreter::sourceCommand_( ClientData clientData, 
 			       Tcl_Interp* interp,
 			       int argc, char* argv[] )
 {

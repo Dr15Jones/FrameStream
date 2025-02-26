@@ -118,7 +118,7 @@ class TclInterpreter : public Interpreter
 				 Tcl_Interp* tcl_interp,
                                  int argc, char* argv[] );
 
-      static int sourceCommand( ClientData clientData, 
+      static int sourceCommand_( ClientData clientData, 
 				Tcl_Interp* interp,
 				int argc, char* argv[] );
       int sourceCommand( const char* iFileName);
