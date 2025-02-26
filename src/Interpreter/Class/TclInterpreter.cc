@@ -380,13 +380,20 @@ TclInterpreter::processCommandLine(const char* iCommandLine,
       } else {
 	 returnValue = Tcl_Eval( m_tclInterpreter,
 				 Tcl_DStringValue( &ioCommands ) );
+         
+         //std::cout <<"Tcl_Eval "<<returnValue<<" stack "<<activeModuleStackSize()<<std::endl;
 	 Tcl_DStringFree( &ioCommands );
-	 if (Command::COMMAND_EXIT == returnValue ) {
-	    //Only report the exit if the exit command was for the
-	    //  module we had when we started the loop call.
-	    if (m_sizeOfStackForExit != activeModuleStackSize() ) {
+	 if (TCL_ERROR == returnValue ) {
+           if(0 == strcmp(Tcl_GetStringResult(m_tclInterpreter), "command returned bad code: 1000")) {
+             Tcl_ResetResult(m_tclInterpreter);
+             //Only report the exit if the exit command was for the
+             //  module we had when we started the loop call.
+             if (m_sizeOfStackForExit != activeModuleStackSize() ) {
 	       returnValue = TCL_OK;
-	    }
+             } else {
+               returnValue = Command::COMMAND_EXIT;
+             }
+           }
 	 }
       }
    }
