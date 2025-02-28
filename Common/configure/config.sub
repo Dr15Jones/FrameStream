@@ -3,7 +3,7 @@
 #   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000
 #   Free Software Foundation, Inc.
 
-version='2000-08-07'
+version='2025-02-25'
 
 # This file is (in principle) common to ALL GNU software.
 # The presence of a machine in this file suggests that SOME GNU software
@@ -116,6 +116,8 @@ case $maybe_os in
     else os=; fi
     ;;
 esac
+
+#CDJ echo "os " $os "basic_machine " $basic_machine
 
 ### Let's recognize common machines as not being operating systems so
 ### that things like config.sub decstation-3100 work.  We also
@@ -237,7 +239,7 @@ case $basic_machine in
 	  ;;
 	# Object if more than one company name word.
 	*-*-*)
-		echo Invalid configuration \`$1\': machine \`$basic_machine\' not recognized 1>&2
+		echo Invalid configuration \`$1\': machine \`$basic_machine\' not recognized FOO 1>&2
 		exit 1
 		;;
 	# Recognize the basic CPU types with company name.
@@ -247,7 +249,7 @@ case $basic_machine in
 	      | mips-* | pyramid-* | tron-* | a29k-* | romp-* | rs6000-* \
 	      | power-* | none-* | 580-* | cray2-* | h8300-* | h8500-* | i960-* \
 	      | xmp-* | ymp-* \
-	      | x86-* | ppcbe-* | mipsbe-* | mipsle-* | shbe-* | shle-* | armbe-* | armle-* \
+	      | x86-* | x86_64-* | ppcbe-* | mipsbe-* | mipsle-* | shbe-* | shle-* | armbe-* | armle-* \
 	      | hppa-* | hppa1.0-* | hppa1.1-* | hppa2.0-* | hppa2.0w-* \
 	      | hppa2.0n-* | hppa64-* \
 	      | alpha-* | alphaev[4-8]-* | alphaev56-* | alphapca5[67]-* \
@@ -929,7 +931,7 @@ case $basic_machine in
 		os=-coff
 		;;
 	*)
-		echo Invalid configuration \`$1\': machine \`$basic_machine\' not recognized 1>&2
+		echo Invalid configuration \`$1\': machine \`$basic_machine\' not recognized BAR 1>&2
 		exit 1
 		;;
 esac
@@ -1093,7 +1095,7 @@ case $os in
 	*)
 		# Get rid of the `-' at the beginning of $os.
 		os=`echo $os | sed 's/[^-]*-//'`
-		echo Invalid configuration \`$1\': system \`$os\' not recognized 1>&2
+		echo Invalid configuration \`$1\': system \`$os\' not recognized FII 1>&2
 		exit 1
 		;;
 esac
