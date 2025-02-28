@@ -1,0 +1,64 @@
+
+Module : RunEventNumberProc
+
+Date   : Fri Jul  9 19:33:06 1999
+User   : mkl
+Old Tag: v01_00_01
+New Tag: v01_01_00
+Message: print DBRunHeader in beginrun method
+
+Module : RunEventNumberProc
+Date   : Thu Sep 30 16:52:33 1999
+User   : mkl
+Old Tag: v01_01_00
+New Tag: v01_02_00
+Message: added SHARMODNAME to auto-make shared_module
+
+Module : RunEventNumberProc
+Date   : Fri Dec 10 11:37:11 1999
+User   : cdj
+Old Tag: v01_02_00
+New Tag: v01_03_00
+Message: updated to work with extract exceptions
+
+Module : RunEventNumberProc
+Date   : Sun Jul  2 13:02:35 2000
+User   : cdj
+Old Tag: v01_03_00
+New Tag: v01_04_00
+Message: no longer link to ProxyDict
+
+Module : RunEventNumberProc
+Date   : Wed May  2 13:13:26 2001
+User   : ajm36
+Old Tag: v01_04_00
+New Tag: v01_04_01
+Message: add a parameter to set frequency of printout
+
+Module : RunEventNumberProc
+Date   : Fri Jul  6 17:36:57 2001
+User   : ajm36
+Old Tag: v01_04_01
+New Tag: v01_04_02
+Message: provide parameter to keep from binding to beginrun
+
+Module : RunEventNumberProc
+Date   : Sun Jul  8 10:40:16 2001
+User   : cdj
+Old Tag: v01_04_02
+New Tag: v01_05_00
+Message: removed parameter for beginrun binding since can already do that on suez command line and it broke tests
+
+Module : RunEventNumberProc
+Date   : Fri Oct 26 12:11:58 2001
+User   : ajm36
+Old Tag: v01_05_00
+New Tag: v01_05_01
+Message: make frequency parameter an unsigned int
+
+Module : RunEventNumberProc
+Date   : Mon Mar 31 14:53:18 2003
+User   : cdj
+Old Tag: v01_05_01
+New Tag: v01_06_00
+Message: link to StorageManagement

@@ -1,0 +1,32 @@
+// -*- C++ -*-
+//
+// Package:     DBRunHeaderProd
+// Module:      T_DBRunHeader
+// 
+// Description: Instantiate Classes for DBRunHeader
+//
+// Implementation:
+//     <Notes on implementation>
+//
+// Author:      Martin Lohner
+// Created:     Thu Jul 22 12:18:25 EDT 1999
+// $Id: T_DBRunHeader.cc,v 1.1.1.1 1999/07/22 18:20:52 aw Exp $
+//
+// Revision history
+//
+// $Log: T_DBRunHeader.cc,v $
+// Revision 1.1.1.1  1999/07/22 18:20:52  aw
+// Imported initial DBRunHeaderProd sources
+//
+//
+//
+
+#include "Experiment/Experiment.h"
+
+// user include files
+#include "CleoDB/DBRunHeader.h"
+
+#include "FrameAccess/instantiate_macros.h" 
+INSTANTIATE_ONE( DBRunHeader ) 
+
+#include "FrameAccess/instantiate_one.h"

@@ -1,0 +1,103 @@
+#!/usr/local/bin/tclsh 
+#=======================================================================
+# program mkstorelattice
+#
+# Purpose: Constructs the files necessary to store and retrieve a 
+#           Lattice within Suez
+#      
+# Author: Chris Jones
+#
+#=======================================================================
+
+#
+# Check to make sure that we have at least one file name
+#
+if {$argc <= 1 } {
+    puts "Usage: mkstorelattice <Package/LinkDataFile.h> <LatticeClassName> \[<Package/LatticeFileName.h>\]\n  E.g. mkstorelattice TrackFinder/SeedDRHitLink.h SeedTrackDRHitLattice"
+
+    return
+}
+
+#
+# Parse the command line for the data we need
+#
+set linkDataFile [lindex $argv 0]
+set latticeName  [lindex $argv 1]
+set latticeFile $linkDataFile
+if { $argc == 3 } {
+    set latticeFile [lindex $argv 2]
+}
+
+#
+# First call mkstorage to parse the Link Data's header file
+#
+
+puts [exec $env(C3_CVSSRC)/StorageManagement/mkstorage $linkDataFile lattice]
+
+#
+# Now loop over all the created files and make a few modifications
+#
+
+set true 1
+set false 0
+
+#
+# Specify the "pattern" that should be replaced
+#
+
+#fill patterns list with 'basis' of the variable names used for 
+# pattern/replace.  I'll use the patterns list when doing the actual
+# search and replace
+list patterns
+
+set lattice_pattern "_lattice_name_"
+set lattice_replace $latticeName
+lappend patterns "lattice"
+
+set latticeFile_pattern "_lattice_file_"
+set latticeFile_replace $latticeFile
+lappend patterns "latticeFile"
+
+
+foreach skelFileName [ glob *.h *.cc ] {
+    if [ file isfile $skelFileName ] {
+	
+#       Open the output file
+	set outFileName "temp.mkstorelattice"
+	set outFile [open $outFileName w]
+
+#       Open the file specified in the command line
+	set file [open $skelFileName r]
+
+
+#           Loop over each line in the file and do the search and replace
+	while { [gets $file line] >= 0} {
+	    set newLine $line
+#           Do the standard patterns to replace	    
+	    foreach pattern_template $patterns {
+#		Create the names of the variables to use
+		set pattern_var [join [ list "$pattern_template" "_pattern"] ""]
+		set replace_var [join [ list "$pattern_template" "_replace"] ""]
+		eval "regsub -all \$$pattern_var \$newLine \$$replace_var newLine" 
+	    }
+	    puts $outFile $newLine
+	}
+	close $file
+	close $outFile
+	exec mv $outFileName $skelFileName
+
+#       should the skelFileName be changed?
+	if { 1 == [ regsub -all $lattice_pattern $skelFileName $lattice_replace newFileName ] } {
+	    exec mv $skelFileName $newFileName
+	}
+    }
+    
+}
+
+
+
+
+
+
+
+

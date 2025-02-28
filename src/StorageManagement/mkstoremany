@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+#=======================================================================
+# program mkstoremany
+#
+# Purpose: Generates skeleton to store an FATable of a class
+#      
+# Author: Chris Jones
+#
+#=======================================================================
+
+${C3_CVSSRC}/StorageManagement/mkstorage $1 many

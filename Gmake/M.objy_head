@@ -1,0 +1,135 @@
+# ;-*-Mode: makefile-*-
+# ======================================================
+# Objectivity makefile additions
+#
+# Author: Martin Lohner
+# ------------------------------------------------------
+
+# ======================================================
+# user settable parameters
+
+# 1.) defaults fine, but better think about these!
+#override via environment variables
+ifeq "$(OB_BOOTFILE)" ""
+# bootfile based on loginname (need to distinguish between releases)
+OB_BOOTFILE := /nfs/c3db/Test/$(LOGNAME)/Ref/db
+endif
+
+ifeq "$(OB_ID)" ""
+# fdb_id unique id -- IMPORTANT TO BE UNIQUE!
+#OB_ID := $(shell /usr/xpg4/bin/id -u) 
+OB_ID := $(shell $(C3DIST)/scripts/objy_id -b $(OB_BOOTFILE))
+ifeq "$(OB_ID)" ""
+OB_ID := -1
+endif
+endif
+
+# 2.) may want to change these, but defaults are fine
+ifeq "$(OB_PAGESIZE)" ""
+#OB_PAGESIZE := 16384
+OB_PAGESIZE := 2048
+endif
+ifeq "$(OB_LOCKSERVERHOST)" ""
+OB_LOCKSERVERHOST := solssa.lns.cornell.edu
+endif
+
+# 3.) Reference schema: don't change unless you know what you're doing
+SCHEMA_FILE := $(C3_CVSSRC)/OBSchema/Schema/schema.dmp
+# old way: extracting schema out of reference database: 
+#OB_REF_BOOTFILE := /nfs/c3db/Test/cleo3/Ref/db
+
+ifeq "$(OB_REF_FDB)" "y"
+OB_COPYSCHEMA := n
+else
+OB_COPYSCHEMA := y
+endif
+
+# ======================================================
+# system installation parameters
+# (unfortunately for now, have to deal with two different version number formats)
+OS_VERSION := $(shell $(COMM_LIB)/bin/config.guess)
+
+ifeq "$(OS_VERSION)" "sparc-sun-solaris2.6"
+OBJY_VERSION := 5.21
+OBJY_HOME:=/usr/local/objy/v521/solaris4
+USE_OBJY_STL := "Y"
+endif
+ifeq "$(OS_VERSION)" "sparc-sun-solaris2.7"
+OBJY_VERSION := 5.21
+OBJY_HOME:=/usr/local/objy/v521/solaris4
+USE_OBJY_STL := "Y"
+endif
+ifeq "$(OS_VERSION)" "sparc-sun-solaris2.8"
+OBJY_VERSION := 700
+OBJY_HOME:=/usr/local/objy/v700/solaris7
+endif
+
+ifeq "$(OS_NAME)" "OSF1"
+# need a path that doesn't include ToolKit properly to compile 
+#    -- yeah you heard right!
+#OBJY_HOME:=/usr/local/objy/v521/alphaosf1
+OBJY_VERSION := 5.20
+OBJY_HOME:=/nfs/pkg/depot/objy~52
+USE_OBJY_STL := "Y"
+endif
+ifeq "$(OS_NAME)" ""
+OBJY_VERSION:=$(shell echo "Please specify OBJY_VERSION in M.objy_head")
+OBJY_HOME:=$(shell echo "Please specify OBJY_HOME in M.objy_head")
+endif
+
+# need to reset PATH and LD_LIBRARY_PATH
+override PATH := $(OBJY_HOME)/bin:$(PATH)
+override LD_LIBRARY_PATH := $(OBJY_HOME)/lib:$(LD_LIBRARY_PATH)
+
+# ======================================================
+# users shouldn't have to change anything below!
+
+# -------- definitions -------------------------------------------
+DOTO=.o
+
+# homes
+OBJYBIN=$(OBJY_HOME)/bin
+OBJYLIB=$(OBJY_HOME)/lib
+
+# stl stuff
+STLDIR    := $(OBJY_HOME)/ToolKit
+STLDIR2   := $(OBJY_HOME)/ToolKit/ospace/stl  
+OBJY_INCS := -I$(OBJY_HOME)/include
+ifeq "$(USE_OBJY_STL)" "Y"
+OBJY_INCS += -I$(STLDIR) -I$(STLDIR2)
+endif
+# flag used to do special handling for Objy STL classes
+OBJY_USES_STL := y
+CXX_INCS += $(OBJY_INCS)
+
+# commands
+OONEWFD = $(OBJYBIN)/oonewfd -fdfilepath $(OB_BOOTFILE).FDDB \
+	-pagesize $(OB_PAGESIZE) \
+	-lockserverhost $(OB_LOCKSERVERHOST) \
+	-fdnumber $(OB_ID) $(OB_BOOTFILE)
+
+OODELETEFD := $(OBJYBIN)/oodeletefd -force $(OB_BOOTFILE)
+OOCLEANUP  := $(OBJYBIN)/oocleanup -local $(OB_BOOTFILE)
+
+EXTRACT_SCHEMA := $(OBJYBIN)/ooschemadump
+INSERT_SCHEMA  := $(OBJYBIN)/ooschemaupgrade
+
+OODDLX := $(OBJYBIN)/ooddlx \
+	-c++_suffix _ddl.cc \
+	-header_suffix .h \
+	-ref_suffix _ref.h \
+	-noline
+ifneq (,$(findstring $(DDLEVOLVE),yY))
+OODDLX += -evolve
+endif
+
+# always need multithreaded linking on
+MT := y
+
+# benefit and simplify linking in regular Makefile
+SYSLIB   += $(OBJYLIB)
+#SYS_LIBS += oo objystl
+SYS_LIBS += oo.$(OBJY_VERSION)
+ifeq "$(OS_NAME)" "OSF1"
+SYS_LIBS += pthread exc
+endif

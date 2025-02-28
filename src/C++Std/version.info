@@ -1,0 +1,56 @@
+
+Module : C++Std
+Date   : Mon Apr 16 21:13:48 2001
+User   : cleo3
+Old Tag: v01_00_00
+New Tag: v01_01_00
+Message: now only include string since C++ standard says no forward decleration of items in std namespace
+
+Module : C++Std
+Date   : Fri Sep  7 12:50:52 2001
+User   : cleo3
+Old Tag: v01_01_00
+New Tag: v02_00_00
+Message: updated for Solaris 8
+
+Module : C++Std
+Date   : Tue Sep 11 13:44:11 2001
+User   : cdj
+Old Tag: v02_00_00
+New Tag: v02_01_00
+Message: added fwd_ifstream.h
+
+Module : C++Std
+Date   : Mon Nov 18 11:39:59 2002
+User   : cleo3
+Old Tag: v02_01_00
+New Tag: v02_02_00
+Message: added fstream.h support
+
+Module : C++Std
+Date   : Thu Nov 21 16:04:07 2002
+User   : cleo3
+Old Tag: v02_02_00
+New Tag: v02_03_00
+Message: changed fstream.h to C++Std/fstream.h
+
+Module : C++Std
+Date   : Fri Jan 24 14:50:10 2003
+User   : cdj
+Old Tag: v02_03_00
+New Tag: v02_04_00
+Message: added UnixFileHandleStream to deal with case where ifstream was not extended to use filehandles
+
+Module : C++Std
+Date   : Thu Jan 30 17:14:33 2003
+User   : cdj
+Old Tag: v02_04_00
+New Tag: v02_05_00
+Message: include new iomanip header if available
+
+Module : C++Std
+Date   : Thu Feb  6 10:12:10 2003
+User   : cdj
+Old Tag: v02_05_00
+New Tag: v02_06_00
+Message: removed OManip declaration in iomanip.h since only used in one place

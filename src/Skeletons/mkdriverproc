@@ -1,0 +1,275 @@
+#!/usr/local/bin/perl
+#
+# $Id: mkdriverproc,v 1.10 2002/10/16 18:33:57 cdj Exp $
+###########################################################################
+#  simple little script to make processor skeletons
+# 
+#  execution:  mkdriverproc processorname  
+# 
+#  output:  (in directory processorname)
+#           processorname.cc, processorname.h, and makeProcessor.h
+# 
+#  required input:
+# 
+#  processorname = name of the processor
+# 
+#  optional input:
+# 
+#  none
+# 
+#  example:
+#  mkdriverproc MyProcessor --> write  MyProcessor/MyProcessor.h,
+#                                MyProcessor/MyProcessor.cc,
+#                                MyProcessor/makeProcessor.cc 
+# 
+#  
+#   the script tries to read in
+#   a filename .tmpl in users HOME directory which contains the following lines
+#             First : your first name
+#             Last : your last name
+#   if .tmpl is not found and firstname and lastname are blank the
+#   enviroment variable LOGNAME is used to obtain the "real life" name
+#   from the output of finger.
+#
+#   Enviroment variable PROC_SCRIPT may point to a directory that
+#   contains the skeleton files.
+#
+#   mkdriverproc will not overwrite existing files
+#
+#   Skeleton Keywords (Case matters):
+#      procname  :  overwritten with routine name
+#      John Doe  :  overwritten with author's name
+#      day-mon-xx:  overwritten with todays date
+#      nocap     :  denotes lines not to be CAPITALIZED upon output
+#      RCS(key)  :  becomes $key$
+#
+#   author of the script: Martin Lohner 
+#   
+###########################################################################
+
+
+#  if the routine name is blank, 'h' or '?' go to help
+if ($ARGV[0] !~ /\w/ 
+ || $ARGV[0] eq "\?" 
+ || $ARGV[0] eq "h" 
+ || $ARGV[0] eq "-h" 
+ || $ARGV[0] eq "-help" ) {
+   &wrt_help; 
+}
+
+$author1 = "\u$ARGV[2]";
+$author2 = "\u$ARGV[3]";
+
+# environment variables
+$home = $ENV{"HOME"};
+$c3_inc = $ENV{"C3_INC"};
+$c_gmake = $ENV{"C3_GMAKE"};
+
+#  skeleton file directory
+# eventually will use $skel_dir = $ENV{"CMH_SCRIPT"};
+if (!$skel_dir) {
+    $CLEO3 = $ENV{"C3_CVSSRC"};
+    $skel_dir = "$CLEO3/Skeletons";
+}
+
+# get name
+($name, $ext) = split(/\./, $ARGV[0]);
+
+#create the directory
+mkdir("$name", 0777) || die "can not make dir $name";
+
+$skeleton = "$skel_dir/DriverProcessor/README.driverprocessor";
+$outfile = "$name/" . README . '.' . $name;
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/DriverProcessor/driverprocessor.h";
+$outfile = "$name/" . $name . '.h';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/DriverProcessor/driverprocessor.cc";
+$outfile = "$name/" . $name . '.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Processor/processor_DONT_TOUCH.cc";
+$outfile = "$name/" . $name . '_DONT_TOUCH.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$c_gmake/M.processor";
+$outfile = "$name/Makefile";
+&copy_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/DriverProcessor/anal.h";
+$outfile = "$name/anal.h";
+&copy_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/DriverProcessor/anal1.F";
+$outfile = "$name/anal1.F";
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/DriverProcessor/anal2.F";
+$outfile = "$name/anal2.F";
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dira/DriverProcessor/anal3.F";
+$outfile = "$name/anal3.F";
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/DriverProcessor/anal4.F";
+$outfile = "$name/anal4.F";
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/DriverProcessor/anal5.F";
+$outfile = "$name/anal5.F";
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/DriverProcessor/anal10.F";
+$outfile = "$name/anal10.F";
+&make_file($skeleton, $outfile);
+
+
+# copy file
+sub copy_file {
+# first argument is file to be copied
+$skeleton = $_[0]; 
+# second argument is the name of the new file
+$outfile = $_[1];
+
+if (-s "$outfile") {
+    print "mkdriverproc  W: $outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+    print "mkdriverproc  W: *****************************************************\n";
+} else {
+
+#   write out some stuff to the screen
+    print "mkdriverproc  I: copying file $skeleton to $outfile\n";
+
+#open the skeleton file and output file
+    open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+    open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+# loop over lines in "skeleton.F" and overwrite where neccessary
+    while(<IN>) {
+	print OUT $_;
+    }
+    close(IN);   
+    close(OUT);
+}
+}
+
+
+# generate file
+sub make_file {
+# first argument is the skeleton file to use
+$skeleton = $_[0];
+# second argument is the name of the output file
+$outfile = $_[1];
+
+if (-s "$outfile") {
+    print "mkdriverproc  W: $outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+    print "mkdriverproc  W: *****************************************************\n";
+} else {
+#  get the current date
+    $now = `date`;
+    chop($now);
+
+# get authors name from $HOME/.tmpl file
+
+    $afrom = "command line";
+    if ($author1 eq "" && -s "$home/.tmpl") {
+	open(IN,"$home/.tmpl");
+	$afrom = "users .tmpl file";
+	while(<IN>) {
+	    if (/First\w*/) {
+		@words = split(/:/, $_);
+		$author1 = $words[1]; 
+		chop($author1);
+	    } elsif (/Last\w*/) {
+		@words = split(/:/, $_);
+		$author2 = $words[1];
+		chop($author2);
+	    }
+	}
+	close(IN);
+	$author = "$author1 $author2";
+    }
+#
+# if author is still blank fill it in with REAL LIFE name in finger output
+#
+    if ($author1 eq "") {
+	$author1 = $ENV{"LOGNAME"};
+	foreach $_ (`finger -m "$author1"`) {
+	    if (/Login n\w*/) {
+		@words = split(/: /, $_);
+		$author = $words[2];
+		chop($author);
+		$afrom = "the output finger cmnd";
+	    }
+	}
+    }
+#   write out some stuff to the screen
+    print "mkdriverproc  I: using skeleton: $skeleton \n";
+    print "mkdriverproc  I: authors name is: $author, determined by $afrom \n";
+    print "mkdriverproc  I: creating file: $outfile \n";
+
+#open the skeleton file and output file
+    open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+    open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+# loop over lines in "skeleton.F" and overwrite where neccessary
+    while(<IN>) {
+#  Preserve case for lowercase
+	s/procname/$name/g;
+#  Map uppercase to uppercase
+	s/PROCNAME/\U$name/g;
+	s/John Doe/$author/;
+	s/day-mon-xx/$now/;
+#  Handle RCS keywords
+	s/RCS\((\w+)\)/\$$1\$/g;
+#  write out fortran comment lines without upcasing
+	if (/^c/ || /^C/ || /^\*/) {
+	    print OUT $_;
+	} elsif (/^nocap/) {
+#  write out "code lines" upcased unless flagged by "nocap"
+	    s/nocap//;
+	    print OUT $_;
+	} else {
+	    print OUT "\U$_";
+	}
+    }
+    close(IN);   
+    close(OUT);
+    if ($flag =~ /[bpC]/) {
+	chmod(0755,$outfile);
+    }
+}
+}
+
+# help package
+sub wrt_help {
+
+    print <<'ENDHELP';
+mkdriverproc  h: simple little script to make processor skeletons
+mkdriverproc  h:
+mkdriverproc  h: execution:  mkdriverproc processorname  
+mkdriverproc  h:
+mkdriverproc  h: output:  (in directory processorname)
+mkdriverproc  h:          processorname.cc, processorname.h, and makeProcessor.h
+mkdriverproc  h:
+mkdriverproc  h: required input:
+mkdriverproc  h:
+mkdriverproc  h: processorname = name of the processor
+mkdriverproc  h:
+mkdriverproc  h: optional input:
+mkdriverproc  h:
+mkdriverproc  h: none
+mkdriverproc  h:
+mkdriverproc  h: example:
+mkdriverproc  h: mkdriverproc MyProcessor --> write  MyProcessor/MyProcessor.h,
+mkdriverproc  h:                               MyProcessor/MyProcessor.cc,
+mkdriverproc  h:                               MyProcessor/makeProcessor.cc 
+mkdriverproc  h:
+ENDHELP
+
+    print "mkdriverproc  Q: Please enter processor name: ";
+    $ARGV[0] = <STDIN>;
+    chop($ARGV[0]);
+}

@@ -1,0 +1,56 @@
+nocapThis is the README file for procname. It shows you how to write
+nocapfortran code in the new CLEO3 Suez environment.
+nocap
+nocap1.) You should find the following files in this directory:
+nocap
+nocapREADME.procname
+nocapprocname.cc
+nocapprocname.h
+nocapprocname_DONT_TOUCH.cc
+nocapMakefile
+nocapanal.h
+nocap
+nocapanal1.F
+nocapanal2.F
+nocapanal3.F
+nocapanal4.F
+nocapanal5.F
+nocapanal10.F
+nocap
+nocap2.) You should only need to edit the anal1-10 files. Fill them with your
+nocapanalysis code.
+nocap
+nocap3.) Make a shared library: "gmake"
+nocapThis step requires that you have a standard type of build area,
+nocapconsisting of (../bin, ../lib, and ../shlib) directories.
+nocapThe shared processor library will end up in ../shlib!
+nocap
+nocap4.) Set the environment variable C3_SHLIB to include the ../shlib
+nocapdirectory above: setenv C3_SHLIB /home/mkl/build/shlib
+nocap
+nocap4.) Start up Suez: suez
+nocap
+nocap5.) Here is a sample job:
+nocap
+nocapsuez> file in test.rp
+nocapsuez> proc ls
+nocap
+nocapListing all available Processors:
+nocap
+nocapin memory:
+nocap
+nocapand on disk:
+nocap/home/mkl/build/shlib/procname.so
+nocap
+nocapsuez> proc sel /home/mkl/build/shlib/procname.so
+nocapsuez> go 1
+nocap... 
+nocapsuez> exit
+nocap
+nocap
+nocap Please read the documentation: 
+nocap     http://w4.lns.cornell.edu/~mkl/JobControl/suez/index.html
+nocap     http://w4.lns.cornell.edu/~mkl/JobControl/suez.ps.gz
+nocap
+nocap That's It! Questions, Suggestions, Complaints --> Martin Lohner
+nocap

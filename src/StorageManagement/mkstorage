@@ -1,0 +1,451 @@
+#!/usr/local/bin/tclsh 
+#=======================================================================
+# program mkstorage
+#
+# Purpose: Constructs the files necessary to store and retrieve an 
+#           object within Suez
+#      
+# Author: Chris Jones
+#
+#=======================================================================
+
+set true 1
+set false 0
+
+#
+# procedure to read a line and skip comments
+#
+proc readLine { file line } {
+    upvar $line lineVar
+    set returnValue [gets $file lineVar ]
+    if { $returnValue >= 0 } {
+	#remove any comment line
+	set commentIndex [ string first "//" $lineVar ]
+	if { $commentIndex >= 0 } {
+	    if { $commentIndex > 0 } {
+		set returnValue [ expr $commentIndex - 1]
+		set lineVar [ string range $lineVar 0 $returnValue ]
+	    } else {
+		set returnValue 0
+		set lineVar ""
+	    }
+	}
+    }
+    puts $lineVar
+    return $returnValue;
+}
+
+puts "starting"
+
+#
+# Check to make sure that we have at least one file name
+#
+if {$argc <= 1 } {
+    puts "Usage: mkstorage <Package/ClassHeaderFile.h> <skeleton dir> [<skeleton dir>]\n  E.g. mkstorage CalibratedData/CalibrateDRHit.h one many"
+
+    return
+}
+
+#
+# get the subdirectories containing the skeleton files
+#
+set skeletonDirs [lrange $argv 1 end]
+
+#
+# attempt to open the header file
+#
+set readFile [open [lindex $argv 0] r]
+
+puts "openned file"
+
+#
+# parse the header file and look for the first constructor
+#
+
+#
+# first look for an actual class decleration
+#
+set foundClass $false
+set className ""
+set nLines 0
+while { [ set nLines [readLine $readFile line ] ] == 0 } {}
+ 
+if { $nLines < 0 } {
+    puts "Error: could not read file"
+    return
+}
+
+while { $foundClass != $true } {
+    if [ regexp -indices {class[ ]?} $line indices ] {
+	set lastIndex "end"
+	
+	#try to find class name
+	set line [string range $line [lindex $indices 1] $lastIndex]
+	set foundClassName $false
+	while { $foundClassName != $true } {
+	    if [ regexp -indices {[0-9a-zA-Z]+} $line indices ] { 
+		set className [ string range $line [lindex $indices 0] [ lindex $indices 1] ]
+		#remove name from our input line
+		set firstIndex [ lindex $indices 1 ]
+		if { [lindex $indices 1] != [ expr [string length $line] -1] } {
+		    incr firstIndex
+		}
+		set line [ string range $line $firstIndex end ]
+		
+		set foundClassName $true
+	    } else {
+		if { [readLine $readFile line ] < 0 } {
+		    puts "Error: EOF reached while looking for class name"
+		    return
+		}
+	    }
+	}
+	
+	# now see if we can find a openning brace before we find a ;
+	set foundBrace $false
+	while { $foundBrace != $true } {
+	    set braceIndex 0
+	    if [ regexp -indices \{ $line indices ] {
+		set braceIndex [lindex $indices 0]
+		set foundBrace $true
+	    }
+	    set terminatorIndex 0
+	    set foundTerminator $false
+	    if [ regexp -indices \; $line indices ] {
+		set terminatorIndex [lindex $indices 0]
+		set foundTerminator $true
+	    }
+	    
+	    if $foundTerminator {
+		if $foundBrace {
+		    if { $braceIndex < $terminatorIndex } {
+			#we found a declared class
+			set line [ string range $line $braceIndex end]
+			set foundClass $true
+		    }
+		}
+		#need to look for a new "class"
+		set line [ string range $line $terminatorIndex end]
+		break
+	    } 
+	    if $foundBrace {
+		#found a declared class
+		set line [ string range $line $braceIndex end]
+		set foundClass $true
+	    }
+ 	    if { ( ! $foundBrace ) && (! $foundTerminator ) } {
+ 		#need to advance to next line
+		set nLines 0 
+		while {[ set nLines [ readLine $readFile line ] ] == 0} {} 
+		if { $nLines < 0 } {
+		    puts "Error: no openning brace found"
+		    return
+		}
+	    } 
+	    
+	}
+	
+    } else {
+ 
+	#need to advance to next line
+	set nLines 0 
+	while {[ set nLines [ readLine $readFile line ] ] == 0} {} 
+	if { $nLines < 0 } {
+	    puts "Error: no class decleration found"
+	    return
+	}
+    }
+}
+puts "found decleration of class $className"
+#
+# Since we found a class decleration, we should now look for a constructor
+#
+
+#
+# Catch the case where 
+#
+
+# using error code
+set errorNoConstructorFound 12
+set catchReturn ""
+set catchString ""
+if { 0 != [ set catchReturn [ catch { 
+set foundNonDefaultConstructor $false
+
+while { $foundNonDefaultConstructor != $true } {
+
+set foundConstructor $false
+
+while { $foundConstructor != $true } {
+    # to find a constructor find $className
+    #  - doesn't have a preceding "~"
+    #  - either has a space, a "(" or ends the line
+    set expression "( |\())?"
+    set expression "\[^~\]$className$expression"
+    if { 1 == [ regexp -indices $expression $line indices ] } {
+	set line [ string range $line [lindex $indices 1] end ]
+	set foundConstructor $true
+    } else {
+	set nLines 0
+	while {[ set nLines [ readLine $readFile line ] ] == 0 } {}
+	if { $nLines < 0 } {
+	    puts "Error: could not find constructor for class $className"
+	    return -code return $errorNoConstructorFound
+	}
+    }
+}
+
+# find and remove leading "(" of constructor
+set atFirstVariable $false
+
+while { ! $atFirstVariable } { 
+
+    set index [string first "(" $line ]
+    if { $index != -1 } {
+	#found parentheses
+	if { $index != [ expr [string length $line ] -1 ] } {
+	    set line [ string range $line [ expr $index + 1 ] end ]
+	} else {
+	    set line ""
+	}
+	set atFirstVariable $true
+    } else {
+	set nLines 0
+	while {[ set nLines [ readLine $readFile line ] ] == 0 } {}
+	if { $nLines < 0 } {
+	    puts "Error: could not find ( of the constructor"
+	    return
+	}
+    }
+}
+
+#
+# now pack the various constructor's variables into one string
+#
+
+set foundAllVariables $false
+
+set variables ""
+while { $foundAllVariables != $true } {
+    set index [string first ")" $line]
+    if { $index != -1 } {
+	#found end parentheses
+	if { $index != 0 } {
+	    set variables "$variables [ string trimleft [ string range $line 0 [expr $index -1]]]"
+	} 
+	set foundAllVariables $true
+
+    } else {
+	#add this line to our string
+	set variables "$variables [string trimleft $line]"
+
+	set nLines 0
+	while {[ set nLines [ readLine $readFile line ] ] == 0 } {}
+	if { $nLines < 0 } {
+	    puts "Error: could not find ) of the constructor"
+	    return
+	}
+    }
+}
+
+if { 0 != [ string length $variables ] } {
+    set foundNonDefaultConstructor $true
+} else {
+    #need to look for next constructor
+    set foundConstructor $false
+}
+#while foundNonDefaultContructor
+}
+#catch
+} catchString ] ]
+} {
+#    something went wrong
+    if { $catchReturn == 2 } {
+	if { $catchString == $errorNoConstructorFound } { 
+#       we didn't find a constructor, so use default constructor	
+	    set variables ""
+	}
+    } else {
+	return
+    }
+}
+
+puts "variables: $variables"
+
+#
+# parse our variables string and create a list of { type varName }
+#
+
+set varList [list ]
+set var_type_index 0
+set var_name_index 1
+foreach varInfo [ split $variables "," ] {
+    #break along space boundaries
+    set varInfo [ string trim $varInfo ]
+    set equalIndex [ string last "=" $varInfo]
+    if { $equalIndex != -1 } {
+	set varInfo [ string range $varInfo 0 [ expr $equalIndex -1] ]
+	set varInfo [ string trim $varInfo ]
+    }
+    set varNameStartIndex [ string last " " $varInfo ]
+    set varNameStartIndex [expr $varNameStartIndex + 1 ]
+    set varName [string range $varInfo $varNameStartIndex end]
+    set typeName [string range $varInfo 0 [expr $varNameStartIndex -2 ] ]
+    #get rid of const
+    regsub -all "const" $typeName "" typeName
+    #get rid of &
+    regsub -all "&" $typeName "" typeName
+    #if typeName is Identifier, add class scope qualifier
+    if { 0 == [ string compare "Identifier" $typeName ] } {
+	set typeName "$className ::Identifier"
+    }
+    set typeName [string trim $typeName]
+    set varInfoList [list $typeName $varName]
+    set varList [ linsert $varList  [llength $varList] $varInfoList ] 
+}
+
+puts $varList
+
+#
+# Specify the "pattern" that should be replaced
+#
+
+#fill patterns list with 'basis' of the variable names used for 
+# pattern/replace.  I'll use the patterns list when doing the actual
+# search and replace
+list patterns
+
+set class_pattern "_class_"
+set class_replace $className
+lappend patterns "class"
+
+set helper_pattern "_helper_"
+set helper_replace [join [list "$className" "StorageHelper"] ""]
+lappend patterns "helper"
+
+set HELPER_pattern "_uchelper_"
+set HELPER_replace [string toupper $helper_replace]
+lappend patterns "HELPER"
+
+set include_file_pattern "_include_file_"
+set include_file_replace [lindex $argv 0]
+lappend patterns "include_file"
+
+set package_pattern "_package_"
+set package_replace [ lindex [ split $include_file_replace "/" ] 0 ] 
+lappend patterns "package"
+
+set PACKAGE_pattern "_ucpackage_"
+set PACKAGE_replace [ string toupper $package_replace ]
+lappend patterns "PACKAGE"
+
+set var_loop_pattern "_var_loop_"
+set var_most_loop_pattern "_var_most_loop_"
+set var_end_loop_pattern "_var_end_loop"
+
+set var_name_pattern "_var_name_"
+set var_type_pattern "_var_type_"
+set var_index_pattern "_var_index_"
+
+foreach skelDir $skeletonDirs {
+
+ foreach skelFileName [ glob $env(C3_CVSSRC)/StorageManagement/Skeletons/$skelDir/* ] {
+    if [ file isfile $skelFileName ] {
+	
+#       Open the output file
+	set outFileName [ lindex [ split $skelFileName "/" ] end ]
+#       make any necessary name modifications	
+	regsub -all $class_pattern $outFileName $class_replace outFileName
+	regsub -all $helper_pattern $outFileName $helper_replace outFileName
+	set outFile [open $outFileName w]
+
+#       Open the file specified in the command line
+	set file [open $skelFileName r]
+
+
+#           Loop over each line in the file and do the search and replace
+	while { [gets $file line] >= 0} {
+	    set newLine $line
+#           Do the standard patterns to replace	    
+	    foreach pattern_template $patterns {
+#		Create the names of the variables to use
+		set pattern_var [join [ list "$pattern_template" "_pattern"] ""]
+		set replace_var [join [ list "$pattern_template" "_replace"] ""]
+		eval "regsub -all \$$pattern_var \$newLine \$$replace_var newLine" 
+	    }
+#           See if we have to do variable substitution
+	    
+#           first see if we can treat all variables the same  
+	    if [ regsub -all $var_loop_pattern $newLine "" newLine ] {
+		set nVars 0
+		set subLine ""
+		foreach varInfo $varList {
+		    if { $nVars != 0 } {
+#                       printout the previous substitution
+			puts $outFile $subLine
+		    }
+		    incr nVars
+		    set var_name [lindex $varInfo $var_name_index]
+		    set var_type [lindex $varInfo $var_type_index]
+		    regsub -all $var_name_pattern $newLine $var_name subLine
+		    regsub -all $var_type_pattern $subLine $var_type subLine
+		    regsub -all $var_index_pattern $subLine $nVars subLine
+		}
+#               now the last change will be output on the final 'puts'
+		set newLine $subLine
+	    } else { 
+#               handle the condition where all but the last variable
+#                have the same pattern
+		if [ regsub -all $var_most_loop_pattern $newLine "" newLine] {
+		    set nVars [llength $varList]
+		    if { 1 != $nVars } {
+			set index 1
+			set subLine ""
+			foreach varInfo $varList {
+			    set var_name [lindex $varInfo $var_name_index]
+			    set var_type [lindex $varInfo $var_type_index]
+			    regsub -all $var_name_pattern $newLine $var_name subLine
+			    regsub -all $var_type_pattern $subLine $var_type subLine
+			    regsub -all $var_index_pattern $subLine $index subLine
+			    incr index
+			    if { $index == $nVars } break
+			    puts $outFile $subLine
+			}
+			set newLine $subLine
+		    } else {
+#                       since we only have 1 variable, we do not want
+#                        to ouput anything for this line
+			set newLine ""
+		    }
+		} else { 
+#                   handle the last variable condition
+		    if [ regsub -all $var_end_loop_pattern $newLine "" newLine ] {
+			if { 0 != [llength $varList] } {
+			    set varInfo [lindex $varList end]
+			    set var_name [ lindex $varInfo $var_name_index]
+			    set var_type [ lindex $varInfo $var_type_index]
+			    regsub -all $var_name_pattern $newLine $var_name newLine
+			    regsub -all $var_type_pattern $newLine $var_type newLine
+			    regsub -all $var_index_pattern $newLine $nVars newLine
+			} else {
+#                            there were no variables, so no end condition
+			    set newLine ""
+			}
+		    }
+		}
+	    }
+	    puts $outFile $newLine
+	}
+	close $file
+	close $outFile
+    }
+    
+ }
+}
+
+
+
+
+
+
+

@@ -1,0 +1,1975 @@
+# ;-*-Mode: makefile-*-
+#=============================================================================
+#
+# This is the standard CLEO M.tail file, which is executed at the end of
+#   all standard makefiles. It expects the following to be defined
+#
+#   JOB        Name of job (and eventually name of library if any)
+#   EXE        Name of executable to produce
+#   MAKEFILE   Name of calling makefile (if not standard 'Makefile')
+#
+#   USER_OBJS
+#   OTHR_OBJS   Lists of user, other, cleo, and cern object modules
+#   CLEO_OBJS   to include
+#   CERN_OBJS
+#
+#   CLEO_SYMS   List of symbols to be `undefined' at load time
+#
+#   USER_LIBS
+#   CLEO3_LIBS
+#   OTHR_LIBS   Lists of user, other, cleo, and cern libraries to check
+#   CLEO_LIBS
+#   CERN_LIBS
+#
+#   USER_FFLAGS   The extra fortran compiler flags the user wants used
+#   USER_CFLAGS   The extra c compiler flags the user wants used
+#   USER_CXXFLAGS The extra c++ compiler flags the user wants used
+#   USER_LFLAGS   The extra loader flags the user wants used
+#   USER_DEFS     List of -D and -I options for the C-preprocessor
+#
+#   DEBUG       must be "y" or "Y" if compiling and linking with debug set
+#               This will ONLY link with debug versions of USER_LIBS.
+#
+#   DEBUG_ALL   must be "y" or "Y" if compiling and linking with debug set
+#               This will ONLY link with debug versions of USER_LIBS 
+#               and CLEO3_LIBS.
+#
+#   INSURE      must be "y" or "Y" if compiling and linking with insure++
+#
+#   OPTIMIZE    for all compilers the optimizer is on in non-debug mode;
+#               since the optimizer causes problems with SunOS 2.6/CC, the
+#               optimizer is only turned on if this flag is "y" or "Y"
+#
+#   PURIFY     if "y" or "Y", turns on using "purify" (memory leak checker)
+#   QUANTIFY    if "y" or "Y", turns on using quantify (performance analysis)
+#
+#   MT          if "y" or "Y", turns on compiling/linking in multithreading mode
+#
+#   MAKEFILEDEP must be "n" or "N" if you DON'T WANT $MAKEFILE as a dependency
+#               for compilation. It will still relink!
+#               ($MAKEFILE defaults to Makefile)
+#
+#   NO_IMPLICIT_NONE
+#               if "y" or "Y", will filter out "-u" flag (which requires all
+#               all Fortran variables to have been declared)
+# 
+#   MAKEFILE    set to specific "makefile" name if different 
+#               from default: "Makefile"
+#
+#   MAKE_LIBS	must be "y" or "Y" if users want 'gmake' run on his own
+#                 libraries.
+#   CPP_INFO    must be "y" or "Y" if CPP symbols are required in code
+#                 (e.g. for clever processor).
+#   NOLIB	must be "y" or "Y" if object files are to be created
+#                 rather than a library (this will ensure all user routines
+#                 are loaded in preference to any in the libraries)
+#   NOSCAN      must be "y" or "Y" if user does NOT wish to scan source
+#                 directories for .F, .c, .cc and .cdf files,
+#                 i.e. file-names (if any) must be given in USER_OBJS.
+#   LINK_STATIC must be "y" or "Y" if the user wants to link a static executable
+#               without ANY shared libraries
+#
+#   USER_LINK   Allows the user to specify a different complier for the
+#                 main link statement (default is Fortran). Can be set to
+#                   C := C compiler
+#                   CXX := C++ compiler
+#
+#=============================================================================
+#MAKE 	:= 	gmake
+MAKEFILE:=	Makefile
+
+PWD     := $(shell pawd)
+# always puts /usr/local/bin first (important for some programs, e.g. "test")
+PATH	:= /usr/local/bin:${PATH}
+
+
+#---------------------------------------------
+# Set standard compiler flags and definitions
+#---------------------------------------------
+
+KUIPC   :=	$(CERN3_LIB)/bin/kuipc
+
+# ------------- Site-specific setup --------------
+# for convenient change of site-specific installs
+# ------------------------------------------------
+# if not defined by environment, set GCC_DIR etc. here
+ifeq "$(GCC_DIR)" ""
+  GCC_DIR := /usr/local
+endif
+ifeq "$(GCC_INC)" ""
+#  GCC_INC := /usr/include/g++
+  GCC_INC := /usr/local/lib/g++-include
+endif
+ifeq "$(TCL_DIR)" ""
+  TCL_DIR := /usr/local
+endif
+ifeq "$(TK_DIR)" ""
+  TK_DIR := /usr/local
+endif
+# can't use := here! because used "above"
+ifeq "$(TCL_VERS)" ""
+  TCL_VERS = 8.2
+endif
+ifeq "$(TK_VERS)" ""
+  TK_VERS  = 8.2
+endif
+
+# if not specified, use clib version of cleoii libraries
+ifeq "$(strip $(CLIB))" ""
+  CLIB:=clib
+endif
+
+# platform specific stuff
+OS_NAME := $(shell uname)
+ifeq "$(OS_NAME)" "SunOS"
+# determine version of solaris
+  OS_VERSION := $(shell $(COMM_LIB)/bin/config.guess)
+  ifeq "$(OS_VERSION)" "sparc-sun-solaris2.8" 
+	MT := y
+  endif
+endif
+# --------------------------------------------------
+# Purify
+# --------------------------------------------------
+ifneq (,$(findstring $(PURIFY),yY))
+  PURIFY_PATH  := /opt/rational/releases/PurifyPlusFamily.2002a.06.00/sun4_solaris2/bin
+  PURIFY_CACHEDIR := /nfs/c3off/Offline/cache
+
+  PURIFY_FLAGS := -messages=first 
+  PURIFY_FLAGS += -leaks-at-exit=yes 
+  PURIFY_FLAGS += -static-checking=no
+#  PURIFY_FLAGS += -best-effort
+
+#  PURIFY_FLAGS += -always-use-cache-dir=yes 
+  PURIFY_FLAGS += -cache-dir=$(PURIFY_CACHEDIR)
+
+  PURIFY_EXE   := $(PURIFY_PATH)/purify
+  PURIFY_CLEAN := $(PURIFY_PATH)/pure_remove_old_files
+
+  DO_PURIFY    := $(PURIFY_CLEAN) $(PURIFY_CACHEDIR) 31; \
+		$(PURIFY_CLEAN) ../lib 7; \
+		$(PURIFY_CLEAN) ../shlib 7; \
+		$(PURIFY_EXE) $(PURIFY_FLAGS)
+
+#  PURIFY_DIR   := `$(PURIFY_EXE) -print-home-dir`
+#  PURIFY_STUBS := $(PURIFY_DIR)/purify_stubs.a
+endif
+
+# --------------------------------------------------
+# Quantify
+# --------------------------------------------------
+ifneq (,$(findstring $(QUANTIFY),yY))
+QUANTIFY_PATH  := /opt/rational/releases/PurifyPlusFamily.2002a.06.00/sun4_solaris2/bin
+  QUANTIFY_CACHEDIR := /nfs/c3off/Offline/cache
+
+  QUANTIFY_FLAGS :=
+  QUANTIFY_FLAGS += -cache-dir=$(QUANTIFY_CACHEDIR)
+#  QUANTIFY_FLAGS += -best-effort
+
+  QUANTIFY_EXE   := $(QUANTIFY_PATH)/quantify
+  QUANTIFY_CLEAN := $(QUANTIFY_PATH)/pure_remove_old_files
+
+  DO_QUANTIFY    := $(QUANTIFY_CLEAN) $(QUANTIFY_CACHEDIR) 31; \
+			$(QUANTIFY_CLEAN) ../lib 7; \
+			$(QUANTIFY_CLEAN) ../shlib 7; \
+			$(QUANTIFY_EXE) $(QUANTIFY_FLAGS)
+
+#  QUANTIFY_DIR   := `$(QUANTIFY_EXE) -print_home_dir`
+#  QUANTIFY_STUBS := $(QUANTIFY_DIR)/quantify_stubs.a
+endif
+
+# --------------------------------------------------
+# if CXX=insure, need to do something special
+# WARNING: is using override statement!
+#          Be careful about order (try to be first)!
+# --------------------------------------------------
+CXX_INSURE :=
+INSURE_USES_CXX :=
+ifneq (,$(findstring $(INSURE),yY))
+   $(shell cp $(C3DIST)/util/insure/.psrc_$(CXX) $(HOME)/.psrc >/dev/null 2>&1)
+   $(shell cp $(HOME)/.psrc_$(CXX)            $(HOME)/.psrc >/dev/null 2>&1)
+   CXX_INSURE := insure
+   INSUREDIR := insure
+   override DEBUG=y
+   INSURE_USES_CXX := $(shell grep cxx $(HOME)/.psrc)
+endif
+
+# ---------------------------------------------
+#ifeq "$(CXX)" "insure"
+#   # need to find out from ~/.psrc file what compiler to use
+#   override CXX := $(filter-out insure++.compiler_cpp, $(shell grep insure++.compiler_cpp $(HOME)/.psrc))
+#   CXX_INSURE := insure
+#   override DEBUG=y
+#endif
+# ---------------------------------------------
+
+# finding dependencies
+DEP_FILE := $(PWD)/.*.d
+DEP_SUFFIX_FORMAT := .%.d
+# can't handle %.cc currently: HEADER_FORMATS := %.h %.hh %.hxx %.inc %.cc
+#HEADER_FORMATS := %.h %.hh %.hxx %.inc
+
+ifneq (,$(findstring $(MT),yY))
+MT_SUFFIX = _r
+else
+MT_SUFFIX =
+endif
+COMM_OS_NAME := $(shell $(COMM_LIB)/bin/config.guess)$(MT_SUFFIX)
+
+#CLEO_DEFS += -D$(JOB)=$(JOB) -D$(OS_NAME) -DCLEO_$(OS_NAME) $(USER_DEFS)
+JOB_DEFS := -D$(JOB)=$(JOB)
+CLEO_DEFS += -D$(OS_NAME) -DCLEO_$(OS_NAME) $(USER_DEFS)
+
+CLEO_DEFS += -DHAVE_CONFIG_H
+
+FFLAGS   :=
+CFLAGS   :=
+CXXFLAGS :=
+
+MAKEF_COMPILE_DEP=$(MAKEFILE)
+MAKEF_LINK_DEP=$(MAKEFILE)
+ifneq (,$(findstring $(MAKEFILEDEP),nN))
+  MAKEF_COMPILE_DEP=
+endif
+
+ifneq (,$(findstring $(DEBUG),yY))
+  FFLAGS += -g
+  CFLAGS += -g
+ifeq "$(CXX)" "cxx"
+  CXXFLAGS += -g -gall
+else
+  CXXFLAGS += -g
+endif
+  CLEO_DEFS += -DCLEO_DEBUG -DWRITE_RCS_INFO
+  TARGET := debug
+#
+# to include debug versions of USER, CLEO3, OTHR, CLEO or CERN libraries
+#   USER_G, CLEO3_G, OTHR_G, CLEO_G and/or CERN_G should be set to "_g"
+#
+  OBJS_G = _g
+  EXE_G  = _g
+  USER_G = _g
+  # if insure++ is used, don't use _g name extension!
+  ifneq (,$(findstring $(INSURE),yY))
+    EXE_G  := 
+  endif
+  ifneq (,$(findstring $(PURIFY),yY))
+    EXE_G  := 
+  endif
+  ifneq (,$(findstring $(QUANTIFY),yY))
+    EXE_G  := 
+  endif
+
+else
+
+CFLAGS += -O
+FFLAGS += -O
+#ifneq "$(CXX)" "CC"
+  CXXFLAGS += -O
+#else
+ifneq (,$(findstring $(OPTIMIZE),yY))
+  CXXFLAGS += -O
+endif
+#endif
+  TARGET := production
+endif
+
+ifneq (,$(findstring $(DEBUG_ALL),yY))
+  override DEBUG := y
+  CLEO3_G := _g
+endif
+
+# add tcl/tk includes
+#TCLTK_INCS=-I$(TCL_DIR)/include -I$(TK_DIR)/include
+#CXX_INCS += $(TCLTK_INCS)
+#C_INCS += $(TCLTK_INCS)
+
+#----------------------------------------------------
+# Machine and compiler dependent flags and libraries
+#----------------------------------------------------
+ifeq "$(OS_NAME)" "SunOS"
+  MAP := -Qoption ld -m
+  # dependency flags
+  CXX_DEP = $(CXX) -xM1
+  C_DEP   = $(CC)  -xM1
+  F_DEP   = fpp -M -w0
+  FILTER_INCLUDES := grep -v /usr/include
+else
+  MAP := -Wl,-m
+  # dependency flags
+ifeq "$(OS_NAME)" "OSF1"
+  CXX_DEP := $(CXX) -I -M -noimplicit_include
+  FILTER_INCLUDES := grep -v /usr/include
+  C_DEP   := $(CC)  -I -M
+  F_DEP   := $(FC)  -I -M
+else #gnu
+ifeq "$(OS_NAME)" "Linux"
+  CXX_DEP := $(CXX) -MM
+  FILTER_INCLUDES := grep -v /usr/include
+  C_DEP   := $(CC)  -MM
+  F_DEP   := $(FC)  -MM
+endif
+endif
+endif
+
+ifeq "$(OS_NAME)" "ULTRIX"
+  FFLAGS += -static -u -G 1
+  F77LIBS :=	Ufor	for	util	i	ots
+  MATHLIBS :=	m
+  ifeq "$(strip $(CXX))" ""
+    CXX := g++
+  endif
+  CXXFLAGS += -Wall
+endif
+
+ifeq "$(OS_NAME)" "IRIX"
+  FFLAGS += -static -u -G 0
+  CXXFLAGS += -Wall
+endif
+
+ifeq "$(OS_NAME)" "Linux"
+  MAP := -Wl,-M
+  CXX_INCS += -I/usr/include/g++
+  F77LIBS := g2c
+  SYSLIB += /usr/X11R6/lib
+#if a fortran name already has an underscore in it, g77 will
+#  append 2 underscores to the end of the name.  This breaks
+#  our fortran <-> C routines
+  FFLAGS += -fno-second-underscore
+ifneq (,$(findstring $(LINK_STATIC),yY))
+  LINK_FLAGS += -Bstatic
+  LINK_DYNAMIC := -Bdynamic
+else
+  LINK_DYNAMIC := -rdynamic
+endif
+  CCLIBS := dl
+endif
+
+ifeq "$(OS_NAME)" "SunOS"
+  FFLAGS += -u
+# OS_* definitions have to do with the ospace stl and are therefore added
+#   to CXX_INCS rather than CXXFLAGS
+  PLATFORM = -DSUNCC -DSOLARIS
+  CXXFLAGS += $(PLATFORM)
+  CXX_INCS += $(PLATFORM)
+ifeq "$(OS_VERSION)" "sparc-sun-solaris2.8" 
+  CXX_INCS += -DOS_SOLARIS_2_8
+#  CXXFLAGS += -instances=global -template=no%extdef
+  CXXFLAGS += -instances=global
+# link everything with cross compatability with FORTRAN
+  LINK_FLAGS += -xlang=f77
+else
+
+ifeq "$(OS_VERSION)" "sparc-sun-solaris2.7" 
+  CXX_INCS += -DOS_SOLARIS_2_7 
+  SYSLIB += /usr/local/objy/solaris4/ToolKit/lib/
+else
+  CXX_INCS += -DOS_SOLARIS_2_6 
+  CXXLIBS := ospace C
+endif
+
+  CXXFLAGS += -pta -instances=global
+  CXX_INCS += -DOS_NO_ALLOCATORS 
+  CXX_INCS += -DOS_NO_AUTO_INSTANTIATE 
+  CXXFLAGS += -Dtrue=1 -Dfalse=0
+# -xlang option handles these for solaris 2.8
+  F77LIBS := M77 F77
+endif
+#  CXXFLAGS += -ptr. -pta
+  CXXFLAGS += -KPIC
+  CFLAGS   += -KPIC
+  FFLAGS   += -KPIC
+  LINK_FLAGS += -xildoff
+
+  CCLIBS  := posix4 sunmath socket dl nsl m c
+
+
+
+# allow multiple symbol definitions
+  LINK_FLAGS +=	-Qoption ld -zmuldefs 
+# don't warn about multiply-defined symbols with conflicting sizes (e.g. pawc)
+  LINK_FLAGS += -Qoption ld -t
+# static executable
+ifneq (,$(findstring $(LINK_STATIC),yY))
+  LINK_FLAGS += -Bstatic
+  LINK_DYNAMIC := -Bdynamic
+endif
+# multithreaded compiling and linking
+ifneq (,$(findstring $(MT),yY))
+  CXXFLAGS += -mt -D_REENTRANT
+  ifeq "$(OS_VERSION)" "sparc-sun-solaris2.8" 
+    FFLAGS += -mt
+  endif
+endif
+ifneq (,$(findstring $(DEBUG),yY))
+# on SunOS the debuggers require the .o files 
+# OR to force all debug info into the library!
+  FFLAGS   += -xs
+  CFLAGS   += -xs
+  CXXFLAGS += -xs
+endif
+endif
+
+ifeq "$(OS_NAME)" "OSF1"
+  FFLAGS += -static -u
+  F77LIBS :=	Ufor	for	Futil	ots
+  CCLIBS   :=
+  MATHLIBS :=	m
+  FLDFLAGS := -align commons -Wl,-taso -O1
+  ifeq "$(strip $(CXX))" ""
+    CXX := cxx
+  endif
+  CXXFLAGS += -Wall
+# static executable
+ifneq (,$(findstring $(LINK_STATIC),yY))
+  LINK_FLAGS += -non_shared
+  CCLIBS += dnet_stub
+  LINK_DYNAMIC := 
+endif
+endif
+
+ifeq "$(OS_NAME)" "AIX"
+  FC := xlf
+  FFLAGS += -qextname -qrndsngl
+  CXXFLAGS += -DD_AIX
+  CLEO_OBJS += $(CLEOLIB)/zext_dummy.o $(CLEOLIB)/secnds.o
+  F77LIBS :=    xlf xlfutil xlf90 xlfpmt4 xlfpmt8 xlfpad ld
+  FLDFLAGS := -bfilelist -berrmsg -bloadmap:$(TRUE_EXE)_xlf.map -v -m
+  CXXFLAGS += -Wall
+endif
+
+ifeq "$(CXX)" "CC"
+ifeq "$(OS_VERSION)" "sparc-sun-solaris2.8" 
+  CXXFLAGS +=  -library=rwtools7_std
+else
+  CXX_INCS += -I/usr/local/objy/solaris4/ToolKit -I/usr/local/objy/solaris4/ToolKit/ospace/std -I/opt/SUNWspro/SC4.2/include/CC
+endif
+endif
+
+ifeq "$(CXX)" "cxx"
+  CXX_INCS += -I/usr/include/cxx
+  CXXFLAGS += -DHAVE_EXCEPTION -Dtrue=1 -Dfalse=0 -nopt -DNO_IMPLICIT_INSTANTIATION -nocompress
+#  CXXFLAGS += -distinguish_nested_enums
+endif
+
+ifeq "$(CXX)" "g++"
+ifeq "$(OS_NAME)" "OSF1"
+  CXX_INCS += -I$(GCC_INC)
+  CXX_INCS += -I$(GCC_DIR)/lib/g++-include
+  CXX_INCS += -I/usr/local/include/g++ 
+  CXXLIBS :=	stdc++	g++
+  CXXFLAGS += -Wall
+endif
+ifeq "$(OS_NAME)" "Linux"
+#  CXX_INCS += -I/usr/include
+#  CXXFLAGS += -Wall
+endif
+endif
+
+ifneq "$(CXX)" "g++"
+  CXX_INCS += -I/usr/local/include
+  CXX_INCS += -I/usr/include
+  C_INCS += -I/usr/include
+endif
+
+
+# constants handling for everybody
+CONSTANTS_INCS := version time basics VersionTools ConstantsUtility
+CONSTANTS_INCS += BDLCCclient BDLDRclient BDLRICHclient BDLSVclient BDLSVSCclient BDLMUclient BDLOclient BDLclient BDLOfflineclient BDLTRIGMCclient BDLZDclient
+CONSTANTS_LIBS := BDLCCclient BDLDRclient BDLRICHclient BDLSVclient BDLSVSCclient BDLMUclient BDLOclient BDLclient BDLOfflineclient BDLTRIGMCclient BDLZDclient
+CONSTANTS_LIBS += ConstantsUtility version time basics
+#rt library is needed by basics library
+ifeq "$(OS_NAME)" "OSF1"
+ifeq (,$(findstring $(COMM_LIBS),basics))
+SYS_LIBS += rt
+endif
+endif
+
+# ORB handling (on SunOS use Visibroker, on everything else mico)
+ifeq "$(OS_NAME)" "SunOS"
+
+ifeq "$(OS_VERSION)" "sparc-sun-solaris2.8" 
+ORB_ROOT  := /cdat/solsda/disk1/daqiii/vbroker-5.1
+ORBLIBS   := orb_r vport_r
+USER_DEFS += -DDBCORBA -DVISIBROKER=4
+else
+ORB_ROOT  := /usr/local/vb3.3
+ORBLIBS   := orb$(MT_SUFFIX)
+USER_DEFS += -DDBCORBA -DVISIBROKER=3
+endif
+else
+ORB_ROOT  := $(MICODIR)
+ORBLIBS   := mico$(MICOVERSION) micocoss$(MICOVERSION) 
+USER_DEFS += -DDBCORBA -DMICOORB=2 -DMICOORB_MINOR=3 -DMICOORB_VERSION=1
+endif
+
+# ------------- now add user flags to allow users to override settings ------
+FFLAGS   += $(USER_FFLAGS)
+CFLAGS   += $(USER_CFLAGS)
+CXXFLAGS += $(USER_CXXFLAGS)
+
+# special handling for fortran files with IMPLICIT NONE
+ifneq (,$(findstring $(NO_IMPLICIT_NONE),yY))
+override FFLAGS := $(filter-out -u, $(FFLAGS))
+endif
+
+# KUIP special handling
+KUIPC_FFLAGS = $(filter-out -u, $(FFLAGS))
+
+#------------------------------------------------------------
+# here are some sneaky make tricks to unbuild the UNDEF list
+# (Thanks to M Athanas)
+#------------------------------------------------------------
+
+COMMA := ,
+EMPTY :=
+SPACE := $(EMPTY) $(EMPTY)
+
+#----------------------------------
+# Prepare link command and symbols
+#----------------------------------
+
+# default is to link with CXX; if F is found, use fortran; if CC use CC
+ifneq (,$(findstring F, $(USER_LINK)))
+    LINK_COMPILER := $(FC)
+    LINK_FLAGS += $(FFLAGS) $(FLDFLAGS)
+else
+  ifeq "$(USER_LINK)" "CC"
+    LINK_COMPILER := $(CC)
+    LINK_FLAGS += $(CFLAGS)
+    ifeq "$(OS_VERSION)" "sparc-sun-solaris2.8" 
+      LINK_FLAGS += -library=rwtools7_std
+    endif
+  else
+    LINK_COMPILER := $(THIRD) $(CXX)
+    LINK_FLAGS += $(filter-out -nocompress, $(CXXFLAGS))
+  endif
+endif
+
+CLEO_SYMS += $(USER_SYMS)
+ifeq "$(OS_NAME)" "SunOS"
+  LINK_UNDEF := $(patsubst %,-Qoption ld -u%,$(CLEO_SYMS))
+  LOAD_UNDEF := $(patsubst %,-Qoption ld -u%,$(CLEO_SYMS))
+else
+  LINK_UNDEF := $(patsubst %,-Wl$(COMMA)-u$(COMMA)%,$(CLEO_SYMS))
+  LOAD_UNDEF := $(patsubst %,-Wl$(COMMA)-u$(COMMA)%,$(CLEO_SYMS))
+endif
+UNDEF += $(LINK_UNDEF)
+
+#-----------------------------------------
+# Prepare libraries and their search path
+#-----------------------------------------
+
+prefix := $(HOME)
+locallib := ../lib
+localshlib := ../shlib
+LIBRARY := $(locallib)/lib$(JOB)$(USER_G).a
+SHARLIB := $(locallib)/lib$(JOB)$(USER_G).so
+ifeq "$(strip $(SHARMODNAME))" ""
+SHARMOD := $(localshlib)/$(JOB)$(USER_G).so
+else
+SHARMOD := $(localshlib)/$(SHARMODNAME)$(USER_G).so
+endif
+USERBAG := $(patsubst %,-l%$(USER_G),$(USER_LIBS))
+CLEO3BAG:= $(patsubst %,-l%$(CLEO3_G),$(CLEO3_LIBS))
+OTHRBAG := $(patsubst %,-l%$(OTHR_G),$(OTHR_LIBS))
+COMMBAG := $(patsubst %,-l%$(COMM_G),$(COMM_LIBS))
+CLEOBAG := $(patsubst %,-l%$(CLEO_G),$(CLEO_LIBS))
+NILEBAG := $(patsubst %,-l%$(CLEO_G),$(NILE_LIBS))
+CERNBAG := $(patsubst %,-l%$(CERN_G),$(CERN_LIBS))
+SYSBAG  := $(patsubst %,-l%,$(SYS_LIBS))
+COMPBAG := $(patsubst %,-l%,$(F77LIBS) $(CXXLIBS) $(CCLIBS) $(MATHLIBS))
+
+LOCALLIBDIR := $(localshlib) $(locallib)
+LOCALLIBDIR += $(patsubst %,%/$(CXX),$(prefix)/shlib)
+LOCALLIBDIR += $(prefix)/shlib
+LOCALLIBDIR += $(patsubst %,%/$(CXX),$(prefix)/lib)
+LOCALLIBDIR += $(prefix)/lib
+
+ifneq "$(CLEO3LIB)" ""
+CLEO3LIBDIR := $(patsubst %,%/$(OS_NAME)/$(INSUREDIR)/$(CXX),$(CLEO3LIB))
+CLEO3LIBDIR += $(patsubst %,%/$(OS_NAME)/$(CXX),$(CLEO3LIB))
+CLEO3LIBDIR += $(patsubst %,%/$(OS_NAME),$(CLEO3LIB))
+endif
+
+ifneq "$(OTHRLIB)" ""
+OTHRLIBDIR := $(patsubst %,%/$(OS_NAME)/$(CXX),$(OTHRLIB))
+OTHRLIBDIR += $(patsubst %,%/$(OS_NAME),$(OTHRLIB))
+OTHRLIBDIR += $(OTHRLIB)
+endif
+
+ifneq "$(CERN3LIB)" ""
+CERN3LIBDIR := $(patsubst %,%/$(OS_NAME)/$(CXX),$(CERN3LIB))
+CERN3LIBDIR += $(patsubst %,%/$(OS_NAME),$(CERN3LIB))
+CERN3LIBDIR += $(CERN3LIB)
+CERN3LIBDIR += $(CERNLIB)
+endif
+
+ifneq "$(COMMLIB)" ""
+COMMLIBDIR := $(patsubst %,%/$(COMM_OS_NAME)/$(CXX),$(COMMLIB))
+COMMLIBDIR += $(patsubst %,%/$(COMM_OS_NAME),$(COMMLIB))
+COMMLIBDIR += $(COMMLIB)
+endif
+
+VPATH_DIR := $(subst $(SPACE),:,$(strip \
+		$(LOCALLIBDIR) \
+		$(CLEO3LIBDIR) \
+		$(OTHRLIBDIR) \
+		$(CLEOLIB) \
+		$(CERN3LIBDIR) \
+		$(COMMLIBDIR) \
+		$(SYSLIB)))
+
+LIBS_DIR := -L$(subst :, -L,$(VPATH_DIR))
+vpath %.a /usr/lib $(VPATH_DIR)
+vpath %.o $(VPATH_DIR)
+
+#------------------------------------------------------------------------
+# Directories to search for include files
+#------------------------------------------------------------------------
+# Expert note: It is assumed that the source code sits in and below
+#                            $(USER_SRC)/$(JOB)
+#              However if it does not then you should define the
+#              makefile variable USER_DIR such that to code is in and
+#              below
+#                            $(USER_SRC)/$(USER_DIR)
+# (don't forget you can specify this on the command line if you wish)
+#------------------------------------------------------------------------
+
+ifeq "$(strip $(USER_DIR))" ""
+  USER_DIR := $(JOB)
+endif
+ifeq "$(strip $(USER_SRC))" ""
+  absrcdir := .
+else
+  absrcdir := $(USER_SRC)/$(USER_DIR)
+endif
+VPATH := $(absrcdir)$(patsubst %,:$(absrcdir)/%,$(DIR_LIST))
+
+INCLUDE_DIR  := include
+INCLUDE_PATH := $(USER_SRC)/$(INCLUDE_DIR)
+INCLUDE_LINK := $(INCLUDE_PATH)/$(JOB)
+
+LIST_INCS := -I$(absrcdir)
+LIST_INCS += -I$(USER_SRC)/include
+ifneq "$(strip $(USER_INCS))" ""
+  LIST_INCS += $(patsubst %,-I$(USER_SRC)/%, $(USER_INCS))
+  # for cleo libs in one's own area
+  LIST_INCS += $(patsubst %,-I$(USER_SRC)/include/%, $(USER_INCS))
+endif
+LIST_INCS += -I$(C3_INC)
+ifneq "$(strip $(CLEO3_INCS))" ""
+  LIST_INCS += $(patsubst %,-I$(C3_INC)/%, $(CLEO3_INCS))
+endif
+# everything needs official Common type setup!
+LIST_INCS += -I$(COMM_INC) -I$(COMM_INC)/$(COMM_OS_NAME)
+ifneq "$(strip $(COMM_INCS))" ""
+#common kludge: once time library is fixed, this goes away
+ifeq "$(OS_NAME)" "SunOS"
+  COMM_INCS += $(COMM_OS_NAME)/CLEORB
+  OTHR_INCS += $(ORB_ROOT)/include
+endif
+  LIST_INCS += $(patsubst %,-I$(COMM_INC)/%, $(COMM_INCS))
+endif
+ifneq "$(strip $(CLEO_INCS))" ""
+  LIST_INCS += $(patsubst %,-I$(C_CVSSRC)/%, $(CLEO_INCS))
+endif
+# $(C3_OTHER) needs to be added since the standard include directory
+# does not have the CLHEP include files anymore:
+LIST_INCS += -I$(C3_OTHER)
+# OTHR_INCS are special, because they don't prepend!
+ifneq "$(strip $(OTHR_INCS))" ""
+  LIST_INCS += $(patsubst %,-I%, $(OTHR_INCS))
+endif
+ifneq "$(strip $(CERN_INCS))" ""
+  LIST_INCS += $(patsubst %,-I$(CERNSRC)/%, $(CERN_INCS))
+endif
+
+#----------------------------------------------
+# build up the list of source and object files
+#----------------------------------------------
+
+ifeq (,$(findstring $(NOSCAN),yY))
+  FORTRAN_SEARCH  = $(patsubst %,$(absrcdir)/%/*.F, . $(DIR_LIST))
+  ifneq "$(strip $(OTHR_DIR_LIST))" ""
+  FORTRAN_SEARCH  += $(patsubst %,%/*.F, $(OTHR_DIR_LIST))
+  endif
+  FORTRAN_SOURCES = $(wildcard $(FORTRAN_SEARCH))
+  NOTDIR_F_SOURCES = $(notdir $(FORTRAN_SOURCES))
+
+  C_SEARCH  := $(patsubst %,$(absrcdir)/%/*.c, . $(DIR_LIST))
+  ifneq "$(strip $(OTHR_DIR_LIST))" ""
+  C_SEARCH  += $(patsubst %,%/*.c, $(OTHR_DIR_LIST))
+  endif
+  C_SOURCES = $(wildcard $(C_SEARCH))
+  NOTDIR_C_SOURCES = $(notdir $(C_SOURCES))
+
+  CXX_SEARCH  := $(patsubst %,$(absrcdir)/%/*.cc, . $(DIR_LIST))
+  ifneq "$(strip $(OTHR_DIR_LIST))" ""
+  CXX_SEARCH  += $(patsubst %,%/*.cc, $(OTHR_DIR_LIST))
+  endif
+  CXX_SOURCES = $(wildcard $(CXX_SEARCH))
+  NOTDIR_CXX_SOURCES = $(notdir $(CXX_SOURCES))
+
+  CDF_SEARCH  := $(patsubst %,$(absrcdir)/%/*.cdf, . $(DIR_LIST))
+  CDF_SOURCES = $(wildcard $(CDF_SEARCH))
+  NOTDIR_CDF_SOURCES = $(notdir $(CDF_SOURCES))
+
+  ALL_SOURCES += $(strip $(FORTRAN_SOURCES) $(C_SOURCES) $(CXX_SOURCES) \
+		 $(CDF_SOURCES))
+endif
+
+# if the respective debug flags are on, need to massage the object filenames
+ifneq "$(USER_G)" ""
+override USER_OBJS := $(USER_OBJS:%.o=%$(USER_G).o)
+endif
+ifneq "$(CLEO3_G)" ""
+override CLEO3_OBJS := $(CLEO3_OBJS:%.o=%$(CLEO3_G).o)
+endif
+
+ifneq (,$(findstring $(NOLIB),yY))
+  USER_OBJS+=	$(NOTDIR_F_SOURCES:.F=$(OBJS_G).o) \
+		$(NOTDIR_C_SOURCES:.c=$(OBJS_G).o) \
+		$(NOTDIR_CXX_SOURCES:.cc=$(OBJS_G).o) \
+		$(NOTDIR_CDF_SOURCES:.cdf=$(OBJS_G).o)
+else
+  OBJS= $(NOTDIR_F_SOURCES:%.F=$(LIBRARY)(%$(OBJS_G).o)) \
+	$(NOTDIR_C_SOURCES:%.c=$(LIBRARY)(%$(OBJS_G).o)) \
+	$(NOTDIR_CXX_SOURCES:%.cc=$(LIBRARY)(%$(OBJS_G).o)) \
+	$(NOTDIR_CDF_SOURCES:%.cdf=$(LIBRARY)(%$(OBJS_G).o))
+endif
+
+#--------------------------------------------------------------
+# if no code exists then just link, otherwise use LIBRARY and
+# allow CPP_INFO to be used.
+#--------------------------------------------------------------
+
+ifeq "$(strip $(OBJS))" ""
+  LIBREQD :=
+  ifeq "$(strip $(USER_OBJS))" ""
+    CPP_INFO :=
+  endif
+else
+  LIBREQD := $(LIBRARY)
+ifneq (,$(findstring $(MAKE_SHAREDLIB),yY))
+  SHLIBREQD := $(SHARLIB)
+endif
+endif
+
+#-----------------------------
+# add CPP version time stamps
+#-----------------------------
+
+ifneq (,$(findstring $(CPP_INFO),yY))
+  CPP_TIME := $(shell date +%H%M)
+  CPP_DATE := $(shell date +%d%m%y)
+  CPP_VERS := $(shell if [ -f CVS/Tag ] ; then cat CVS/Tag ; fi)
+#  CPP_TITLE := $(shell cd $(absrcdir) ; version)
+  CPP_TITLE := $(shell cd $(absrcdir) ; cat TITLE.$(JOB))
+  CLEO_DEFS +=  -DCPP_DATE=$(CPP_DATE) -DCPP_TIME=$(CPP_TIME) -DCPP_VERS=$(CPP_VERS) -DCPP_TITLE='$(CPP_TITLE)'
+endif
+
+#-------------------------------------------------------
+#   if non-standard Makefile make prepare '-f' option
+#   if CXX code, add CXX include file to list.
+#-------------------------------------------------------
+
+ifeq "$(strip $(MAKEFILE))" ""
+  USER_MFILE := 
+else
+  USER_MFILE := -f $(MAKEFILE)
+endif
+
+MAKED_INCS := $(CLEO_DEFS) $(LIST_INCS)
+ifneq (,$(findstring .cc, $(ALL_SOURCES)))
+  MAKED_INCS += $(CXX_INCS)
+endif
+ifeq "$(OS_NAME)" "SunOS"
+  MAKED_INCS += -DOS_HAS_MEMxxx
+endif
+
+ifeq "$(CXX)" "g++"
+ifeq "$(OS_NAME)" "OSF1"
+   UNAME_R = $(shell uname -r)
+   UN_VERS = $(patsubst V%,%,$(UNAME_R))
+   MAKED_INCS += -I/usr/local/alpha-dec-osf$(UN_VERS)/include
+   # temporary fix to get egcs working
+   MAKED_INCS += -I/usr/local/lib/gcc-lib/alpha-dec-osf4.0d/egcs-2.91.57/include
+endif
+endif
+
+#----------------------------------------------------------------
+# If CXX_INSURE was set, now reset CXX to insure
+# WARNING: because of override statement, have to be last here!
+#----------------------------------------------------------------
+ifneq "$(CXX_INSURE)" ""
+  override CXX := insure
+  override LINK_COMPILER := insure
+  LINK_FLAGS := $(filter-out -Wall, $(LINK_FLAGS))
+  LINK_FLAGS += -Zsl
+endif
+
+ObjectManual = $(OBJECTMANUALHOME)/bin/$(OS_NAME)/ObjectManual
+ifneq (,$(findstring $(OBJECTMANUAL),yY))
+  override CXX := $(ObjectManual) $(CXX)
+endif
+
+# ------------------------
+# versioning
+# ------------------------
+<<<<<<< M.tail
+#C3TAG := $(C3DIST)/scripts/c3tag
+#ifeq "$(OS_NAME)" "SunOS"
+#C3TAG := python $(C3DIST)/scripts/c3tag_SunOS.pyo
+#endif
+#ifeq "$(OS_NAME)" "OSF1"
+#C3TAG := python $(C3DIST)/scripts/c3tag_OSF1.pyc
+#endif
+#LIB_VERSION := $(shell $(C3TAG) -l -s $(USER_SRC)/$(JOB) 2>/dev/null | cut -d' ' -f2)
+LIB_VERSION :="unknown"
+LIBRARY_VERSION    = $(shell cat $(LIBRARY).version)
+WRITE_VERSION_FILE = echo "$(LIB_VERSION)" > $(LIBRARY).version
+=======
+C3TAG := $(C3DIST)/scripts/c3tag
+ifeq "$(OS_NAME)" "SunOS"
+C3TAG := python $(C3DIST)/scripts/c3tag_SunOS.pyo
+endif
+ifeq "$(OS_NAME)" "OSF1"
+C3TAG := python $(C3DIST)/scripts/c3tag_OSF1.pyc
+endif
+LIBVERSIONFILE := $(LIBRARY).version
+LIBRARY_VERSION = $(shell cat $(LIBVERSIONFILE))
+>>>>>>> 1.214
+
+# ---------------------------------------
+# extracting object files from libraries
+# ---------------------------------------
+EXTRACT_OBJECT_FILES = $(AR) x $(LIBRARY) $(shell $(AR) t $(LIBRARY) |grep .o)
+OBJECT_FILES = $(shell $(AR) t $(LIBRARY) |grep .o)
+
+#------------------------------------------------------------------
+# If an executable or a shared module is going to be created,
+# set up the correct name for the output file, and set up users 
+# libraries to be 'gmake'd if requested.
+#------------------------------------------------------------------
+
+ifneq "$(strip $(EXE))" ""
+  TRUE_EXE := $(EXE)$(EXE_G)
+  ifneq (,$(findstring $(MAKE_LIBS),yY))
+    LIB_CHECK := $(USER_LIBS)
+  endif
+endif
+
+ifneq "$(strip $(SHARMODNAME))" ""
+  TRUE_SHARMOD := $(SHARMOD)
+  ifneq (,$(findstring $(MAKE_LIBS),yY))
+    LIB_CHECK := $(USER_LIBS)
+  endif
+endif
+
+#---------
+# actions
+#---------
+
+.SUFFIXES: .cdf
+
+.PHONY: default production shared_module sharmod debug mklib mkbin mkshlib notarget depend dump clean clean_depend sticky_release autogen autormgen gen rmgen
+
+# Users sometimes get caught because they failed to set the USER_SRC
+# environment variable.
+ifeq "$(USER_SRC)" ""
+default:
+	@echo " WARNING: please set the shell environment variable USER_SRC"
+	@echo " to your top level source directory."
+
+production: default
+
+debug: default
+
+shared_module: default
+
+else # USER_SRC is defined
+ifneq "$(AUTOGEN)" ""
+default: autogen
+production: autogen
+endif
+default: depend mkbin mklib mkshlib sticky_release production $(TRUE_SHARMOD)
+
+
+production: mkbin mklib sticky_release $(LIBREQD) $(SHLIBREQD) $(TRUE_EXE) 
+
+shared_module: depend sharmod
+sharmod: mkshlib mklib sticky_release $(SHLIBREQD) $(SHARMOD)
+
+debug:
+	@$(MAKE) $(USER_MFILE) MAKEFILE=$(MAKEFILE) DEBUG=y production
+
+endif  # USER_SRC == ""
+
+#To make stable releases safer to use, a ".release" is put in the build area 
+#where ".release" holds the name of the release that the package was built 
+#against. if the info in that file differs from C3LIB then an error message
+#is issued.
+#
+#This is not as good as having M.tail automatically switch to the old
+#release, but its still better than accidently mixing different releases.
+#
+#If the release is current we check the last update date of .release
+#and if it is earlier than 7am that day we warn the user to delete
+#their old library and recompile from scratch. (This means that we need to 
+#touch the .release file everytime the user compiles).
+RELEASE_FILE:=$(locallib)/.release
+sticky_release:
+	@test -f $(RELEASE_FILE) || echo "$(C3LIB)" >> $(RELEASE_FILE)
+	@release=`cat $(RELEASE_FILE)`; if test "$(C3LIB)" != "$$release"; \
+	then echo "This library was last compiled using $$release, \n"\
+		  "but you are now using $(C3LIB). \n"\
+                  "Please do 'c3rel $$release' or delete all old \n"\
+                  "libraries and the \"$(RELEASE_FILE)\" file."; \
+	     exit 1; \
+	fi
+	@if test "$(C3LIB)" = "current"; then \
+           if /usr/bin/env test $(C3DIST)/rel/current -nt $(RELEASE_FILE); \
+	   then \
+             echo "current has rotated -- you may need to delete all old \n"\
+                  "libraries. \n"\
+	          "In order to continue, you must delete \"$(RELEASE_FILE)\"."; \
+	     exit 1;\
+           fi; \
+	fi
+	@test -f $(RELEASE_FILE) && touch $(RELEASE_FILE)
+
+
+$(INCLUDE_LINK):
+	@test -d $(INCLUDE_PATH) || mkdir -p $(INCLUDE_PATH)
+	@for dir in `ls $(USER_SRC) |grep -v $(INCLUDE_DIR)`; \
+	do \
+          if (test ! -h $(INCLUDE_PATH)/$$dir && \
+              test   -d $(USER_SRC)/$$dir/$$dir) \
+          then \
+            echo "--> creating include directory link for $$dir ..."; \
+            (cd $(INCLUDE_PATH); ln -s ../$$dir/$$dir); \
+          fi; \
+          if (test ! -h $(INCLUDE_PATH)/$$dir && \
+              test   -d $(USER_SRC)/$$dir) \
+          then \
+            echo "--> creating include directory link for $$dir ..."; \
+            (cd $(INCLUDE_PATH); ln -s ../$$dir); \
+          fi; \
+        done
+
+mklib:
+	@test -z "$(LIBREQD)"   || test -d $(locallib) || mkdir -p $(locallib) ;
+	@test -z "$(LIBREQD)"   || test -f $(LIBREQD)  || ar r $(LIBREQD)
+
+mkbin:
+	@test -d ../bin || mkdir -p ../bin
+
+mkshlib:
+	@test -d ../shlib || mkdir -p ../shlib
+
+$(TRUE_EXE): $(MAKEF_LINK_DEP) $(LIB_CHECK) $(LIBREQD) \
+           $(USER_OBJS) $(CLEO3_OBJS) $(OTHR_OBJS) \
+	   $(COMM_OBJS) $(CLEO_OBJS) $(CERN_OBJS) \
+           $(patsubst %, lib%$(USER_G).a, $(USER_LIBS)) \
+           $(patsubst %, lib%$(CLEO3_G).a, $(CLEO3_LIBS)) \
+           $(patsubst %, lib%$(OTHR_G).a, $(OTHR_LIBS)) \
+           $(patsubst %, lib%$(COMM_G).a, $(COMM_LIBS)) \
+           $(patsubst %, lib%$(CLEO_G).a, $(CLEO_LIBS)) \
+           $(patsubst %, lib%$(CERN_G).a, $(CERN_LIBS)) \
+           $(patsubst %, lib%$(CLEO_G).a, $(NILE_LIBS))
+ifeq "$(OS_NAME)" "SunOS"
+	@echo "--> extracting .o files to assure proper static initialization"
+	@$(EXTRACT_OBJECT_FILES)
+	@ echo "--> now link the job $(JOB) with the following command:"
+	@test ! -f $(TRUE_EXE) || mv $(TRUE_EXE) $(TRUE_EXE)_old
+	$(DO_QUANTIFY) $(DO_PURIFY) $(LINK_COMPILER) \
+		$(filter %.o,$^) \
+		$(UNDEF) $(LINK_FLAGS) $(USER_LFLAGS) \
+		$(OBJECT_FILES) \
+		$(LIBS_DIR) $(LIBREQD) $(USERBAG) $(CLEO3BAG) \
+		$(OTHRBAG) $(CLEOBAG) $(NILEBAG) $(CERNBAG) $(COMMBAG) \
+		$(LINK_DYNAMIC) $(SYSBAG) $(COMPBAG) \
+		$(MAP) -o $(TRUE_EXE) > $(TRUE_EXE).map
+	@echo "--> ... and finally removing .o files."
+	@$(RM) *.o
+#			|| $(RM) $(TRUE_EXE)
+#	@/bin/test -x $(TRUE_EXE)
+else
+	@ echo "--> now link the job $(JOB) with the following command:"
+	@test ! -f $(TRUE_EXE) || mv $(TRUE_EXE) $(TRUE_EXE)_old
+	$(DO_QUANTIFY) $(DO_PURIFY) $(LINK_COMPILER) \
+		$(filter %.o,$^) \
+		$(UNDEF) $(LINK_FLAGS) $(USER_LFLAGS) \
+		$(LIBS_DIR) $(LIBREQD) $(USERBAG) $(CLEO3BAG) \
+		$(OTHRBAG) $(CLEOBAG) $(NILEBAG) $(CERNBAG) $(COMMBAG) \
+		$(LINK_DYNAMIC) $(SYSBAG) $(COMPBAG) \
+		$(MAP) -o $(TRUE_EXE) > $(TRUE_EXE).map
+endif
+
+$(LIBVERSIONFILE):
+	@echo "--> creating $@"
+	@$(C3TAG) -l -s $(USER_SRC)/$(JOB) 2>/dev/null | cut -d' ' -f2 > $@
+
+$(LIBRARY): $(OBJS) $(LIBVERSIONFILE)
+	@test ! -f $(LIBRARY) || ar ts $(LIBRARY) > /dev/null
+
+$(SHARLIB): $(LIBRARY)
+	@echo "--> creating a shared library from $(LIBRARY) ..."
+	@$(RM) $(SHARLIB)*
+ifeq "$(OS_NAME)" "SunOS"
+	@$(LINK_COMPILER) -G \
+		$(LINK_FLAGS) $(USER_LFLAGS) \
+		-Qoption ld -h,${PWD}/${SHARLIB}."$(LIBRARY_VERSION)" \
+		-Qoption ld -zallextract \
+		$(LIBRARY) \
+		-o $(SHARLIB)."$(LIBRARY_VERSION)"
+else
+ifeq "$(OS_NAME)" "Linux"
+	@echo "--> extracting .o files to assure proper static initialization"
+	@$(EXTRACT_OBJECT_FILES)
+	$(LINK_COMPILER) -shared \
+	$(LINK_FLAGS) $(USER_LFLAGS) \
+	-Wl,-soname,${PWD}/${SHARLIB}."$(LIBRARY_VERSION)" \
+	$(OBJECT_FILES) \
+	-o $(SHARLIB)."$(LIBRARY_VERSION)"
+	@$(RM) *.o
+else
+	$(LINK_COMPILER) -shared \
+		$(LINK_FLAGS) $(USER_LFLAGS) \
+		-Wl,-expect_unresolved,'*' \
+		-Wl,-soname,${PWD}/${SHARLIB}."$(LIBRARY_VERSION)" \
+		-Wl,-all,$(LIBRARY) -Wl,-none \
+		-L../lib -o $(SHARLIB)."$(LIBRARY_VERSION)"
+	@$(RM) so_locations # remove old so_locations file
+#		-Wl,-exact_version \
+#		-Wl,-set_version,"$(LIBRARY_VERSION)"
+endif
+endif
+	@echo "--> ... and making soft link to versioned shared library:"
+	@(cd $(locallib); shlibrary=`basename $(SHARLIB)`; \
+		versioned_shlibrary=$${shlibrary}."$(LIBRARY_VERSION)"; \
+		ln -s $${versioned_shlibrary} $${shlibrary}; \
+		echo "    $${shlibrary} --> $${versioned_shlibrary}"; \
+	)
+
+$(SHARMOD): $(MAKEF_LINK_DEP) $(LIBRARY) $(LIB_CHECK) $(LIBREQD) \
+           $(USER_OBJS) $(CLEO3_OBJS) $(OTHR_OBJS) \
+	   $(COMM_OBJS) $(CLEO_OBJS) $(CERN_OBJS) \
+           $(patsubst %, lib%$(USER_G).a, $(USER_LIBS)) \
+           $(patsubst %, lib%$(CLEO3_G).a, $(CLEO3_LIBS)) \
+           $(patsubst %, lib%$(OTHR_G).a, $(OTHR_LIBS)) \
+           $(patsubst %, lib%$(COMM_G).a, $(COMM_LIBS)) \
+           $(patsubst %, lib%$(CLEO_G).a, $(CLEO_LIBS)) \
+           $(patsubst %, lib%$(CERN_G).a, $(CERN_LIBS)) \
+           $(patsubst %, lib%$(CLEO_G).a, $(NILE_LIBS))
+	@test ! -f $(SHARMOD) || mv $(SHARMOD) $(SHARMOD)_old
+ifeq "$(OS_NAME)" "SunOS"
+	@echo "--> extracting .o files to assure proper static initialization"
+	@$(EXTRACT_OBJECT_FILES)
+	$(LINK_COMPILER) -G \
+		$(LOAD_USERUNDEF) \
+		$(UNDEF) $(LINK_FLAGS) $(USER_LFLAGS) \
+		$(OBJECT_FILES) \
+		$(LIBS_DIR) $(USERBAG) $(CLEO3BAG) \
+		$(OTHRBAG) $(CLEOBAG) $(CERNBAG) $(COMMBAG) \
+		$(SYSBAG) \
+		-o $(SHARMOD) \
+		$(MAP) > $(SHARMOD).map
+	@echo "--> ... and finally removing .o files."
+	@$(RM) *.o
+else
+ifeq "$(OS_NAME)" "Linux"
+	$(LINK_COMPILER) -shared \
+		$(LOAD_USERUNDEF) \
+		$(UNDEF) $(LINK_FLAGS) $(USER_LFLAGS) \
+		-Wl,-whole-archive $(LIBRARY) -Wl,-no-whole-archive\
+		$(LIBS_DIR) $(USERBAG) $(CLEO3BAG) \
+		$(OTHRBAG) $(CLEOBAG) $(CERNBAG) $(COMMBAG) \
+		$(SYSBAG) $(COMPBAG) \
+		-o $(SHARMOD) > $(SHARMOD).map 
+else
+	$(LINK_COMPILER) -shared \
+		$(LOAD_USERUNDEF) \
+		$(UNDEF) $(LINK_FLAGS) $(USER_LFLAGS) \
+		-Wl,-expect_unresolved,'*' \
+		-Wl,-all,$(LIBRARY) -Wl,-none \
+		$(LIBS_DIR) $(USERBAG) $(CLEO3BAG) \
+		$(OTHRBAG) $(CLEOBAG) $(CERNBAG) $(COMMBAG) \
+		$(SYSBAG) $(COMPBAG) \
+		$(MAP) -o $(SHARMOD) > $(SHARMOD).map 
+	@$(RM) so_locations # remove old so_locations file
+endif
+endif
+# --------------------------------------------------------------------
+# if cxx version < 5.6 patch 9, then uncomment the following lines and
+# use instead of the lines just above
+# --------------------------------------------------------------------
+#	@$(RM) $(SHARMOD)
+#       ld -G 8 -shared -g0 \
+#		$(LOAD_USERUNDEF) \
+#		$(UNDEF) $(LINK_FLAGS) $(USER_LFLAGS) \
+#               -expect_unresolved '*' \
+#               -soname $(SHARMOD) \
+#               -all $(LIBRARY) -none \
+#               /usr/lib/cmplrs/cxx/_main.o \
+#               -L/usr/lib/cmplrs/cxx -rpath /usr/lib/cmplrs/cxx \
+#               $(LIBS_DIR) $(USERBAG) $(CLEO3BAG) \
+#               $(OTHRBAG) $(CLEOBAG) $(CERNBAG) $(COMMBAG) \
+#               $(SYSBAG) $(COMPBAG) \
+#               $(SHARED_LIBS) \
+#               -lcxxstd -lcxx -lexc -lots \
+#               -o $(SHARMOD) \
+#               -m > $(SHARMOD).map 
+#			|| $(RM) $(SHARMOD)
+##	@/bin/test -f $(SHARMOD)
+
+
+notarget $(LIB_CHECK)::
+	@test ! -s ../$@/$(MAKEFILE) || \
+	(echo "--> running gmake over user's library $@" && \
+	 cd ../$@ && $(MAKE) depend $(TARGET) JOB=$@ MAKEFILE=$(MAKEFILE) )
+
+depend: autogen $(INCLUDE_LINK)
+
+ifeq "$(AUTOGEN)" ""
+autormgen: ;
+autogen: ;
+
+else
+autormgen: rmgen
+
+autogen: gen
+	@echo "--> auto-generation is complete"
+ifneq ($(MAKECMDGOALS), autogen)
+	@$(MAKE) --no-print-directory -e AUTOGEN="" $(MAKECMDGOALS)
+endif # $(MAKECMDGOALS) == autogen
+endif # $(AUTOGEN) == ""
+
+clean_depend:
+	@echo "--> cleaning out $(DEP_FILE) files"
+	@$(RM) $(DEP_FILE)
+
+clean: clean_depend autormgen
+	@echo "--> cleaning out binaries..."
+ifneq "$(LIBRARY)" ""
+	@-test ! -f $(LIBRARY) || rm -f $(LIBRARY) $(LIBRARY).version
+endif
+ifneq "$(SHARMOD)" ""
+	@-test ! -f $(SHARMOD) || rm -f $(SHARMOD) $(SHARMOD).map
+endif
+ifneq "$(SHARLIB)" ""
+	@-test ! -f $(SHARLIB) || rm -f $(SHARLIB) $(SHARLIB).*
+endif
+ifneq "$(TRUE_EXE)" ""
+	@-test ! -f $(TRUE_EXE) || rm -f $(TRUE_EXE) $(TRUE_EXE).map
+endif
+
+dump:
+	@echo "JOB is	$(JOB)"
+	@echo "EXE is	$(EXE)"
+	@echo "TRUE_EXE is $(TRUE_EXE)"
+	@echo "MAKEFILE is $(MAKEFILE)"
+	@echo "DIR_LIST is $(DIR_LIST)"
+	@echo "USER_INCS is $(USER_INCS)"
+	@echo "OTHR_INCS is $(OTHR_INCS)"
+	@echo "COMM_INCS is $(COMM_INCS)"
+	@echo "CLEO_INCS is $(CLEO_INCS)"
+	@echo "CERN_INCS is $(CERN_INCS)"
+	@echo "USER_OBJS is $(USER_OBJS)"
+	@echo "CLEO3_OBJS is $(CLEO3_OBJS)"
+	@echo "OTHR_OBJS is $(OTHR_OBJS)"
+	@echo "COMM_OBJS is $(COMM_OBJS)"
+	@echo "CLEO_OBJS is $(CLEO_OBJS)"
+	@echo "CERN_OBJS is $(CERN_OBJS)"
+	@echo "LIBS_DIR  is $(LIBS_DIR)"
+	@echo "USER_LIBS is $(USER_LIBS)"
+	@echo "CLEO3_LIBS is $(CLEO3_LIBS)"
+	@echo "OTHR_LIBS is $(OTHR_LIBS)"
+	@echo "COMM_LIBS is $(COMM_LIBS)"
+	@echo "CLEO_LIBS is $(CLEO_LIBS)"
+	@echo "CERN_LIBS is $(CERN_LIBS)"
+	@echo "SYS_LIBS is $(SYS_LIBS)"
+	@echo "VPATH is $(VPATH)"
+	@echo "VPATH_DIR is $(VPATH_DIR)"
+	@echo "FORTRAN_SEARCH is $(FORTRAN_SEARCH)"
+	@echo "FORTRAN_SOURCES is $(FORTRAN_SOURCES)"
+	@echo "C_SEARCH is $(C_SEARCH)"
+	@echo "C_SOURCES is $(C_SOURCES)"
+	@echo "CXX_SEARCH is $(CXX_SEARCH)"
+	@echo "CXX_SOURCES is $(CXX_SOURCES)"
+	@echo "CDF_SEARCH is $(CDF_SEARCH)"
+	@echo "CDF_SOURCES is $(CDF_SOURCES)"
+	@echo "USER_DEFS is $(USER_DEFS)"
+	@echo "CLEO_SYMS is $(CLEO_SYMS)"
+	@echo "UNDEF is $(UNDEF)"
+	@echo "OBJS is $(OBJS)"
+	@echo "LIB_CHECK is $(LIB_CHECK)"
+	@echo "LIBRARY is $(LIBRARY)"
+	@echo "LIBREQD is $(LIBREQD)"
+	@echo "LINK_COMPILER is $(LINK_COMPILER)"
+	@echo "LINK_FLAGS is $(LINK_FLAGS)"
+	@echo "USER_FFLAGS is $(USER_FFLAGS)"
+	@echo "FFLAGS is $(FFLAGS)"
+	@echo "CFLAGS is $(CFLAGS)"
+	@echo "CXXFLAGS is $(CXXFLAGS)"
+	@echo "NILEBAG is $(NILEBAG)"
+	@echo "CPP_TIME is $(CPP_TIME)"
+	@echo "CPP_DATE is $(CPP_DATE)"
+	@echo "CPP_VERS is $(CPP_VERS)"
+	@echo "CPP_TITLE is $(CPP_TITLE)"
+
+
+# ---------------------------------------------------------------
+# Suffix Rules
+# ---------------------------------------------------------------
+
+#----------------------------------------------------------------
+# cxx 6.0 has its header files (such as algorithm) in the same
+# directory as its source files (e.g. algorithm.cc).  This causes
+# gmake to use its implicit rule for creating % from %.cc files which
+# ultimately leads to cxx trying to compile the .cc files.  These
+# files will not compile since they are just template declarations.
+# Therefore we will try to stop it by explicitly stating how to
+# deal with the files with no suffixes (which is NOT to compile).
+#---------------------------------------------------------------
+ifeq "$(CXX)" "cxx"
+/usr/include/cxx/%:
+	@
+endif
+ifneq "$(INSURE_USES_CXX)" ""
+/usr/include/cxx/%:
+	@
+endif
+ifeq "$(CXX)" "CC" 
+/opt/SUNWspro/WS6/include/CC/Cstd/%: 
+	@
+endif
+# short-circuit search for makefile implicit rules
+$(MAKEFILE): ;
+$(C3_GMAKE)/M.tail: ;
+
+# ---------------------------------------------------------------
+# we use the $(OBJS_G) suffix to be able to build debug and 
+# non-debug libs at the same time
+# ---------------------------------------------------------------
+%$(OBJS_G).o : %.cc  $(MAKEF_COMPILE_DEP)
+	$(CXX) $(CLEO_DEFS) $(CXXFLAGS) $(LIST_INCS) $(CXX_INCS) -c $< -o $@
+
+%$(OBJS_G).o : %.c   $(MAKEF_COMPILE_DEP)
+	$(CC)  $(CLEO_DEFS) $(CFLAGS)   $(LIST_INCS) $(C_INCS)   -c $< -o $@
+
+%$(OBJS_G).o : %.F   $(MAKEF_COMPILE_DEP)
+	$(FC)  $(CLEO_DEFS) $(FFLAGS)   $(LIST_INCS)             -c $< -o $@
+
+%$(OBJS_G).o : %.cdf $(MAKEF_COMPILE_DEP)
+	$(KUIPC) $< $*$(OBJS_G)
+	$(FC)  $(CLEO_DEFS) $(KUIPC_FFLAGS) $(LIST_INCS) -c $*.f -o $@
+
+# -----------------------------------------------------
+# handling dependencies via suffix rules -- the new way
+$(DEP_SUFFIX_FORMAT) : %.cc $(INCLUDE_LINK) $(MAKEF_COMPILE_DEP)
+	@echo "--> creating dependency file $@ for $<"
+	@-$(SHELL) -ec \
+	'$(CXX_DEP) $(CLEO_DEFS) $(CXXFLAGS) $(LIST_INCS) $(CXX_INCS) $< \
+	| $(FILTER_INCLUDES) \
+	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) \
+	$@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
+$(DEP_SUFFIX_FORMAT) : %.c $(INCLUDE_LINK) $(MAKEF_COMPILE_DEP)
+	@echo "--> creating dependency file $@ for $<"
+	@-$(SHELL) -ec \
+	'$(C_DEP) $(CLEO_DEFS) $(CFLAGS)   $(LIST_INCS) $(C_INCS) $< \
+	| $(FILTER_INCLUDES) \
+	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) \
+	$@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
+$(DEP_SUFFIX_FORMAT) : %.F $(INCLUDE_LINK) $(MAKEF_COMPILE_DEP)
+	@echo "--> creating dependency file $@ for $<"
+	-$(SHELL) -ec \
+	'$(F_DEP) $(CLEO_DEFS) $(FFLAGS)   $(LIST_INCS) $< \
+	| $(FILTER_INCLUDES) \
+	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) \
+	$@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
+
+# need special handling for out-of-date dependency files
+#$(HEADER_FORMATS) :
+#	@echo "--> special depend remake due to out-of-date dependency \"$@\""
+
+# inclusion of one "makefile" per source file triggers creation of depend files
+ifneq ($(MAKECMDGOALS),clean)
+# But we DON'T want to try to create the depend files if USER_SRC has not
+# been defined.
+ifneq "$(USER_SRC)" ""
+
+# And we definitely don't want to include this stuff if we are
+# autogenerating source code - we aren't ready yet.
+ifeq "$(AUTOGEN)" ""
+-include $(NOTDIR_CXX_SOURCES:%.cc=$(DEP_SUFFIX_FORMAT)) \
+	 $(NOTDIR_C_SOURCES:%.c=$(DEP_SUFFIX_FORMAT)) \
+	 $(NOTDIR_F_SOURCES:%.F=$(DEP_SUFFIX_FORMAT)) 
+<<<<<<< M.tail
+endif
+=======
+endif # AUTOGEN is not defined
+endif # USER_SRC is defined
+endif # MAKECMDGOALS != "clean"
+>>>>>>> 1.214
+
+else
+-include $(DEP_FILE)
+endif
+
+#
+# $Id: M.tail,v 1.214 2003/01/30 21:38:12 cleo3 Exp $
+#
+# $Log: M.tail,v $
+# Revision 1.214  2003/01/30 21:38:12  cleo3
+# changed needed for compilation under Linux
+#
+# Revision 1.213  2002/12/13 18:23:51  cdj
+# use vbroker 5.1 for solaris 8
+#
+# Revision 1.212  2002/11/12 15:41:59  cdj
+# on Solaris extract .o files from archive before building executable to get around bug on Solaris 8 version of Purify and Quantify
+#
+# Revision 1.211  2002/11/10 20:39:55  cdj
+# added BDLZDclient
+#
+# Revision 1.210  2002/10/24 15:52:17  cleo3
+# now properly find rational products for Solaris 8
+#
+# Revision 1.209  2002/09/12 17:46:14  cdj
+# forced to move to new Purify/Quantify version
+#
+# Revision 1.208  2002/08/30 20:37:37  cleo3
+# changes necessary for solaris8
+#
+# Revision 1.207  2002/08/05 15:53:16  cleo3
+# removed obsolete -G option in OSF fortran compilation (new f77 compiler doesn't like it)
+#
+# Revision 1.206  2002/06/14 17:52:33  cleo3
+# use -xlang=f77 flag for Solaris 2.8
+#
+# Revision 1.205  2002/06/12 20:59:10  gregor
+# Need .d and .o files to depend on Makefile.
+#
+# Revision 1.204  2002/05/29 16:31:04  gregor
+# Need to prevent recursion if the MAKECMDGOAL is autogen.
+#
+# Revision 1.203  2002/05/29 16:26:55  gregor
+# The autogen stuff needed to remake the original target, and that
+# gets lost with $(MAKE). Adding $(MAKECMDGOALS) puts it back.
+#
+# Revision 1.202  2002/05/28 13:28:09  gregor
+# Apparently the build script runs make depend to autogenerate.
+#
+# Revision 1.201  2002/05/24 19:07:35  gregor
+# This gets rid of OLDDEP and supports autogeneration of source "before" the
+# dependencies are generated. To use autogeneration, your makefile must
+# define AUTOGEN before including M.tail. It must define the targets gen and
+# rmgen *after* including M.tail.
+#
+# Revision 1.200  2002/05/11 19:47:38  hajime
+# reduce the size of command line to allow a longer argument in exec
+#
+# Revision 1.199  2002/04/30 19:54:41  gregor
+# Added code to detect if USER_SRC is not defined and print a warning
+# instead of building anything. Since the dependencies are loaded when
+# the Makefile is read in, the loading of dependency files was also
+# suppressed is USER_SRC was not defined.
+#
+# Revision 1.198  2002/04/30 15:52:02  gregor
+# The creation of the version file should not happen until the library
+# is ready to be assembled. Otherwise it is made for every compile and
+# this wastes time if there are compilation errors.
+#
+# Revision 1.197  2002/02/14 19:48:29  cleo3
+# changed needed for Solaris8
+#
+# Revision 1.196  2001/11/16 22:01:15  hajime
+# new path for new version of rational(purify)
+#
+# Revision 1.195  2001/09/18 19:57:00  cdj
+# added BDLTRIGMCclient
+#
+# Revision 1.194  2001/09/07 15:47:24  cleo3
+# Changes for Solaris 8
+#
+# Revision 1.193  2001/07/25 20:03:52  cdj
+# upgraded to Visibroker 3.3
+#
+# Revision 1.192  2001/07/13 12:32:41  cdj
+# added missing link to BDLOfflineclient library
+#
+# Revision 1.191  2001/07/11 15:31:02  bkh
+# Add BDLOfflineclient to BDL include list
+#
+# Revision 1.190  2001/04/13 20:55:26  cdj
+# modified to work with CC 6.2
+#
+# Revision 1.189  2001/03/28 23:43:27  pappas
+# Added a long overdue fix for CLHEP access through other_sources
+# releases. Since CLHEP is no longer created in the include directories
+# by the release structure scripts it must be added to the standard list
+# of includes in the compilation. This allows us to change CLHEP in
+# synch with new versions of Development or Current.
+#
+# Revision 1.188  2001/02/23 19:07:51  cleo3
+# first working Linux version
+#
+# Revision 1.187  2001/02/14 21:03:22  cleo3
+# modified for use with linux
+#
+# Revision 1.186  2000/10/27 22:12:37  cdj
+# uses new Quantify/Purify version
+#
+# Revision 1.185  2000/09/18 19:35:58  mkl
+# set PATH variable internally to first list /usr/local/bin to make sure that we pick up the /usr/local/bin versions of programs (e.g. test in our case)
+#
+# Revision 1.184  2000/09/16 17:21:38  mkl
+# correct typo in new sticky_release echo
+#
+# Revision 1.183  2000/09/12 21:12:44  mkl
+# use a hidden file ('.release') to keep track of what release was used to build libraries; based on that give good user-feedback and halt 'gmake' execution
+#
+# Revision 1.182  2000/08/09 20:41:56  mkl
+# added BDLSVSCclient include and library
+#
+# Revision 1.181  2000/06/01 21:54:59  mkl
+# dont create include path to include directory itself -- again
+#
+# Revision 1.180  2000/06/01 21:40:35  mkl
+# dont create include path to include directory itself
+#
+# Revision 1.179  2000/05/06 16:44:22  mkl
+# get rid of comments in multi-line unix command
+#
+# Revision 1.178  2000/05/05 19:41:16  mkl
+# also create include links for directories with same-named directories
+#
+# Revision 1.177  2000/04/27 21:01:52  mkl
+# added mico setup
+#
+# Revision 1.176  2000/04/11 16:55:52  mkl
+# change version control to use LIBRARY not LIBREQD (not a target)
+#
+# Revision 1.175  2000/03/20 18:45:08  mkl
+# move target binaries out of the way before remaking (solves the problem of long-running jobs); use new 'xs' option on SunOS in debug mode to contain debug info without requiring .o files
+#
+# Revision 1.174  2000/03/16 20:04:30  mkl
+# smarter clean target: dont complain about missing to-be-removed stuff
+#
+# Revision 1.173  2000/03/16 19:40:35  mkl
+# simplify include directory soft link scheme to look at all files, not just directories to work in cleo3 rebuild system
+#
+# Revision 1.172  2000/03/14 23:14:13  mkl
+# now auto-create include area
+#
+# Revision 1.171  2000/02/21 23:26:49  mkl
+# Mike M. found a way around having use NODEP=y for avoiding remake of the dependency files in clean target
+#
+# Revision 1.170  2000/01/22 16:43:18  mkl
+# clean target: clean out all related files, e.g. .map etc.
+#
+# Revision 1.169  2000/01/20 22:12:48  mkl
+# resolved problems with static linking
+#
+# Revision 1.168  2000/01/20 21:14:38  mkl
+# new LINK_STATIC flag to force static linking
+#
+# Revision 1.167  2000/01/15 17:10:18  mkl
+# changed my mind on CLEAN=y directive: now called NODEP=y
+#
+# Revision 1.166  2000/01/15 17:07:18  mkl
+# introduce CLEAN=y directive to speed up cleaning process (e.g. no remake of dependency files)
+#
+# Revision 1.165  1999/12/20 17:13:35  mkl
+# switch from tcl/tk 8.0 to 8.2
+#
+# Revision 1.164  1999/12/15 22:27:08  mkl
+#  - added Linux shmod link directive
+#  - dont need to hook Solaris shmod link on make factories anymore,
+#    since explicit .o linking of primary library takes care of pulling
+#    in make factory.
+#
+# Revision 1.163  1999/11/26 23:30:04  mkl
+# finally found a way to turn off stupid warning/error messages from makedepend on SunOS
+#
+# Revision 1.162  1999/11/17 16:19:57  mkl
+# M.tail: added USER_SRC/include directory for cleo2 libs in one's own area
+#
+# Revision 1.161  1999/11/11 05:38:24  mkl
+# new NO_IMPLICIT_NONE command-line flag to turn off -u flag; reorder CXX_INCS to put Objectivity includes first
+#
+# Revision 1.160  1999/11/05 18:25:35  mkl
+# dont hardwire CCLIBS:=c_r
+#
+# Revision 1.159  1999/11/04 03:50:48  mkl
+# fix up kuipc --> fortran file handling; fix up Objectivity linking for Objy 5.2
+#
+# Revision 1.158  1999/10/25 15:24:35  mkl
+# simplify purify/quantify handling (path gets set internally; cleaning out cache happens in one place, but every time)
+#
+# Revision 1.157  1999/10/19 18:37:54  mkl
+# use OBJS_G in dependency lines in .d files for debug mode
+#
+# Revision 1.156  1999/10/16 17:41:12  mkl
+# attempts to speed up config.guess and c3tag calls; some adjustements for database-code building
+#
+# Revision 1.155  1999/10/09 16:09:37  mkl
+# forgot to add BDLMUclient to list of constants BDL libs and includes
+#
+# Revision 1.154  1999/10/08 23:24:03  mkl
+# moved to new split-up Common BDL includes and libraries
+#
+# Revision 1.153  1999/10/08 19:32:54  mkl
+# upgrade to newer version of purify
+#
+# Revision 1.152  1999/10/05 18:30:38  mkl
+# introduce MT_SUFFIX for 3rd-party libs that need _r
+#
+# Revision 1.151  1999/09/30 22:48:40  mkl
+# undo makefile dependency for dependency file creationg: bug in gmake? doesn't recompile source code after updating dep files
+#
+# Revision 1.150  1999/09/30 22:38:40  mkl
+# change common includes and lib directives when MT=y
+#
+# Revision 1.149  1999/09/30 18:47:16  mkl
+# add multithreaded gmake option: MT=y; filter out official includes from depend files; give dummy Makefile/M.tail suffix rules to forgo built-in suffix rules
+#
+# Revision 1.148  1999/09/28 18:00:00  mkl
+# better way of handling obsolete dependencies
+#
+# Revision 1.147  1999/09/28 01:46:15  mkl
+# found a (kludgy) way to delete *.d depend files in cases where obsolete dependency gets in the way
+#
+# Revision 1.146  1999/09/26 16:16:37  mkl
+# dont do special debug/non-debug handling for PURIFY/QANTIFY
+#
+# Revision 1.145  1999/09/24 02:48:10  mkl
+# dont link sharedmod in production; fix up some report messages; get rid of .cdf dependency handling
+#
+# Revision 1.144  1999/09/21 22:03:46  mkl
+# found a way to start depend files with '.' to make them invisible
+#
+# Revision 1.143  1999/09/20 17:10:54  mkl
+# move to new dependency scheme; OLDDEP=y switches on old scheme; first try to have 'gmake' be sufficient without requiring 'depend', 'production', or 'shared_module'
+#
+# Revision 1.142  1999/07/24 21:06:46  mkl
+# switch to 16kB page size
+#
+# Revision 1.141  1999/07/24 03:09:57  cdj
+# added OTHR_DIR_LIST to allow sources from other directories into the library
+#
+# Revision 1.140  1999/07/19 21:42:11  mkl
+# new purify 'quantify' executable for finding performance sinks
+#
+# Revision 1.139  1999/07/16 15:05:06  mkl
+# turn on optimizer on Solaris
+#
+# Revision 1.138  1999/06/30 23:39:05  mkl
+# refine previous submission: leave optimizer on for cc and fortran compiler on Solaris
+#
+# Revision 1.137  1999/06/30 23:28:41  mkl
+# turn off optimizing for CC, unless OPTIMIZE=y/Y
+#
+# Revision 1.136  1999/06/29 15:16:33  mkl
+# turn on basic optimization level for non-debug; MAKEFILEDEP=n now relinks (ONLY does not recompile); automatic dependency files now have .e extension (instead of .d)
+#
+# Revision 1.135  1999/06/25 19:03:40  mkl
+# need to include /usr/include in include path for cc on OSF1
+#
+# Revision 1.134  1999/06/25 18:16:03  mkl
+# new way of doing dependencies (this time automatically); for now only used for NEW_DEP=y, else defaults to old depend target
+#
+# Revision 1.133  1999/06/25 03:50:59  mkl
+# undo shared_module/no depend change; rather add sharmod target for that purpose
+#
+# Revision 1.132  1999/06/24 20:11:49  mkl
+# dont run depend target when running shared_module target
+#
+# Revision 1.131  1999/06/24 04:04:33  mkl
+# new 'DEBUG_ALL' directive to switch on linking with debug versions of USER_LIB and CLEO3_LIB libraries; fix up clean target to get rid of annoying messages
+#
+# Revision 1.130  1999/06/21 16:07:38  mkl
+# back out of double-colon targets and MAKE_SHAREDLIB=default changes
+#
+# Revision 1.129  1999/06/21 15:20:44  mkl
+# switch link compiler default to be the c++ (used to be fortran)
+#
+# Revision 1.128  1999/06/19 20:34:30  mkl
+# fine-tuning schema copying
+#
+# Revision 1.127  1999/06/19 20:01:20  mkl
+# make shared library creation the default from now on; use solssb as lock server (to have better control without screwing anybody else)
+#
+# Revision 1.126  1999/06/18 04:10:51  mkl
+# silence c3tag (getting version) error message for non-cvsroot modules; add dep to make sharedlib for shared_module target
+#
+# Revision 1.125  1999/06/17 20:32:13  mkl
+# no _g needed for linking .o files
+#
+# Revision 1.124  1999/06/15 03:01:06  mkl
+# use better scheme to copy or not copy schema from official fdb
+#
+# Revision 1.123  1999/06/04 18:49:47  mkl
+# do shared_module link with library on OSF1 (weird problem when linking with .o files)
+#
+# Revision 1.122  1999/06/03 21:17:41  mkl
+# link shared_modules with .o files instead of library to assure proper static initialization
+#
+# Revision 1.121  1999/06/02 00:44:52  mkl
+# make sure all symbols get pulled from library to be made into shared module
+#
+# Revision 1.120  1999/06/01 15:17:40  mkl
+# added 'clean' target to clean out binaries
+#
+# Revision 1.119  1999/05/18 17:52:00  mkl
+# New shared library versioning scheme
+#
+# Revision 1.118  1999/05/08 20:42:31  mkl
+# make Constants people's life easier
+#
+# Revision 1.117  1999/04/27 21:45:50  mkl
+# refinement of MAKE_SHAREDLIB option (now also SunOS)
+#
+# Revision 1.116  1999/04/27 20:52:42  mkl
+# MAKE_SHAREDLIB=y|Y will trigger creating a shared library from a library
+#
+# Revision 1.115  1999/04/26 18:46:28  mkl
+# use _g suffix for debug versions of objects (necessary for concurrent rebuild of both debug and non-debug libraries)
+#
+# Revision 1.114  1999/04/23 17:50:02  mkl
+# define HAVE_CONFIG_H for autoconf
+#
+# Revision 1.113  1999/04/22 18:38:36  mkl
+# new way of doing include directives
+#
+# Revision 1.112  1999/04/19 15:49:00  mkl
+# use as purify cache dir original dir of libs if writable; clean out files older than 7 days
+#
+# Revision 1.111  1999/04/16 20:16:58  mkl
+# new PURIFY=y flag
+#
+# Revision 1.110  1999/03/13 16:29:15  mkl
+# only add -L directive if used
+#
+# Revision 1.109  1999/03/13 03:59:21  mkl
+# new database layout; use Objy stl
+#
+# Revision 1.108  1999/03/11 22:00:22  mkl
+# COMMLIB should be COMM_LIB
+#
+# Revision 1.107  1999/03/01 22:43:21  mkl
+# use configured common types
+#
+# Revision 1.106  1999/02/16 23:56:30  jjo
+# Remove -C flag for fortran debug compiling from FFLAGS due to Zebra fails check bounds (jjo)
+#
+# Revision 1.105  1999/02/16 19:57:03  mkl
+# easier way to get CPP_TITLE
+#
+# Revision 1.104  1999/02/15 20:28:05  mkl
+# replaced pwd with pawd
+#
+# Revision 1.103  1999/02/12 00:35:13  mkl
+# cat TITLE.<lib> file correctly instead of version command (kludgy solution until have switched over all libs to c3tag
+#
+# Revision 1.102  1999/02/11 22:11:45  mkl
+# set TITLE.<libname> correctly
+#
+# Revision 1.101  1999/02/11 20:57:39  mkl
+# MAKEFILEDEP=n/N will turn off dependency on Makefile changes
+#
+# Revision 1.100  1999/02/10 15:15:40  mkl
+# remove exe before remaking (text file busy problem)
+#
+# Revision 1.99  1999/02/09 16:26:36  mkl
+# upgraded suffix rules to new pattern fules
+#
+# Revision 1.98  1999/02/05 02:04:08  mkl
+# only include objy includes when set
+#
+# Revision 1.97  1999/01/29 20:18:31  mkl
+# change due to new location of ospace stl library
+#
+# Revision 1.96  1999/01/14 17:42:28  mkl
+# use CERN3_LIB kuipc instead of path-defined kuipc
+#
+# Revision 1.95  1999/01/12 22:28:44  mkl
+# first version of makefile pieces (to be included in Makefile around M.tail include statement for Objectivity ddl processing
+#
+# Revision 1.94  1999/01/11 21:50:09  mkl
+# use correct form for USER_SYMS wen linking on Solaris
+#
+# Revision 1.93  1999/01/11 16:49:29  mkl
+# clean out Templates.DB stuff (obsolete); added -D<platform> -DCLEO_<platform>, needed by fortran build
+#
+# Revision 1.92  1999/01/07 21:30:05  mkl
+# turn off warnings about multiply-defined symbols with different sizes (SunOS only)
+#
+# Revision 1.91  1998/12/28 22:10:59  mkl
+# switch to new instantiation scheme
+#
+# Revision 1.90  1998/12/08 00:18:28  mkl
+# undid cxx6.0 directives to turn off warnings
+#
+# Revision 1.89  1998/12/01 22:45:39  mkl
+# now use config.guess for COMMON subdirectory
+#
+# Revision 1.88  1998/12/01 20:47:04  mkl
+# by mistake had removed CERNLIB directory from list
+#
+# Revision 1.87  1998/12/01 20:08:54  mkl
+# add platform subdir for COMM_INCS
+#
+# Revision 1.86  1998/12/01 19:49:57  mkl
+# added COMM_LIB and COMM_INC handling
+#
+# Revision 1.85  1998/12/01 16:06:40  mkl
+# added posix4 library to system for solaris
+#
+# Revision 1.84  1998/11/30 22:16:44  mkl
+# split SYS_LIBS into SYS_LIBS and COMP_LIBS
+#
+# Revision 1.83  1998/11/30 22:04:01  mkl
+# take out recently added SYSBAG from SunOS shared_module target until shared libs for all sys libs exist
+#
+# Revision 1.82  1998/11/30 18:54:21  mkl
+# include SYS_LIBS for shared modules
+#
+# Revision 1.81  1998/11/30 15:54:57  mkl
+# added -DSOLARIS for visibroker
+#
+# Revision 1.80  1998/11/06 20:21:17  mkl
+# change to not-including-implicitly-instantiate symbols is premature -- too many unresolved symbols
+#
+# Revision 1.79  1998/11/06 19:54:55  mkl
+# changed OS_NAME setting from := to = so that it's available to Makefiles that include M.tail at end
+#
+# Revision 1.78  1998/11/06 15:43:52  mkl
+# now get insure setup files from /nfs/cleo3/util/insure area; ignore implicit instantiation files from now on
+#
+# Revision 1.77  1998/11/05 22:52:05  mkl
+# disable '-msg_disable useless_type_qualifier_on_return_type'
+#
+# Revision 1.76  1998/10/27 23:36:52  mkl
+# added makeModule factory method
+#
+# Revision 1.75  1998/10/27 19:44:08  mkl
+# added entry for CERN_INCS
+#
+# Revision 1.74  1998/10/27 17:11:54  mkl
+# fixed suffix rule for .c.o
+#
+# Revision 1.73  1998/10/22 17:47:31  mkl
+# removed -soname directive (unusable with egcs), since not really needed
+#
+# Revision 1.72  1998/10/21 01:53:15  mkl
+# handle empty Templates.DB/ directory correctly
+#
+# Revision 1.71  1998/10/15 16:53:52  mkl
+# fix 'text file busy' problem (remove file explicitly before linking); Makefile dependency: use command-line flag MAKEFILE=<Makefilename> if MAKEFILE != Makefile
+#
+# Revision 1.70  1998/10/01 18:09:29  mkl
+# apply cxx-dont-compile /usr/include/cxx/*cc fix also to insure++ (with cxx)
+#
+# Revision 1.69  1998/09/29 20:53:48  mkl
+# add dependency on Makefile for relink
+#
+# Revision 1.68  1998/09/26 15:19:30  mkl
+# reverted back to the dumb way of always remaking dependencies (no dependency on sources or header changes)
+#
+# Revision 1.67  1998/09/22 21:09:11  mkl
+# bug fix: only remove Templates.DB when library first gets created; on SunOS always use -zmuldefs linker flag (to allow multiple defined symbols -- use first one)
+#
+# Revision 1.66  1998/09/22 18:24:53  mkl
+# use su flags for solaris to remake symbol table (shouldn't be necessary)
+#
+# Revision 1.65  1998/09/21 15:18:03  mkl
+# use -xildoff flag to turn off incremental linker
+#
+# Revision 1.64  1998/09/17 18:13:00  mkl
+# allow multiple definitions of symbols on solaris  (kludge for now; needs to be resolved better in future)
+#
+# Revision 1.63  1998/09/16 20:04:16  mkl
+# use -KPIC instead of -pic, which the solaris c compiler doesn't understand (it thinks it's profiling)
+#
+# Revision 1.62  1998/09/16 15:45:23  mkl
+# remove so_locations file at end of link process
+#
+# Revision 1.61  1998/09/15 22:25:18  mkl
+# fixed comment line of previous commit
+#
+# Revision 1.60  1998/09/15 22:24:10  mkl
+# added HOME/lib, HOME/shlib without  to library path
+#
+# Revision 1.59  1998/09/15 19:59:54  mkl
+# got rid of old dependency target
+#
+# Revision 1.58  1998/09/15 16:28:17  mkl
+# took out removal of of linked files if unsuccessfully linked
+#
+# Revision 1.57  1998/09/14 22:30:08  mkl
+# now use .depend file for dependencies
+#
+# Revision 1.56  1998/09/14 21:49:02  mkl
+# remove so_locations file (for cxx); undo removal of linked files if unsuccessful link stage
+#
+# Revision 1.55  1998/09/14 20:10:53  mkl
+# remove Template.DB repository when library gets newly created (only under Solaris)
+#
+# Revision 1.54  1998/09/14 19:36:05  mkl
+# only include Templates.DB/*.o files under Solaris
+#
+# Revision 1.53  1998/09/11 15:08:12  mkl
+# remove exe/shlib if unsuccessful linked; still report error via 'test' (suggestion by Mike Marsh)
+#
+# Revision 1.52  1998/09/10 20:45:52  mkl
+# don't include /usr/include for g++ (collides with platform-specific includes)
+#
+# Revision 1.51  1998/09/10 18:44:24  mkl
+# had to move cxx flags to cxx stanza
+#
+# Revision 1.50  1998/09/10 18:27:49  mkl
+# upgrade to egcs 2.91 (from 2.90)
+#
+# Revision 1.49  1998/09/10 17:25:19  mkl
+# turn off some cxx 6.0 warnings
+#
+# Revision 1.48  1998/09/09 21:17:20  mkl
+# temporary kludges to get egcs working (need to force inclusion of egcs include area for platform-dependent files
+#
+# Revision 1.47  1998/09/08 18:13:00  mkl
+# add -pic flag to fortran and c compilers
+#
+# Revision 1.46  1998/08/22 18:13:21  mkl
+# moved TCL/TK_VERS from Makefiles to M.tail
+#
+# Revision 1.45  1998/08/20 21:06:13  cleo3
+# reordered map setting (dependent on platformt)
+#
+# Revision 1.44  1998/08/19 21:37:04  cleo3
+# handle shared libraries under solaris
+#
+# Revision 1.43  1998/07/29 19:51:38  mkl
+# dont redefine CLEO_SYMS (to be backwards compatible with cleo2)
+#
+# Revision 1.42  1998/07/29 18:30:46  mkl
+# rename 'our' makedepend also 'cleo_makedepend'
+#
+# Revision 1.41  1998/07/29 02:29:26  mkl
+# insert repository template instantiations into libraries
+#
+# Revision 1.40  1998/07/23 02:06:09  mkl
+# add linux handling
+#
+# Revision 1.39  1998/07/18 21:30:57  cleo3
+# include CERN3_LIB: new location of cernlibs (needed for solaris)
+#
+# Revision 1.38  1998/07/18 19:42:44  mkl
+# handling of solaris platform
+#
+# Revision 1.37  1998/07/17 17:00:37  cleo3
+# change to pawd from awd (only supported on DEC systems)
+#
+# Revision 1.36  1998/07/03 18:26:48  mkl
+# look in ../lib, not ../lib/<compiler>
+#
+# Revision 1.35  1998/07/02 21:20:55  cdj
+# added NO_IMPLICIT_INSTANTIATION to cxx, used by cxx 6.0
+#
+# Revision 1.34  1998/07/02 01:01:15  mkl
+# new binaries structure
+#
+# Revision 1.32  1998/06/25 17:54:29  mkl
+# replaced C_GMAKE by C3_GMAKE
+#
+# Revision 1.31  1998/06/18 18:56:26  mkl
+# added include path to _G_config.h so that makedepend does not complain (with g++) (fix by Mike Marsh)
+#
+# Revision 1.30  1998/06/16 16:06:27  mkl
+# added trick to keep cxx 6.0 from compiling .cc files included in system header files
+#
+# Revision 1.29  1998/05/22 22:23:12  cleo3
+# first additions for Solaris
+#
+# Revision 1.28  1998/04/20 18:15:49  mkl
+# introduced SYS_LIBS for including system libraries
+#
+# Revision 1.27  1998/04/15 14:52:01  mkl
+# look for insure-compiled libraries first, if INSURE=y is specified
+#
+# Revision 1.26  1998/04/14 23:05:06  mkl
+# add new version of insure++ handling: 1.) use 'gmake CXX=<compiler> INSURE=y'; 2.) DEBUG=y is always on; 3.) _g is NOT added to library names
+#
+# Revision 1.25  1998/04/13 15:21:22  mkl
+# fixed include path to g++ stl includes
+#
+# Revision 1.24  1998/04/09 23:19:46  cleo3
+# port to egcs
+#
+# Revision 1.23  1998/03/19 23:57:18  mkl
+# added Tcl/Tk include directories to CXX_FLAGS and CFLAGS
+#
+# Revision 1.22  1998/03/13 19:09:24  mkl
+# make shared_module target dependent on ALL libraries, not just USER_LIB
+#
+# Revision 1.21  1998/03/09 15:56:00  mkl
+# added TK_DIR
+#
+# Revision 1.20  1998/02/09 17:38:17  mkl
+# changed order of /usr/(local)/include include directories
+#
+# Revision 1.19  1998/01/28 19:37:37  mkl
+# fixed default for SHARMODNAME setting
+#
+# Revision 1.18  1998/01/28 18:58:37  mkl
+# added SHARMODNAME to allow distinctive names for DL processor/producers
+#
+# Revision 1.17  1998/01/27 17:50:30  cleo3
+# had to add mklib (and mkbin) as dependencies to production
+#
+# Revision 1.16  1998/01/26 23:49:21  mkl
+# removed -DSHARED_MODULE cpp directive -- not needed f
+#
+# Revision 1.15  1998/01/23 05:02:29  mkl
+# had to enable -DSHARED_MODULE for compiling, not just linking
+#
+# Revision 1.14  1998/01/19 21:18:32  mkl
+# now use -g -gall for cxx to really do symbols
+#
+# Revision 1.13  1998/01/14 19:02:13  cleo3
+# now use same link flags for exe as for shared module
+#
+# Revision 1.12  1998/01/12 22:50:29  cleo3
+# forgot backslash when making -DSHARED_MODULE change; fixed
+#
+# Revision 1.11  1998/01/09 19:53:51  mkl
+# now define cpp macro SHARED_MODULE for shared_module target
+#
+# Revision 1.10  1998/01/08 16:48:16  cleo3
+# undid unnessary recursively-resolved variables for GCC_DIR and TCL_DIR
+#
+# Revision 1.9  1998/01/07 17:30:00  cleo3
+# needed recursively-resolved variables for GCC_DIR and TCL_DIR
+#
+# Revision 1.8  1998/01/05 22:11:28  cleo3
+# now Makefile GCC_DIR and TCL_DIR override environment
+#
+# Revision 1.7  1998/01/05 20:52:31  cleo3
+# added /usr/include to M.tail
+#
+# Revision 1.6  1998/01/05 17:54:08  cleo3
+# added site-specific install directory variables
+#
+# Revision 1.5  1997/12/22 23:21:27  cleo3
+# insure++'s insight handling
+#
+# Revision 1.4  1997/12/22 05:34:34  cleo3
+# incorporated first version of handling of insure++'s insight
+#
+# Revision 1.3  1997/12/20 19:57:58  cleo3
+# added Log message setup
+#
+#
+#

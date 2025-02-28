@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+#=======================================================================
+# program mkstoreone
+#
+# Purpose: Generates skeleton to store one instance of a class
+#      
+# Author: Chris Jones
+#
+#=======================================================================
+
+${C3_CVSSRC}/StorageManagement/mkstorage $1 one

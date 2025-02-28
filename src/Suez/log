@@ -1,0 +1,40 @@
+--> creating dependency file .testBoolean.d for /Users/cdj/src/FrameStream/src/Suez/Class/testBoolean.cc
+In file included from /Users/cdj/src/FrameStream/src/Suez/Class/testBoolean.cc:22:
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:67:1: warning: "CLHEP_TARGET_H" redefined
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:62:1: warning: this is the location of the previous definition
+--> creating dependency file .UserApplication.d for UserApplication.cc
+In file included from UserApplication.cc:17:
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:67:1: warning: "CLHEP_TARGET_H" redefined
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:62:1: warning: this is the location of the previous definition
+--> creating dependency file .SuezMain.d for SuezMain.cc
+In file included from SuezMain.cc:17:
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:67:1: warning: "CLHEP_TARGET_H" redefined
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:62:1: warning: this is the location of the previous definition
+g++ -DDarwin -DCLEO_Darwin  -DDBCORBA -DMICOORB=2 -DMICOORB_MINOR=3 -DMICOORB_VERSION=1 -DHAVE_CONFIG_H  -O  -I/Users/cdj/src/FrameStream/src/Suez -I/Users/cdj/src/FrameStream/src/include -I/Users/cdj/src/FrameStream/src/. -I/Users/cdj/src/FrameStream/src/include/. -I/Users/cdj/src/FrameStream/src/include -I/Users/cdj/src/FrameStream/src/include//Users/cdj/src/FrameStream/src/include -I/Users/cdj/src/FrameStream/Common/include -I/Users/cdj/src/FrameStream/Common/include/powerpc-apple-darwin6.4 -I/. -I/Users/cdj/src/FrameStream/other_sources -I.  -c SuezMain.cc -o SuezMain.o
+In file included from SuezMain.cc:17:
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:67:1: warning: "CLHEP_TARGET_H" redefined
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:62:1: warning: this is the location of the previous definition
+ar rv ../lib/libSuez.a SuezMain.o
+r - SuezMain.o
+g++ -DDarwin -DCLEO_Darwin  -DDBCORBA -DMICOORB=2 -DMICOORB_MINOR=3 -DMICOORB_VERSION=1 -DHAVE_CONFIG_H  -O  -I/Users/cdj/src/FrameStream/src/Suez -I/Users/cdj/src/FrameStream/src/include -I/Users/cdj/src/FrameStream/src/. -I/Users/cdj/src/FrameStream/src/include/. -I/Users/cdj/src/FrameStream/src/include -I/Users/cdj/src/FrameStream/src/include//Users/cdj/src/FrameStream/src/include -I/Users/cdj/src/FrameStream/Common/include -I/Users/cdj/src/FrameStream/Common/include/powerpc-apple-darwin6.4 -I/. -I/Users/cdj/src/FrameStream/other_sources -I.  -c UserApplication.cc -o UserApplication.o
+In file included from UserApplication.cc:17:
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:67:1: warning: "CLHEP_TARGET_H" redefined
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:62:1: warning: this is the location of the previous definition
+ar rv ../lib/libSuez.a UserApplication.o
+r - UserApplication.o
+g++ -DDarwin -DCLEO_Darwin  -DDBCORBA -DMICOORB=2 -DMICOORB_MINOR=3 -DMICOORB_VERSION=1 -DHAVE_CONFIG_H  -O  -I/Users/cdj/src/FrameStream/src/Suez -I/Users/cdj/src/FrameStream/src/include -I/Users/cdj/src/FrameStream/src/. -I/Users/cdj/src/FrameStream/src/include/. -I/Users/cdj/src/FrameStream/src/include -I/Users/cdj/src/FrameStream/src/include//Users/cdj/src/FrameStream/src/include -I/Users/cdj/src/FrameStream/Common/include -I/Users/cdj/src/FrameStream/Common/include/powerpc-apple-darwin6.4 -I/. -I/Users/cdj/src/FrameStream/other_sources -I.  -c /Users/cdj/src/FrameStream/src/Suez/Class/testBoolean.cc -o testBoolean.o
+In file included from /Users/cdj/src/FrameStream/src/Suez/Class/testBoolean.cc:22:
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:67:1: warning: "CLHEP_TARGET_H" redefined
+/Users/cdj/src/FrameStream/src/include/Experiment/Experiment.h:62:1: warning: this is the location of the previous definition
+ar rv ../lib/libSuez.a testBoolean.o
+r - testBoolean.o
+--> now link the job Suez with the following command:
+g++ \
+ \
+-Wl,-u,_procsel -Wl,-u,_prodsel -Wl,-u,_modsel -O -F/System/Library/PrivateFrameworks -framework readline -no-c++filt \
+-L../shlib -L../lib -L/Users/cdj/shlib/g++ -L/Users/cdj/shlib -L/Users/cdj/lib/g++ -L/Users/cdj/lib -L/lib/Darwin//g++ -L/lib/Darwin/g++ -L/lib/Darwin -L/Users/cdj/src/FrameStream/other_sources/lib/Darwin/g++ -L/Users/cdj/src/FrameStream/other_sources/lib/Darwin -L/Users/cdj/src/FrameStream/other_sources/lib -L/lib -L/lib/Darwin/g++ -L/lib/Darwin -L/lib -L/usr/local/lib -L/usr/local/lib -L/usr/local/lib -L/usr/local/lib ../lib/libSuez.a -lSuez -lJobControl -lProcessor -lInterpreter -lDefaultModule -lCommandPattern -lDynamicLoader -lInteractiveDelivery -lBlankRecordDelivery -lDataStorage -lDataDelivery -lDataHandler -lDummyHistogram -lHistogramInterface -lToolBox -lUtility -lSignal -lToolBox \
+     \
+ -ltcl  \
+-Wl,-m -o ../bin/suez.exe > ../bin/suez.exe.map
+gmake: *** [../bin/suez.exe] Error 1
+rm testBoolean.o UserApplication.o SuezMain.o

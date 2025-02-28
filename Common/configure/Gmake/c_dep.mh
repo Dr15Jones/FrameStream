@@ -1,0 +1,2 @@
+	$(SHELL) -ec '$(CC) $(CFLAGS) $(DEBUG) $(DEPSWITCH) \
+ $< | $(AWK) -f $(dep_root)/makedep.awk - | sort -u > $@ '

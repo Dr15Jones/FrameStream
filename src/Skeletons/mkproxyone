@@ -1,0 +1,230 @@
+#!/usr/local/bin/perl
+#
+# $Id: mkproxyone,v 1.9 2002/10/16 18:33:59 cdj Exp $
+###########################################################################
+#
+#   Simple little script to make a proxy skeleton that manages 
+#   a singly-recurring item.
+# 
+#   Type "mkproxyone h" to print the help page 
+#         (or look at the end of this file)
+#
+#   The script tries to read in
+#   a filename .tmpl in users HOME directory which contains the following lines
+#             First : your first name
+#             Last : your last name
+#   if .tmpl is not found and firstname and lastname are blank the
+#   enviroment variable LOGNAME is used to obtain the "real life" name
+#   from the output of finger.
+#
+#   mkproxyone will not overwrite existing files
+#
+#   Skeleton Keywords (Case matters):
+#      proxyname  :  overwritten with routine name
+#      John Doe  :  overwritten with author's name
+#      day-mon-xx:  overwritten with todays date
+#      RCS(key)  :  becomes $key$
+#
+#   author of the script: Martin Lohner
+#   
+###########################################################################
+
+
+#  if the routine name is blank, 'h' or '?' go to help
+if ($ARGV[0] !~ /\w/ 
+ || $ARGV[0] eq "\?" 
+ || $ARGV[0] eq "h" 
+ || $ARGV[0] eq "-h" 
+ || $ARGV[0] eq "-help" ) {
+   &wrt_help; 
+}
+
+# environment variables
+$home = $ENV{"HOME"};
+$c3_inc = $ENV{"C3_INC"};
+$c_gmake = $ENV{"C3_GMAKE"};
+
+#  skeleton file directory
+# eventually will use $skel_dir = $ENV{"CMH_SCRIPT"};
+if (!$skel_dir) {
+    $CLEO3 = $ENV{"C3_CVSSRC"};
+    $skel_dir = "$CLEO3/Skeletons";
+}
+
+# get names from command line
+($proxyname, $ext) = split(/\./, $ARGV[0]);
+($objectname, $ext) = split(/\./, $ARGV[1]);
+if( $objectname eq "" ) { $objectname = $proxyname; }
+
+$skeleton = "$skel_dir/Proxy/proxyone.h";
+$outfile = $proxyname . 'Proxy.h';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Proxy/proxyone.cc";
+$outfile = $proxyname . 'Proxy.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Proxy/T_proxyone.cc";
+$outfile = 'T_' . $objectname . '.cc';
+&make_file($skeleton, $outfile);
+
+# copy file
+sub copy_file {
+# first argument is file to be copied
+$skeleton = $_[0]; 
+# second argument is the name of the new file
+$outfile = $_[1];
+
+if (-s "$outfile") {
+    print "mkproxyone W: $outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+    print "mkproxyone W: *****************************************************\n";
+} else {
+
+#   write out some stuff to the screen
+    print "mkproxyone I: copying file $skeleton to $outfile\n";
+
+#open the skeleton file and output file
+    open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+    open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+# loop over lines in "skeleton.F" and overwrite where neccessary
+    while(<IN>) {
+	print OUT $_;
+    }
+    close(IN);   
+    close(OUT);
+}
+}
+
+
+# generate file
+sub make_file {
+# first argument is the skeleton file to use
+$skeleton = $_[0];
+# second argument is the name of the output file
+$outfile = $_[1];
+
+if (-s "$outfile") {
+    print "mkproxyone  W: $outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+    print "mkproxyone  W: *****************************************************\n";
+} else {
+#  get the current date
+    $now = `date`;
+    chop($now);
+
+# get authors name from $HOME/.tmpl file
+
+    $afrom = "command line";
+    if ($author1 eq "" && -s "$home/.tmpl") {
+	open(IN,"$home/.tmpl");
+	$afrom = "users .tmpl file";
+	while(<IN>) {
+	    if (/First\w*/) {
+		@words = split(/:/, $_);
+		$author1 = $words[1]; 
+		chop($author1);
+	    } elsif (/Last\w*/) {
+		@words = split(/:/, $_);
+		$author2 = $words[1];
+		chop($author2);
+	    }
+	}
+	close(IN);
+	$author = "$author1 $author2";
+    }
+#
+# if author is still blank fill it in with REAL LIFE name in finger output
+#
+    if ($author1 eq "") {
+	$author1 = $ENV{"LOGNAME"};
+	foreach $_ (`finger -m "$author1"`) {
+	    if (/Login n\w*/) {
+		@words = split(/: /, $_);
+		$author = $words[2];
+		chop($author);
+		$afrom = "the output finger cmnd";
+	    }
+	}
+    }
+#   write out some stuff to the screen
+    print "mkproxyone  I: using skeleton: $skeleton \n";
+    print "mkproxyone  I: authors name is: $author, determined by $afrom \n";
+    print "mkproxyone  I: creating file: $outfile \n";
+
+#open the skeleton file and output file
+    open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+    open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+# loop over lines in "skeleton.F" and overwrite where neccessary
+    while(<IN>) {
+#  Preserve case for lowercase
+	s/proxyname/$proxyname/g;
+	s/YourItemHere/$objectname/g;
+#  Map uppercase to uppercase
+	s/PROXYNAME/\U$proxyname/g;
+	s/YOURITEMHERE/\U$objectname/g;
+	s/John Doe/$author/;
+	s/day-mon-xx/$now/;
+#  Handle RCS keywords
+	s/RCS\((\w+)\)/\$$1\$/g;
+#  write out fortran comment lines without upcasing
+	if (/^c/ || /^C/ || /^\*/) {
+	    print OUT $_;
+	} else {
+	    print OUT $_;
+	}
+    }
+    close(IN);   
+    close(OUT);
+    if ($flag =~ /[bpC]/) {
+	chmod(0755,$outfile);
+    }
+}
+}
+
+# help package
+sub wrt_help {
+
+    print <<'ENDHELP';
+mkproxy  h: simple little script to make processor skeletons
+mkproxy  h:
+mkproxy  h: execution:  mkproxyone proxyname [objectname]
+mkproxy  h: 
+mkproxy  h: output:  proxynameProxy.h proxynameProxy.cc T_proxyname.cc
+mkproxy  h:            (objectname is used internally in the files)
+mkproxy  h:
+mkproxy  h: required input:
+mkproxy  h: 
+mkproxy  h: proxyname = name of the proxy
+mkproxy  h: 
+mkproxy  h: optional input:
+mkproxy  h: 
+mkproxy  h: objectname = name of the object type the proxy is 
+mkproxy  h:              supposed to manage
+mkproxy  h: 
+mkproxy  h: example 1:
+mkproxy  h: mkproxyone MyThing
+mkproxy  h:       --> write  MyThingProxy.h 
+mkproxy  h:                  MyThingProxy.cc
+mkproxy  h:                  T_MyThing.cc
+mkproxy  h:   --> The name of the object type handled by MyThingProxy 
+mkproxy  h:       is MyThing.
+mkproxy  h:
+mkproxy  h: example 2:
+mkproxy  h: mkproxyone MyThing MyFoo
+mkproxy  h:       --> write  MyThingProxy.h 
+mkproxy  h:                  MyThingProxy.cc
+mkproxy  h:                  T_MyThing.cc
+mkproxy  h:   --> The name of the object type handled by MyThingProxy 
+mkproxy  h:       is MyFoo.
+
+ENDHELP
+
+    print "";
+    print "mkproxyone  Q: Please enter name of proxy: ";
+    $ARGV[0] = <STDIN>;
+    chop($ARGV[0]);
+    print "mkproxyone  Q: Please enter name of type of object: ";
+    $ARGV[1] = <STDIN>;
+    chop($ARGV[1]);
+}

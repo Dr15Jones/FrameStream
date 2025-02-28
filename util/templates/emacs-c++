@@ -1,0 +1,116 @@
+(if (file-accessible-directory-p "/usr/local/share/emacs/oobr")
+    (progn
+      (setq br-directory "/usr/local/share/emacs/oobr/")
+      (autoload 'oo-browser (expand-file-name "br-start" br-directory)
+	"Invoke the OO-Browser" t)
+      (autoload 'br-env-browse (expand-file-name "br-start" br-directory)
+	"Browse an existing OO-Browser Environment" t)
+      (global-set-key "\C-c\C-o" 'oo-browser)
+
+      (setq hyperb:dir "/usr/local/share/emacs/hyperb/")
+      (load (expand-file-name "hversion" hyperb:dir))
+      (load (expand-file-name "hyperbole" hyperb:dir))
+      ))
+
+;Language support
+(setq auto-mode-alist
+      (append
+    '(("\\.ftn$"  . fortran-mode)
+      ("\\.for$"  . fortran-mode)
+      ("\\.F$"    . fortran-mode)
+      ("\\.inc$"  . fortran-mode)
+      ("\\.pfp$"  . fortran-mode)
+      ("\\.car$"  . fortran-mode)
+      ("\\.edt$"  . fortran-mode)
+      ("\\.temp$" . fortran-mode)
+      ("\\.lex$"  . c-mode)
+      ("\\.C$"    . c++-mode)
+      ("\\.cc$"   . c++-mode)
+      ("\\.h$"    . c++-mode)
+      ("\\.cxx$"  . c++-mode)
+      ("\\.html$" . html-mode)
+      ("\\.py$"   . python-mode)
+        )
+    auto-mode-alist))
+
+; Set up c++ variables
+;
+(setq c-recognize-knr-p nil)
+(add-hook 'c++-mode-hook (function (lambda () (c-set-style "Ellemtel"))))
+(add-hook 'c++-mode-hook 'font-lock-mode )
+
+; Color coding
+(setq gc-cons-threshold 1000000)
+
+;(require 'vc-status)
+
+(if (eq window-system 'x)
+    (progn
+      (transient-mark-mode t)
+      
+      (if (fboundp 'what\ line) (fmakunbound 'what\ line))
+      (if (fboundp 'set\ cursor\ free) (fmakunbound 'set\ cursor\ free))
+      (if (fboundp 'set\ cursor\ bound)
+	  (fmakunbound 'set\ cursor\ bound))
+      (if (fboundp 'set\ scroll\ margins)
+	  (fmakunbound 'set\ scroll\ margins))
+      (if (fboundp 'what\ line) (fmakunbound 'what\ line))
+      
+      (if (x-display-color-p)
+	  (progn
+	    (eval-after-load
+	     "font-lock"
+	     '(progn
+		(setq c-font-lock-keywords    c-font-lock-keywords-2
+		      c++-font-lock-keywords  c++-font-lock-keywords-2
+		      lisp-font-lock-keywords lisp-font-lock-keywords-2)))
+
+	    (global-font-lock-mode t)
+	    
+	    (mapcar (function
+		     (lambda (flist)
+		       (copy-face (car (cdr flist)) (car flist))
+		       (set-face-foreground (car flist) (car (cdr (cdr flist))))))
+			  
+		    '((italic-blue		italic		"deepskyblue")
+		      (italic-turquiose		italic		"turquoise")
+		      (italic-orange		italic		"orange")
+		      (bold-yellow		bold		"yellow")
+		      (bold-green		bold		"green")
+		      (default-red		default		"red")))
+	    
+	    (setq font-lock-comment-face       'italic-blue
+		  font-lock-doc-string-face    'italic-turquiose
+		  font-lock-string-face        'italic-orange
+		  font-lock-function-name-face 'bold-yellow
+		  font-lock-keyword-face       'bold-green
+		  font-lock-type-face          'default-red)
+	    
+    
+;	     (set-face-foreground 'font-lock-comment-face "saddle brown")
+;	     (set-face-foreground 'font-lock-doc-string-face "chocolate")
+;	     (set-face-foreground 'font-lock-string-face "firebrick")
+;	     (set-face-foreground 'font-lock-function-name-face "blue")
+;	     (set-face-foreground 'font-lock-keyword-face "slate blue")
+;	     (set-face-foreground 'font-lock-type-face "steel blue")
+	    (set-face-background 'region "yellow")
+	    (set-face-foreground 'region "hot pink")
+	    (setq w3-node-style 'font-lock-keyword-face)
+	    (setq w3-address-style 'font-lock-comment-face)
+	    (setq w3-bold-style 'font-lock-keyword-face)
+	    (setq w3-italic-style 'font-lock-comment-face)
+	    )
+					; else x-display-color-p
+	(if (eq 'gray-scale (x-display-visual-class))
+	    (progn
+	      (set-face-background 'region "DarkSlateGrey")
+	      )
+	  (progn
+	    (set-face-background 'region "White")
+	    (set-face-foreground 'region "Black")
+	    (setq hilit-background-mode 'mono)
+	    )
+	  )
+	)
+      )
+  )

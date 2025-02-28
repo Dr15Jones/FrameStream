@@ -1,0 +1,70 @@
+# ;-*-Mode: makefile-*-
+# ======================================================
+# Objectivity makefile additions
+#
+# Author: Martin Lohner
+# ------------------------------------------------------
+
+# create fd
+$(OB_BOOTFILE):
+	@echo ""
+	@echo "Creating New Objectivity Database $(OB_BOOTFILE)"
+	@echo ""
+	$(MAKE) -e AUTOGEN="" rmgen
+	mkdir -p `dirname $(OB_BOOTFILE)`
+	$(OONEWFD)
+ifneq (,$(findstring $(OB_COPYSCHEMA),yY))
+	@$(MAKE)  -e AUTOGEN="" copy_schema
+endif
+
+# copy schema from reference fdb
+copy_schema:
+#	@echo ""
+#	@echo "Extracting and Inserting Reference Schema "
+#	@echo "from Reference Database $(OB_REF_BOOTFILE)"
+#	@echo ""
+#	$(EXTRACT_SCHEMA) $(OB_REF_BOOTFILE)
+#	$(INSERT_SCHEMA) $(OB_BOOTFILE)
+	@echo ""
+	@echo "Using official Schema dump file:"
+	@echo "     $(SCHEMA_FILE)"
+	@echo ""
+	$(INSERT_SCHEMA) -infile $(SCHEMA_FILE) $(OB_BOOTFILE)
+
+# Clean DB
+rmgen : clean_depend
+ifeq "$(OB_REF_FDB)" "y" # only allowed for reference fdb
+	@echo "Cleaning out generated files!"
+	$(RM) core *.o
+	$(RM) $(USER_SRC)/$(JOB)/$(JOB)/Generated/*.h   # generated files
+	$(RM) $(USER_SRC)/$(JOB)/$(JOB)/Generated/*.cc  # generated files
+else
+	@echo "Please use OB_REF_FDB=y to clean out generated files"
+endif
+
+# Clean DB + FDB
+cleanfd : rmgen clean
+	$(OODELETEFD)
+
+# do an oocleanup
+cleanup :
+	$(OOCLEANUP)
+
+# --------- ddl rules -------------------------------------------
+DDL_SEARCH  := $(patsubst %,$(absrcdir)/%/*.ddl, . $(DIR_LIST))
+DDL_SOURCES := $(wildcard $(DDL_SEARCH))
+NOTDIR_DDL_SOURCES := $(notdir $(DDL_SOURCES))
+
+DEPEND_FILES := $(NOTDIR_DDL_SOURCES:%.ddl=%.h)
+DEPEND_FILES += $(NOTDIR_DDL_SOURCES:%.ddl=%_ref.h)
+DEPEND_FILES += $(NOTDIR_DDL_SOURCES:%.ddl=%_ddl.cc)
+
+# depend has to depend on ddl-compiler running first!
+gen: $(OB_BOOTFILE) $(DEPEND_FILES)
+
+# suffix rule for ddl files
+.SUFFIXES: .ddl
+%.h %_ddl.cc %_ref.h : %.ddl $(OB_BOOTFILE)
+	$(OODDLX) $(CLEO_DEFS) $(LIST_INCS) $(CXX_INCS) $< $(OB_BOOTFILE)
+	mv *.h $(USER_SRC)/$(JOB)/$(JOB)/Generated
+	mv *.cc $(USER_SRC)/$(JOB)/$(JOB)/Generated

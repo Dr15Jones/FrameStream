@@ -1,0 +1,216 @@
+AC_INIT
+dnl Project wide macros
+sinclude(accleo.m4)
+
+AC_PREFIX_DEFAULT(/nfs/cleo3/Common/test)
+AC_CANONICAL_SYSTEM
+
+AC_PATH_ROOT_SET
+AC_FILES_EXT_SET
+
+AC_CONFIG_HEADER(headers/sc_config.h)
+
+AC_ARG_PROGRAM
+AC_PROG_INSTALL
+AC_PROG_WHICH
+AC_PROG_FIND
+AC_PROG_MKDIRHIER
+AC_PROG_MAKE_SET
+
+dnl finding compilers
+AC_PROG_ALLCC
+AC_PROG_ALLCXX
+
+dnl checking C++
+AC_CHECKING(Features of $CXX)
+AC_PROG_CXX_EXCP
+AC_PROG_CXX_DEP
+AC_PROG_CXX_THREADED
+
+AC_SYSTEM_FLAVOR
+
+if test $host = $target; then
+ dnl checking types sizes of host
+ AC_C_CONST
+ AC_C_BIGENDIAN
+
+ if test $ac_cv_c_bigendian = yes; then
+  AC_DEFINE_UNQUOTED(AC_BIGENDIAN, 1)
+ else
+  AC_DEFINE_UNQUOTED(AC_BIGENDIAN, 0)
+ fi
+
+ if test $ac_cv_c_const = yes; then
+  AC_DEFINE_UNQUOTED(HAVE_CONST, 1)
+ else
+  AC_DEFINE_UNQUOTED(HAVE_CONST, 0)
+ fi
+
+ AC_C_CHAR_UNSIGNED
+ AC_CHECK_SIZEOF(signed char, 0)
+ AC_CHECK_SIZEOF(unsigned char, 0)
+ AC_CHECK_SIZEOF(unsigned short,0)
+ AC_CHECK_SIZEOF(unsigned int, 0)
+ AC_CHECK_SIZEOF(unsigned long, 0)
+ AC_CHECK_SIZEOF(unsigned long long, 0)
+ AC_C_LONG_DOUBLE
+
+ AC_DEFINE(HAVE_STANDARD_SIZES, 1)
+ AC_DEFINE_UNQUOTED(AC_SIZEOF_SCHAR, $ac_cv_sizeof_signed_char)
+ AC_DEFINE_UNQUOTED(AC_SIZEOF_UCHAR, $ac_cv_sizeof_unsigned_char)
+ AC_DEFINE_UNQUOTED(AC_SIZEOF_USHORT, $ac_cv_sizeof_unsigned_short)
+ AC_DEFINE_UNQUOTED(AC_SIZEOF_UINT, $ac_cv_sizeof_unsigned_int)
+ AC_DEFINE_UNQUOTED(AC_SIZEOF_ULONG, $ac_cv_sizeof_unsigned_long)
+
+else dnl cross compiling
+
+ if test $target_os = "vxworks"; then
+ dnl GNU compiler related settings
+ AC_MSG_CHECKING([for working const])
+ AC_MSG_RESULT(yes)
+ AC_DEFINE_UNQUOTED(HAVE_CONST, yes)
+ AC_MSG_CHECKING([whether char is unsigned])
+ AC_MSG_RESULT(no)
+
+ dnl CPU familiy related settings
+ case "$target_cpu" in
+  powerpc)
+    AC_DEFINE(HAVE_STANDARD_SIZES, 1)
+
+    AC_MSG_CHECKING([whether byte ordering is bigendian])
+    AC_MSG_RESULT(yes)
+    AC_DEFINE_UNQUOTED(AC_BIGENDIAN, yes)
+
+    AC_MSG_CHECKING([size of signed char])
+    AC_MSG_RESULT(1)
+    AC_DEFINE(SIZEOF_SIGNED_CHAR, 1)
+    AC_MSG_CHECKING([size of unsigned char])
+    AC_MSG_RESULT(1)
+    AC_DEFINE(SIZEOF_UNSIGNED_CHAR, 1)
+    AC_MSG_CHECKING([size of unsigned short])
+    AC_MSG_RESULT(2)
+    AC_DEFINE(SIZEOF_UNSIGNED_SHORT, 2)
+    AC_MSG_CHECKING([size of unsigned int])
+    AC_MSG_RESULT(4)
+    AC_DEFINE(SIZEOF_UNSIGNED_INT, 4)
+    AC_MSG_CHECKING([size of unsigned long])
+    AC_MSG_RESULT(4)
+    AC_DEFINE(SIZEOF_UNSIGNED_LONG, 4);;
+  m68k)
+    AC_DEFINE(HAVE_STANDARD_SIZES, 1)
+
+    AC_MSG_CHECKING([whether byte ordering is bigendian])
+    AC_MSG_RESULT(yes)
+    AC_DEFINE_UNQUOTED(AC_BIGENDIAN, yes)
+
+    AC_MSG_CHECKING([size of signed char])
+    AC_MSG_RESULT(1)
+    AC_DEFINE(SIZEOF_SIGNED_CHAR, 1)
+    AC_MSG_CHECKING([size of unsigned char])
+    AC_MSG_RESULT(1)
+    AC_DEFINE(SIZEOF_UNSIGNED_CHAR, 1)
+    AC_MSG_CHECKING([size of unsigned short])
+    AC_MSG_RESULT(2)
+    AC_DEFINE(SIZEOF_UNSIGNED_SHORT, 2)
+    AC_MSG_CHECKING([size of unsigned int])
+    AC_MSG_RESULT(4)
+    AC_DEFINE(SIZEOF_UNSIGNED_INT, 4)
+    AC_MSG_CHECKING([size of unsigned long])
+    AC_MSG_RESULT(4)
+    AC_DEFINE(SIZEOF_UNSIGNED_LONG, 4);;
+  default)
+    AC_MSG_ERROR([Unknown CPU family]);;
+ esac
+ else
+  AC_MSG_ERROR([Only VxWorks known as cross compile target])
+ fi
+fi
+
+dnl setup 'CPU' macro
+AC_SUBST(CPU)dnl
+CPU=${target_vendor}
+
+dnl Check headers with C++ compiler
+AC_LANG_SAVE
+AC_LANG_CPLUSPLUS
+AC_CHECK_HEADERS(stdlib.h)
+AC_CHECK_HEADERS(stddef.h)
+
+AC_CHECK_HEADERS(stdio.h)
+AC_CHECK_VSNPRINTF
+AC_CHECK_OUTWAITING
+AC_CHECK_HEADERS(errno.h)
+AC_CHECK_HEADERS(unistd.h)
+AC_CHECK_HEADERS(sysent.h)
+AC_CHECK_CLASH_SYSENT
+if test $ac_clash_sysent_unistd = 1; then
+ AC_CHECK_GETHOSTNAME
+fi
+AC_CHECK_HEADERS(string.h)
+AC_CHECK_STRTOK
+if test $ac_cv_header_errno_h = yes; then
+ AC_CHECK_ERRLIST
+fi
+AC_LANG_RESTORE
+
+AC_LANG_SAVE
+AC_LANG_CPLUSPLUS
+dnl Check for message queue support
+AC_CHECK_HEADERS(sys/msg.h)
+
+dnl Check for semaphore queue support
+AC_CHECK_HEADERS(pthread.h)
+AC_CHECK_HEADERS(synch.h)
+AC_CHECK_HEADERS(tis.h)
+
+AC_LANG_RESTORE
+
+AC_CHECK_TIMELIBS
+
+if test $ac_cv_header_pthread_h = yes; then
+  AC_CHECK_PTHREAD_ARGS
+fi
+
+if test $target_os = vxworks; then
+ AC_MSG_RESULT(Use VxWorks Library for semaphores)
+else
+ AC_LANG_SAVE
+ AC_LANG_CPLUSPLUS
+ AC_CHECK_HEADERS(semaphore.h)
+ AC_LANG_RESTORE
+fi
+
+AC_RULES_NTSERVICE
+
+AC_INSIGHT_PROGS
+
+AC_DEBUG_OPTIONS
+AC_DEPENDDIRLIST(none)
+dnl AC_DEPENDEXTRADIRLIST(Common_xact.dep)
+
+AC_LANG_SAVE
+AC_LANG_CPLUSPLUS
+AC_CHECK_HEADERS(crypt.h)
+AC_LANG_RESTORE
+
+
+AC_SUBST_FILE(HEADMK)dnl
+HEADMK=$srcdir/Gmake/head.mk
+
+AC_SUBST_FILE(TAIL_GUARDMAKE)dnl
+TAIL_GUARDMAKE=$srcdir/Gmake/guard_make.mh
+AC_SUBST_FILE(TAIL_USER)dnl
+TAIL_USER=$srcdir/Gmake/tail_user.mk
+
+AC_SUBST_FILE(TAILMK)dnl
+TAILMK=$srcdir/Gmake/tail.mk
+
+AC_OUTPUT($idldependencies
+ $NTservicerules
+ Gmake/tail_user.mk
+ Gmake/head.mk Gmake/tail.mk
+ Gmake/tcl.mk
+ Startup.sh
+ makedep.awk
+ Makefile
+ headers/Makefile)

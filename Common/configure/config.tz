@@ -1,0 +1,32 @@
+EST       EDT       EST5EDT:M4.1.0:M10.5.0     - Eastern/US
+CST       CDT       CST6CDT:M4.1.0:M10.5.0     - Central/US
+MST       MDT       MST7MDT:M4.1.0:M10.5.0     - Mountain/US
+PST       PDT       PST8PDT:M4.1.0:M10.5.0     - Pacific/US
+MET       METDST    MET23METDST:M3.5.0:M10.5.0 - Central/Europe
+EET       EETDST    EET22EETDST:M3.5.0:M10.5.0 - Eastern/Europe
+JST       JST       JST15                      - Japan
+
+GMT       GMT       GMT0                       - Greenwich Mean
+GMT-1:00  GMT-1:00  GMT1                       - GMT minus 1 hour
+GMT-2:00  GMT-2:00  GMT2                       - GMT minus 2 hours
+GMT-3:00  GMT-3:00  GMT3                       - GMT minus 3 hours
+GMT-4:00  GMT-4:00  GMT4                       - GMT minus 4 hours
+GMT-5:00  GMT-5:00  GMT5                       - GMT minus 5 hours
+GMT-6:00  GMT-6:00  GMT6                       - GMT minus 6 hours
+GMT-7:00  GMT-7:00  GMT7                       - GMT minus 7 hours
+GMT-8:00  GMT-8:00  GMT8                       - GMT minus 8 hours
+GMT-9:00  GMT-9:00  GMT9                       - GMT minus 9 hours
+GMT-10:00 GMT-10:00 GMT10                      - GMT minus 10 hours
+GMT-11:00 GMT-11:00 GMT11                      - GMT minus 11 hours
+GMT-12:00 GMT-12:00 GMT12                      - GMT minus 12 hours
+GMT+1:00  GMT+1:00  GMT23                      - GMT plus 1 hour
+GMT+2:00  GMT+2:00  GMT22                      - GMT plus 2 hours
+GMT+3:00  GMT+3:00  GMT21                      - GMT plus 3 hours
+GMT+4:00  GMT+4:00  GMT20                      - GMT plus 4 hours
+GMT+5:00  GMT+5:00  GMT19                      - GMT plus 5 hours
+GMT+6:00  GMT+6:00  GMT18                      - GMT plus 6 hours
+GMT+7:00  GMT+7:00  GMT17                      - GMT plus 7 hours
+GMT+8:00  GMT+8:00  GMT16                      - GMT plus 8 hours
+GMT+9:00  GMT+9:00  GMT15                      - GMT plus 9 hours
+GMT+10:00 GMT+10:00 GMT14                      - GMT plus 10 hours
+GMT+11:00 GMT+11:00 GMT13                      - GMT plus 11 hours

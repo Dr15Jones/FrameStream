@@ -1,0 +1,105 @@
+
+Module : PackedDataStreamsStorage
+Date   : Sun Oct  8 13:10:01 2000
+User   : cdj
+Old Tag: 
+New Tag: v01_00_00
+Message: ready for public release
+
+Module : PackedDataStreamsStorage
+Date   : Mon Nov 27 21:19:21 2000
+User   : cdj
+Old Tag: v01_00_00
+New Tag: v01_01_00
+Message: added unsigned char to list of types that can be 'non-packed'
+
+Module : PackedDataStreamsStorage
+Date   : Tue Apr 10 15:49:44 2001
+User   : cdj
+Old Tag: v01_01_00
+New Tag: v01_02_00
+Message: can now store strings
+
+Module : PackedDataStreamsStorage
+Date   : Thu May 24 10:55:34 2001
+User   : cdj
+Old Tag: v01_02_00
+New Tag: v01_02_01
+Message: fixed bug in writing out strings
+
+Module : PackedDataStreamsStorage
+Date   : Thu May 24 14:42:37 2001
+User   : cdj
+Old Tag: v01_02_01
+New Tag: v01_02_02
+Message: fixed writing strings
+
+Module : PackedDataStreamsStorage
+Date   : Fri Jun  8 09:53:39 2001
+User   : cdj
+Old Tag: v01_02_02
+New Tag: v01_03_00
+Message: can now handle storing containers of strings
+
+Module : PackedDataStreamsStorage
+Date   : Fri Jun 15 17:07:32 2001
+User   : cdj
+Old Tag: v01_03_00
+New Tag: v02_00_00
+Message: can now specify data (not) to store
+
+Module : PackedDataStreamsStorage
+Date   : Fri Sep  7 15:34:53 2001
+User   : cleo3
+Old Tag: v02_00_00
+New Tag: v02_01_00
+Message: no use NO_STL_TEMPLATED_MEMBER_FUNCTIONS_BUG
+
+Module : PackedDataStreamsStorage
+Date   : Wed Apr  3 14:14:52 2002
+User   : cleo3
+Old Tag: v02_01_00
+New Tag: v02_02_00
+Message: worked around a bug in CC 6.02
+
+Module : PackedDataStreamsStorage
+Date   : Fri Aug  9 14:11:30 2002
+User   : cdj
+Old Tag: v02_02_00
+New Tag: v02_02_01
+Message: removed inappropriate use of reinterpret_cast
+
+Module : PackedDataStreamsStorage
+Date   : Fri Aug 16 11:43:50 2002
+User   : cleo3
+Old Tag: v02_02_01
+New Tag: v02_03_00
+Message: replaced iostream.h with C++/iostream.h
+
+Module : PackedDataStreamsStorage
+Date   : Thu Nov 21 16:17:35 2002
+User   : cleo3
+Old Tag: v02_03_00
+New Tag: v02_04_00
+Message: changed fstream.h to C++Std/fstream.h
+
+Module : PackedDataStreamsStorage
+Date   : Sun Nov 24 10:05:13 2002
+User   : cdj
+Old Tag: v02_04_00
+New Tag: v02_04_01
+Message: fixed missing symbol on OSF by removing autoinstantiations from PDSProxyStorer.cc to own files
+
+Module : PackedDataStreamsStorage
+Date   : Mon Jan 27 15:36:53 2003
+User   : cleo3
+Old Tag: v02_04_01
+New Tag: v02_05_00
+Message: changes needed to compile under g++
+
+Module : PackedDataStreamsStorage
+Date   : Wed Jun 11 14:37:56 2003
+User   : cdj
+Old Tag: v02_05_00
+New Tag: v02_05_01
+Message: now checks to see if write was successful

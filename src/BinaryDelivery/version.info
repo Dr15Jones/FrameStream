@@ -1,0 +1,273 @@
+
+Module : BinaryDelivery
+Date   : Fri Apr 16 11:03:25 1999
+User   : dlk
+Old Tag: v01_01_00
+New Tag: v02_00_00
+Message: 
+DLK Major revision
+	The EventHeader must be the first raw data unit inside the event
+	The 6-word binary header is no longer made -- I use EventHeader
+	The code supports all record types
+		BeginRun, StartData, Event, Pause, EndRun ...
+	Currently, the code currently works for bigendian machines only
+
+<Please type your Tag Message>
+Module : BinaryDelivery
+Date   : Fri Apr 23 15:12:15 1999
+User   : dlk
+Old Tag: v02_00_00
+New Tag: v02_01_00
+Message: BinaryDelivery should now work on little endian machines
+
+Module : BinaryDelivery
+Date   : Fri May  7 12:01:17 1999
+User   : dlk
+Old Tag: v02_01_00
+New Tag: v02_01_01
+Message: Marked test script as executable
+
+Module : BinaryDelivery
+Date   : Thu May 13 14:47:55 1999
+User   : dlk
+Old Tag: v02_01_01
+New Tag: v02_01_02
+Message: Minor format fixes
+
+Module : BinaryDelivery
+Date   : Wed May 19 17:04:58 1999
+User   : dlk
+Old Tag: v02_01_02
+New Tag: v02_02_00
+Message: Implement startRun and pauseRun
+
+Module : BinaryDelivery/
+Date   : Thu May 20 13:52:08 1999
+User   : dlk
+Old Tag: v02_02_00
+New Tag: v02_02_01
+Message: Make a smooth landing when EOF reached
+
+Module : BinaryDelivery
+Date   : Fri Jun  4 14:40:36 1999
+User   : dlk
+Old Tag: v02_02_01
+New Tag: v02_02_02
+Message: Repaired error flag if file cannot be opened
+
+Module : BinaryDelivery
+Date   : Wed Jun  9 14:00:44 1999
+User   : dlk
+Old Tag: v02_02_02
+New Tag: v02_02_03
+Message: Work around SUNCC bug for large files
+
+Module : BinaryDelivery
+Date   : Thu Jun 17 15:17:43 1999
+User   : dlk
+Old Tag: v02_02_03
+New Tag: v02_02_04
+Message: Further adventures in 64-bit file handling
+
+Module : BinaryDelivery
+Date   : Wed Jun 23 13:53:11 1999
+User   : dlk
+Old Tag: v02_02_04
+New Tag: v02_02_05
+Message: Dump record header if fatal formatting error detected
+
+Module : BinaryDelivery/
+Date   : Thu Aug 26 22:54:33 1999
+User   : mkl
+Old Tag: v02_02_05
+New Tag: v02_03_00
+Message: removed '-r 8' option from suez invocation
+
+Module : BinaryDelivery
+Date   : Mon Sep 13 14:51:54 1999
+User   : dlk
+Old Tag: v02_03_00
+New Tag: v02_03_01
+Message: Implement expanding buffer
+
+Module : BinaryDelivery
+Date   : Sun Oct 24 10:44:17 1999
+User   : cdj
+Old Tag: v02_03_01
+New Tag: v02_03_02
+Message: removed inappropriate use of typename
+
+Module : BinaryDelivery
+Date   : Tue Nov 16 14:32:04 1999
+User   : dlk
+Old Tag: v02_03_02
+New Tag: v02_03_03
+Message: Suppress debug messages
+
+Module : BinaryDelivery
+Date   : Fri Dec 10 11:20:48 1999
+User   : cdj
+Old Tag: v02_03_03
+New Tag: v02_04_00
+Message: updated to work with extract exceptions
+
+Module : BinaryDelivery
+Date   : Fri Dec 17 08:18:07 1999
+User   : dlk
+Old Tag: v02_04_00
+New Tag: v02_04_01
+Message: Improve error messages
+
+Module : BinaryDelivery
+Date   : Tue Jan  4 08:24:51 2000
+User   : dlk
+Old Tag: v02_04_01
+New Tag: v02_04_02
+Message: Improve error message for missing input file
+
+Module : BinaryDelivery
+Date   : Mon Jan 24 21:11:46 2000
+User   : dlk
+Old Tag: v02_04_02
+New Tag: v02_04_03
+Message: Mark test script executable
+
+Module : BinaryDelivery
+Date   : Tue Jan 25 08:53:17 2000
+User   : dlk
+Old Tag: v02_04_03
+New Tag: v02_04_04
+Message: Mark BinaryDeliveryExerciser.tst executable
+
+Module : BinaryDelivery
+Date   : Mon Apr 24 16:05:23 2000
+User   : dlk
+Old Tag: v02_04_04
+New Tag: v02_04_05
+Message: Mark test script executable
+
+Module : BinaryDelivery
+Date   : Fri Apr 28 13:46:10 2000
+User   : dlk
+Old Tag: v02_04_05
+New Tag: v02_04_06
+Message: Once again try to set the x bit on test script
+
+Module : BinaryDelivery
+Date   : Fri Jun 30 15:13:11 2000
+User   : cdj
+Old Tag: v02_04_06
+New Tag: v02_05_00
+Message: removed ProxyDict dependencies
+
+Module : BinaryDelivery
+Date   : Fri Jun 30 15:14:19 2000
+User   : cdj
+Old Tag: v02_05_00
+New Tag: v02_06_00
+Message: removed more ProxyDict dependencies
+
+Module : BinaryDelivery
+Date   : Fri Aug 11 19:17:52 2000
+User   : undrus
+Old Tag: v02_06_00
+New Tag: v02_06_01
+Message: 
+remove undrus from mailing list of test script
+Module : BinaryDelivery/
+Date   : Mon Feb  5 12:47:25 2001
+User   : dlk
+Old Tag: v02_06_01
+New Tag: v02_06_02
+Message: In test script, invoke RawDataProd so DumpCCRawHits works properly
+
+Module : BinaryDelivery
+Date   : Tue May 22 17:08:52 2001
+User   : bkh
+Old Tag: v02_06_02
+New Tag: v02_06_03
+Message: 
+Fix bugs with respect to event time in header
+Module : BinaryDelivery
+Date   : Fri Aug 24 16:15:50 2001
+User   : cdj
+Old Tag: v02_06_03
+New Tag: v02_06_04
+Message: removed improper use of class
+
+Module : BinaryDelivery
+Date   : Tue Nov 13 15:57:50 2001
+User   : dlk
+Old Tag: v02_06_04
+New Tag: v02_06_05
+Message: Cleaned up error recovery
+
+Module : BinaryDelivery
+Date   : Fri Aug 16 09:55:48 2002
+User   : cleo3
+Old Tag: v02_06_05
+New Tag: v02_07_00
+Message: replaced iostream.h with C++/iostream.h
+
+Module : BinaryDelivery
+Date   : Fri Nov  1 15:00:15 2002
+User   : cdj
+Old Tag: v02_07_00
+New Tag: v02_08_00
+Message: pick up new location of input file used for tests
+
+Module : BinaryDelivery
+Date   : Thu Nov 21 16:03:33 2002
+User   : cleo3
+Old Tag: v02_08_00
+New Tag: v02_09_00
+Message: changed fstream.h to C++Std/fstream.h
+
+Module : BinaryDelivery
+Date   : Mon Jan 27 14:50:04 2003
+User   : cdj
+Old Tag: v02_09_00
+New Tag: v02_10_00
+Message: get iomanip.h from C++Std package
+
+Module : BinaryDelivery
+Date   : Thu Feb 20 09:27:37 2003
+User   : cdj
+Old Tag: v02_10_00
+New Tag: v02_11_00
+Message: made beginrun startrun event and endrun the default streams
+
+Module : BinaryDelivery
+Date   : Tue Feb 25 11:29:48 2003
+User   : dlk
+Old Tag: v02_11_00
+New Tag: v02_11_01
+Message: Fix confused platform dependence code
+
+Module : BinaryDelivery
+Date   : Fri Feb 28 12:55:08 2003
+User   : cleo3
+Old Tag: v02_11_01
+New Tag: v02_12_00
+Message: test now makes sure rm does not prompt
+
+Module : BinaryDelivery
+Date   : Fri Oct 17 08:43:03 2003
+User   : vk
+Old Tag: v02_12_00
+New Tag: v02_12_01
+Message: Fix reading back time stamp from record header.
+
+Module : BinaryDelivery/
+Date   : Mon Nov 10 09:59:01 2003
+User   : dlk
+Old Tag: v02_12_01
+New Tag: v02_12_02
+Message: Supply new test run
+
+Module : BinaryDelivery/
+Date   : Tue Nov 18 17:18:06 2003
+User   : dlk
+Old Tag: v02_12_02
+New Tag: v02_12_03
+Message: Repair reading files >2GB on Solaris

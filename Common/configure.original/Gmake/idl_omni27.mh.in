@@ -1,0 +1,15 @@
+# -*- Makefile -*-
+#
+$(IDLHEADERS) : $(IDLNAME).idl
+	$(ORBCXX) $(ORBCXXFLAGS) $(IDLNAME).idl
+
+$(IDLSOURCE) : $(IDLNAME).idl
+	$(ORBCXX) $(ORBCXXFLAGS) $(IDLNAME).idl
+
+
+$(IDLNAME)SK$(DOTO) : $(IDLNAME)SK.cc
+@cxx_rules@
+
+$(IDLNAME)DynSK$(DOTO) : $(IDLNAME)DynSK.cc
+@cxx_rules@
+

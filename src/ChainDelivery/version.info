@@ -1,0 +1,21 @@
+
+Module : ChainDelivery
+Date   : Thu May 31 12:55:28 2001
+User   : cdj
+Old Tag: v01_00_00
+New Tag: v01_00_01
+Message: fixed memory leak
+
+Module : ChainDelivery
+Date   : Wed Jun 12 15:22:56 2002
+User   : cleo3
+Old Tag: v01_00_01
+New Tag: v01_01_00
+Message: added missing typename
+
+Module : ChainDelivery
+Date   : Thu Apr 10 23:17:04 2003
+User   : tom
+Old Tag: v01_01_00
+New Tag: v01_02_00
+Message: Modifications to better support chaining of roar files

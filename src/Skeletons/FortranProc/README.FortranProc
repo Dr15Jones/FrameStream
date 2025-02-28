@@ -1,0 +1,58 @@
+This is the README file for fortranproc. It shows you how to write
+code in the new CLEO3 Suez environment.
+
+1.) You should find the following files in this directory:
+
+fortranproc/
+README.fortranproc
+Makefile
+         fortranproc/
+               fortranproc.h
+         Class/
+	       fortranproc.cc
+               fortranproc_DONT_TOUCH.cc
+         Fortran/
+	       fortranproc_initialize.F
+	       fortranproc_terminate.F
+	       fortranproc_hist_book.F
+	       fortranproc_event.F
+	       fortranproc_beginRun.F
+	       fortranproc_endRun.F
+
+2.) You should only need to edit the fortran files in the Fortran/
+directory. Fill them with your code. (The Class/ directory contains the
+c++ wrapper.)
+
+3.) Make a shared library: "gmake CXX=<compiler>"
+This step requires that you have a standard type of build area,
+consisting of (../bin, ../lib, and ../shlib) directories.
+The shared processor library will end up in ../shlib!
+
+4.) Set the environment variable C3_SHLIB to include the ../shlib
+directory above: setenv C3_SHLIB /home/mkl/build/shlib
+
+4.) Start up Suez: suez
+
+5.) Here is a sample job:
+
+suez> file in test.rp
+suez> proc ls
+
+Listing all available Processors:
+
+in memory:
+
+and on disk:
+/home/mkl/build/shlib/ fortranproc
+
+suez> processor sel fortranproc
+suez> nexstops 1
+... 
+suez> exit
+
+
+ Please read the documentation: 
+     http://w4.lns.cornell.edu/~mkl/JobControl/suez/index.html
+     http://w4.lns.cornell.edu/~mkl/JobControl/suez.ps.gz
+
+ That's It! Questions, Suggestions, Complaints --> Martin Lohner

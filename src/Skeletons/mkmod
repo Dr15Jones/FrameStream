@@ -1,0 +1,304 @@
+#!/usr/local/bin/perl
+#
+# $Id: mkmod,v 1.4 2002/10/16 18:33:58 cdj Exp $
+###########################################################################
+#  simple little script to make module skeletons
+# 
+#  execution:  mkmod modulename  
+# 
+#  output:  modulename/
+#                      Makefile
+#                      modulename/modulename.h
+#                                 modulenamecommand.h           
+#                                 modulenameinternalcommand.h
+#                                 Template/
+#                      Class/modulename.cc
+#                            modulename_DONT_TOUCH.cc
+#                            modulenamecommand.cc
+#                            modulenameinternalcommand.cc
+#                      Instantiate/
+#                      Doc/
+#                      Test/
+#
+#  required input:
+# 
+#  modulename = name of the module
+# 
+#  optional input:
+# 
+#  none
+# 
+#  example:
+#  mkmod MyModule 
+#        --> write  MyModule/
+#                      MyModule/MyModule.h
+#                               MyModuleCommand.h           
+#                               MyModuleInternalcommand.h
+#                               Template/
+#                      Class/MyModule.cc
+#                            MyModule_DONT_TOUCH.cc
+#                            MyModuleCommand.cc
+#                            MyModuleInternalCommand.cc
+#                      Instantiate/
+#                      Doc/
+#                      Test/
+#
+#   the script tries to read in
+#   a filename .tmpl in users HOME directory which contains the following lines
+#             First : your first name
+#             Last : your last name
+#   if .tmpl is not found and firstname and lastname are blank the
+#   enviroment variable LOGNAME is used to obtain the "real life" name
+#   from the output of finger.
+#
+#   Enviroment variable PROC_SCRIPT may point to a directory that
+#   contains the skeleton files.
+#
+#   mkmod will not overwrite existing files
+#
+#   Skeleton Keywords (Case matters):
+#      modname  :  overwritten with routine name
+#      John Doe  :  overwritten with author's name
+#      day-mon-xx:  overwritten with todays date
+#      RCS(key)  :  becomes $key$
+#
+#   author of the script: Martin Lohner
+#                         (based on mkproc)
+#   
+###########################################################################
+
+
+#  if the routine name is blank, 'h' or '?' go to help
+if ($ARGV[0] !~ /\w/ 
+ || $ARGV[0] eq "\?" 
+ || $ARGV[0] eq "h" 
+ || $ARGV[0] eq "-h" 
+ || $ARGV[0] eq "-help" ) {
+   &wrt_help; 
+}
+
+$author1 = "\u$ARGV[2]";
+$author2 = "\u$ARGV[3]";
+
+# environment variables
+$home = $ENV{"HOME"};
+$c3_inc = $ENV{"C3_INC"};
+$c_gmake = $ENV{"C3_GMAKE"};
+
+#  skeleton file directory
+# eventually will use $skel_dir = $ENV{"CMH_SCRIPT"};
+if (!$skel_dir) {
+    $CLEO3 = $ENV{"C3_CVSSRC"};
+    $skel_dir = "$CLEO3/Skeletons";
+}
+
+# get name
+($name, $ext) = split(/\./, $ARGV[0]);
+
+#create the directories
+mkdir("$name", 0777) || die "can not make dir $name";
+mkdir("$name/$name", 0777) || die "can not make dir $name/$name";
+mkdir("$name/$name/Template", 0777) || die "can not make dir $name/$name/Template";
+mkdir("$name/Class", 0777) || die "can not make dir $name/Class";
+mkdir("$name/Instantiate", 0777) || die "can not make dir $name/Instantiate";
+mkdir("$name/Test", 0777) || die "can not make dir $name/Test";
+mkdir("$name/Doc", 0777) || die "can not make dir $name/Doc";
+
+$skeleton = "$skel_dir/Module/README.module";
+$outfile = "$name/" . README . '.' . $name;
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Module/module.h";
+$outfile = "$name/$name/" . $name . '.h';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Module/command.h";
+$outfile = "$name/$name/" . $name . 'Command.h';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Module/internalcommand.h";
+$outfile = "$name/$name/" . $name . 'InternalCommand.h';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Module/module.cc";
+$outfile = "$name/Class/" . $name . '.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Module/command.cc";
+$outfile = "$name/Class/" . $name . 'Command.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Module/internalcommand.cc";
+$outfile = "$name/Class/" . $name . 'InternalCommand.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Module/module_DONT_TOUCH.cc";
+$outfile = "$name/Class/" . $name . '_DONT_TOUCH.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$c_gmake/M.processor";
+$outfile = "$name/Makefile";
+&copy_file($skeleton, $outfile);
+
+
+# copy file
+sub copy_file {
+# first argument is file to be copied
+$skeleton = $_[0]; 
+# second argument is the name of the new file
+$outfile = $_[1];
+
+if (-s "$outfile") {
+    print "mkmod  W: $outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+    print "mkmod  W: *****************************************************\n";
+} else {
+
+#   write out some stuff to the screen
+    print "mkmod  I: copying file $skeleton to $outfile\n";
+
+#open the skeleton file and output file
+    open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+    open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+# loop over lines in "skeleton.F" and overwrite where neccessary
+    while(<IN>) {
+	print OUT $_;
+    }
+    close(IN);   
+    close(OUT);
+}
+}
+
+
+# generate file
+sub make_file {
+# first argument is the skeleton file to use
+$skeleton = $_[0];
+# second argument is the name of the output file
+$outfile = $_[1];
+
+if (-s "$outfile") {
+    print "mkmod  W: $outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+    print "mkmod  W: *****************************************************\n";
+} else {
+#  get the current date
+    $now = `date`;
+    chop($now);
+
+# get authors name from $HOME/.tmpl file
+
+    $afrom = "command line";
+    if ($author1 eq "" && -s "$home/.tmpl") {
+	open(IN,"$home/.tmpl");
+	$afrom = "users .tmpl file";
+	while(<IN>) {
+	    if (/First\w*/) {
+		@words = split(/:/, $_);
+		$author1 = $words[1]; 
+		chop($author1);
+	    } elsif (/Last\w*/) {
+		@words = split(/:/, $_);
+		$author2 = $words[1];
+		chop($author2);
+	    }
+	}
+	close(IN);
+	$author = "$author1 $author2";
+    }
+#
+# if author is still blank fill it in with REAL LIFE name in finger output
+#
+    if ($author1 eq "") {
+	$author1 = $ENV{"LOGNAME"};
+	foreach $_ (`finger -m "$author1"`) {
+	    if (/Login n\w*/) {
+		@words = split(/: /, $_);
+		$author = $words[2];
+		chop($author);
+		$afrom = "the output finger cmnd";
+	    }
+	}
+    }
+#   write out some stuff to the screen
+    print "mkmod  I: using skeleton: $skeleton \n";
+    print "mkmod  I: authors name is: $author, determined by $afrom \n";
+    print "mkmod  I: creating file: $outfile \n";
+
+#open the skeleton file and output file
+    open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+    open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+# loop over lines in "skeleton.F" and overwrite where neccessary
+    while(<IN>) {
+#  Preserve case for lowercase
+	s/modname/$name/g;
+#  Map uppercase to uppercase
+	s/MODNAME/\U$name/g;
+	s/Modname/\u$name/g;
+	s/John Doe/$author/;
+	s/day-mon-xx/$now/;
+#  Handle RCS keywords
+	s/RCS\((\w+)\)/\$$1\$/g;
+#  write out fortran comment lines without upcasing
+	if (/^c/ || /^C/ || /^\*/) {
+	    print OUT $_;
+	} else {
+	    print OUT $_;
+	}
+    }
+    close(IN);   
+    close(OUT);
+    if ($flag =~ /[bpC]/) {
+	chmod(0755,$outfile);
+    }
+}
+}
+
+# help package
+sub wrt_help {
+
+    print <<'ENDHELP';
+mkmod  h: simple little script to make module skeletons
+mkmod  h:
+mkmod  h: execution:  mkmod modulename  
+mkmod  h:
+mkmod  h: output:  modulename/
+mkmod  h:                     Makefile
+mkmod  h:                     modulename/modulename.h
+mkmod  h:                                modulenamecommand.h           
+mkmod  h:                                modulenameinternalcommand.h
+mkmod  h:                                Template/
+mkmod  h:                     Class/modulename.cc
+mkmod  h:                           modulename_DONT_TOUCH.cc
+mkmod  h:                           modulecommand.cc
+mkmod  h:                           moduleinternalcommand.cc
+mkmod  h:                     Instantiate/
+mkmod  h:                     Doc/
+mkmod  h:                     Test/
+mkmod  h: required input:
+mkmod  h:
+mkmod  h: modulename = name of the module
+mkmod  h:
+mkmod  h: optional input:
+mkmod  h:
+mkmod  h: none
+mkmod  h:
+mkmod  h: mkmod MyModule 
+mkmod  h:       --> write  MyModule/
+mkmod  h:                     MyModule/MyModule.h
+mkmod  h:                              MyModuleCommand.h           
+mkmod  h:                              MyModuleInternalcommand.h
+mkmod  h:                              Template/
+mkmod  h:                     Class/MyModule.cc
+mkmod  h:                           MyModule_DONT_TOUCH.cc
+mkmod  h:                           MyModuleCommand.cc
+mkmod  h:                           MyModuleInternalCommand.cc
+mkmod  h:                     Instantiate/
+mkmod  h:                     Doc/
+mkmod  h:                     Test/
+ENDHELP
+
+    print "mkmod  Q: Please enter module name: ";
+    $ARGV[0] = <STDIN>;
+    chop($ARGV[0]);
+}

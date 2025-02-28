@@ -1,0 +1,256 @@
+
+Module : FrameAccess
+
+Date   : Sun Feb 14 13:27:13 1999
+User   : lkg
+Old Tag: v01_00_00
+New Tag: v01_00_01
+Message: 
+Fixed typos in FATableItr.cc for postfix ++ and -- operators, as well as 
+for -= operator.
+
+Module : FrameAccess
+
+Date   : Tue Apr 13 09:56:28 1999
+User   : bkh
+Old Tag: v01_00_01
+New Tag: v01_01_00
+Message: Make FATable<>::find() a const_iterator
+
+Module : FrameAccess
+
+Date   : Thu May  6 21:26:55 1999
+User   : cdj
+Old Tag: v01_01_00
+New Tag: v01_02_00
+Message: Added smart pointers for Constants access
+
+Module : FrameAccess
+
+Date   : Wed Sep 22 11:26:21 1999
+User   : cdj
+Old Tag: v01_02_00
+New Tag: v01_03_00
+Message: minor changes to Iterators needed for StorageManagement
+
+Module : FrameAccess
+
+Date   : Sat Oct  9 17:53:33 1999
+User   : cdj
+Old Tag: v01_03_00
+New Tag: v01_04_00
+Message: can now use ProductionTag when extracting
+
+Module : FrameAccess
+Date   : Sat Oct 30 21:04:08 1999
+User   : cdj
+Old Tag: v01_04_00
+New Tag: v01_05_00
+Message: added FAInserter
+
+Module : FrameAccess
+Date   : Sun Oct 31 10:04:04 1999
+User   : cdj
+Old Tag: v01_05_00
+New Tag: v01_05_01
+Message: fixed doxygenated comments
+
+Module : FrameAccess
+Date   : Sun Oct 31 10:39:39 1999
+User   : cdj
+Old Tag: v01_05_01
+New Tag: v01_06_00
+Message: doxygenated the comments
+
+Module : FrameAccess
+Date   : Sat Nov  6 21:20:33 1999
+User   : cdj
+Old Tag: v01_06_00
+New Tag: v01_06_01
+Message: 
+-fixed bug in FANonSeqConstants' find method
+-fixed outdated documenation in header files
+Module : FrameAccess
+Date   : Fri Dec  3 10:02:40 1999
+User   : bkh
+Old Tag: v01_06_01
+New Tag: v01_07_00
+Message: 
+Add new class which accepts const ptrs for table and does not delete them
+Module : FrameAccess
+Date   : Fri Dec 10 09:24:05 1999
+User   : cdj
+Old Tag: v01_07_00
+New Tag: v02_00_00
+Message: 
+-extract now throws an exception if data is invalid
+-inlined functions in FAItem and FATableItr
+-updated documentation in header files
+-added NO_XXX_EXCEPTION macro to all FAXxx smart pointer classes
+
+Module : FrameAccess
+Date   : Fri Dec 17 11:52:49 1999
+User   : cdj
+Old Tag: v02_00_00
+New Tag: v02_00_01
+Message: updated FAPtrTableInsertItr to work with new standard C++ iterator (for cxx 6.2)
+
+Module : FrameAccess
+Date   : Sun Mar 19 09:54:04 2000
+User   : cdj
+Old Tag: v02_00_01
+New Tag: v02_01_00
+Message: FAInserter now uses a Proxy that inherits from DataSourceProxy
+
+Module : FrameAccess
+Date   : Thu Apr  6 10:56:58 2000
+User   : cdj
+Old Tag: v02_01_00
+New Tag: v02_02_00
+Message: FAPtrTableInsertItr now typedefs the value_type to a pointer
+
+Module : FrameAccess
+Date   : Fri Apr 21 13:51:34 2000
+User   : cdj
+Old Tag: v02_02_00
+New Tag: v02_03_00
+Message: 
+-added bounds checking to FAConstants::operator[]
+-FAPtrTable now holds a map<Identifier, void*> to reduce the number
+  of map instantiations needed
+Module : FrameAccess
+Date   : Fri Jun  2 14:54:07 2000
+User   : cdj
+Old Tag: v02_03_00
+New Tag: v02_04_00
+Message: optimized FAPtrTable insert method
+
+Module : FrameAccess
+Date   : Sat Jun 17 16:15:41 2000
+User   : cdj
+Old Tag: v02_04_00
+New Tag: v02_05_00
+Message: 
+-FAPtrTable now returns end() (which is an invalid FAItem) when find fails
+-FAConstPtrTable now allows inserts using an FAItem.
+Module : FrameAccess
+Date   : Fri Jun 30 16:59:07 2000
+User   : cdj
+Old Tag: v02_05_00
+New Tag: v02_06_00
+Message: removed last dependence on ProxyDict
+
+Module : FrameAccess
+Date   : Thu Nov  2 16:40:15 2000
+User   : cdj
+Old Tag: v02_06_00
+New Tag: v02_07_00
+Message: added FAVoidPtrContainer.h
+
+Module : FrameAccess
+Date   : Fri Nov 17 10:45:49 2000
+User   : cdj
+Old Tag: v02_07_00
+New Tag: v02_08_00
+Message: added FAAutoEraseAllPtr
+
+Module : FrameAccess
+Date   : Tue Dec 26 16:10:35 2000
+User   : cdj
+Old Tag: v02_08_00
+New Tag: v03_00_00
+Message: FAPtrTable now uses a vector when then Identifier is an integral type
+
+Module : FrameAccess
+Date   : Wed Dec 27 14:06:20 2000
+User   : cdj
+Old Tag: v03_00_00
+New Tag: v03_00_01
+Message: added workaround for Solaris automatic template instantiation bug
+
+Module : FrameAccess
+Date   : Wed Dec 27 15:57:49 2000
+User   : cdj
+Old Tag: v03_00_01
+New Tag: v03_00_02
+Message: workaround for Solaris auto template instantiation bug
+
+Module : FrameAccess
+Date   : Tue Jan  2 17:23:50 2001
+User   : cdj
+Old Tag: v03_00_02
+New Tag: v03_00_03
+Message: 
+FAPtrTable now returns an iterator from 'insert'
+bug fixes in FAVoidPtrContainer
+ - doing find on empty list no longer segfaults
+ - no longer allow inserting of duplicate items
+Module : FrameAccess
+Date   : Wed Jan  3 17:50:31 2001
+User   : cdj
+Old Tag: v03_00_03
+New Tag: v03_00_04
+Message: bug fix: fix seg fault when calling begin() for an empty FAPtrTable
+
+Module : FrameAccess
+Date   : Fri Feb 16 15:49:56 2001
+User   : ajm36
+Old Tag: v03_00_04
+New Tag: v03_00_05
+Message: improved findIteratorJustBefore, added a standalone test
+
+Module : FrameAccess
+Date   : Mon Apr 16 21:08:53 2001
+User   : cleo3
+Old Tag: v03_00_05
+New Tag: v03_01_00
+Message: modified to compile under linux
+
+Module : FrameAccess
+Date   : Fri Sep  7 13:47:48 2001
+User   : cleo3
+Old Tag: v03_01_00
+New Tag: v03_02_00
+Message: added typename
+
+Module : FrameAccess
+Date   : Wed Apr  3 14:08:53 2002
+User   : cleo3
+Old Tag: v03_02_00
+New Tag: v03_03_00
+Message: provide more control on extactly what gets instantiated
+
+Module : FrameAccess
+Date   : Tue Jun  4 14:32:14 2002
+User   : cleo3
+Old Tag: v03_03_00
+New Tag: v03_04_00
+Message: changed SUNCC cpp switch to AUTO_INSTANTIATE_TEMPLATE_BUG
+
+Module : FrameAccess
+Date   : Wed Jun 12 16:28:02 2002
+User   : cleo3
+Old Tag: v03_04_00
+New Tag: v03_05_00
+Message: updated to new template specialization syntax
+
+Module : FrameAccess
+Date   : Wed Jan 29 16:41:33 2003
+User   : cleo3
+Old Tag: v03_05_00
+New Tag: v03_06_00
+Message: minor changes to allow compilation by g++
+
+Module : FrameAccess
+Date   : Fri Apr 25 11:25:39 2003
+User   : vk
+Old Tag: v03_06_00
+New Tag: v03_06_01
+Message: Take advantage of new DAExceptionStack class and throw DANoProxyException when proxy is not present
+
+Module : FrameAccess
+Date   : Fri Feb 13 15:44:34 2004
+User   : cdj
+Old Tag: v03_06_01
+New Tag: v03_07_00
+Message: can now use C++ logical operators (&&, ||, !) to do set operations on FATables and put results in an FAConstPtrTable

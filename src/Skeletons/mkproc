@@ -1,0 +1,472 @@
+#!/usr/local/bin/perl
+#
+# $Id: mkproc,v 1.25 2002/12/16 21:29:53 cdj Exp $
+###########################################################################
+#  simple little script to make processor skeletons
+# 
+#  execution:  mkproc processorname [Your Name] [options]
+# 
+#  output:  processorname/
+#                         Makefile
+#                         processorname/processorname.h
+#                                       Template/
+#                         Class/processorname.cc
+#                               processorname_DONT_TOUCH.cc
+#                               processorname_DONT_TOUCH2.cc
+#                         Instantiate/
+#                         Doc/
+#                         Test/
+#  required input:
+# 
+#  processorname = name of the processor
+# 
+#  optional input:
+# 
+#  Your Name = name to put in the files as the author (see below)
+#  options:
+#     -h     \ 
+#     -help   \ print help information and prompt for processorname
+#     ?       /
+#     h      /
+#     -skeldir <directory> = alternate skeleton file directory
+#     -<example type> = generate example code for a specific type of data
+#     -list = list the example types currently known
+# 
+#  example:
+#  mkproc MyProcessor 
+#        --> write  MyProcessor/
+#                               Makefile
+#                               MyProcessor/MyProcessor.h
+#                               MyProcessor/Template/
+#                               Class/MyProcessor.cc
+#                               Class/MyProcessor_DONT_TOUCH.cc
+#                               Class/MyProcessor_DONT_TOUCH2.cc
+#                               Instantiate/
+#                               Doc/
+#                               Test/loadMyProcessor.tcl
+#  
+#   the script tries to read in
+#   a filename .tmpl in users HOME directory which contains the following lines
+#             First : your first name
+#             Last : your last name
+#   if .tmpl is not found and firstname and lastname are blank the
+#   enviroment variable LOGNAME is used to obtain the "real life" name
+#   from the output of finger.
+#
+#   Enviroment variable PROC_SCRIPT may point to a directory that
+#   contains the skeleton files.
+#
+#   mkproc will not overwrite existing files
+#
+#   Skeleton Keywords (Case matters):
+#      procname  :  overwritten with routine name
+#      John Doe  :  overwritten with author's name
+#      day-mon-xx:  overwritten with todays date
+#      RCS(key)  :  becomes $key$
+#
+#   Tokens are easily addable.  Any line beginning with "example_foo"
+#   defines a new example type called "foo", and "-foo" will now select
+#   those lines, which are otherwise omitted.
+#
+#   author of the script: Chris Jones, Martin Lohner, Mike Marsh
+#                         (modified mkskel from Arne Freyberger)
+#   
+###########################################################################
+
+
+#  if the routine name is blank, 'h' or '?' go to help
+$name = "";
+$author1 = "";
+$author2 = "";
+
+&read_args(@ARGV);
+
+# environment variables
+$home = $ENV{"HOME"};
+$c3_inc = $ENV{"C3_INC"};
+$c_gmake = $ENV{"C3_GMAKE"};
+
+#  skeleton file directory
+# eventually will use $skel_dir = $ENV{"CMH_SCRIPT"};
+if (!$skel_dir) {
+    $CLEO3 = $ENV{"C3_CVSSRC"};
+    $skel_dir = "$CLEO3/Skeletons";
+}
+
+$skeletons{"$skel_dir/Processor/README.processor"} =
+    "$name/" . README . '.' . $name;
+$skeletons{"$skel_dir/Processor/processor.h"} =
+    "$name/$name/" . $name . '.h';
+$skeletons{"$skel_dir/Processor/processor.cc"} =
+    "$name/Class/" . $name . '.cc';
+$skeletons{"$skel_dir/Processor/processor_DONT_TOUCH.cc"} =
+    "$name/Class/" . $name . '_DONT_TOUCH.cc';
+$skeletons{"$skel_dir/Processor/processor_DONT_TOUCH2.cc"} =
+    "$name/Class/" . $name . '_DONT_TOUCH2.cc';
+$skeletons{"$skel_dir/Processor/loadprocessor.tcl"} =
+    "$name/Test/load" . $name . ".tcl";
+$skeletons{"$name/Makefile.temp"} =
+    "$name/Makefile";
+
+if ( ! $do_list )
+{
+    # create the directories
+    mkdir("$name", 0777) || die "can not make dir $name";
+    mkdir("$name/$name", 0777) || die "can not make dir $name/$name";
+    mkdir("$name/$name/Template", 0777) ||
+	die "can not make dir $name/$name/Template";
+    mkdir("$name/Class", 0777) || die "can not make dir $name/Class";
+    mkdir("$name/Instantiate", 0777) ||
+	die "can not make dir $name/Instantiate";
+    mkdir("$name/Test", 0777) || die "can not make dir $name/Test";
+    mkdir("$name/Doc", 0777) || die "can not make dir $name/Doc";
+
+    # for all files except the Makefile we use a Skeleton from the Processor
+    # directory, but we want any changes made to M.processor to propagate
+    # into our Makefile.  So we have a skeleton that has all the necessary
+    # libraries, constructed just like the other skeletons, that gets
+    # inserted after CommandPattern in the CLEO3_LIBS list (seems as good
+    # a place as any).
+    $skeleton = "$c_gmake/M.processor";
+    $tempmakefile = "$name/Makefile.temp";
+    open ( MAKEFILE , $skeleton ) || die "Can't open $skeleton\n";
+    open ( NEWMAKE , ">$tempmakefile" ) || die "Can't create $outfile\n";
+    while(<MAKEFILE>)
+    {
+	print NEWMAKE;
+	if(/CommandPattern/)
+	{
+	    # insert all the lines from Skeletons/Processor/Makefile
+	    open ( MAKESKEL, "$skel_dir/Processor/makefile") ||
+		die "Can't open $skel_dir/Processor/makefile";
+	    while( <MAKESKEL> )
+	    {
+		print NEWMAKE;
+	    }
+	    close MAKESKEL;
+	}
+	if(/#CERN_LIB/)
+	{
+	    # insert all the lines from Skeletons/Processor/Makefile
+	    open ( MAKESKEL, "$skel_dir/Processor/cernmakefile") ||
+		die "Can't open $skel_dir/Processor/makefile";
+	    while( <MAKESKEL> )
+	    {
+		print NEWMAKE;
+	    }
+	    close MAKESKEL;
+	}
+    }
+    close NEWMAKE;
+    close MAKEFILE;
+
+    # make the source files from the skeletons
+    foreach $skeleton_key ( keys(%skeletons) )
+    {
+	&make_file($skeleton_key, $skeletons{$skeleton_key});
+    }
+    system "rm $tempmakefile";
+
+}
+else
+{
+    &list_tokens;
+    exit 0;
+}
+
+# read the command line arguments
+sub read_args
+{
+    while ( @_ )
+    {
+	$curr_arg = shift @_;
+	if ( $curr_arg eq "\?" 
+	    || $curr_arg eq "h" 
+	    || $curr_arg eq "-h" 
+	    || $curr_arg eq "-help" )
+	{
+	    &wrt_help; 
+	}
+	elsif ( $curr_arg eq "-skeldir" )
+	{
+	    $next_arg = shift @_;
+	    die "$next_arg is not a directory\n"
+		unless ( -d $next_arg );
+	    $skel_dir = $next_arg;
+	}
+	elsif ( $curr_arg eq "-list" )
+	{
+	    $do_list = 1;
+	}
+	elsif ( $curr_arg =~ /^\w+$/ )
+	{
+	    if ( ! $name )
+	    {
+		$name = $curr_arg;
+
+		# Names must begin with capital letters.
+		if ( ! ( $name =~ /^[A-Z]/ ) )
+		{
+		    print "
+mkproc  E: Processor names must begin with capital letters, and each
+mkproc  E: separate 'word' in the name should also start with a capital
+mkproc  E: letter.  For example, MyTrackingTestProc is a valid name,
+mkproc  E: but myTrackingTestProc and MyTrackingtestProc are not.\n\n";
+		    exit 1;
+		}
+	    }
+	    elsif ( ! $author1 )
+	    {
+		$author1 = $curr_arg;
+	    }
+	    elsif ( ! $author2 )
+	    {
+		$author2 = $curr_arg;
+	    }
+	}
+	elsif ( $curr_arg =~ /^-(\w+)=?(\w*)$/ )
+	{
+	    push(@magic_tokens,$1);
+	    if( $2 ) {
+		$magic_values{$1}=$2;
+	    }
+	}
+	else
+	{
+	    &wrt_help;
+	}
+    }
+    &wrt_help unless ( $name || $do_list );
+}
+
+# copy file
+sub copy_file {
+    # first argument is file to be copied
+    $skeleton = $_[0]; 
+    # second argument is the name of the new file
+    $outfile = $_[1];
+
+    if (-s "$outfile") {
+	print "mkproc  W: ";
+	print "$outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+	print "mkproc  W: ";
+	print "*****************************************************\n";
+    } else {
+
+	#   write out some stuff to the screen
+	print "mkproc  I: copying file $skeleton to $outfile\n";
+
+	#open the skeleton file and output file
+	open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+	open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+	# loop over lines in "skeleton.F" and overwrite where neccessary
+	while(<IN>) {
+	    print OUT $_;
+	}
+	close(IN);   
+	close(OUT);
+    }
+}
+
+
+# generate file
+sub make_file {
+    # first argument is the skeleton file to use
+    $skeleton = $_[0];
+    # second argument is the name of the output file
+    $outfile = $_[1];
+
+    if (-s "$outfile")
+    {
+	print "mkproc  W: ";
+	print "$outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+	print "mkproc  W: ";
+	print "*****************************************************\n";
+    }
+    else
+    {
+	#  get the current date
+	$now = `date`;
+	chop($now);
+
+	# get authors name from $HOME/.tmpl file
+
+	$afrom = "command line";
+	if ($author1 eq "" && -s "$home/.tmpl")
+	{
+	    open(IN,"$home/.tmpl");
+	    $afrom = "users .tmpl file";
+	    while(<IN>) {
+		if (/First\w*/) {
+		    @words = split(/:/, $_);
+		    $author1 = $words[1]; 
+		    chop($author1);
+		} elsif (/Last\w*/) {
+		    @words = split(/:/, $_);
+		    $author2 = $words[1];
+		    chop($author2);
+		}
+	    }
+	    close(IN);
+	    $author = "$author1 $author2";
+	}
+	#
+	# if author is still blank fill it in with REAL LIFE name
+	# in finger output
+	#
+	if ($author1 eq "") {
+	    $author1 = $ENV{"LOGNAME"};
+	    foreach $_ (`finger -m "$author1"`) {
+		if (/Login n\w*/) {
+		    @words = split(/: /, $_);
+		    $author = $words[2];
+		    chop($author);
+		    $afrom = "the output finger cmnd";
+		}
+	    }
+	}
+	#   write out some stuff to the screen
+	print "mkproc  I: using skeleton: $skeleton \n";
+	print "mkproc  I: authors name is: $author, determined by $afrom \n";
+	print "mkproc  I: creating file: $outfile \n";
+
+	#open the skeleton file and output file
+	open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+	open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+	# loop over lines in "skeleton.F" and overwrite where neccessary
+	while(<IN>) {
+	    #  Preserve case for lowercase
+	    s/procname/$name/g;
+	    #  Map uppercase to uppercase
+	    s/PROCNAME/\U$name/g;
+	    s/John Doe/$author/;
+	    s/day-mon-xx/$now/;
+	    #  Handle RCS keywords
+	    s/RCS\((\w+)\)/\$$1\$/g;
+	    $okprint = 1;
+
+	    # expect tags for the line of form example_A(_B_C, etc.)
+	    # print line if any of command line flags equals any of A(B,C etc.)
+	    # so example_track_dedx lines get printed if either -track or
+	    # -dedx is specified
+	    if ( /^example_(\S+)/ )
+	    {
+		$okprint = 0;
+		my @tokenlist = split '_', $1;
+		foreach $token ( @magic_tokens )
+		{
+		    foreach $othertoken ( @tokenlist )
+		    {
+			if ( $token eq $othertoken )
+			{
+			    $okprint = 1;
+			    s/^example_(\S+) ?//;
+			    my $value = $magic_values{$token};
+			    s/example=/$value/g;
+
+			}
+		    }
+		}
+	    }
+	    #  write out fortran comment lines without upcasing
+	    if (/^c/ || /^C/ || /^\*/) {
+		print OUT $_ if $okprint;
+	    } else {
+		print OUT $_ if $okprint;
+	    }
+	}
+	close(IN);   
+	close(OUT);
+	if ($flag =~ /[bpC]/) {
+	    chmod(0755,$outfile);
+	}
+    }
+}
+
+# help package
+sub wrt_help {
+
+    print <<'ENDHELP';
+mkproc  h: simple little script to make processor skeletons
+mkproc  h:
+mkproc  h: execution:  mkproc processorname [Your Name] [options]
+mkproc  h:
+mkproc  h: output:  processorname/
+mkproc  h:                        Makefile
+mkproc  h:                        processorname/processorname.h
+mkproc  h:                                      Template/
+mkproc  h:                        Class/processorname.cc
+mkproc  h:                              processorname_DONT_TOUCH.cc
+mkproc  h:                              processorname_DONT_TOUCH2.cc
+mkproc  h:                        Instantiate/
+mkproc  h:                        Doc/
+mkproc  h:                        Test/
+mkproc  h:
+mkproc  h: required input:
+mkproc  h:
+mkproc  h: processorname = name of the processor
+mkproc  h:
+mkproc  h: optional input:
+mkproc  h:
+mkproc  h: Your Name = name to put in the files as the author (see below)
+mkproc  h: options:
+mkproc  h:    -h     \ 
+mkproc  h:    -help   \ print help information and prompt for processorname
+mkproc  h:    ?       /
+mkproc  h:    h      /
+mkproc  h:    -skeldir <directory> = alternate skeleton file directory
+mkproc  h:    -<example type> = generate example code for a specific type
+mkproc  h:                      of data
+mkproc  h:    -list = list the example types currently known
+mkproc  h:
+mkproc  h: example:
+mkproc  h: mkproc MyProcessor 
+mkproc  h:       --> write  MyProcessor/
+mkproc  h:                              Makefile
+mkproc  h:                              MyProcessor/MyProcessor.h
+mkproc  h:                              MyProcessor/Template/
+mkproc  h:                              Class/MyProcessor.cc
+mkproc  h:                              Class/MyProcessor_DONT_TOUCH.cc
+mkproc  h:                              Class/MyProcessor_DONT_TOUCH2.cc
+mkproc  h:                              Instantiate/
+mkproc  h:                              Doc/
+mkproc  h:                              Test/loadMyProcessor.tcl
+ENDHELP
+
+    print "mkproc  Q: Please enter input arguments: ";
+    $_ = <STDIN>;
+    chop;
+    exit 0 unless $_;
+    @args = split;
+    &read_args(@args);
+}
+
+sub list_tokens
+{
+    print "known example types:\n";
+    foreach $skeleton_key ( keys(%skeletons) )
+    {
+# /Makefile.temp is a special case, since we use $C3_GMAKE/M.processor
+# as our skeleton
+	open( LISTFILE, $skeleton_key ) ||
+	    die "Can't open $skeleton_key\n"
+		unless ($skeleton_key eq "/Makefile.temp");
+	while(<LISTFILE>)
+	{
+	    if ( /^example_(\w+)\b/ )
+	    {
+		my @tokenlist = split '_', $1;
+		foreach $token (@tokenlist)
+		{
+		    $tokens{$token} = $token;
+		}
+	    }
+	}
+    }
+    foreach $token (sort(keys(%tokens)))
+    {
+	print "\t$token\n";
+    }
+}

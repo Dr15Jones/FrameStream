@@ -1,0 +1,3 @@
+NTservice$(DOTO) : NTservice.cxx
+@cxx_rules@
+

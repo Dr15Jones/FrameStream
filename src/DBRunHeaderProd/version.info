@@ -1,0 +1,14 @@
+
+Module : DBRunHeaderProd
+Date   : Thu Jul 22 14:33:03 1999
+User   : aw
+Old Tag: 
+New Tag: v01_00_00
+Message: First release
+
+Module : DBRunHeaderProd
+Date   : Wed Apr  9 11:36:15 2003
+User   : vk
+Old Tag: v01_00_00
+New Tag: v01_00_01
+Message: allow to automatically create shared object

@@ -1,0 +1,12 @@
+#!/usr/local/bin/bash -vx
+
+# first remake library
+#(cd /home/mkl/work/cleo3/build/OSF1/cxx/CommandPattern/; \
+#gmake CXX=cxx production)
+
+# now make test exe
+cxx -I/home/mkl/cleo3 -I/home/mkl/work/cleo3/cvssrc/CommandPattern \
+-I/nfs/cleo3/development/include -I/home/mkl/work/cleo3/Utility \
+main_testStringUtil.cc \
+/home/mkl/work/cleo3/build/OSF1/cxx/lib/libCommandPattern.a \
+-L/nfs/cleo3/Offline/rel/current/lib/OSF1/cxx -lToolBox -o a.out

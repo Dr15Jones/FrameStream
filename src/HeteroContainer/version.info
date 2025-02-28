@@ -1,0 +1,29 @@
+
+Module : HeteroContainer
+
+Date   : Fri Oct  8 09:43:31 1999
+User   : urner
+Old Tag: v01_00_00
+New Tag: v01_00_01
+Message: avoid multiple inclusion of HCTypeTagTemplate.cc
+
+Module : HeteroContainer
+Date   : Tue Jul 25 09:42:48 2000
+User   : cdj
+Old Tag: v01_00_01
+New Tag: v01_01_00
+Message: HCTypeTag can now find a TypeTag from the name of a type
+
+Module : HeteroContainer
+Date   : Tue Jun  4 14:26:18 2002
+User   : cleo3
+Old Tag: v01_01_00
+New Tag: v01_02_00
+Message: slight modifications for CC 5.3
+
+Module : HeteroContainer
+Date   : Wed Jan 29 16:42:39 2003
+User   : cleo3
+Old Tag: v01_02_00
+New Tag: v01_03_00
+Message: added missing typename keyword needed by g++

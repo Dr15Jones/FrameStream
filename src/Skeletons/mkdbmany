@@ -1,0 +1,251 @@
+#!/usr/local/bin/perl
+#
+# $Id: mkdbmany,v 1.7 2002/10/16 18:33:57 cdj Exp $
+#############################################################################
+# Purpose: create all necessary files for storing/retrieving items to/from db
+# Author: Martin Lohner
+#############################################################################
+
+
+#  if the routine name is blank, 'h' or '?' go to help
+if ($ARGV[0] !~ /\w/ 
+ || $ARGV[0] eq "\?" 
+ || $ARGV[0] eq "h" 
+ || $ARGV[0] eq "-h" 
+ || $ARGV[0] eq "-help" ) {
+   &wrt_help; 
+}
+
+# environment variables
+$home = $ENV{"HOME"};
+$c3_inc = $ENV{"C3_INC"};
+
+#  skeleton file directory
+# eventually will use $skel_dir = $ENV{"CMH_SCRIPT"};
+if (!$skel_dir) {
+    $CLEO3 = $ENV{"C3_CVSSRC"};
+    $skel_dir = "$CLEO3/Skeletons";
+}
+
+# get names from command line
+($objectname,  $ext) = split(/\./, $ARGV[0]);
+($libraryname, $ext) = split(/\./, $ARGV[1]);
+($streamname,  $ext) = split(/\./, $ARGV[2]);
+if( $libraryname eq "" ) { $libraryname = "MyLibrary"; }
+if( $streamname eq "" )  { $streamname  = "event"; }
+
+$skeleton = "$skel_dir/Database/many.ddl";
+$outfile = 'OB' . $objectname . 's.ddl';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Database/many.cc";
+$outfile = 'OB' . $objectname . 's.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Database/proxymany.cc";
+$outfile = 'DB' . $objectname . '.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Database/proxywritermany.cc";
+$outfile = 'DB' . $objectname . 'Writer.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Database/T_proxymany.cc";
+$outfile = 'T_DB' . $objectname . '.cc';
+&make_file($skeleton, $outfile);
+
+$skeleton = "$skel_dir/Database/T_proxywritermany.cc";
+$outfile = 'T_DB' . $objectname . 'Writer.cc';
+&make_file($skeleton, $outfile);
+
+&further_instructions;
+
+
+# copy file
+sub copy_file {
+# first argument is file to be copied
+$skeleton = $_[0]; 
+# second argument is the name of the new file
+$outfile = $_[1];
+
+if (-s "$outfile") {
+    print "mkdbmany W: $outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+    print "mkdbmany W: *****************************************************\n";
+} else {
+
+#   write out some stuff to the screen
+    print "mkdbmany I: copying file $skeleton to $outfile\n";
+
+#open the skeleton file and output file
+    open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+    open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+# loop over lines in "skeleton.F" and overwrite where neccessary
+    while(<IN>) {
+	print OUT $_;
+    }
+    close(IN);   
+    close(OUT);
+}
+}
+
+
+# generate file
+sub make_file {
+# first argument is the skeleton file to use
+$skeleton = $_[0];
+# second argument is the name of the output file
+$outfile = $_[1];
+
+if (-s "$outfile") {
+    print "mkdbmany  W: $outfile FILE ALREADY EXISTS WILL NOT OVERWRITE!!\n";
+    print "mkdbmany  W: *****************************************************\n";
+} else {
+#  get the current date
+    $now = `date`;
+    chop($now);
+
+# get authors name from $HOME/.tmpl file
+
+    $afrom = "command line";
+    if ($author1 eq "" && -s "$home/.tmpl") {
+	open(IN,"$home/.tmpl");
+	$afrom = "users .tmpl file";
+	while(<IN>) {
+	    if (/First\w*/) {
+		@words = split(/:/, $_);
+		$author1 = $words[1]; 
+		chop($author1);
+	    } elsif (/Last\w*/) {
+		@words = split(/:/, $_);
+		$author2 = $words[1];
+		chop($author2);
+	    }
+	}
+	close(IN);
+	$author = "$author1 $author2";
+    }
+#
+# if author is still blank fill it in with REAL LIFE name in finger output
+#
+    if ($author1 eq "") {
+	$author1 = $ENV{"LOGNAME"};
+	foreach $_ (`finger -m "$author1"`) {
+	    if (/Login n\w*/) {
+		@words = split(/: /, $_);
+		$author = $words[2];
+		chop($author);
+		$afrom = "the output finger cmnd";
+	    }
+	}
+    }
+#   write out some stuff to the screen
+    print "mkdbmany  I: using skeleton: $skeleton \n";
+    print "mkdbmany  I: authors name is: $author, determined by $afrom \n";
+    print "mkdbmany  I: creating file: $outfile \n";
+
+#open the skeleton file and output file
+    open(IN,$skeleton)    or die "Opening $skeleton: $!\n";
+    open(OUT,">$outfile") or die "Opening $outfile: $!\n";
+
+# loop over lines in "skeleton.F" and overwrite where neccessary
+    while(<IN>) {
+#  Preserve case for lowercase
+	s/YourItemHere/$objectname/g;
+	s/yourItemHere/\l$objectname/g;
+	s/youritemhere/\L$objectname/g;
+	s/YourLibrary/$libraryname/g;
+#  Capitalize
+	s/YourStream/\u$streamname/g;
+#  Map uppercase to uppercase
+	s/YOURITEMHERE/\U$objectname/g;
+	s/John Doe/$author/;
+	s/day-mon-xx/$now/;
+#  Handle RCS keywords
+	s/RCS\((\w+)\)/\$$1\$/g;
+#  write out fortran comment lines without upcasing
+	if (/^c/ || /^C/ || /^\*/) {
+	    print OUT $_;
+	} else {
+	    print OUT $_;
+	}
+    }
+    close(IN);   
+    close(OUT);
+    if ($flag =~ /[bpC]/) {
+	chmod(0755,$outfile);
+    }
+}
+}
+
+# help package
+sub wrt_help {
+
+    print <<'ENDHELP';
+mkdb  h: simple little script to create skeletons for storing objects in db
+mkdb  h:
+mkdb  h: execution:  mkdbmany objectname [library="MyLibrary"] [stream="event"]
+mkdb  h: 
+mkdb  h: arguments:  objectname = name of class type to be stored
+mkdb  h:             library    = name of library your class lives in
+mkdb  h:             stream     = name of stream this object lives in
+mkdb  h: 
+mkdb  h: output:
+mkdb  h:    for OBSchema library:
+mkdb  h:          OBobjectname.ddl  OBobjectname.cc
+mkdb  h:
+mkdb  h:    for DBObjects library:
+mkdb  h:          DBobjectname.cc   DBobjectnameWriter.cc
+mkdb  h:          T_DBobjectname.cc T_DBobjectnameWriter.cc
+mkdb  h:
+mkdb  h: Example: mkdbmany TRTrack event
+mkdb  h:    for OBSchema library:
+mkdb  h:    -->   OBTRTrack.ddl  OBTRTrack.cc
+mkdb  h:
+mkdb  h:    for DBObjects library:
+mkdb  h:    -->   DBTRTrack.cc   DBTRTrackWriter.cc
+mkdb  h:    -->   T_DBTRTrack.cc T_DBTRTrackWriter.cc
+ENDHELP
+
+    print "";
+    print "mkdbmany  Q: Please enter name of object to store: ";
+    $ARGV[0] = <STDIN>;
+    chop($ARGV[0]);
+    print "mkdbmany  Q: Please enter name of the library the object is in: ";
+    $ARGV[1] = <STDIN>;
+    chop($ARGV[1]);
+    print "mkdbmany  Q: Please enter name of stream to store in: ";
+    $ARGV[2] = <STDIN>;
+    chop($ARGV[2]);
+}
+
+# further instructions
+sub further_instructions {
+
+    print <<'INSTRUCTIONS';
+mkdb  h:
+mkdb  h: Please now follow the following steps:
+mkdb  h: 
+mkdb  h: 1.) Look at the created files and fill in any missing details
+mkdb  h:     (most of the work is done for you, but please check)
+mkdb  h: 
+mkdb  h: The rest of the steps should be done by Martin.
+mkdb  h: Please send email to "mkl@mail.lns.cornell.edu" with the location
+mkdb  h: of your files.
+mkdb  h: 
+mkdb  h: 2.) Martin needs to move the 'OB' files to the 'OBSchema' library
+mkdb  h:     under the proper stream directory (e.g. 'OBSchema/Event')
+mkdb  h:     and create associations in the main stream handle class
+mkdb  h:     (e.g. 'OBSchema/Event/OBEvent.ddl')
+mkdb  h: 
+mkdb  h: 3.) Martin needs to move the 'DB' files to the DBObjects library
+mkdb  h:     (the 'T_' files into 'DBObjects/Instantiate'
+mkdb  h:      and the other files into 'DBObjects/Class' )
+mkdb  h:     and register the new proxies in the 
+mkdb  h:     'DBObjects/Class/DB_registerProxies.cc' and
+mkdb  h:     'DBObjects/Class/DB_registerProxyWriters.cc' files.
+mkdb  h:
+mkdb  h: Congrats! (Hopefully these steps will become automated soon.)
+mkdb  h: 
+INSTRUCTIONS
+}

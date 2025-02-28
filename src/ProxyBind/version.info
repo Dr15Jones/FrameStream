@@ -1,0 +1,22 @@
+
+Module : ProxyBind
+
+Date   : Thu Mar  4 17:14:09 1999
+User   : cdj
+Old Tag: 
+New Tag: v01_00_00
+Message: first tag
+
+Module : ProxyBind
+Date   : Mon May 22 14:52:26 2000
+User   : cdj
+Old Tag: v01_00_00
+New Tag: v01_00_01
+Message: made ProxyBoundActionBase exception safe
+
+Module : ProxyBind
+Date   : Sat May 31 19:49:56 2003
+User   : cdj
+Old Tag: v01_00_01
+New Tag: v01_01_00
+Message: use new Record::cacheIdentifier() instead of Record::syncValue() to deterimine if the Record has changed since the last time a bound method was called.

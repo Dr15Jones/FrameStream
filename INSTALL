@@ -1,0 +1,13 @@
+setenv FS_LIB to the directory that contains the output of the tar file
+then 
+	cd Common/configure
+	./configure --prefix=${FS_LIB}/Common
+	gmake
+Setup the third party libraries
+	cd other_sources
+	gmake
+Setup the necessary environment variables
+	source set_env
+Build suez
+	cd src
+	gmake

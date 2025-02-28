@@ -1,0 +1,53 @@
+nocap#!/bin/csh
+nocap#
+nocap# skelname
+nocap# 
+nocap# Description:
+nocap# 
+nocap# required input:
+nocap# optional input:
+nocap# 
+nocap# output:    
+nocap# 
+nocap# examples: 
+nocap# 
+nocap# author:   John Doe
+nocap# created:  day-mon-xx
+nocap#   
+nocap# RCS(Id)
+nocap#
+nocap# RCS(Log)
+nocap#
+nocap#  if routine name blank or ? go to help
+nocapif ($#argv == 0) then
+nocap set ans1=h
+nocapelse
+nocap set ans1=$1
+nocapendif
+nocapif ("$ans1" == "h" || "$ans1" == "H") then
+nocap echo "skelname  I: Executing help subroutine"
+nocap echo "skelname  h: put help package here"
+nocap echo "skelname  h:"
+nocap echo "skelname  h: execution:  skelname  arg[0] arg[1]"
+nocap echo "skelname  h:"
+nocap echo "skelname  h: output: "
+nocap echo "skelname  h:"
+nocap echo "skelname  h: required input:"
+nocap echo "skelname  h:"
+nocap echo "skelname  h: optional input:"
+nocap echo "skelname  h:"
+nocap echo "skelname  h: examples:"
+nocap echo "skelname  h: skelname arg[0] arg[1]"
+nocap echo "skelname  h:"
+nocap echo "skelname  Q: Please enter first argument: \c"
+nocap set ans1=$<
+nocap echo "skelname  Q: Please enter second argument: \c"
+nocap set ans2=$<
+nocap echo "skelname  h: Thank you and have a most pleasant day "
+nocapelse
+nocap set ans2=$2
+nocapendif
+nocap#
+nocapecho "skelname  i: entered arguments are $ans1 and $ans2"
+nocap#
+

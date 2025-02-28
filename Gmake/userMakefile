@@ -1,0 +1,225 @@
+# ;-*-Mode: makefile-*-
+# -----------------------------------------------------------------
+# Makefile for making cleo3 libraries from a set of source packages
+# Author: Valentin Kuznetsov
+# Date:   Fri Apr 23 12:53:09 EDT 2004
+# -----------------------------------------------------------------
+#
+# Assumption about setup:
+#
+#   There are several variables used in this Makefile with values
+#   that can be overridden by environment variables:
+#   (cleo3): CLEO3_ROOT, CVSROOT, C3_OTHER
+#   (cleo2): CERNLIB, C_CVSSRC, C_LIB
+#
+#   You need to setup two environment variables: USER_SRC and USER_BUILD
+#   if one of them is empty gmake will complain about it
+#
+# Rebuild of libraries:
+#
+#   To rebuild all libraries use: gmake
+#
+# Detailed Usage:
+#
+#   gmake                 -> setups build and include directories, 
+#                            compiles libs, links executables
+#   gmake DEBUG=y         -> debug version
+#
+#   gmake production      -> don't (re)do dependencies
+#   gmake depend          -> only do dependencies
+#   gmake clean           -> clean house (dependencies and binaries)
+#
+# clean-up:
+#   gmake clean           -> invoke clean for every package in your USER_SRC
+#   // specific to compiler/platform
+#   gmake clean_libs      -> get rid of libraries
+#
+# -----------------------------------------------------------------
+
+SHELL := /bin/bash
+MAKE := /usr/local/bin/gmake
+MAKEFILE := Makefile
+PWD := $(shell pawd)
+OSNAME := $(shell uname)
+ifeq "${OSNAME}" "Linux"
+MAKE :=/usr/bin/gmake
+endif
+
+
+# ----------------- User Settable Section -------------------------
+#
+# if not set by environment, set to reasonable defaults
+ifeq "$(strip $(CLEO3_ROOT))" ""
+CLEO3_ROOT := /nfs/cleo3
+endif
+ifeq "$(strip $(C_GMAKE))" ""
+C_GMAKE := /cleo/clib/Gmake
+endif
+ifeq "$(strip $(C3DIST))" ""
+C3DIST := $(CLEO3_ROOT)/cleodist
+endif
+ifeq "$(strip $(CVSROOT))" ""
+CVSROOT := /nfs/axp/cleo3/cvsroot
+endif
+ifeq "$(strip $(C_LIB))" ""
+C_LIB := /cleo/clib
+endif
+ifeq "$(strip $(CERNLIB))" ""
+  CERNLIB := /nfs/cern/96a_oldcompiler/lib
+endif
+ifeq "$(strip $(CERN3_LIB))" ""
+  CERN3_LIB := /nfs/cern/96a_oldcompiler/lib
+endif
+ifeq "$(strip $(C_CVSSRC))" ""
+  C_CVSSRC := $(C_LIB)/cvssrc
+endif
+ifeq "$(strip $(C3_OTHER))" ""
+  C3_OTHER := $(CLEO3_ROOT)/other_sources
+endif
+ifeq "$(strip $(CERNSRC))" ""
+  CERNSRC := /nfs/cern/96a_oldcompiler/src
+endif
+ifeq "$(strip $(COMM_LIB))" ""
+  COMM_LIB := $(CLEO3_ROOT)/Common/rel/experimental
+endif
+ifeq "$(strip $(COMM_INC))" ""
+  COMM_INC := $(CLEO3_ROOT)/Common/rel/experimental/include
+endif
+# if CXX=cxx not specified from command-line, assume we want g++
+ifeq "$(strip $(CXX))" ""
+  CXX := g++
+endif
+
+# set up USER_SRC/USER_BUILD if empty
+#ifeq "$(USER_SRC)" ""
+#  USER_SRC := $(PWD)
+#  $(shell export USER_SRC=${PWD})
+#endif
+#
+ifeq "$(USER_BUILD)" ""
+  USER_BUILD := $(PWD)/build
+  $(shell export USER_BUILD=${PWD}/build)
+endif
+
+# hardcoded
+CVS := cvs -d ${CVSROOT}
+DOCXX   := $(CLEO3_ROOT)/commercial/doc++/bin/$(OSNAME)/doc++
+DOXYGEN := $(CLEO3_ROOT)/commercial/doxygen/bin/$(OSNAME)/doxygen
+MAINDIR := $(USER_SRC)
+
+PACKAGE =
+TOMAKE := $(shell echo $(PACKAGE))
+ifeq "$(strip $(PACKAGE))" ""
+#TOMAKE := $(shell find $(USER_SRC) -name Makefile | awk '{ORS=" "; z=split($$1,a,"/"); print a[z-1]}' DIR=${USER_SRC})
+TOMAKE := $(shell find $(USER_SRC) -name Makefile | egrep -v build | awk '{ORS=" "; zz=split($$1,b,DIR); z=split(b[2],a,"/"); if(z==3) {print a[z-1]}}' DIR=${USER_SRC})
+endif
+
+#
+# ----------------- End Of User Settable Section ----------------------
+
+
+# ---------------------------------------------------------------------
+# in principle you shouldn't need to touch anything below here
+# ---------------------------------------------------------------------
+
+# variables for the various directories to put things (libraries, log
+# files etc.)
+PLATFORMDIR = $(MAINDIR)/build/$(OSNAME)
+ifeq "$(strip $(C3_GMAKE))" ""
+C3_GMAKE    = $(MAINDIR)/Gmake
+endif
+TEST_CXX    = $(addsuffix .test,$(TOTEST_CXX))
+TEST_FORTRAN = $(addsuffix .test,$(TOMAKE_FORTRAN_ALL))
+BUILDDIR    = $(PLATFORMDIR)/$(CXX)
+LOGDIR      = $(BUILDDIR)/Log
+LOGDIRTEST  = $(BUILDDIR)/TestLog
+
+USERBUILD   = $(USER_BUILD)/$(OSNAME)
+
+# format of logfiles
+LOGFILE = $(TARGET).log
+ifneq (,$(findstring $(DEBUG),yY))
+  LOGFILE = $(TARGET)_debug.log
+endif
+
+# ------------- targets ----------------------------------------------
+
+# Default Target
+TARGET = production
+#PACKAGE = 
+ 
+# --- special build targets
+
+#default : user_structure depend production shared_module
+default : what_to_do user_structure depend production shared_module
+
+# --- individual targets
+
+depend:: user_structure
+	@(for i in $(TOMAKE); do \
+	    cd $(USERBUILD)/$$i; \
+	    $(MAKE) -f $(MAKEFILE) $@ DEBUG=$(DEBUG); \
+	 done \
+	)| tee $(USERBUILD)/$@.log 2>&1
+
+production:: user_structure
+	@(for i in $(TOMAKE); do \
+	    cd $(USERBUILD)/$$i; \
+	    $(MAKE) -f $(MAKEFILE) $@ DEBUG=$(DEBUG); \
+	 done \
+	)| tee $(USERBUILD)/$@.log 2>&1
+
+shared_module:: user_structure
+	@(for i in $(TOMAKE); do \
+	    cd $(USERBUILD)/$$i; \
+	    if test "`grep SHARMODNAME Makefile`" != "" ; then \
+	       $(MAKE) -f $(MAKEFILE) $@ DEBUG=$(DEBUG); \
+	    fi ; \
+	 done \
+	)| tee $(USERBUILD)/$@.log 2>&1
+
+clean:: user_structure
+	@(for i in $(TOMAKE); do \
+	    cd $(USERBUILD)/$$i; \
+	    $(MAKE) -f $(MAKEFILE) $@ DEBUG=$(DEBUG); \
+	 done \
+	)
+
+what_to_do:
+	@echo "***** Testing User setup *****"; echo ""
+	@echo "PACKAGE=$(PACKAGE)"
+	@echo "USER_BUILD=$(USER_BUILD)"
+	@test -n "$(USER_BUILD)"
+	@echo "USER_SRC=$(USER_SRC)"
+	@test -n "$(USER_SRC)"
+	@echo "Packages: $(TOMAKE)"
+	@test -n "$(TOMAKE)"
+
+user_structure:: what_to_do
+#        @echo "***** Testing User setup *****"; echo ""
+#        @echo "PACKAGE=$(PACKAGE)"
+#        @echo "USER_BUILD=$(USER_BUILD)"
+#        @test -n "$(USER_BUILD)"
+#        @echo "USER_SRC=$(USER_SRC)"
+#        @test -n "$(USER_SRC)"
+#        @test "$(PACKAGE)" == "all" || TOMAKE=$(PACKAGE)
+#        @echo "Build packages: $(TOMAKE)"
+#        @test -n "$(TOMAKE)"
+	@test -d $(USERBUILD) || mkdir -p $(USERBUILD)
+	@for i in $(TOMAKE); do \
+	  test -d $(USERBUILD)/$$i || mkdir -p $(USERBUILD)/$$i; \
+	  if test -f $(USER_SRC)/$$i/Makefile; then \
+	     if test ! -f $(USERBUILD)/$$i/Makefile; then \
+	        ln -sf $(USER_SRC)/$$i/Makefile $(USERBUILD)/$$i/Makefile; \
+	     fi; \
+	  fi; \
+	done
+	
+clean_libs: user_structure
+	@echo ""; echo "***** Cleaning out lib/ ********";
+	@echo ""
+	@for i in $(TOMAKE); do \
+	  rm -f $(USERBUILD)/lib/lib$${i}.a; \
+	  rm -f $(USERBUILD)/shlib/$${i}.so; \
+	  rm -f $(USERBUILD)/shlib/$${i}.so.map; \
+	done; \

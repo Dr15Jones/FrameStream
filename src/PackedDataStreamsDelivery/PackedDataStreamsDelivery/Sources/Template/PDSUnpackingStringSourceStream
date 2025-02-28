@@ -1,0 +1,284 @@
+// -*- C++ -*-
+//
+// Package:     <PackedDataStreamsDelivery>
+// Module:      PDSUnpackingStringSourceStream
+// 
+// Description: <one line class summary>
+//
+// Implementation:
+//     <Notes on implementation>
+//
+// Author:      Chris D Jones
+// Created:     Tue Apr 15 10:30:29 EDT 2003
+// $Id$
+//
+// Revision history
+//
+// $Log$
+
+#include "Experiment/Experiment.h"
+
+// system include files
+// You may have to uncomment some of these or other stl headers
+// depending on what other header files you include (e.g. FrameAccess etc.)!
+//#include <string>
+//#include <vector>
+//#include <set>
+//#include <map>
+//#include <algorithm>
+//#include <utility>
+
+// user include files
+//#include "Experiment/report.h"
+#include "PackedDataStreamsDelivery/PDSUnpackingStringSourceStream.h"
+
+
+//
+// constants, enums and typedefs
+//
+
+//static const char* const kFacilityString = "PackedDataStreamsDelivery.PDSUnpackingStringSourceStream" ;
+
+// ---- cvs-based strings (Id and Tag with which file was checked out)
+//static const char* const kIdString  = "$Id: skeleton.cc,v 1.6 2001/01/03 16:25:23 cdj Exp $";
+//static const char* const kTagString = "$Name:  $";
+
+//
+// static data member definitions
+//
+
+//
+// constructors and destructor
+//
+template<PDSSTRINGENDIAN T>
+PDSUnpackingStringSourceStream<T>::PDSUnpackingStringSourceStream()
+{
+}
+
+template<>
+PDSUnpackingStringSourceStream<PDSSTRINGENDIAN>::PDSUnpackingStringSourceStream() :
+   m_buffer(0),
+   m_bufferSize(0)
+{
+}
+
+// PDSUnpackingStringSourceStream<T>::PDSUnpackingStringSourceStream( const PDSUnpackingStringSourceStream& rhs )
+// {
+//    // do actual copying here; if you implemented
+//    // operator= correctly, you may be able to use just say      
+//    *this = rhs;
+// }
+
+template<PDSSTRINGENDIAN T>
+PDSUnpackingStringSourceStream<T>::~PDSUnpackingStringSourceStream()
+{
+}
+
+template<>
+PDSUnpackingStringSourceStream<PDSSTRINGENDIAN>::~PDSUnpackingStringSourceStream()
+{
+   delete [] m_buffer;
+}
+//
+// assignment operators
+//
+// const PDSUnpackingStringSourceStream& PDSUnpackingStringSourceStream<T>::operator=( const PDSUnpackingStringSourceStream& rhs )
+// {
+//   if( this != &rhs ) {
+//      // do actual copying here, plus:
+//      // "SuperClass"::operator=( rhs );
+//   }
+//
+//   return *this;
+// }
+
+//
+// member functions
+//
+
+template<PDSSTRINGENDIAN T>
+void
+PDSUnpackingStringSourceStream<T>::throwException()
+{
+   throw DAException("asked to unpack incorrect type");
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( char& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( short& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( int& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( long& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( unsigned char& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( unsigned short& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( unsigned int& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( unsigned long& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( float& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( double& iData )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+inline
+void
+PDSUnpackingStringSourceStream<T>::fillStringFromBuffer(string& iData )
+{
+   const char* startOfString = reinterpret_cast<const char*>(startWord()) ;
+   iData = string( startOfString  );
+}
+
+template<>
+void
+PDSUnpackingStringSourceStream<DIFF_ENDIAN>::fillStringFromBuffer( 
+   string& iData )
+{
+   const char* startOfString = reinterpret_cast<const char*>(startWord()) ;
+
+   //need to copy the buffer and then reswap the bytes
+   unsigned int distanceToFirstZero = 
+      strlen( startOfString );
+   
+   
+   //determine what word the first zero is on
+   unsigned int numberOfWords = distanceToFirstZero /4 + 1;
+   
+   if( m_bufferSize < numberOfWords ) {
+      delete [] m_buffer;
+      m_bufferSize = numberOfWords;
+      
+      //create a temporary buffer for the words
+      m_buffer = new UInt32[ numberOfWords ];
+   }
+
+   memcpy( m_buffer, startOfString, 4*numberOfWords );
+   
+   for( UInt32* itBuffer = m_buffer; 
+	itBuffer < m_buffer + numberOfWords;
+	++itBuffer ) {
+      *itBuffer = swapBytesInUInt32(*itBuffer  );
+   }
+   
+   iData = string( reinterpret_cast<char*>(m_buffer) );
+}
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( string& iData )
+{
+
+   //the string has been padded so that it starts on a 32bit boundary
+   if( startBit() != 0 ) {
+      SMFixedPacker<UInt32> padPacker( 32 - ((startBit())%32), 1, 0);
+      padPacker.unpack(*(startWord()), *(startWord()+1),startBit());
+      advanceStartWordIfNeeded();
+   }
+
+   fillStringFromBuffer( iData );
+   
+   //now we need to advance our buffer pointers
+   //The string actually takes up an even number of bytes (past the 
+
+   unsigned int numberOfBytes = iData.size()+ 1;
+   unsigned int paddingAtEnd = ( (0 == numberOfBytes%4) 
+                                   ? 0 
+                                   : 4 - numberOfBytes%4);
+   unsigned int numberOfWords =  (numberOfBytes+paddingAtEnd)/ 4;
+
+   setBufferInfo(startWord()+numberOfWords, 0 );
+
+   return gotoNext();
+}
+
+
+template<PDSSTRINGENDIAN T>
+SMSourceStream& 
+PDSUnpackingStringSourceStream<T>::operator>>( const SMMakeContentsBase& iContents )
+{
+   throwException();
+   return *this;
+}
+
+template<PDSSTRINGENDIAN T>
+void 
+PDSUnpackingStringSourceStream<T>::beginObject( const TypeTag& iType )
+{
+}
+
+template<PDSSTRINGENDIAN T>
+void 
+PDSUnpackingStringSourceStream<T>::endObject()
+{
+}
+
+//
+// const member functions
+//
+
+//
+// static member functions
+//

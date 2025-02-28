@@ -1,0 +1,14 @@
+
+Module : InteractiveDelivery
+Date   : Wed Jan 29 13:46:03 2003
+User   : cdj
+Old Tag: v01_00_00
+New Tag: v01_01_00
+Message: get io headers from C++Std package
+
+Module : InteractiveDelivery
+Date   : Sat Nov 22 15:22:48 2003
+User   : cdj
+Old Tag: v01_01_00
+New Tag: v01_02_00
+Message: can now specify what stream should be used

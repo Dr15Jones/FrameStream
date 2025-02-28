@@ -1,0 +1,21 @@
+
+Module : SignalsSlots
+Date   : Tue Sep  9 09:18:35 2003
+User   : cdj
+Old Tag: 
+New Tag: v01_00_00
+Message: first submission
+
+Module : SignalsSlots
+Date   : Thu Nov 20 13:32:13 2003
+User   : vk
+Old Tag: v01_00_00
+New Tag: v01_00_01
+Message: On Linux with -g enabled flag compiler screws up and makes a wrong static_cast. Usage of dynamic_cast fix the problem.
+
+Module : SignalsSlots
+Date   : Wed Mar  3 15:10:07 2004
+User   : vk
+Old Tag: v01_00_01
+New Tag: v01_00_02
+Message: Make gdb happy by using dynamic_cast

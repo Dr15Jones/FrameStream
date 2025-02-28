@@ -1,0 +1,60 @@
+# ;-*-Mode: makefile-*-
+#=============================================================================
+#
+# Purpose: Provide standard Makefile pieces for SpExtract*Procs
+#
+# How to use:
+#
+#   1.) Just before the 'include $(C3_GMAKE)/M.tail' line add
+#        include $(C3_GMAKE)/M.spextract_proc
+#
+#=============================================================================
+
+OS_NAME := $(shell uname)
+ifeq "$(QTDIR)" ""
+  QTDIR := $(C3_OTHER)/qt
+endif
+OTHRLIB += $(QTDIR)/lib
+
+SYS_LIBS += qt
+ifeq "$(OS_NAME)" "Darwin"
+else
+ifeq "$(OPENGL)" "opengl" #real OpenGL
+   SYS_LIBS +=     GLU     GL      
+
+else #default case, OPENGL = mesa
+   SYS_LIBS +=      MesaGLU MesaGL
+ifeq "$(MESA_DIR)" ""
+   MESA_DIR := $(C3_OTHER)/Mesa
+   OTHR_INCS +=     
+endif
+	MESA := true
+	OTHRLIB +=	$(MESA_DIR)/lib
+	OTHR_INCS +=    $(MESA_DIR)/include \
+			$(MESA_DIR)/include/GL 
+endif
+SYS_LIBS += GLw Xext Xmu Xm Xt X11
+endif
+
+MODEL_LIBS :=
+ifeq "$(USE_3D)" "Y"
+   USER_DEFS += USE_3D_MODEL
+ifeq "$(NO_3DMODEL)" ""
+   MODEL_LIBS += Sp3DModel SpDetector
+   OTHER_LIBS += SoFreeXt SoFree
+endif
+endif
+ifeq "$(NO_2DMODEL)" ""
+   MODEL_LIBS += Sp2DModel SpDetector
+endif
+ifneq "$(NEED_2DCYLMODEL)" ""
+   MODEL_LIBS += SpCylindrical2DModel
+endif
+
+SP_LIBS := SpInterface SpHelpSystem \
+	   SpQtHelper Spectator
+
+USER_LIBS += $(MODEL_LIBS) $(SP_LIBS)
+
+
+

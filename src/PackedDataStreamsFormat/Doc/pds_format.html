@@ -1,0 +1,244 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Chris Jones">
+   <meta name="GENERATOR" content="Mozilla/4.73 [en] (WinNT; U) [Netscape]">
+   <title>Packed Data Streams Format</title>
+</head>
+<body>
+
+<h1>
+Packed Data Streams File Format</h1>
+
+<hr WIDTH="100%">
+<br>The packed data streams file format is composed of
+<ul>
+<li>
+file header</li>
+
+<li>
+series of Records</li>
+</ul>
+where all information is stored in 32 bit unsigned words.
+<h2>
+File Header</h2>
+The header contains
+<ul>
+<li>
+what Streams have been stored</li>
+
+<li>
+what types of data have been stored</li>
+
+<li>
+the compression information needed to decode each type of data</li>
+
+<li>
+the 'type' 'usage' and 'production' tags for each data item in each Stream</li>
+</ul>
+
+<h3>
+header format</h3>
+
+<table BORDER WIDTH="100%" >
+<tr>
+<td><b>number of words</b></td>
+
+<td><b>purpose of field</b></td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>Format/Endian identifier
+<blockquote>3141592*256 + version number of file format
+<br>(see PackedDataStreamsFormat/pds_file_header.h)</blockquote>
+</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>unique file identifier</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>remaining number of words in header, not including the first 3 words</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>number of words in Stream name list</td>
+</tr>
+
+<tr>
+<td>n</td>
+
+<td>character array of Stream names
+<blockquote>each name is seperate from the next using '\0'
+<br>the last name pads the final word with '\0's</blockquote>
+</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>number of&nbsp; words in Types name list&nbsp;
+<br>for types that have storage helper proxy factories</td>
+</tr>
+
+<tr>
+<td>n</td>
+
+<td>character array of Types names (same format as Stream names)</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>number of words in Types name list
+<br>for types that only have storage helpers</td>
+</tr>
+
+<tr>
+<td>n</td>
+
+<td>character array of Types names</td>
+</tr>
+
+<tr>
+<td>n</td>
+
+<td>compression information for each Type
+<br>This information is bit packed
+<br>For each Type
+<blockquote>storage helper version
+<br>number of fields
+<br>for each field
+<blockquote>
+<blockquote>Type the packer works on
+<br>packer's strategy
+<br>packer specific data
+<br>(see PackedDataStreamsFormat/pds_packing_enums.h)</blockquote>
+</blockquote>
+</blockquote>
+</td>
+</tr>
+
+<tr>
+<td>n</td>
+
+<td>DataKeys for each Stream
+<blockquote>For each Stream
+<blockquote>1 : number of Proxies
+<br>For each Proxy
+<blockquote>1 : Proxy index (number comes from order of Type names for
+storage helper proxy factories)
+<br>n : Usage and Production tag character array</blockquote>
+</blockquote>
+</blockquote>
+</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>number of words in header (must match 3 word in header)</td>
+</tr>
+</table>
+
+<h2>
+Record</h2>
+A Record is composed of
+<ul>
+<li>
+record header</li>
+
+<li>
+data for each type</li>
+</ul>
+
+<h3>
+Record Header</h3>
+(see PackedDataStreamsFormat/pds_record_header.h)
+<table BORDER WIDTH="100%" >
+<tr>
+<td><b>number of words</b></td>
+
+<td><b>purpose of field</b></td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>Record index
+<blockquote>The number comes from the order of Stream names in the file
+header</blockquote>
+</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>Run number</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>Event Number</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>lower most 32 bits of 64 bit time stamp</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>upper most 32 bits of 64 bit time stamp</td>
+</tr>
+</table>
+
+<h3>
+Record Data</h3>
+
+<table BORDER WIDTH="100%" >
+<tr>
+<td><b>number of words</b></td>
+
+<td><b>puropse of field</b></td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>size of Record data (excluding this word)</td>
+</tr>
+
+<tr>
+<td>n</td>
+
+<td>Data
+<br>For each Proxy
+<blockquote>1: Proxy index
+<br>1: number of words used for Proxy's data
+<br>n: bit packed data</blockquote>
+</td>
+</tr>
+
+<tr>
+<td>1</td>
+
+<td>size of Record data (same as first word)</td>
+</tr>
+</table>
+
+</body>
+</html>
