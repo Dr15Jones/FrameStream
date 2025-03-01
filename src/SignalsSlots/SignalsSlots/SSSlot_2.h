@@ -51,9 +51,9 @@ template<class T, class ArgT1, class ArgT2, class MethodArgT1,  class MethodArgT
       // ---------- member functions ---------------------------
 	 void action(ArgT1 iArg1, ArgT2 iArg2) {
 #if defined(__linux__) && defined(CLEO_DEBUG)
-	   (dynamic_cast<T*>(object())->*m_method)(iArg1, iArg2);
+	   (dynamic_cast<T*>(this->object())->*m_method)(iArg1, iArg2);
 #else
-	   (static_cast<T*>(object())->*m_method)(iArg1, iArg2);
+	   (static_cast<T*>(this->object())->*m_method)(iArg1, iArg2);
 #endif
       }
 

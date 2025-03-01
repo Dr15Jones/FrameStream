@@ -51,9 +51,9 @@ class SSSlot_1 : public SSSlotBase_1<ArgT>
       // ---------- member functions ---------------------------
       void action(ArgT iArg) {
 #if defined(__linux__) && defined(CLEO_DEBUG)
-	 (dynamic_cast<T*>(object())->*m_method)(iArg);
+	 (dynamic_cast<T*>(this->object())->*m_method)(iArg);
 #else
-	 (static_cast<T*>(object())->*m_method)(iArg);
+	 (static_cast<T*>(this->object())->*m_method)(iArg);
 #endif
       }
 
