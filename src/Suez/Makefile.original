@@ -57,7 +57,6 @@ EXE = ../bin/suez.exe
 
 DIR_LIST := 	. \
 		Class \
-		Instantiate \
 		$(XTRA_DIR)
 
 #---------------------

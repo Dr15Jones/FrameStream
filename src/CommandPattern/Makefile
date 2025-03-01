@@ -74,7 +74,6 @@ EXE =
 
 DIR_LIST := 	Class \
 		Class/Keyword \
-		Instantiate \
 		$(XTRA_DIR)
 
 #-------------------------------------------------------

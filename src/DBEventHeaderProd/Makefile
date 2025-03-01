@@ -60,7 +60,7 @@ SHARMODNAME := $(JOB)
 # List of subdirectories containing code
 #----------------------------------------
 
-DIR_LIST :=	. Class Instantiate $(XTRA_DIR)
+DIR_LIST :=	. Class $(XTRA_DIR)
 
 #-------------------------------------------------------
 # Set up libraries paths:

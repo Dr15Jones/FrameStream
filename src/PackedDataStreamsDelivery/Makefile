@@ -58,7 +58,7 @@ SHARMODNAME := PDSSourceFormat
 # List of subdirectories containing code
 #----------------------------------------
 
-DIR_LIST :=	. Class Class/Sources Instantiate $(XTRA_DIR)
+DIR_LIST :=	. Class Class/Sources $(XTRA_DIR)
 
 #-------------------------------------------------------
 # Set up libraries paths:

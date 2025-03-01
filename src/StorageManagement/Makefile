@@ -56,7 +56,6 @@ EXE =
 
 DIR_LIST := 	Class \
 		Class/Compression \
-		Instantiate \
 		$(XTRA_DIR)
 
 #-------------------------------------------------------

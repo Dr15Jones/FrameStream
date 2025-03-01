@@ -73,9 +73,7 @@ EXE :=
 #----------------------------------------
 
 DIR_LIST :=	Class \
-		Instantiate \
 		Hbook/Class \
-		Hbook/Instantiate \
 		Hbook \
 		$(XTRA_DIR)
 #		Fortran \

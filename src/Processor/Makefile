@@ -77,7 +77,6 @@ EXE =
 
 DIR_LIST := 	Class \
 		Processor/Class \
-		Instantiate \
 		$(XTRA_DIR)
 
 #-------------------------------------------------------

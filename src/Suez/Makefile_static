@@ -58,7 +58,6 @@ EXE = ../bin/$(JOB).exe
 
 DIR_LIST := 	. \
 		Class \
-		Instantiate \
 		$(XTRA_DIR)
 
 #---------------------
