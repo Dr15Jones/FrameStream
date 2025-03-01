@@ -45,6 +45,8 @@
 #  include <strings.h>
 #endif /* !HAVE_STRING_H */
 
+#include <stdio.h>
+
 extern char *xmalloc (), *xrealloc ();
 
 #if !defined (SHELL)
