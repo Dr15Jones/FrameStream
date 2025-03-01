@@ -16,6 +16,6 @@ production::
 	$(MAKE) -f $(MAKEFILE) $(LIBS) \
                 "TARGET=$@" "DEBUG=$(DEBUG)"
 $(LIBS) ::
-	-(cd $(BUILDDIR)/$@; pawd; \
+	-(cd $(BUILDDIR)/$@; pwd; \
         $(MAKE) $(TARGET) DEBUG=$(DEBUG) \
                 )

@@ -45,7 +45,7 @@ MAKE_SHAREDLIB := y
 #----------------------------
 
 ifeq "$(JOB)" ""
-  WHERE := $(shell pawd)
+  WHERE := $(shell pwd)
   JOB := $(notdir $(WHERE))
 endif
 EXE = 

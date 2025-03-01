@@ -48,7 +48,7 @@ NOLIB :=y
 #----------------------------
 
 ifeq "$(JOB)" ""
-  WHERE := $(shell pawd)
+  WHERE := $(shell pwd)
   JOB := $(notdir $(WHERE))
 endif
 JOB := StorageManagement
@@ -59,7 +59,7 @@ EXE = test.exe
 #----------------------------------------
 
 ifeq "$(TEST_DIR)" ""
-  WHERE := $(shell pawd)
+  WHERE := $(shell pwd)
   TEST_DIR := $(notdir $(WHERE))
 endif
 

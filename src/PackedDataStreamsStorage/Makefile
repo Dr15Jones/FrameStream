@@ -49,7 +49,7 @@ USER_LINK := CXX
 #----------------------------
 
 ifeq "$(JOB)" ""
-  WHERE := $(shell pawd)
+  WHERE := $(shell pwd)
   JOB := $(notdir $(WHERE))
 endif
 SHARMODNAME := PDSSinkFormat

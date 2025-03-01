@@ -48,7 +48,7 @@ USER_LINK := CXX
 JOB := SignalsSlots
 
 ifeq "$(JOB)" ""
-  WHERE := $(shell pawd)
+  WHERE := $(shell pwd)
   JOB := $(notdir $(WHERE))
 endif
 EXE = ../bin/test.exe
