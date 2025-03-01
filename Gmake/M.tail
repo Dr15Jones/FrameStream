@@ -79,7 +79,7 @@
 MAKEFILE:=	Makefile
 
 ifeq "$(C3_INSTALL_DIR)" ""
-  C3_INSTALL_DIR := $(shell pawd)
+  C3_INSTALL_DIR := $(shell pwd)
 endif
 # always puts /usr/local/bin first (important for some programs, e.g. "test")
 PATH	:= /usr/local/bin:${PATH}

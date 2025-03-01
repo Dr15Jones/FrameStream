@@ -70,7 +70,7 @@ endif
 
 programs_template_clean :
 	@if test ! "`find . -name programs`"xx = "xx"; then \
-	  startDir=`pawd`; \
+	  startDir=`pwd`; \
 	  for progdir in "`find . -name programs`"; do \
 	    if test -d $$progdir; then \
 	      cd $$progdir; $(MAKE) DEPFILE=none template_clean; cd $$startDir; \

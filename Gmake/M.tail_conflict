@@ -78,7 +78,7 @@
 #MAKE 	:= 	gmake
 MAKEFILE:=	Makefile
 
-PWD     := $(shell pawd)
+PWD     := $(shell pwd)
 # always puts /usr/local/bin first (important for some programs, e.g. "test")
 PATH	:= /usr/local/bin:${PATH}
 

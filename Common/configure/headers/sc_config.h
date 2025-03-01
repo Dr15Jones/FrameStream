@@ -6,15 +6,15 @@
 
 /* Global switches for correct setup */
 /* Types and sizes */
-#define HAVE_CONST   1
-#define AC_BIGENDIAN 1
+#define HAVE_CONST 1
+#define AC_BIGENDIAN 0
 
 #define HAVE_STANDARD_SIZES 1
 #define SIZEOF_SIGNED_CHAR 1
 #define SIZEOF_UNSIGNED_CHAR 1
 #define SIZEOF_UNSIGNED_SHORT 2
 #define SIZEOF_UNSIGNED_INT 4
-#define SIZEOF_UNSIGNED_LONG 4
+#define SIZEOF_UNSIGNED_LONG 8
 #define SIZEOF_UNSIGNED_LONG_LONG 8
 
 #define HAVE_LONG_DOUBLE 1
@@ -32,7 +32,7 @@
 #define HAVE_TIS_H 0
 #define HAVE_SEMAPHORE_H 1
 #define HAVE_SYS_SEM_H 0
-#define HAVE_SYS_MSG_H 0
+#define HAVE_SYS_MSG_H 1
 #define HAVE_TIME_H 1
 #define CLASH_SYSENT_UNISTD 0
 
@@ -61,7 +61,7 @@
 ** Switches for BASICS use of platform dependent APIs
 */
 #define HAVE_RWLOCK_SUPPORT 0
-#define HAVE_VSNPRINTF 1
+#define HAVE_VSNPRINTF 0
 #define HAVE_OUTWAITING 0
 #define USE_PTHREAD_START_T 0
 #define USE_RWLOCK_T 0
@@ -87,7 +87,7 @@
 #define FOUND_TIMEZONE 1
 
 #if (FOUND_TIMEZONE == 1)
-#define AC_TIMEZONE_STRING "EST5EDT:M4.1.0:M10.5.0"
+#define AC_TIMEZONE_STRING "CST6CDT:M4.1.0:M10.5.0"
 #endif
 
 /*
@@ -100,7 +100,7 @@
 /*
 ** Password switches
 */
-#define HAVE_CRYPT_H 0
+#define HAVE_CRYPT_H 1
 /* Default security files location */
 #define DEFAULT_SECURITY_FILES_LOCATION "/etc/cleo3/"
 

@@ -39,7 +39,7 @@
 SHELL := /bin/bash
 MAKE := /usr/local/bin/gmake
 MAKEFILE := Makefile
-PWD := $(shell pawd)
+PWD := $(shell pwd)
 OSNAME := $(shell uname)
 ifeq "${OSNAME}" "Linux"
 MAKE :=/usr/bin/gmake
