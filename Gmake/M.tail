@@ -1418,22 +1418,19 @@ $(DEP_SUFFIX_FORMAT) : %.cc $(INCLUDE_LINK) $(MAKEF_COMPILE_DEP)
 	@-$(SHELL) -ec \
 	'$(CXX_DEP) $(CLEO_DEFS) $(CXXFLAGS) $(LIST_INCS) $(CXX_INCS) $< \
 	| $(FILTER_INCLUDES) \
-	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) \
-	$@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
+	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) $@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
 $(DEP_SUFFIX_FORMAT) : %.c $(INCLUDE_LINK) $(MAKEF_COMPILE_DEP)
 	@echo "--> creating dependency file $@ for $<"
 	@-$(SHELL) -ec \
 	'$(C_DEP) $(CLEO_DEFS) $(CFLAGS)   $(LIST_INCS) $(C_INCS) $< \
 	| $(FILTER_INCLUDES) \
-	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) \
-	$@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
+	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) $@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
 $(DEP_SUFFIX_FORMAT) : %.F $(INCLUDE_LINK) $(MAKEF_COMPILE_DEP)
 	@echo "--> creating dependency file $@ for $<"
 	-$(SHELL) -ec \
 	'$(F_DEP) $(CLEO_DEFS) $(FFLAGS)   $(LIST_INCS) $< \
 	| $(FILTER_INCLUDES) \
-	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) \
-	$@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
+	| sed '\''s/\($*\)\.o[ :]*/$$\(LIBRARY\)\(\1$$\(OBJS_G\).o\) 	$@ : /g'\'' > $@; [ -s $@ ] || rm -f $@'
 
 # need special handling for out-of-date dependency files
 #$(HEADER_FORMATS) :
