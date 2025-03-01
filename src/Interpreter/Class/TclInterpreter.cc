@@ -122,7 +122,7 @@ TclInterpreter::TclInterpreter()
 
    // register all tcl commands with gnu readline
    Tcl_GlobalEval( m_tclInterpreter, "info commands" );
-   StringTokenizer commands( m_tclInterpreter->result );
+   StringTokenizer commands( Tcl_GetStringResult(m_tclInterpreter) );
 
    while( commands.hasMoreElements() ) {
 
@@ -348,14 +348,14 @@ TclInterpreter::loop( )
       // result = Tcl_RecordAndEval( m_tclInterpreter,
       //                             Tcl_DStringValue( &cmd ), 0 );
       if( TCL_ERROR == result ) {
-         if( 0 != strlen( m_tclInterpreter->result ) ) {
+         if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
    	    report( ::SYSTEM, kFacilityString )
-   	       << "Tcl_Eval error: " << m_tclInterpreter->result << endl;
+   	       << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
          }
       }
       else {
-	if( 0 != strlen( m_tclInterpreter->result ) ) {
-	  cout << m_tclInterpreter->result << endl;
+	if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
+	  cout << Tcl_GetStringResult(m_tclInterpreter) << endl;
 	}
       }
    }
@@ -448,9 +448,9 @@ TclInterpreter::runCommandFile( const char* filename )
    int result = Tcl_Eval( m_tclInterpreter, 
 			  (char*)command.c_str() );
    if( TCL_ERROR == result ) {
-      if( 0 != strlen( m_tclInterpreter->result ) ) {
+      if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
 	 report( ::SYSTEM, kFacilityString )
-	    << "Tcl_Eval error: " << m_tclInterpreter->result << endl;
+	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
       }
    }
 
@@ -464,9 +464,9 @@ TclInterpreter::runCommand( char* command )
    int result = Tcl_Eval( m_tclInterpreter,
 			  command );
    if( TCL_ERROR == result ) {
-      if( 0 != strlen( m_tclInterpreter->result ) ) {
+      if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
 	 report( ::SYSTEM, kFacilityString )
-	    << "Tcl_Eval error: " << m_tclInterpreter->result << endl;
+	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
       }
    }
 
@@ -495,9 +495,9 @@ TclInterpreter::runCommand( int argc, char* argv[] )
    delete [] c_command;
 
    if( TCL_ERROR == result ) {
-      if( 0 != strlen( m_tclInterpreter->result ) ) {
+      if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
 	 report( ::SYSTEM, kFacilityString )
-	    << "Tcl_Eval error: " << m_tclInterpreter->result << endl;
+	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
       }
    }
 
@@ -748,8 +748,8 @@ TclInterpreter::sourceCommand( const char* iFileName)
 
 	 pPrompt = &prompt;
 
-	 if( 0 != strlen( m_tclInterpreter->result) ) {
-	    cout << m_tclInterpreter->result << endl;
+	 if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter)) ) {
+	    cout << Tcl_GetStringResult(m_tclInterpreter) << endl;
 	 }
       } else {
 	 //the command prompt can not change while the command is
