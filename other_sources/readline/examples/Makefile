@@ -1,11 +1,10 @@
-# Generated automatically from Makefile.in by configure.
 # This is the Makefile for the examples subdirectory of readline. -*- text -*-
 #
 SHELL = /bin/sh
 RM = rm -f
 
 srcdir = .
-VPATH = .:.
+VPATH = .
 top_srcdir = ..
 BUILD_DIR = .
 

@@ -22,7 +22,7 @@
 #define HAVE_SELECT 1
 
 /* Define if you have the setenv function.  */
-/* #undef HAVE_SETENV */
+#define HAVE_SETENV 1
 
 /* Define if you have the strcasecmp function.  */
 #define HAVE_STRCASECMP 1
@@ -36,7 +36,7 @@
 /* Define if you have the strcoll function.  */
 #define HAVE_STRCOLL 1
 
-#define STRCOLL_BROKEN 1
+/* #undef STRCOLL_BROKEN */
 
 /* Define if you have the <dirent.h> header file.  */
 #define HAVE_DIRENT_H 1
@@ -63,16 +63,16 @@
 /* #undef HAVE_SYS_PTE_H */
 
 /* Define if you have the <sys/ptem.h> header file.  */
-#define HAVE_SYS_PTEM_H 1
+/* #undef HAVE_SYS_PTEM_H */
 
 /* Define if you have the <sys/select.h> header file.  */
 #define HAVE_SYS_SELECT_H 1
 
 /* Define if you have the <sys/stream.h> header file.  */
-#define HAVE_SYS_STREAM_H 1
+/* #undef HAVE_SYS_STREAM_H */
 
 /* Define if you have the <termcap.h> header file.  */
-/* #undef HAVE_TERMCAP_H */
+#define HAVE_TERMCAP_H 1
 
 /* Define if you have the <termio.h> header file.  */
 #define HAVE_TERMIO_H 1
@@ -84,7 +84,7 @@
 #define HAVE_UNISTD_H 1
 
 /* Define if you have the <varargs.h> header file.  */
-#define HAVE_VARARGS_H 1
+/* #undef HAVE_VARARGS_H */
 
 /* Define if you have the <stdarg.h> header file.  */
 #define HAVE_STDARG_H 1
@@ -94,15 +94,15 @@
 /* Definitions pulled in from aclocal.m4. */
 #define VOID_SIGHANDLER 1
 
-/* #undef GWINSZ_IN_SYS_IOCTL */
+#define GWINSZ_IN_SYS_IOCTL 1
 
-/* #undef STRUCT_WINSIZE_IN_SYS_IOCTL */
+#define STRUCT_WINSIZE_IN_SYS_IOCTL 1
 
-#define STRUCT_WINSIZE_IN_TERMIOS 1
+/* #undef STRUCT_WINSIZE_IN_TERMIOS */
 
 /* #undef TIOCSTAT_IN_SYS_IOCTL */
 
-/* #undef FIONREAD_IN_SYS_IOCTL */
+#define FIONREAD_IN_SYS_IOCTL 1
 
 /* #undef SPEED_T_IN_SYS_TYPES */
 
@@ -110,7 +110,7 @@
 
 #define STRUCT_DIRENT_HAS_D_INO 1
 
-/* #undef STRUCT_DIRENT_HAS_D_FILENO */
+#define STRUCT_DIRENT_HAS_D_FILENO 1
 
 /* #undef HAVE_BSD_SIGNALS */
 

@@ -1,9 +1,8 @@
-# Generated automatically from Makefile.in by configure.
 # This makefile for Readline library documentation is in -*- text -*- mode.
 # Emacs likes it that way.
 top_srcdir = ..
 srcdir = .
-VPATH = .:.
+VPATH = .
 
 prefix = /usr/local
 infodir = ${prefix}/info
@@ -21,7 +20,7 @@ TEXI2HTML   = $(srcdir)/texi2html
 QUIETPS     = #set this to -q to shut up dvips
 DVIPS       = dvips -D 300 $(QUIETPS) -o $@     # tricky
 
-INSTALL = /usr/local/bin/install -c
+INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644
 

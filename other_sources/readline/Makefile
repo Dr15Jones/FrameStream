@@ -1,4 +1,3 @@
-# Generated automatically from Makefile.in by configure.
 ## -*- text -*- ##
 # Master Makefile for the GNU readline library.
 # Copyright (C) 1994 Free Software Foundation, Inc.
@@ -16,15 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-RL_LIBRARY_VERSION = 2.2
+RL_LIBRARY_VERSION = 
 RL_LIBRARY_NAME = readline
 
 srcdir = .
-VPATH = .:.
+VPATH = .
 top_srcdir = .
-BUILD_DIR = /disk1/cdj/standAlone/other_sources/readline
+BUILD_DIR = /uscms_data/d1/cdj/build/temp/cleo/newer/FrameStream/other_sources/readline
 
-INSTALL = /usr/local/bin/install -c
+INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644
 
