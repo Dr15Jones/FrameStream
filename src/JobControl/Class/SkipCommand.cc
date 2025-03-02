@@ -48,6 +48,7 @@
 #include "JobControl/StopCounter.h"
 
 // STL classes
+#include <cstring>
 
 //
 // constants, enums and typedefs
