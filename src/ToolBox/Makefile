@@ -122,10 +122,6 @@ CPP_INFO := n
 # invoke standard tail to Makefile to execute compile and link
 #--------------------------------------------------------------
 
-ifeq "$(CXX)" "g++"
-    GUNG_FIX := -fno-implicit-templates
-endif
-
 include $(C3_GMAKE)/M.tail
 
 $(LIBRARY)(MessageLog.o) : $(USER_SRC)/ToolBox/Class/MessageLog.cc
