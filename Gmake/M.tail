@@ -110,10 +110,10 @@ ifeq "$(TK_DIR)" ""
 endif
 # can't use := here! because used "above"
 ifeq "$(TCL_VERS)" ""
-  TCL_VERS = 8.4
+  TCL_VERS = 8.6
 endif
 ifeq "$(TK_VERS)" ""
-  TK_VERS  = 8.4
+  TK_VERS  = 8.6
 endif
 
 # if not specified, use clib version of cleoii libraries
@@ -601,7 +601,7 @@ SHARLIBEXT := so
 endif
 SHARLIB := $(SHARLIBBASE).$(SHARLIBEXT)
 CURRENT_TIME = $(shell date +%s)
-CURRENT_PID  = $(shell python -c 'import os; print os.getpid()')
+CURRENT_PID  = $(shell python3 -c 'import os; print(os.getpid())')
 CURTIME = $(CURRENT_TIME)_$(CURRENT_PID)
 ifeq "$(TMPDIR)" ""
   SHARMODTMPDIR := /tmp/$(USER)_$(CURTIME)
@@ -624,7 +624,7 @@ CLEOBAG := $(patsubst %,-l%$(CLEO_G),$(CLEO_LIBS))
 NILEBAG := $(patsubst %,-l%$(CLEO_G),$(NILE_LIBS))
 CERNBAG := $(patsubst %,-l%$(CERN_G),$(CERN_LIBS))
 SYSBAG  := $(patsubst %,-l%,$(SYS_LIBS))
-COMPBAG := $(patsubst %,-l%,$(F77LIBS) $(CXXLIBS) $(CCLIBS) $(MATHLIBS))
+COMPBAG := $(patsubst %,-l%,$(CXXLIBS) $(CCLIBS) $(MATHLIBS))
 
 LOCALLIBDIR := $(localshlib) $(locallib)
 LOCALLIBDIR += $(patsubst %,%/$(CXX),$(prefix)/shlib)
@@ -874,13 +874,13 @@ endif
 C3TAG := $(C3DIST)/scripts/c3tag
 ifeq "$(OS_NAME)" "SunOS"
   ifeq "$(OS_VERSION)" "sparc-sun-solaris2.8" 
-C3TAG := python $(C3DIST)/scripts/c3tag_SunOS8.pyc
+C3TAG := python3 $(C3DIST)/scripts/c3tag_SunOS8.pyc
   else
-C3TAG := python $(C3DIST)/scripts/c3tag_SunOS.pyo
+C3TAG := python3 $(C3DIST)/scripts/c3tag_SunOS.pyo
   endif		
 endif
 ifeq "$(OS_NAME)" "OSF1"
-C3TAG := python $(C3DIST)/scripts/c3tag_OSF1.pyc
+C3TAG := python3 $(C3DIST)/scripts/c3tag_OSF1.pyc
 endif
 LIBVERSIONFILE := $(LIBRARY).version
 ifeq "$(C3_RELEASE_VERSION)" ""
