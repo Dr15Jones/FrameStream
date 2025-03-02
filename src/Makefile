@@ -2,7 +2,7 @@ LIBS := BlankRecordDelivery DataStorage HistogramInterface \
 	DefaultModule InteractiveDelivery ToolBox \
 	CommandPattern DummyHistogram Interpreter Utility \
 	DynamicLoader JobControl\
-	DataDelivery Processor\
+	DataDelivery Processor StorageManagement\
 	DataHandler DAException Signal SignalsSlots Suez
 
 BUILDDIR := $(USER_SRC)
