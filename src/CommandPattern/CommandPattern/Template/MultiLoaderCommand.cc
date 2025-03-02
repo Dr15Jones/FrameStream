@@ -88,73 +88,73 @@ template< class T >
 int
 MultiLoaderCommand< T >::execute( int argc, char* argv[] )
 {
-    int returnValue = COMMAND_OK;
+    int returnValue = Command::COMMAND_OK;
 
-    setArgs( argc, argv );
+    this->setArgs( argc, argv );
     if ( 2 <= argc ) 
     {
        if ( 0 == strcmp( argv[1], "help" ) ) 
        {
-	  returnValue = helpHandler();
+	  returnValue = this->helpHandler();
        } else 
        if ( 0 == strcmp( argv[1], "list" ) ) 
        {
-	  returnValue = listHandler();
+	  returnValue = this->listHandler();
        } else 
        if ( 0 == strcmp( argv[1], "ls" ) ) 
        {
-	  returnValue = listHandler();
+	  returnValue = this->listHandler();
        } else 
        if ( 0 == strcmp( argv[1], "listsel" ) ) 
        {
-	  returnValue = listSelectedHandler();
+	  returnValue = this->listSelectedHandler();
        } else 
        if ( 0 == strcmp( argv[1], "lss" ) ) 
        {
-	  returnValue = listSelectedHandler();
+	  returnValue = this->listSelectedHandler();
        } else 
        if ( 0 == strcmp( argv[1], "select" ) ) 
        {
-	  returnValue = loadHandler();
+	  returnValue = this->loadHandler();
        } else
        if ( 0 == strcmp( argv[1], "sel" ) ) 
        {
-	  returnValue = loadHandler();
+	  returnValue = this->loadHandler();
        } else
        if ( 0 == strcmp( argv[1], "deselect" ) ) 
        {
-	  returnValue = unloadHandler();
+	  returnValue = this->unloadHandler();
        } else
        if ( 0 == strcmp( argv[1], "desel" ) ) 
        {
-	  returnValue = unloadHandler();
+	  returnValue = this->unloadHandler();
        } else
        if ( 0 == strcmp( argv[1], "clear" ) ) 
        {
-	  returnValue = clearHandler();
+	  returnValue = this->clearHandler();
        } else
        if ( 0 == strcmp( argv[1], "interact" ) ) 
        {
-	  returnValue = interactHandler();
+	  returnValue = this->interactHandler();
        } else
        if ( 0 == strcmp( argv[1], "inter" ) ) 
        {
-	  returnValue = interactHandler();
+	  returnValue = this->interactHandler();
        }
        else
        {
 	  string result( "ERROR: invalid command arg" );
-	  setResult( result );
-	  helpHandler();
-	  returnValue = COMMAND_ERROR;
+	  this->setResult( result );
+	  this->helpHandler();
+	  returnValue = Command::COMMAND_ERROR;
        }
     }
     else
     {
        string result( "ERROR: wrong # args" );
-       setResult( result );
+       this->setResult( result );
        helpHandler();
-       returnValue = COMMAND_ERROR;
+       returnValue = Command::COMMAND_ERROR;
     }
     
 
@@ -168,43 +168,43 @@ MultiLoaderCommand< T >::helpHandler()
    static const string helpMessage = 
       string( "                                                                      \n" )+
       string( " Description:                                                         \n" )+
-      string( "      " ) + name() +
+      string( "      " ) + this->name() +
       string( " command.                                                             \n" )+
       string( "                                                                      \n" )+
       string( "      Valid subcommands are:                                          \n" )+
       string( "                                                                      \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " help                                            see this help page   \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " list                                            List available mods  \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " ls                                              Synonym: \"list\"    \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " listsel                                         List selected mods   \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " lss                                             Synonym: \"listsel\" \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " select   <mod1> [<mod2>..]                      Select mods          \n" )+
       string( "       select   <mod1> [<mod2>..] production <tag>     with production tag\n" )+
       string( "                                                       New name: <mod>@<tag>\n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " sel      <mod1> [<mod2>..]                      Synonym: \"select\"  \n" )+
       string( "       sel      <mod1> [<mod2>..] production <tag>                    \n" )+
       string( "                                                                      \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " deselect <mod1> [<mod2>..]                      Deselect mods        \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " desel    <mod1> [<mod2>..]                      Synonym: \"deselect\"\n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " clear                                           Empty the mod list   \n" )+
       string( "                                                                      \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " interact <mod>                                  interact w/ mod      \n" )+
-      string( "  " ) + name() +
+      string( "  " ) + this->name() +
       string( " inter    <mod>                                  Synonym: \"interact\"\n");
 
    static string helpMessageExample;
-   if(name()=="proc") {
+   if(this->name()=="proc") {
       helpMessageExample = 
       string( "                                                                      \n" )+
       string( "  Example: \n" )+
@@ -214,7 +214,7 @@ MultiLoaderCommand< T >::helpHandler()
       string( "    YourProc@com : <full_path_to_shared_YourProc>/libYourProc.so      \n" )+
       string( "  proc desel MyProc@com                                               \n" )+
       string( "                                                                      \n" );
-  } else if(name()=="prod") {
+  } else if(this->name()=="prod") {
       helpMessageExample =
       string( "                                                                      \n" )+
       string( "  Example: \n" )+
@@ -231,22 +231,22 @@ MultiLoaderCommand< T >::helpHandler()
 
    report( INFO, kMultiLoaderCommandString ) << "\n" 
       << helpMessage << helpMessageExample << endl;
-   return COMMAND_OK;
+   return Command::COMMAND_OK;
 }
 
 template< class T >
 int
 MultiLoaderCommand< T >::loadHandler()
 {
-   int returnValue = COMMAND_OK;
+   int returnValue = Command::COMMAND_OK;
 
-   if( m_argc <= 2 )
+   if( this->m_argc <= 2 )
    {
       //report( ERROR, kMultiLoaderCommandString ) << "wrong # args" << endl;
       string result( "ERROR: wrong # arguments" );
-      setResult( result );
+      this->setResult( result );
 
-      return returnValue = COMMAND_ERROR;
+      return returnValue = Command::COMMAND_ERROR;
    }
    // correct number of args
 
@@ -255,15 +255,15 @@ MultiLoaderCommand< T >::loadHandler()
 
    // loop over all supplied names and check for "production" keyword
    string tag="";
-   while ( 0 != ( arg = getArgument( index ) ) ) {
-     string name( arg );
+   while ( 0 != ( arg = this->getArgument( index ) ) ) {
+     string name{ arg };
 
      if( name=="production" ) {
      // special keyword to load multiple times same object
        const char* inst;
        int ii = index+1;
 
-       if( 0 != ( inst = getArgument( ii ) ) ) {
+       if( 0 != ( inst = this->getArgument( ii ) ) ) {
          tag = string(inst);
 
          break;
@@ -273,9 +273,9 @@ MultiLoaderCommand< T >::loadHandler()
    }
 
    index = 2;
-   while ( 0 != ( arg = getArgument( index++ ) ) )
+   while ( 0 != ( arg = this->getArgument( index++ ) ) )
    {
-      string name( arg );
+     string name{ arg };
       
       // if found "production" tag keyword stop looping
       if(name=="production") break; 
@@ -289,7 +289,7 @@ MultiLoaderCommand< T >::loadHandler()
 
       if( res ) 
       {
-	 returnValue = COMMAND_OK;
+	 returnValue = Command::COMMAND_OK;
       }
       else 
       {
@@ -297,8 +297,8 @@ MultiLoaderCommand< T >::loadHandler()
 	 //  << "Cannot load " << name << "." << endl;
 	 string result( "ERROR: cannot load " );
 	 result += name + ".";
-	 setResult( result );
-	 returnValue = COMMAND_ERROR;
+	 this->setResult( result );
+	 returnValue = Command::COMMAND_ERROR;
       }
    }
 

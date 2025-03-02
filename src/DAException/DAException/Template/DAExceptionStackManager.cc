@@ -63,7 +63,7 @@ int DAExceptionStackManager<T>::size() const
 }
 
 template < class T >
-const DAExceptionStackManager<T>::StackList&
+const typename DAExceptionStackManager<T>::StackList&
 DAExceptionStackManager<T>::stackList() const 
 { 
   return m_stack; 

@@ -176,7 +176,7 @@ LoaderBase< T >::load( const string& iName )
    {
       // put in Object list
       m_loadedMap.insert( 
-	 _loader_loaded_map_::value_type( loadedAsName, object ) 
+	 typename _loader_loaded_map_::value_type( loadedAsName, object ) 
 	 );
       
       // give derived class a change to do something with the object

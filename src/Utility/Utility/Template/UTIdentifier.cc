@@ -213,7 +213,7 @@ UTIdentifier< ID , T >::findIndex( const ID& iID )
       //Have to add
       returnValue = idToIndexMap().size();
       
-      idToIndexMap().insert( _utidentifier_counts_::value_type(
+      idToIndexMap().insert( typename _utidentifier_counts_::value_type(
 	 iID, returnValue ));
 
       idList().push_back( iID );

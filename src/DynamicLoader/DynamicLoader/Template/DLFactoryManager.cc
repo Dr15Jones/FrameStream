@@ -210,7 +210,7 @@ DLFactoryManager<T>::fetch( const string& iName,
       }
       
       // if no symbol "make<Object>" found
-      if( false == returnValue )
+      if( nullptr == returnValue )
       {
 	 report( ERROR, kDLFactoryManagerFacilityString )
 	    << symbolErrorMesg( iName )

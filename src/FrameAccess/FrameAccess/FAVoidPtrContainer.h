@@ -161,41 +161,41 @@ class FAVoidPtrIntegralIdContainer : public vector< pair<T,void *> >
       insert( const value_type& iValueType ) {
 	 STD_PREFIX pair<iterator,DABoolean> returnValue;
 	 returnValue.second = true;
-	 if( empty() ) {
+	 if( this->empty() ) {
 	    m_isIndexable = true;
 	    push_back( iValueType );
-	    returnValue.first =  begin();
+	    returnValue.first =  this->begin();
 	 } else {
 	    if(m_isIndexable) {
-	       if ( front().first + size() == iValueType.first ) {
+	       if ( this->front().first + this->size() == iValueType.first ) {
 		  //we just have to put this at the end
 		  push_back( iValueType );
-		  returnValue.first = (end() - 1);
-	       } else if( front().first == iValueType.first + 1 ) {
+		  returnValue.first = (this->end() - 1);
+	       } else if( this->front().first == iValueType.first + 1 ) {
 		  //we just have to put this at the beginning
-		     ParentClass::insert( begin(), iValueType );
-		     returnValue.first = begin();
-	       } else if( iValueType.first >= front().first &&
-			  iValueType.first - front().first < size() ) {
+		     ParentClass::insert( this->begin(), iValueType );
+		     returnValue.first = this->begin();
+	       } else if( iValueType.first >= this->front().first &&
+			  iValueType.first - this->front().first < this->size() ) {
 		  //the value already exists
-		  returnValue.first = begin() + iValueType.first - front().first;
+		  returnValue.first = this->begin() + iValueType.first - this->front().first;
 		  returnValue.second = false;
 	       } else {
 		  //the list is no longer indexable
 		  m_isIndexable = false;
-		  if( iValueType.first < front().first ) {
+		  if( iValueType.first < this->front().first ) {
 		     //put it at the beginning of the list
-		     returnValue.first = ParentClass::insert(begin(), 
+		     returnValue.first = ParentClass::insert(this->begin(), 
 							     iValueType );
 		  } else {
 		     //put it at the end of the list
-		     returnValue.first = ParentClass::insert(end(), 
+		     returnValue.first = ParentClass::insert(this->end(), 
 							     iValueType );
 		  }
 	       }
 	    } else {
 	       iterator it = findIteratorJustBefore( iValueType.first );
-	       if( it != end()  &&
+	       if( it != this->end()  &&
 		   it->first == iValueType.first ) {
 		  //already in the list
 		  returnValue.first = it;
@@ -203,8 +203,8 @@ class FAVoidPtrIntegralIdContainer : public vector< pair<T,void *> >
 	       } else {
 		  returnValue.first = ParentClass::insert(it, iValueType );
 		  //cast is used to avoid a compiler warning
-		  if( size() == 
-		      static_cast<unsigned int>(back().first - front().first 
+		  if( this->size() == 
+		      static_cast<unsigned int>(this->back().first - this->front().first 
 						+ 1) ) {
 		     m_isIndexable = true;
 		  }
@@ -216,30 +216,30 @@ class FAVoidPtrIntegralIdContainer : public vector< pair<T,void *> >
 
 
       const_iterator find( const T& iIdentifier ) {
-	 if( empty() ) {
-	    return end();
+	 if( this->empty() ) {
+	    return this->end();
 	 }
 	 if( m_isIndexable) {
 	    //Can just jump to the proper entry in the vector
-	    if( front().first <= iIdentifier &&
-		back().first >= iIdentifier ) {
-	       return begin() + (iIdentifier - front().first );
+	    if( this->front().first <= iIdentifier &&
+		this->back().first >= iIdentifier ) {
+	       return this->begin() + (iIdentifier - this->front().first );
 	    } 
 	 }
 
 	 //need to search the vector for the identifier
-	 iterator result = lower_bound( begin(), end(), 
+	 iterator result = lower_bound( this->begin(), this->end(), 
 					value_type(iIdentifier, 
 						   static_cast<void*>(0)),
 					PairFirstCompare() );
-	 if( result != end() &&
+	 if( result != this->end() &&
 	     result->first == iIdentifier ) {
 	    //make sure that we actually found the item we want
 	    // (lower_bound returns where the object 'should be')
 	    return result;
 	 }
 
-	 return end();
+	 return this->end();
       }
 
   private:
@@ -247,15 +247,15 @@ class FAVoidPtrIntegralIdContainer : public vector< pair<T,void *> >
       iterator findIteratorJustBefore( T iIdentifier ) {
          //Look for the easy cases first.  If neither works, do a binary
          //search on the sorted vector
-         if(iIdentifier > back().first)
+         if(iIdentifier > this->back().first)
          {
-            return end();
+            return this->end();
          }
-         if(iIdentifier < front().first)
+         if(iIdentifier < this->front().first)
          {
-            return begin();
+            return this->begin();
          }
-         return lower_bound( begin(), end(), 
+         return lower_bound( this->begin(), this->end(), 
                              value_type(iIdentifier, 
                                         static_cast<void*>(0)),
                              PairFirstCompare() );

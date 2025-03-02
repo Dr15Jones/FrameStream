@@ -63,7 +63,7 @@ class HCTypeTagTemplate : public HCTypeTag< Group >
 
       // ---------- static member functions --------------------
       static unsigned int classValue() {
-	 static unsigned int theValue = nextValue( className() );
+        static unsigned int theValue = HCTypeTag<Group>::nextValue( className() );
 	 return theValue; }
 
       static const char* className();
