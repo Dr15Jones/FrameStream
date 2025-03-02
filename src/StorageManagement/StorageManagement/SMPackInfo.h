@@ -116,8 +116,8 @@ class SMPackInfo
       // ---------- private member functions -------------------
 
       // ---------- private const member functions -------------
-      static const char** strategyNames() {
-	 const char* names[] = { "no packing",
+      static char const* const* strategyNames() {
+	 static constexpr const char* names[] = { "no packing",
 				 "fixed",
 				 "fractional",
 				 "container size"

@@ -55,7 +55,7 @@ class SMStorageProxyHelper : public SMStorageHelper< T >,
       SMProxyBase* makeProxy() const;
       SMProxyWriterBase* makeProxyWriter() const;
       
-      const TypeTag& proxyTypeTag() const { return typeTag(); }
+      const TypeTag& proxyTypeTag() const { return this->typeTag(); }
 
       // ---------- const member functions ---------------------
 

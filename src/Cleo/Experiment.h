@@ -65,7 +65,7 @@
 #else
 #if defined(__GNUG__)
 #include "Experiment/gnug_flags.h"
-#define CLHEP_TARGET_H "CLHEP/config/CLHEP-i686-unknown-linux-g++.h"
+#define CLHEP_TARGET_H "CLHEP/config/CLHEP-x86_64-unknown-linux-gnu-c++.h"
 #endif // __GNUG__
 #endif /* __APPLE__ */
 
