@@ -68,8 +68,8 @@
 #  pragma define_template __distance< _vector_contents_  const* , unsigned long>
 #else
 
-#include "STLUtility/fwd_vector.h"
-template class STL_VECTOR( _vector_contents_ ) ;
+#include <vector>
+template class std::vector< _vector_contents_ > ;
 
 
 #if ( defined(NO_IMPLICIT_INSTANTIATION) && defined(__DECCXX) )
@@ -91,7 +91,7 @@ template void std::fill( _vector_contents_* ,
 // the comparison operator (==) is implemented in terms of the STL
 // equal algorithm, which in turn uses mismatch.  Instantiate equal and 
 // mismatch by default
-typedef STL_VECTOR( _vector_contents_ )::const_iterator _equal_iterator1_type_;
+typedef std::vector< _vector_contents_ >::const_iterator _equal_iterator1_type_;
 typedef _equal_iterator1_type_ _equal_iterator2_type_;
 #include "STLUtility/instantiate_equal.h"
 #endif /* DO_EQUAL_INSTANTIATION */

@@ -152,7 +152,7 @@ class PDSCachingFractionalPacker : public PDSPackerTemplate<T>
 
       void storeStrategyInfo( UInt32& ioPackedWord,
                              unsigned char& ioStartBit,
-                             STL_VECTOR(UInt32)& ioContainer ) const
+                             std::vector<UInt32>& ioContainer ) const
       {
          //This class is not meant for storage
                                  assert(false);
@@ -183,13 +183,13 @@ class PDSFractionalPackerSubFactory : public PDSPackerSubFactoryBase
          if( (exponentOffset >= kMinExponent) &&
              (numberOfExponentBits <= kMaxExponent -kMinExponent +1) &&
              (fraction > 1.0/kMaxCacheSize) ) {
-               //cout <<" made caching" <<endl;
+               //cout <<" made caching" <<std::endl;
                return new PDSCachingFractionalPacker<T>(totalNumberOfBits,
                                                         numberOfExponentBits,
                                                         fraction,
                                                         exponentOffset );
          }                                   
-         //cout <<" made normal" <<endl;                         
+         //cout <<" made normal" <<std::endl;                         
 	 return new PDSFractionalPacker<T>( tempIOBuffer, tempIOStartBit);
       }  
 };
@@ -299,7 +299,7 @@ static
 PDSPackerSubFactoryBase&
 subFactory( PDSPacking::Types iType, PDSPacking::Strategies iStrategy)
 {
-   //cout <<" type "<<iType<<"  strategy "<<iStrategy<<endl;
+   //cout <<" type "<<iType<<"  strategy "<<iStrategy<<std::endl;
    assert( 0 != g_subFactories[iType][iStrategy]);
    return *(g_subFactories[iType][iStrategy]);
 }
@@ -352,7 +352,7 @@ PDSPackerFactory::createPacker( const UInt32*& ioBuffer,
    PDSPacking::Strategies strategy;
    PDSPackerBase::readTypeAndStrategy( ioBuffer, ioStartBit, type, strategy );
 
-   //report(DEBUG,kFacilityString) <<"Factory type: " <<type << " strategy: " <<strategy << endl;
+   //report(DEBUG,kFacilityString) <<"Factory type: " <<type << " strategy: " <<strategy << std::endl;
    return subFactory(type,strategy).create(ioBuffer, 
 					   ioStartBit, 
 					   iSwappedBytes);

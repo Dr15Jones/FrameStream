@@ -62,14 +62,14 @@
 //
 
 // system include files
-#include "C++Std/fstream.h"
+#include <fstream>
 
 // user include files
 #include "DataDelivery/DataSourceController.h"
 #include "BinaryDelivery/BDRecordHeader.h"
 
 // forward declarations
-#include "STLUtility/fwd_set.h"
+#include <set>
 class BinaryProxyDeliverer;
 class BinarySourceBinder;
 template< class Binder > class ChainSourceController;
@@ -83,7 +83,7 @@ class BinarySourceController : public DataSourceController
       friend class ChainSourceController< BinarySourceBinder >;
 
       // Constructors and destructor
-      BinarySourceController( const string& iFileName,
+      BinarySourceController( const std::string& iFileName,
 			      const Stream::Set& iReadStreams,
 			      BinaryProxyDeliverer* iDeliverer = 0);
       virtual ~BinarySourceController();
@@ -107,8 +107,8 @@ class BinarySourceController : public DataSourceController
       // const member functions
       virtual DABoolean canRandomAccess( void ) const;
 
-      virtual string dataSourceID( void ) const;
-      virtual string parameters( void ) const;
+      virtual std::string dataSourceID( void ) const;
+      virtual std::string parameters( void ) const;
       // static member functions
 
    protected:
@@ -137,7 +137,7 @@ class BinarySourceController : public DataSourceController
       static const Stream::Type& logicalRecordIDToStreamType( int iRecordID);  
 
       // data members
-      string m_fileName ;                // File name of the input file
+      std::string m_fileName ;                // File name of the input file
 #if defined(FSTREAM_CANNOT_READ_LARGE_FILES_BUG)
       int m_fileDescriptor ;             // File descriptor from C read
 #endif

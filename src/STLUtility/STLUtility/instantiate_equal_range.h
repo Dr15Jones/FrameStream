@@ -10,7 +10,7 @@
 
  Usage:
     This header instantiates 
-        pair<iter,iter> equal_range(iter_first, iter_last);
+        std::pair<iter,iter> equal_range(iter_first, iter_last);
 
     The user must set this typedefs before including this header file:
        _equal_range_value_type_ = object type to compare 
@@ -19,7 +19,7 @@
 
     e.g. If you had an stl vector of MyItem, then you would need...
               typedef MyItem _equal_range_value_type_;
-              typedef STL_VECTOR(MyItem)::iterator   _equal_range_iterator_;
+              typedef std::vector<MyItem>::iterator   _equal_range_iterator_;
 
 
 */
@@ -47,7 +47,7 @@
 
 #if ( defined(__DECCXX) )
 
-template pair<_equal_range_iterator_,_equal_range_iterator_>
+template std::pair<_equal_range_iterator_,_equal_range_iterator_>
 STD_PREFIX equal_range( _equal_range_iterator_ ,
 			_equal_range_iterator_,
 			const _equal_range_value_type_ &);
@@ -58,7 +58,7 @@ typedef iterator_traits< _equal_range_iterator_ >::iterator_category
                                             _equal_range_tag_ ;
 
 
-template pair<_equal_range_iterator_,_equal_range_iterator_>
+template std::pair<_equal_range_iterator_,_equal_range_iterator_>
 STD_PREFIX STLUTILITY_FUNC(equal_range)
                          (_equal_range_iterator_, 
 			  _equal_range_iterator_, 

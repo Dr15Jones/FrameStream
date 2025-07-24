@@ -138,11 +138,11 @@
 // STL include
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
+#include <map>
 class SyncValue ;
 
 #if !defined(_proxydeliverer_syncvalues_)
-#  define _proxydeliverer_syncvalues_ STL_MAP( Stream::Type , SyncValue )
+#  define _proxydeliverer_syncvalues_ std::map< Stream::Type , SyncValue >
 #endif /* _proxydeliverer_syncvalues_ */
 
 

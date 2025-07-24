@@ -79,8 +79,8 @@
 #include "CommandPattern/Interpreter.h"
 
 // forward declarations
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_vector.h"
+#include <string>
+#include <vector>
 
 
 class TclInterpreter : public Interpreter
@@ -89,7 +89,7 @@ class TclInterpreter : public Interpreter
 
    public:
       // ---------- constants, enums and typedefs --------------
-      typedef string CommandName;
+      typedef std::string CommandName;
 
       // ---------- Constructors and destructor ----------------
       TclInterpreter();
@@ -112,14 +112,14 @@ class TclInterpreter : public Interpreter
       virtual void readHistory();
       virtual void saveHistory();
       virtual void setHistoryLength( Count iLength );
-      virtual void setHistoryFile( const string& iFile );
+      virtual void setHistoryFile( const std::string& iFile );
       virtual void printHistoryInfo() const;
       virtual void printHistory() const; 
       
       Tcl_Interp* tclInterpreter();
 
       // ---------- const member functions ---------------------
-      virtual StatusCode parseArgs( const string formalCmd, 
+      virtual StatusCode parseArgs( const std::string formalCmd, 
 				    int argc, 
 				    char *argv[] ) const ;
 
@@ -158,9 +158,9 @@ class TclInterpreter : public Interpreter
       // ---------- data members -------------------------------
       Tcl_Interp* m_tclInterpreter;                  
 
-      STL_VECTOR( CommandName )& m_tclCommandNames;
+      std::vector< CommandName >& m_tclCommandNames;
 
-      string m_historyFile;
+      std::string m_historyFile;
       Count m_historyLength;
       unsigned int m_sizeOfStackForExit;
 

@@ -43,7 +43,7 @@
 
 // forward declarations
 class ProxyBoundActionBase;
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 template< class T >
 class ProxyBindableTemplate : public ProxyTemplate< T >
@@ -87,7 +87,7 @@ class ProxyBindableTemplate : public ProxyTemplate< T >
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      STL_VECTOR(ProxyBoundActionBase*)* m_pActions;
+      std::vector<ProxyBoundActionBase*>* m_pActions;
 
       // ---------- static data members ------------------------
 

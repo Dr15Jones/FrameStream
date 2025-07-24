@@ -11,7 +11,7 @@
 
  Usage:
     This header instantiates 
-        pair<iter,iter> equal_range(iter_first, iter_last, compare_value,
+        std::pair<iter,iter> equal_range(iter_first, iter_last, compare_value,
 	                            comparator);
  
     The user must set these typedefs before including this header file:
@@ -30,11 +30,11 @@
 	 You do...
 
 	 typedef int _equal_range_value_type_;
-         typedef STL_MULTISET(MyItem*)::iterator _equal_range_iterator_;
+         typedef std::multiset<MyItem*>::iterator _equal_range_iterator_;
 	 typedef less_MyItem_cellId _equal_range_comp_;
 
 	 The equal_range call you have must look something like:
-	 pair<_equal_range_iterator_, _equal_range_iterator_> result = 
+	 std::pair<_equal_range_iterator_, _equal_range_iterator_> result = 
             equal_range(myMultiSet.begin(), myMultiSet.end(), theCellIdIWant,
 	                _equal_range_comp_() );
 */
@@ -79,7 +79,7 @@ typedef iterator_traits< _equal_range_iterator_ >::iterator_category
 //   (equal_range for the other iterator tags are inlined to 
 //    call this one)
 
-template pair< _equal_range_iterator_, _equal_range_iterator_ >
+template std::pair< _equal_range_iterator_, _equal_range_iterator_ >
      STD_PREFIX STLUTILITY_FUNC(equal_range)(
 			  _equal_range_iterator_,
 			  _equal_range_iterator_,

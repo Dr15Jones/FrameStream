@@ -86,7 +86,7 @@
 
 // system include files
 #include <assert.h>
-#include "C++Std/fstream.h"
+#include <fstream>
 #include <errno.h>
 #include <string.h>
 #if defined(FSTREAM_CANNOT_READ_LARGE_FILES_BUG)
@@ -126,7 +126,7 @@ BDRecordBuffer::BDRecordBuffer(const Stream::Type& iStream,
    m_buffer = new UInt32[iBufferLengthInWords];
    if( 0 == m_buffer ){
       report( ERROR, kFacilityString )
-	 << "Unable to create record buffer; out of memory" << endl ;
+	 << "Unable to create record buffer; out of memory" << std::endl ;
       assert( 0 != m_buffer );
       exit(1);
    }
@@ -197,7 +197,7 @@ BDRecordBuffer::read( ifstream& iIFStream, BDRecordHeader& iRecordHeader )
       if( 0 == m_buffer )
       {
 	 report( ERROR, kFacilityString )
-	    << "Unable to increase record buffer size; out of memory" << endl ;
+	    << "Unable to increase record buffer size; out of memory" << std::endl ;
 	 assert( 0 != m_buffer ) ;
 	 exit(1);
       }
@@ -227,14 +227,14 @@ BDRecordBuffer::read( ifstream& iIFStream, BDRecordHeader& iRecordHeader )
       returnFlag = -1 ;
       report( ERROR, kFacilityString )
 	 << "Have read " << iIFStream.gcount() << " bytes, but expected "
-	 << remainingBytesToRead << endl ;
+	 << remainingBytesToRead << std::endl ;
    }
 #else
    int fileDescriptor = iIFStream.rdbuf()->fd() ;
 #ifdef CLEO_DEBUG
    report( DEBUG, kFacilityString )
       << " Executing C reads using fileDescriptor "
-      << fileDescriptor << endl ;
+      << fileDescriptor << std::endl ;
 #endif
    int n_read = ::read( fileDescriptor,
 			(char*)m_buffer + bytesInMinimalRecord,  
@@ -246,7 +246,7 @@ BDRecordBuffer::read( ifstream& iIFStream, BDRecordHeader& iRecordHeader )
       report( ERROR, kFacilityString )
 	 << " Read failed, error code " << errno << ":  "
 	 << (( strerror( errno ) == NULL) ? "unknown error": strerror( errno) )
-	 << endl ;
+	 << std::endl ;
       assert ( 0 < n_read ) ;
       ::exit( 1 ) ;
    }
@@ -255,7 +255,7 @@ BDRecordBuffer::read( ifstream& iIFStream, BDRecordHeader& iRecordHeader )
       returnFlag = -1 ;  // serious error if wrong number of bytes read
       report( ERROR, kFacilityString )
 	 << " Have read " << n_read << " bytes, was expecting " 
-	 << remainingBytesToRead << endl ;
+	 << remainingBytesToRead << std::endl ;
    }
 #endif //FSTREAM_CANNOT_READ_LARGE_FILES_BUG
 #if ( AC_BIGENDIAN == 0 )
@@ -290,7 +290,7 @@ BDRecordBuffer::consistent( BDRecordHeader& iRecordHeader )
 	 << m_buffer[ lengthFromHeader - 1 ]
 	 << " at end of record "
 	 << iRecordHeader.eventNumber()
-	 << endl ;
+	 << std::endl ;
       return false ;
    }
    return true; 

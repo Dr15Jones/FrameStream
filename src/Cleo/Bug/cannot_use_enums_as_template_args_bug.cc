@@ -44,6 +44,6 @@ class TestChoice {
 };
 
 int main() {
-   cout <<"one " << TestChoice<one>().choice() << endl;
-   cout <<"two " << TestChoice<two>().choice() << endl;
+   cout <<"one " << TestChoice<one>().choice() << std::endl:endl;
+   cout <<"two " << TestChoice<two>().choice() << std::endl:endl;
 }

@@ -31,13 +31,13 @@
 #include "DataHandler/DurableDataKey.h"
 #include "DataStorage/DataStringTagsToStore.h"
 
-#include "STLUtility/fwd_set.h"
+#include <set>
 
 // forward declarations
 class DataStringTagsToStore;
 class Record;
 
-STL_SET(DurableDataKey)
+std::set<DurableDataKey>
 dataStringTagsToDataKeysUsingRecordContents( const DataStringTagsToStore&,
                                              const Record& );
 #endif /* DATASTORAGE_DATASTRINGTAGSTODATAKEYSUSINGRECORDCONTENTS_H */

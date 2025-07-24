@@ -65,10 +65,10 @@ namespace JobControlNS {
 //
 // constructors and destructor
 //
-Path::Path(const string& iName,
+Path::Path(const std::string& iName,
            FilterBase* iFilter,
-	   const STL_VECTOR(Processor*)& iOpProcs,
-	   const STL_VECTOR(DataSinkBinder*)& iSinks ) :
+	   const std::vector<Processor*>& iOpProcs,
+	   const std::vector<DataSinkBinder*>& iSinks ) :
    m_filter(iFilter),
    m_procOperations(iOpProcs),
    m_name(iName)
@@ -77,26 +77,26 @@ Path::Path(const string& iName,
 
    //is the list of processors unique
    if( ! iOpProcs.empty() ) {
-      for(STL_VECTOR(Processor*)::const_iterator itProc = iOpProcs.begin();
+      for(std::vector<Processor*>::const_iterator itProc = iOpProcs.begin();
           itProc != iOpProcs.end()-1;
           ++itProc ) {
-         for(STL_VECTOR(Processor*)::const_iterator itProc2 = itProc+1;
+         for(std::vector<Processor*>::const_iterator itProc2 = itProc+1;
              itProc2 != iOpProcs.end();
              ++itProc2) {
             if( *itProc == *itProc2 ) {
-               throw DAException((string("The Processor ")+(*itProc)->name()+" appears multiple times in the operations of path "+iName).c_str());
+               throw DAException((std::string("The Processor ")+(*itProc)->name()+" appears multiple times in the operations of path "+iName).c_str());
             }
          }
       }
    }
-   for(STL_VECTOR(DataSinkBinder*)::const_iterator itBinder = iSinks.begin();
+   for(std::vector<DataSinkBinder*>::const_iterator itBinder = iSinks.begin();
        itBinder != iSinks.end();
        ++itBinder) {
-      for(STL_VECTOR(DataSinkBinder*)::const_iterator itBinder2 = itBinder+1;
+      for(std::vector<DataSinkBinder*>::const_iterator itBinder2 = itBinder+1;
           itBinder2 != iSinks.end();
           ++itBinder2) {
          if( *itBinder2 == *itBinder ) {
-            throw DAException((string("The sink ")+(*itBinder)->dataSinkID()+string(" appears multiple times in the path ")+iName).c_str());
+            throw DAException((std::string("The sink ")+(*itBinder)->dataSinkID()+std::string(" appears multiple times in the path ")+iName).c_str());
          }
       }
       DataSinkBinder* dsb = (*itBinder);
@@ -113,32 +113,32 @@ Path::Path(const string& iName,
             case FrameStorer::kAddSinkBinderFailedToMakeController:
             {
                report( EMERGENCY, kFacilityString ) 
-               << (*dsb).dataSinkID() <<" Failed to make Sink." << endl;
+               << (*dsb).dataSinkID() <<" Failed to make Sink." << std::endl;
                break;
             }
             case FrameStorer::kAddSinkInvalidStopsForSink:
             {
                report( EMERGENCY, kFacilityString ) 
-               << (*dsb).dataSinkID() << " can't goto those stops." << endl;
+               << (*dsb).dataSinkID() << " can't goto those stops." << std::endl;
                break;
             }
             case FrameStorer::kAddSinkSinkInaccessible:
             {
                report( EMERGENCY, kFacilityString ) 
-               << (*dsb).dataSinkID() <<" is inaccessible." << endl;
+               << (*dsb).dataSinkID() <<" is inaccessible." << std::endl;
                break;
             }
             case FrameStorer::kAddSinkBadParameters:
             {
                report( EMERGENCY, kFacilityString )
-               << (*dsb).dataSinkID() << " Bad parameters." << endl;
+               << (*dsb).dataSinkID() << " Bad parameters." << std::endl;
                break;
             }
             case FrameStorer::kAddSinkUnknownError:
             default:
             {
                report( EMERGENCY, kFacilityString )
-               << (*dsb).dataSinkID() <<" an unknown AddSink error occurred." << endl;
+               << (*dsb).dataSinkID() <<" an unknown AddSink error occurred." << std::endl;
                break;
             }
          }
@@ -146,9 +146,9 @@ Path::Path(const string& iName,
       }
       else 
       {
-         cout 
+         std::cout 
          << "Opened data sink \"" 
-         << dsb->dataSinkID() << "\"." << endl;
+         << dsb->dataSinkID() << "\"." << std::endl;
       }
       */
    } // loop over sinks
@@ -195,7 +195,7 @@ Path::execute( Frame& iFrame, DABoolean iContinueOnException )
    
    if( ActionBase::kPassed == result ||
        ActionBase::kNoAction == result ) {
-      for(STL_VECTOR(Processor*)::iterator itProc = m_procOperations.begin();
+      for(std::vector<Processor*>::iterator itProc = m_procOperations.begin();
 	  itProc != m_procOperations.end();
 	  ++itProc ) {
 	 try {
@@ -213,7 +213,7 @@ Path::execute( Frame& iFrame, DABoolean iContinueOnException )
 						 <<" the Processor "
 						 << (*itProc)->name()
 						 <<" reported an Error"
-						 <<endl;
+						 <<std::endl;
 	          returnValue = false;
 	          break;
 	       case ActionBase::kStopProcessLoop:
@@ -225,17 +225,17 @@ Path::execute( Frame& iFrame, DABoolean iContinueOnException )
 		    << " the Processor "
 		    << (*itProc)->name()
 		    << " returned an unknown ActionBase result"
-		    << endl;
+		    << std::endl;
 		 returnValue = false;
 	    }
 	 } catch (const DAExceptionBase& iException ) {
 	    if(iContinueOnException) {
 	       //print message
-	       ostream& myReport = report(ERROR,kFacilityString ) ;
+	      std::ostream& myReport = report(ERROR,kFacilityString ) ;
 	       myReport << iException.exceptionStack()
 			<< "-eventLoop: caught a DAException:\n\"" 
 			<< iException.what() << "\""
-			<< "\n; will continue with this record..."<<endl;
+			<< "\n; will continue with this record..."<<std::endl;
 	    } else {
 	       throw;
 	    }
@@ -252,8 +252,8 @@ Path::execute( Frame& iFrame, DABoolean iContinueOnException )
 	    {
 	       //report( INFO, kFacilityString ) 
 	       //<< "no sink defined for this record type: " 
-	       //<< iFrame.stopStream().value()<< endl;
-	       //<< "FrameStorer::kStoreFrameWarningNoSinkForRecord" << endl;
+	       //<< iFrame.stopStream().value()<< std::endl;
+	       //<< "FrameStorer::kStoreFrameWarningNoSinkForRecord" << std::endl;
 	       break;
 	    }
 	    case FrameStorer::kStoreFrameProblemWithASink:
@@ -290,7 +290,7 @@ Path::execute( Frame& iFrame, DABoolean iContinueOnException )
 DABoolean 
 Path::removeSink(const DataSinkDescriptor& iSink) {
    //is it in our uninitialized list?
-   for(STL_VECTOR(DataSinkBinder*)::iterator itBinder = m_uninitializedSinks.begin();
+   for(std::vector<DataSinkBinder*>::iterator itBinder = m_uninitializedSinks.begin();
        itBinder != m_uninitializedSinks.end();
        ++itBinder) {
       if( *(*itBinder) == iSink) {
@@ -322,32 +322,32 @@ Path::addSinkToStorer( const DataSinkBinder& iSink ) {
          case FrameStorer::kAddSinkBinderFailedToMakeController:
          {
             report( EMERGENCY, kFacilityString ) 
-            << (iSink).dataSinkID() <<" Failed to make Controller." << endl;
+            << (iSink).dataSinkID() <<" Failed to make Controller." << std::endl;
             break;
          }
          case FrameStorer::kAddSinkInvalidStopsForSink:
          {
             report( EMERGENCY, kFacilityString ) 
-            << (iSink).dataSinkID() << " can't goto those stops." << endl;
+            << (iSink).dataSinkID() << " can't goto those stops." << std::endl;
             break;
          }
          case FrameStorer::kAddSinkSinkInaccessible:
          {
             report( EMERGENCY, kFacilityString ) 
-            << (iSink).dataSinkID() <<" is inaccessible." << endl;
+            << (iSink).dataSinkID() <<" is inaccessible." << std::endl;
             break;
          }
          case FrameStorer::kAddSinkBadParameters:
          {
             report( EMERGENCY, kFacilityString )
-            << (iSink).dataSinkID() << " Bad parameters." << endl;
+            << (iSink).dataSinkID() << " Bad parameters." << std::endl;
             break;
          }
          case FrameStorer::kAddSinkUnknownError:
          default:
          {
             report( EMERGENCY, kFacilityString )
-            << (iSink).dataSinkID() <<" an unknown AddSink error occurred." << endl;
+            << (iSink).dataSinkID() <<" an unknown AddSink error occurred." << std::endl;
             break;
          }
       }
@@ -355,9 +355,9 @@ Path::addSinkToStorer( const DataSinkBinder& iSink ) {
    }
    else 
    {
-      cout 
+      std::cout 
       << "Opened data sink \"" 
-      << iSink.dataSinkID() << "\"." << endl;
+      << iSink.dataSinkID() << "\"." << std::endl;
    }
 }
 
@@ -373,10 +373,10 @@ Path::initializeSinks()
 }
 
 void
-Path::isNotInOperations(const string& iName, DABoolean& iFlag)
+Path::isNotInOperations(const std::string& iName, DABoolean& iFlag)
 {
    if(iFlag) {
-      for(STL_VECTOR(Processor*)::iterator itProc = m_procOperations.begin();
+      for(std::vector<Processor*>::iterator itProc = m_procOperations.begin();
           itProc != m_procOperations.end();
           ++itProc ) {
          if((*itProc)->name() == iName ) {
@@ -387,10 +387,10 @@ Path::isNotInOperations(const string& iName, DABoolean& iFlag)
    }
 }
 void
-Path::notUsingSink(const string& iName, DABoolean& iFlag)
+Path::notUsingSink(const std::string& iName, DABoolean& iFlag)
 {
    if(iFlag) {
-      for(STL_VECTOR(DataSinkBinder*)::iterator itBinder = 
+      for(std::vector<DataSinkBinder*>::iterator itBinder = 
 	     m_uninitializedSinks.begin();
 	  itBinder != m_uninitializedSinks.end();
 	  ++itBinder) {
@@ -426,7 +426,7 @@ Path::sinks() const
 {
    _framestorer_sinkdescriptors_ returnValue = m_storer.sinks();
 
-   for(STL_VECTOR(DataSinkBinder*)::const_iterator itBinder= m_uninitializedSinks.begin();
+   for(std::vector<DataSinkBinder*>::const_iterator itBinder= m_uninitializedSinks.begin();
        itBinder != m_uninitializedSinks.end();
        ++itBinder ) {
       returnValue.push_back(*(*itBinder) );

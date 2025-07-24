@@ -69,11 +69,6 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <vector>
-#include <map>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Experiment/report.h" // For error report
@@ -81,11 +76,7 @@
 
 
 // STL classes
-#if defined(OLD_CXX_STRING_CLASS_BUG)
-#include <String.h>
-#else
 #include <string>
-#endif /* OLD_CXX_STRING_CLASS_BUG */
 #include <map>
 #include <vector>
 #include <algorithm>
@@ -94,7 +85,7 @@
 // constants, enums and typedefs
 //
 
-const string kFacilityString = "DataHandler.Frame" ;
+const std::string kFacilityString = "DataHandler.Frame" ;
 
 typedef _streamtype_priorities_ PriorityList ;
 typedef _streamtype_arestandard_ DABooleanList ;
@@ -112,17 +103,17 @@ StreamType::StreamType( void )
    findIsStandard(); //Set isStandard to default
 }
 
-StreamType::StreamType( const string& iString ) :
-   UTIdentifier<string, Stream>( iString )
+StreamType::StreamType( const std::string& iString ) :
+   UTIdentifier<std::string, Stream>( iString )
 {
    m_priority=findPriority();
    findIsStandard();//Set isStandard to default
 }
 
-StreamType::StreamType( const string& iString, 
+StreamType::StreamType( const std::string& iString, 
 			StreamType::Priority iPriority,
 			DABoolean iIsStandard ) :
-   UTIdentifier<string, Stream>( iString ),
+   UTIdentifier<std::string, Stream>( iString ),
    m_priority( iPriority)
 {
    setPriority(iPriority );
@@ -174,7 +165,7 @@ StreamType::isStandard( void ) const
 template <class T>
 inline
 DABoolean 
-isNoIndex( const STL_VECTOR( T )& ipVector, const Count& iIndex ) 
+isNoIndex( const std::vector< T >& ipVector, const Count& iIndex ) 
 {
    return ( ipVector.size() < iIndex+1 );
 } 
@@ -246,7 +237,7 @@ StreamType::setPriority( const Priority& iPriority)
 				  << truePriority
 				  <<" and you tried to change this to "
 				  <<iPriority
-				  << endl ;
+				  << std::endl ;
 	 exit( 1 ) ;
       }
    }
@@ -287,7 +278,7 @@ StreamType::setIsStandard( const DABoolean iIsStandard)
 				  << trueIsStandard
 				  <<" and you tried to change this to "
 				  <<iIsStandard
-				  << endl ;
+				  << std::endl ;
 	 exit( 1 ) ;
       }
    }
@@ -296,16 +287,16 @@ StreamType::setIsStandard( const DABoolean iIsStandard)
 
 
 //Utility functions
-ostream&
-operator<<( ostream& iOStream, const StreamType& iStreamType )
+std::ostream&
+operator<<(std::ostream& iOStream, const StreamType& iStreamType )
 {
    return ( iOStream << iStreamType.value() );
 }
 
-istream&
-operator>>( istream& iIStream, StreamType& iStreamType )
+std::istream&
+operator>>( std::istream& iIStream, StreamType& iStreamType )
 {
-   string tmp ;
+   std::string tmp ;
    iIStream >> tmp ;
    iStreamType = StreamType( tmp ) ;
    return ( iIStream );

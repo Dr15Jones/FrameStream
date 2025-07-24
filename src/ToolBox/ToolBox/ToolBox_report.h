@@ -70,7 +70,7 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <string>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
@@ -92,19 +92,19 @@ MessageLog& reportstream();
 //
 // The define below works as follows:
 //
-// report(DEBUG, "Bart") << "Eat my shorts!" << endl;
+// report(DEBUG, "Bart") << "Eat my shorts!" << std::endl;
 //
 // expands to
 //
 // DEBUG > reportstream.leastSeverity() ?
 //        reportstream(DEBUG, "Bart") : reportstream(DEBUG, "Bart")
-//        << "Eat my shorts!" << endl;
+//        << "Eat my shorts!" << std::endl;
 //
 // Parenthesized to show operator precedence
 //
 // DEBUG > reportstream.leastSeverity() ?
 //        reportstream(DEBUG, "Bart") : 
-//        (reportstream(DEBUG, "Bart") << "Eat my shorts!" << endl);
+//        (reportstream(DEBUG, "Bart") << "Eat my shorts!" << std::endl);
 //
 // so the expression with the messages is only evaluated if
 // leastSeverity() is DEBUG or greater.

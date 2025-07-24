@@ -65,7 +65,7 @@ class HIHist1D : public HIHist
 
       // ---------- Constructors and destructor ----------------
       HIHist1D( Count  iId,
-		const string& iTitle,
+		const std::string& iTitle,
 		unsigned int  iNChannels,
 		float         iLowEdge,
 		float         iHighEdge,

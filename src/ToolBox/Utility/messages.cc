@@ -6,12 +6,12 @@ MessageLog report ;
 
 void Analysis::beginJob( void )
 {
-   report( DEBUG , "sjp.debug" ) << "debug message" << endl ;
-   report( INFO , "sjp.info" ) << "info message" << endl ;
-   report( NOTICE , "sjp.notice" ) << "notice message" << endl ;
-   report( WARNING , "sjp.warning" ) << "warning message" << endl ;
-   report( ERROR , "sjp.error" ) << "error message" << endl ;
-   report( CRITICAL , "sjp.critical" ) << "critical message" << endl ;
-   report( ALERT , "sjp.alert" ) << "alert message" << endl ;
-   report( EMERGENCY , "sjp.emergency" ) << "emergency message" << endl ;
+   report( DEBUG , "sjp.debug" ) << "debug message" << std::endl ;
+   report( INFO , "sjp.info" ) << "info message" << std::endl ;
+   report( NOTICE , "sjp.notice" ) << "notice message" << std::endl ;
+   report( WARNING , "sjp.warning" ) << "warning message" << std::endl ;
+   report( ERROR , "sjp.error" ) << "error message" << std::endl ;
+   report( CRITICAL , "sjp.critical" ) << "critical message" << std::endl ;
+   report( ALERT , "sjp.alert" ) << "alert message" << std::endl ;
+   report( EMERGENCY , "sjp.emergency" ) << "emergency message" << std::endl ;
 }

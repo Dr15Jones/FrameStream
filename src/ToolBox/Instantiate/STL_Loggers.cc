@@ -78,7 +78,7 @@
 #  include <map>
 #endif
 
-typedef string _multimap_key_ ;
+typedef std::string _multimap_key_ ;
 typedef MessageLog::Logger* _multimap_contents_ ;
 typedef less< _multimap_key_ > _multimap_compare_ ;
 

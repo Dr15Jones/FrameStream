@@ -119,10 +119,10 @@
 // constants, enums and typedefs
 //
 
-const string kFacilityString = "DataHandler.Record" ;
+const std::string kFacilityString = "DataHandler.Record" ;
 
-typedef STL_MAP( DataKey , const ProxyBase* ) ProxyMap ;
-typedef STL_SET( DataKey ) ProxySet ;
+typedef std::map< DataKey , const ProxyBase* > ProxyMap ;
+typedef std::set< DataKey > ProxySet ;
 
 //
 // static data member definitions
@@ -140,18 +140,6 @@ Record::Record( const Stream::Type& aStream ) :
    m_latestProxy( 0 ),
    m_cacheIdentifier(1)
 {
-   if ( ( 0 == &m_visible ) ||
-	( 0 == &m_displaced ) ||
-	( 0 == &m_extras ) ) {
-      delete &m_extras ;
-      delete &m_displaced ;
-      delete &m_visible ;
-      report( EMERGENCY ,
-	      kFacilityString )
-		 << "Unable to allocate memory"
-		 << endl ;
-      exit( 1 ) ;
-   }
 }
 
 // Record::Record( const Record& )
@@ -162,7 +150,7 @@ Record::~Record()
 {
 #if defined(CLEO_DEBUG)
    report( WARNING, kFacilityString )
-      << "please fix memory leak involving transient proxies" << endl;
+      << "please fix memory leak involving transient proxies" << std::endl;
    //Since we own the transients, we need to delete them
 // causes segfault:
 //  eraseTransients();
@@ -195,7 +183,7 @@ Record::insert( const DataKey& aKey ,
       report( WARNING ,
 	      kFacilityString )
 		 << "\n\tKey is already in Record, Proxy can not be added"
-		 << endl ;
+		 << std::endl ;
       return ( false ) ;
    }
 /*   (Not yet implemeted)
@@ -207,7 +195,7 @@ Record::insert( const DataKey& aKey ,
       report( WARNING ,
 	      kFacilityString )
 		 << "\n\tKey is already in Record, Proxy can not be added"
-		 << endl ;
+		 << std::endl ;
       return ( false ) ;
    }*/
 //
@@ -350,7 +338,7 @@ Record::add( const DataKey& aKey ,
 	      kFacilityString )
 		 << "\n\tTrying to `insert a non-Transient Proxy in to the Record,\n"
 		 << "\t\twhile transient Proxies exist!"
-		 << endl ;
+		 << std::endl ;
       return( false ) ;
    }
 //

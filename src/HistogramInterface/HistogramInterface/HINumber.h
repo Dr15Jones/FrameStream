@@ -43,7 +43,7 @@ class HINumber
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      HINumber(	const string&  iName,
+      HINumber(	const std::string&  iName,
 		float         iValue = 0 );
       virtual ~HINumber();
       // ---------- member functions ---------------------------
@@ -53,7 +53,7 @@ class HINumber
       
       // Accessors
       float value() const { return m_value; }
-      const string& name() const { return m_name; }
+      const std::string& name() const { return m_name; }
       DABoolean isInitialized() const { return m_isInitialized; }
       
       // ---------- const member functions ---------------------
@@ -75,7 +75,7 @@ class HINumber
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      string m_name;
+      std::string m_name;
       float  m_value;
       DABoolean m_isInitialized;
 

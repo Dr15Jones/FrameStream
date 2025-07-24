@@ -25,7 +25,7 @@
 // system include files
 
 // user include files
-#include "DefaultModule/DefaultModule.h"
+#include "CommandPattern/DefaultModule.h"
 
 // STL classes
 

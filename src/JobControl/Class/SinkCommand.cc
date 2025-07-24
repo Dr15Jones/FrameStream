@@ -72,28 +72,28 @@
 //
 static const char* const kFacilityString = "JobControl.SinkCommand";
  
-const string helpMessage = 
-string( "// Description: SinkCommand                                       \n" )+
-string( "//                                                                \n" )+
-string( "// Valid subcommands are: (strm=stream)                           \n" )+
-string( "//                                                                \n" )+
-string( "//  sink help                            see this help page       \n" )+
-//string( "//  sink status sinkName                 print status            \n" )+
-//string( "//  sink statusAll                       print status for all    \n" )+
-string( "//  sink list                            list all sink            \n" )+
-string( "//  sink list <sink>                     list sink properties     \n" )+
-string( "//  sink ls [<sink>]                     synonym for \"ls\"       \n" )+
-string( "//  sink remove <sink>                   remove <sink>            \n" )+
-string( "//  sink rm     <sink>                   synonym: \"remove\"      \n" )+
-string( "//  sink del    <sink>                   synonym: \"remove\"      \n" )+
-string( "//  sink clear                           clear the sink list      \n" )+
-string( "//  sink bind <sink> <strm1> [<strm2..]  bind streams to sink     \n" )+
-string( "//                                                                \n" )+
-string( "// Standard streams are:  beginrun endrun event                   \n" )+
-string( "//                        geometry hardware user                  \n" )+
-string( "//                                                                \n" )+
-string( "// Warning: you can only write out ACTIVE streams!                \n" )+
-string( "                                                                  \n" ); 
+const std::string helpMessage = 
+std::string( "// Description: SinkCommand                                       \n" )+
+std::string( "//                                                                \n" )+
+std::string( "// Valid subcommands are: (strm=stream)                           \n" )+
+std::string( "//                                                                \n" )+
+std::string( "//  sink help                            see this help page       \n" )+
+//std::string( "//  sink status sinkName                 print status            \n" )+
+//std::string( "//  sink statusAll                       print status for all    \n" )+
+std::string( "//  sink list                            list all sink            \n" )+
+std::string( "//  sink list <sink>                     list sink properties     \n" )+
+std::string( "//  sink ls [<sink>]                     synonym for \"ls\"       \n" )+
+std::string( "//  sink remove <sink>                   remove <sink>            \n" )+
+std::string( "//  sink rm     <sink>                   synonym: \"remove\"      \n" )+
+std::string( "//  sink del    <sink>                   synonym: \"remove\"      \n" )+
+std::string( "//  sink clear                           clear the sink list      \n" )+
+std::string( "//  sink bind <sink> <strm1> [<strm2..]  bind streams to sink     \n" )+
+std::string( "//                                                                \n" )+
+std::string( "// Standard streams are:  beginrun endrun event                   \n" )+
+std::string( "//                        geometry hardware user                  \n" )+
+std::string( "//                                                                \n" )+
+std::string( "// Warning: you can only write out ACTIVE streams!                \n" )+
+std::string( "                                                                  \n" ); 
 
 //
 // static data member definitions
@@ -162,14 +162,14 @@ SinkCommand::execute( int argc, char* argv[] )
       } 
       else
       {
-	 report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+	 report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
 	 result = COMMAND_ERROR;
       }
    } 
    else 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -181,7 +181,7 @@ int
 SinkCommand::helpHandler()
 {
    // print help from ModuleCommand.h header
-   report( INFO, kFacilityString ) << "\n" << helpMessage << endl;
+   report( INFO, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }
@@ -193,7 +193,7 @@ SinkCommand::listHandler()
 
    SinkManager* SM = (SinkManager*)target();
 
-   string resultString;
+   std::string resultString;
 
    // different options:
    // "sink list"       --> list all sinks
@@ -213,7 +213,7 @@ SinkCommand::listHandler()
    }
    else
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
    setResult( resultString );
@@ -240,7 +240,7 @@ SinkCommand::removeHandler()
    }
    else
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
 
@@ -269,7 +269,7 @@ SinkCommand::bindHandler()
    // "sink bind sinkname str1 [str2...]"   --> bind streams to sink
    if( 4 > m_argc )
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
    else
@@ -288,7 +288,7 @@ SinkCommand::bindHandler()
 	 if( true != newStreamType.isStandard() ) 
 	 {
 	    report( WARNING, kFacilityString )
-	       << "Using non-standard Stream type!" << arg << "." << endl;
+	       << "Using non-standard Stream type!" << arg << "." << std::endl;
 	 }
 	 streams.add( newStreamType );
       }
@@ -313,7 +313,7 @@ SinkCommand::useHandler( ) // undocumented feature! For testing only
    // eg. "sink use
    if ( m_argc != 2 ) // wrong number of arguments
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    } 
    else

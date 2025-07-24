@@ -125,22 +125,22 @@
 //
 static const char* const kFacilityString = "JobControl.StartCommand";
 
-const string helpMessage = 
-string( "                                                   \n" )+
-string( "// Description: Go Command                         \n" )+
-string( "//   \"go\" will process stops until the end of an \n" )+
-string( "//          active stream is reached.              \n" )+
-string( "//                                                 \n" )+
-string( "//   \"go 10\" will process the next 10 events     \n" )+
-string( "//             A negative number has the same      \n" )+
-string( "//             effect as no number.                \n" )+
-string( "//                                                 \n" )+
-string( "//   \"go 10 any\" will process the next 10 stop   \n" )+
-string( "//                                                 \n" )+
-string( "//   \"go 10 event\" will process 10 event stops.  \n" )+
-string( "//   \"go 10 event beginrun\" will process 10 event\n" )+
-string( "//                          or beginrun stops.     \n" )+
-string( "//     etc...                                      \n" );
+const std::string helpMessage = 
+std::string( "                                                   \n" )+
+std::string( "// Description: Go Command                         \n" )+
+std::string( "//   \"go\" will process stops until the end of an \n" )+
+std::string( "//          active stream is reached.              \n" )+
+std::string( "//                                                 \n" )+
+std::string( "//   \"go 10\" will process the next 10 events     \n" )+
+std::string( "//             A negative number has the same      \n" )+
+std::string( "//             effect as no number.                \n" )+
+std::string( "//                                                 \n" )+
+std::string( "//   \"go 10 any\" will process the next 10 stop   \n" )+
+std::string( "//                                                 \n" )+
+std::string( "//   \"go 10 event\" will process 10 event stops.  \n" )+
+std::string( "//   \"go 10 event beginrun\" will process 10 event\n" )+
+std::string( "//                          or beginrun stops.     \n" )+
+std::string( "//     etc...                                      \n" );
 
 //
 // static data member definitions
@@ -216,7 +216,7 @@ StartCommand::execute( int argc, char* argv[] )
 	       // else make note of which stops
 	       for( int i = 2; i<argc; ++i ) {
 		
-		  if( string( argv[i] ) == string( "any" ) ) {
+		  if( std::string( argv[i] ) == std::string( "any" ) ) {
 		     counter.clearStreams();
 		     break;
 		  }
@@ -232,14 +232,14 @@ StartCommand::execute( int argc, char* argv[] )
 	 }
 	 else
 	 {
-	    report( SYSTEM, kFacilityString ) << "bad numerical value" << endl;
+	    report( SYSTEM, kFacilityString ) << "bad numerical value" << std::endl;
 	    result = COMMAND_ERROR;
 	 }
       }
    }
    else // number of arguments 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -252,7 +252,7 @@ int
 StartCommand::helpHandler()
 {
    // print help from header
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }

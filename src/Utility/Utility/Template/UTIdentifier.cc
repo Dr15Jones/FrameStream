@@ -79,7 +79,7 @@
 
 #include "Experiment/Experiment.h"
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 
 // user include files
 #include "Utility/UTIdentifier.h"
@@ -168,9 +168,6 @@ template< class ID, class T >
 const ID&
 UTIdentifier< ID , T >::value( void ) const
 {
-#if defined(FORWARD_DECLARATION_NOT_BOUND_TO_DEFINITION_BUG)
-   typedef _utidentifier_ids_ _tmp_ ;
-#endif /* FORWARD_DECLARATION_NOT_BOUND_TO_DEFINITION_BUG */
    return idList()[ m_index ];
 }
 
@@ -223,15 +220,15 @@ UTIdentifier< ID , T >::findIndex( const ID& iID )
 }
 
 template< class ID, class T >
-ostream&
-operator<<( ostream& iOStream , const UTIdentifier< ID , T >& iIdentifier )
+std::ostream&
+operator<<(std::ostream& iOStream , const UTIdentifier< ID , T >& iIdentifier )
 {
    return ( iOStream << iIdentifier.value());
 }
 
 template< class ID, class T >
-istream&
-operator>>( istream& iIStream , UTIdentifier< ID , T >& iIdentifier )
+std::istream&
+operator>>( std::istream& iIStream , UTIdentifier< ID , T >& iIdentifier )
 {
    ID tmp ;
    iIStream >> tmp ;

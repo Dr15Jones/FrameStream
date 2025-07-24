@@ -115,7 +115,7 @@
 #include "DataDelivery/DataSourceBinder.h"
 #include "DataStorage/DataSinkBinder.h"
 #include "DataDelivery/FrameDeliverer.h"
-#include "JobControl/Binder.h"
+#include "DataDelivery/Binder.h"
 
 #include "JobControl/SinkManager.h"
 #include "DataStorage/DataSinkBinder.h"
@@ -172,9 +172,9 @@ FileModule::~FileModule()
 //
 // ---------------- input module --------------------
 DABoolean
-FileModule::addSource( const string& iSourceName, 
+FileModule::addSource( const std::string& iSourceName, 
 		       const StreamSet& iReadStreams,
-		       string& ioToken )
+		       std::string& ioToken )
 {
    DABoolean success = false;
 
@@ -185,15 +185,15 @@ FileModule::addSource( const string& iSourceName,
    if( true == streams.empty() )
    {
       streams = m_sourceFormatMap.defaultStreams( iSourceName );
-      string message( "using default streams:" );
+      std::string message( "using default streams:" );
       Stream::Set::const_iterator itEnd = streams.end();
       for( Stream::Set::const_iterator it = streams.begin();
 	   it != itEnd;
 	   ++it )
       {
-	 message += string(" ")+(*it).value();
+	 message += std::string(" ")+(*it).value();
       }
-      report( INFO, kFacilityString ) << message << endl;
+      report( INFO, kFacilityString ) << message << std::endl;
    }
 
    BinderBase* binder = m_sourceFormatMap.createBinder( iSourceName, 
@@ -207,12 +207,12 @@ FileModule::addSource( const string& iSourceName,
 }
 
 DABoolean
-FileModule::checkIfSourceExists( string& iSourceName )
+FileModule::checkIfSourceExists( std::string& iSourceName )
 {
    DABoolean sourceExists = false;
    
-   string command = string( "ls " ) + iSourceName 
-                  + string( " 2>/dev/null >/dev/null" );
+   std::string command = std::string( "ls " ) + iSourceName 
+                  + std::string( " 2>/dev/null >/dev/null" );
    sourceExists = ( 0 != system( command.c_str() ) ) ? false : true;
 
    return sourceExists;
@@ -220,7 +220,7 @@ FileModule::checkIfSourceExists( string& iSourceName )
 
 // ---------------- output module --------------------
 DABoolean
-FileModule::addSink( const string& iSinkName, 
+FileModule::addSink( const std::string& iSinkName, 
            const StreamSet& iWriteStreams,
 		     const StreamToDataStringTagsToStoreMap& iStreamsDataMap )
 {
@@ -238,7 +238,7 @@ FileModule::addSink( const string& iSinkName,
 }
 
 DABoolean
-FileModule::addSink( const string& iSinkName, 
+FileModule::addSink( const std::string& iSinkName, 
 		     const StreamSet& iWriteStreams )
 {
    DABoolean success = false;
@@ -254,7 +254,7 @@ FileModule::addSink( const string& iSinkName,
 }
 
 DABoolean
-FileModule::checkSinkName( string& iSinkName )
+FileModule::checkSinkName( std::string& iSinkName )
 {
    // Two things to check:
    // 1.) is the pathname valid
@@ -263,10 +263,10 @@ FileModule::checkSinkName( string& iSinkName )
 
    DABoolean goodSinkName = true;
 
-   string command;
+   std::string command;
 
    // 1.) check pathname
-   command = string( "dirname " ) + iSinkName;
+   command = std::string( "dirname " ) + iSinkName;
    FILE* FILEOutput = popen( command.c_str(), "r" );
 
    const Count BUFSIZE = 1024;
@@ -274,7 +274,7 @@ FileModule::checkSinkName( string& iSinkName )
    fgets( buf, sizeof( buf ), FILEOutput );
    buf[strlen(buf)-1] = '\0';    // suppress \n
    pclose( FILEOutput );
-   command = string( "ls " ) + string( buf ) + string( ">/dev/null 2>&1" );
+   command = std::string( "ls " ) + std::string( buf ) + std::string( ">/dev/null 2>&1" );
 
 
    if( 0 != system( command.c_str() ) )
@@ -286,16 +286,16 @@ FileModule::checkSinkName( string& iSinkName )
    else // directory exists, but is the file ok? 
    {
    // 2.) check file
-      command = string( "ls " ) + iSinkName + string( ">/dev/null 2>&1" );;
+      command = std::string( "ls " ) + iSinkName + std::string( ">/dev/null 2>&1" );;
 
       if( 0 == system( command.c_str() ) )
       {
          report( SYSTEM, kFacilityString )
 	    << iSinkName 
 	    << " exists; are you sure you want to overwrite? (y/n*)" 
-	    << endl;
-	 string answer;
-	 cin >> answer;
+	    << std::endl;
+	 std::string answer;
+	 std::cin >> answer;
 	 if( "n" == answer || "N" == answer )
 	 {
 	    goodSinkName = false;

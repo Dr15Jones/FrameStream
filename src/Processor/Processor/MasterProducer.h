@@ -17,7 +17,7 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <vector>
 #include <map>
@@ -28,9 +28,9 @@
 #include "Processor/Producer.h"
 
 // forward declarations
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <string>
+#include <vector>
+#include <map>
 class FrameDeliverer;
 class StreamSet;
 class ProducerCommand;
@@ -62,9 +62,9 @@ class MasterProducer : public MultiLoader< Producer >, public Producer
       const StreamSet streamsToBeActivated() const;
 
       // pattern for listings
-      virtual string listAvailablePatternString() const { 
-	 //return string( "Pro[cd]" ); 
-	 return string( "" ); 
+      virtual std::string listAvailablePatternString() const { 
+	 //return std::string( "Pro[cd]" ); 
+	 return std::string( "" ); 
       }
 
       // static member functions
@@ -73,15 +73,15 @@ class MasterProducer : public MultiLoader< Producer >, public Producer
       // protected member functions
 
       // overriden Loader<> methods
-      virtual void initialize( const string& iName, Producer& iProducer );
-      virtual void initializeTag( const string& iTag, Producer& iProducer );
-      virtual void finalize(   const string& iName, Producer& iProducer );
+      virtual void initialize( const std::string& iName, Producer& iProducer );
+      virtual void initializeTag( const std::string& iTag, Producer& iProducer );
+      virtual void finalize(   const std::string& iName, Producer& iProducer );
 
       // protected const member functions
 
       // warning/error message
-      virtual string makeErrorMesg( const string& iName ) const;
-      virtual string loadingAsSuperClassMesg( const string& iName ) const;
+      virtual std::string makeErrorMesg( const std::string& iName ) const;
+      virtual std::string loadingAsSuperClassMesg( const std::string& iName ) const;
 
    private:
       // Constructors and destructor

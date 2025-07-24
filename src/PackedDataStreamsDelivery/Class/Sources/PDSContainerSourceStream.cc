@@ -162,7 +162,7 @@ PDSContainerSourceStream::operator>>( double& iData )
 }
 
 SMSourceStream& 
-PDSContainerSourceStream::operator>>( string& iData )
+PDSContainerSourceStream::operator>>( std::string& iData )
 {
    throwException();
    return *this;

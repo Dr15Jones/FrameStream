@@ -70,7 +70,7 @@ class PDSStringPacker : public PDSPackerBase
       // ---------- protected member functions -----------------
       void storeStrategyInfo( UInt32& ioPackedWord,
 			      unsigned char& ioStartBit,
-			      STL_VECTOR(UInt32)& ) const {
+			      std::vector<UInt32>& ) const {
 	 //no additional data needs to be stored
       }
 

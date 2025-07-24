@@ -49,12 +49,12 @@ class DataSinkDescriptor
       // constants, enums and typedefs
 
       // Constructors and destructor
-      DataSinkDescriptor( const string& iDataSinkID = string(""),
-			  const string& iParameters = string(""),
+      DataSinkDescriptor( const std::string& iDataSinkID = std::string(""),
+			  const std::string& iParameters = std::string(""),
 			  const Stream::Type& iBindStream= Stream::kNone);
 
-      DataSinkDescriptor( const string& iDataSinkID,
-			    const string& iParameters,
+      DataSinkDescriptor( const std::string& iDataSinkID,
+			    const std::string& iParameters,
 			    const Stream::Set& iBindStreams );
 
       DataSinkDescriptor( const DataSinkController& iController );
@@ -73,8 +73,8 @@ class DataSinkDescriptor
       // const member functions
       const Stream::Set& boundStreams( void ) const;
 
-      const string& dataSinkID( void ) const;
-      const string& parameters( void ) const;
+      const std::string& dataSinkID( void ) const;
+      const std::string& parameters( void ) const;
 
       DABoolean operator==( const DataSinkController& iController ) const;
       DABoolean operator==( const DataSinkDescriptor& iDescriptor ) const;
@@ -83,8 +83,8 @@ class DataSinkDescriptor
 
    protected:
       // protected member functions
-      void setDataSinkID( string iDataSinkID );
-      void setParameters( string iParameters ) ;
+      void setDataSinkID( std::string iDataSinkID );
+      void setParameters( std::string iParameters ) ;
 
       // protected const member functions
 
@@ -99,8 +99,8 @@ class DataSinkDescriptor
 
       // static data members
       Stream::Set& m_boundStreamList;
-      string m_dataSinkID;
-      string m_parameters;
+      std::string m_dataSinkID;
+      std::string m_parameters;
 };
 
 // inline function definitions

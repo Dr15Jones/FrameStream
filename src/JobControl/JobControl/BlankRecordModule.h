@@ -60,10 +60,10 @@ class BlankRecordModule : public Module
       virtual ~BlankRecordModule();
 
       // member functions
-      DABoolean addSource( const string& iSourceName, 
+      DABoolean addSource( const std::string& iSourceName, 
 			   const StreamSet& iReadStreams,
 			   BlankRecordStopsBase* iStops,
-			   string& ioToken );
+			   std::string& ioToken );
 
       // const member functions
 
@@ -71,7 +71,7 @@ class BlankRecordModule : public Module
 
    protected:
       // protected member functions
-      BinderBase* createBinder( const string& sourceName,
+      BinderBase* createBinder( const std::string& sourceName,
 				const StreamSet& readStreams,
 				BlankRecordStopsBase* iStops );
 

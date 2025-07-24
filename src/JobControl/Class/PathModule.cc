@@ -72,7 +72,7 @@ using CommandPattern::Keyword::OneArgNoReturn;
 using CommandPattern::Keyword::Composite;
 using JobControlNS::FilterBase;
 
-static const string kPathHelp
+static const std::string kPathHelp
 (
  "Description: path\n"
  "\n"
@@ -114,7 +114,7 @@ static const string kPathHelp
 namespace PathModuleNS {
    class CreateFilter : public CommandPattern::Keyword::Base {
      public:
-      CreateFilter(const string& iName, PathModule* iModule ) :
+      CreateFilter(const std::string& iName, PathModule* iModule ) :
       Base(iName), m_module(iModule) {}
       unsigned int minArgs() const { return 2;}
       unsigned int maxArgs() const {return 1000;}
@@ -129,7 +129,7 @@ namespace PathModuleNS {
    }
    class CreatePath : public CommandPattern::Keyword::Base {
 public:
-      CreatePath(const string& iName, PathModule* iModule ) :
+      CreatePath(const std::string& iName, PathModule* iModule ) :
       Base(iName), m_module(iModule) {}
       unsigned int minArgs() const { return 2;}
       unsigned int maxArgs() const {return 1000;}
@@ -153,21 +153,21 @@ PathModule::PathModule(SinkManager& iSM,
    m_sinkM(&iSM),
    m_procM(&iMP)
 {
-   m_command.add(new NoArgReturnResult<PathModule,string>("ls", this,&PathModule::listPaths, &m_command) );
-      m_command.add(new NoArgReturnResult<PathModule,string>("list", this,&PathModule::listPaths, &m_command) );
+   m_command.add(new NoArgReturnResult<PathModule,std::string>("ls", this,&PathModule::listPaths, &m_command) );
+      m_command.add(new NoArgReturnResult<PathModule,std::string>("list", this,&PathModule::listPaths, &m_command) );
    m_command.add( new PathModuleNS::CreatePath("create",this) );
-   m_command.add(new OneArgNoReturn<PathModule,const string&, 
+   m_command.add(new OneArgNoReturn<PathModule,const std::string&, 
                  CommandPattern::Keyword::StringParser>("remove", this,&PathModule::removePath));
-   m_command.add(new OneArgNoReturn<PathModule,const string&, 
+   m_command.add(new OneArgNoReturn<PathModule,const std::string&, 
                  CommandPattern::Keyword::StringParser>("rm", this,&PathModule::removePath));
-   m_command.add(new OneArgNoReturn<PathModule,const vector<string>&, 
+   m_command.add(new OneArgNoReturn<PathModule,const std::vector<std::string>&, 
                  CommandPattern::Keyword::VectorStringParser>("reorder", this,&PathModule::reorder));
 
    Composite* filterCommand = new Composite("filter");
-   filterCommand->add( new NoArgReturnResult<PathModule,string>("ls",this, &PathModule::listFilters,&m_command) );
-   filterCommand->add( new NoArgReturnResult<PathModule,string>("list",this, &PathModule::listFilters,&m_command) );
+   filterCommand->add( new NoArgReturnResult<PathModule,std::string>("ls",this, &PathModule::listFilters,&m_command) );
+   filterCommand->add( new NoArgReturnResult<PathModule,std::string>("list",this, &PathModule::listFilters,&m_command) );
    filterCommand->add( new PathModuleNS::CreateFilter("create",this) );
-   filterCommand->add(new OneArgNoReturn<PathModule,const string&, 
+   filterCommand->add(new OneArgNoReturn<PathModule,const std::string&, 
                  CommandPattern::Keyword::StringParser>("remove", this,&PathModule::removeFilter));
    m_command.add(filterCommand);
 }
@@ -203,11 +203,11 @@ PathModule::~PathModule()
 //
 // const member functions
 //
-string
+std::string
 PathModule::listPaths()
 {
-   string returnValue;
-   for(STL_VECTOR(JobControlNS::Path*)::const_iterator itPath = m_paths.paths().begin();
+   std::string returnValue;
+   for(std::vector<JobControlNS::Path*>::const_iterator itPath = m_paths.paths().begin();
        itPath != m_paths.paths().end();
        ++itPath) {
       assert(0 != *itPath);
@@ -225,7 +225,7 @@ PathModule::listPaths()
          returnValue += "none\n";
       } else {
          returnValue += (*itPath)->operations().front()->name() +"\n";
-         for( STL_VECTOR(Processor*)::const_iterator itProc = (*itPath)->operations().begin()+1;
+         for( std::vector<Processor*>::const_iterator itProc = (*itPath)->operations().begin()+1;
               itProc != (*itPath)->operations().end();
               ++itProc ) {
             returnValue +="      "+(*itProc)->name() + "\n";
@@ -248,11 +248,11 @@ PathModule::listPaths()
    return returnValue;
 }
 
-string
+std::string
 PathModule::listFilters()
 {
-   string returnValue;
-   for(STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterBase> )::const_iterator itFilter = m_paths.filters().begin();
+   std::string returnValue;
+   for(std::vector<JobControlNS::Holder<JobControlNS::FilterBase> >::const_iterator itFilter = m_paths.filters().begin();
        itFilter != m_paths.filters().end();
        ++itFilter) {
       returnValue += (*itFilter)->name() + ": "+(*itFilter)->description()+"\n";
@@ -267,7 +267,7 @@ using PathModuleNS::Ops;
 
 static
 JobControlNS::FilterComposite*
-makeFilter(const string& iName, PathModuleNS::Ops iOp)
+makeFilter(const std::string& iName, PathModuleNS::Ops iOp)
 {
    switch(iOp) {
       case PathModuleNS::kAnd:
@@ -293,19 +293,19 @@ PathModule::createFilter( int argc, char** argv )
 }
 
 JobControlNS::Holder<JobControlNS::FilterBase> 
-PathModule::implementCreateFilter( const string& iName, int argc, char** argv )
+PathModule::implementCreateFilter( const std::string& iName, int argc, char** argv )
 {
    
    
-   STL_MAP(string, FilterBase*) nameToFilter;
+   std::map<std::string, FilterBase*> nameToFilter;
 
-   const string kName(iName);
+   const std::string kName(iName);
    //does a filter with this name already exist?
-   for(STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterBase> )::const_iterator itFilter = m_paths.filters().begin();
+   for(std::vector<JobControlNS::Holder<JobControlNS::FilterBase> >::const_iterator itFilter = m_paths.filters().begin();
        itFilter != m_paths.filters().end();
        ++itFilter) {
       if( (*itFilter)->name() == kName) {
-         string info("A Filter named ");
+         std::string info("A Filter named ");
          info += kName;
          info += " already exists";
          throw CommandPattern::Keyword::UserException(info);
@@ -314,33 +314,33 @@ PathModule::implementCreateFilter( const string& iName, int argc, char** argv )
    }
 
    //does a processor with this name already exist?
-   for(STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterProc> )::const_iterator itFilter = m_paths.filterProcs().begin();
+   for(std::vector<JobControlNS::Holder<JobControlNS::FilterProc> >::const_iterator itFilter = m_paths.filterProcs().begin();
        itFilter != m_paths.filterProcs().end();
        ++itFilter) {
       if( (*itFilter)->name() == kName) {
-         string info("A Processor named ");
+         std::string info("A Processor named ");
          info += kName;
          info += " already exists";
          throw CommandPattern::Keyword::UserException(info);
       }
-      nameToFilter.insert( pair<string,JobControlNS::FilterBase*>((*itFilter)->name(), (*itFilter).get() ) );
+      nameToFilter.insert( std::pair<std::string,JobControlNS::FilterBase*>((*itFilter)->name(), (*itFilter).get() ) );
    }
    
    //parse filter
-   typedef vector< JobControlNS::Holder<FilterBase> > FilterInfoStack;
+   typedef std::vector< JobControlNS::Holder<FilterBase> > FilterInfoStack;
    FilterInfoStack infoStack;
    infoStack.reserve(argc);
-   typedef STL_VECTOR(Ops) OpsStack;
+   typedef std::vector<Ops> OpsStack;
    OpsStack opsStack;
    opsStack.reserve(argc);
-   STL_MAP(string, Ops) nameToOp;
-   nameToOp.insert(STL_MAP(string,Ops)::value_type("and",PathModuleNS::kAnd) );
-   nameToOp.insert(STL_MAP(string,Ops)::value_type("or",PathModuleNS::kOr) );
-   nameToOp.insert(STL_MAP(string,Ops)::value_type("xor",PathModuleNS::kXOr) );
+   std::map<std::string, Ops> nameToOp;
+   nameToOp.insert(std::map<std::string,Ops>::value_type("and",PathModuleNS::kAnd) );
+   nameToOp.insert(std::map<std::string,Ops>::value_type("or",PathModuleNS::kOr) );
+   nameToOp.insert(std::map<std::string,Ops>::value_type("xor",PathModuleNS::kXOr) );
    
    DABoolean shouldBeFilter = true;
    for(int itArg=0; itArg < argc; ++itArg) {
-      string args(argv[itArg] );
+      std::string args(argv[itArg] );
 
       if(shouldBeFilter) {
          DABoolean usingNot = false;
@@ -350,11 +350,11 @@ PathModule::implementCreateFilter( const string& iName, int argc, char** argv )
             if( itArg ==argc ) {
                throw CommandPattern::Keyword::UserException("Filter or Processor name must follow 'not'");
             }
-            args = string(argv[itArg]);
+            args = std::string(argv[itArg]);
          }
-         STL_MAP(string,FilterBase*)::iterator itFound = nameToFilter.find(args);
+         std::map<std::string,FilterBase*>::iterator itFound = nameToFilter.find(args);
          if( itFound == nameToFilter.end() ) {
-            string info(args+" is not the name of a Filter or Processor");
+            std::string info(args+" is not the name of a Filter or Processor");
             throw CommandPattern::Keyword::UserException(info);
          }
          if( usingNot ) {
@@ -364,7 +364,7 @@ PathModule::implementCreateFilter( const string& iName, int argc, char** argv )
          }
       } else {
          //is it one of our operation keywords?
-         STL_MAP(string, Ops)::iterator itOp = nameToOp.find(args);
+         std::map<std::string, Ops>::iterator itOp = nameToOp.find(args);
          if( itOp == nameToOp.end() ) {
             throw CommandPattern::Keyword::UserException(args+" is not one of the keywords 'or', 'and' or 'xor'");
          }
@@ -414,14 +414,14 @@ PathModule::implementCreateFilter( const string& iName, int argc, char** argv )
 int 
 PathModule::createPath( int argc, char** argv )
 {
-   const string kName(argv[0]);
+   const std::string kName(argv[0]);
 
    //does this path name already exist?
-   for(STL_VECTOR(JobControlNS::Path*)::const_iterator itPath = m_paths.paths().begin();
+   for(std::vector<JobControlNS::Path*>::const_iterator itPath = m_paths.paths().begin();
        itPath != m_paths.paths().end();
        ++itPath) {
       if( (*itPath)->name() == kName ) {
-         throw CommandPattern::Keyword::UserException(string("A Path named "+kName+" already exists.") );
+         throw CommandPattern::Keyword::UserException(std::string("A Path named "+kName+" already exists.") );
       }
    }
    
@@ -429,7 +429,7 @@ PathModule::createPath( int argc, char** argv )
    JobControlNS::Holder<JobControlNS::FilterBase> pFilter;
    int argIndex = 1;
 
-   const string kSeperator(">>");
+   const std::string kSeperator(">>");
    while(argIndex < argc && 
 	 kSeperator != argv[argIndex] ) { 
       ++argIndex;
@@ -440,9 +440,9 @@ PathModule::createPath( int argc, char** argv )
 
       if( 2 == argIndex ) {
 	 //only one thing specified, is this the name of an existing filter?
-	 const string kName( argv[1] );
+	 const std::string kName( argv[1] );
 	 //is this the name of a filter?
-	 for(STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterBase> )::const_iterator itFilter = m_paths.filters().begin();
+	 for(std::vector<JobControlNS::Holder<JobControlNS::FilterBase> >::const_iterator itFilter = m_paths.filters().begin();
 	     itFilter != m_paths.filters().end();
 	     ++itFilter) {
 	    if( (*itFilter)->name() == kName) {
@@ -458,7 +458,7 @@ PathModule::createPath( int argc, char** argv )
    //is the next argument a ">>" or the end?
    if( argc != argIndex ) {
       if(kSeperator != argv[argIndex]) {
-	 throw CommandPattern::Keyword::UserException(string("Filter specification must be followed by ")+kSeperator);
+	 throw CommandPattern::Keyword::UserException(std::string("Filter specification must be followed by ")+kSeperator);
       }
       ++argIndex;
    }
@@ -469,12 +469,12 @@ PathModule::createPath( int argc, char** argv )
    }
    
    //Now see if we have any Processor or sinks to add to the Path
-   STL_VECTOR(Processor*) procs;
-   STL_VECTOR(DataSinkBinder*) binders;
-   string args;
+   std::vector<Processor*> procs;
+   std::vector<DataSinkBinder*> binders;
+   std::string args;
 
    for(; argIndex != argc; ++argIndex ) {
-      args = string(argv[argIndex]);
+      args = std::string(argv[argIndex]);
       //is this a Processor?
       if(m_procM->alreadyLoaded(args)  ) {
          //is it already being used?
@@ -482,17 +482,17 @@ PathModule::createPath( int argc, char** argv )
          DABoolean notUsed = true;
          m_paths.processorNotBeingUsed(args, notUsed);
          if( ! notUsed ) {
-            throw CommandPattern::Keyword::UserException(string("The processor ")+args+" is being used in a filter so can not be an operation.");
+            throw CommandPattern::Keyword::UserException(std::string("The processor ")+args+" is being used in a filter so can not be an operation.");
          }
          //in another path?
-         for(STL_VECTOR(JobControlNS::Path*)::const_iterator itPath = m_paths.paths().begin();
+         for(std::vector<JobControlNS::Path*>::const_iterator itPath = m_paths.paths().begin();
              itPath != m_paths.paths().end();
              ++itPath) {
-            for(STL_VECTOR(Processor*)::const_iterator itProc = (*itPath)->operations().begin();
+            for(std::vector<Processor*>::const_iterator itProc = (*itPath)->operations().begin();
                 itProc != (*itPath)->operations().end();
                 ++itProc) {
                if( (*itProc)->name() == args ) {
-                  throw CommandPattern::Keyword::UserException(string("The processor ")+args+" is already in the path "+(*itPath)->name() + " as an operation so can not be used again.");
+                  throw CommandPattern::Keyword::UserException(std::string("The processor ")+args+" is already in the path "+(*itPath)->name() + " as an operation so can not be used again.");
                }
             }
          }
@@ -502,7 +502,7 @@ PathModule::createPath( int argc, char** argv )
          if( m_sinkM->isUnused(args) ) {
             binders.push_back(m_sinkM->binderFor(args));
          } else {
-            throw CommandPattern::Keyword::UserException(string("The sink ")+args+"is already in use.");
+            throw CommandPattern::Keyword::UserException(std::string("The sink ")+args+"is already in use.");
          }
       } else {
          throw CommandPattern::Keyword::UserException(args+" is not the name of a Processor nor a Sink");
@@ -512,7 +512,7 @@ PathModule::createPath( int argc, char** argv )
       m_paths.add( new JobControlNS::Path(kName, pFilter.get(), procs, binders) );
 
       //now that sinks are in the path, remove them from use
-      for( STL_VECTOR(DataSinkBinder*)::iterator itBinder = binders.begin();
+      for( std::vector<DataSinkBinder*>::iterator itBinder = binders.begin();
            itBinder != binders.end();
            ++itBinder ) {
          m_sinkM->useSink( *itBinder );
@@ -524,9 +524,9 @@ PathModule::createPath( int argc, char** argv )
 }
 
 void
-PathModule::removePath(const string& iPath)
+PathModule::removePath(const std::string& iPath)
 {
-   for(STL_VECTOR(JobControlNS::Path*)::const_iterator itPath = m_paths.paths().begin();
+   for(std::vector<JobControlNS::Path*>::const_iterator itPath = m_paths.paths().begin();
        itPath != m_paths.paths().end();
        ++itPath) {
       if( (*itPath)->name() == iPath ) {
@@ -534,49 +534,49 @@ PathModule::removePath(const string& iPath)
          return;
       }
    }
-   throw CommandPattern::Keyword::UserException(string("No path named ")+iPath+" exists");
+   throw CommandPattern::Keyword::UserException(std::string("No path named ")+iPath+" exists");
 }
 
 void
-PathModule::removeFilter(const string& iFilter)
+PathModule::removeFilter(const std::string& iFilter)
 {
-   for(STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterBase> )::const_iterator itFilter = m_paths.filters().begin();
+   for(std::vector<JobControlNS::Holder<JobControlNS::FilterBase> >::const_iterator itFilter = m_paths.filters().begin();
        itFilter != m_paths.filters().end();
        ++itFilter) {
       if( (*itFilter)->name() == iFilter) {
          if( m_paths.remove((*itFilter).get()) ) {
             return;
          } else {
-            throw CommandPattern::Keyword::UserException(string("The filter named ")+iFilter+" is in use by a path or another filter so can not be removed");
+            throw CommandPattern::Keyword::UserException(std::string("The filter named ")+iFilter+" is in use by a path or another filter so can not be removed");
          }
       }
    }
-   throw CommandPattern::Keyword::UserException(string("No filter named ")+iFilter+" exists");
+   throw CommandPattern::Keyword::UserException(std::string("No filter named ")+iFilter+" exists");
 }
 
 void
-PathModule::reorder(const STL_VECTOR(string)& iNames )
+PathModule::reorder(const std::vector<std::string>& iNames )
 {
    
    if( iNames.size() < m_paths.paths().size() ) {
-      throw CommandPattern::Keyword::UserException(string("Not all paths are specified in reorder list") );
+      throw CommandPattern::Keyword::UserException(std::string("Not all paths are specified in reorder list") );
    }
-   STL_VECTOR(JobControlNS::Path*) pathOrder;
+   std::vector<JobControlNS::Path*> pathOrder;
    pathOrder.reserve(iNames.size() );
-   for( STL_VECTOR(string)::const_iterator itName = iNames.begin();
+   for( std::vector<std::string>::const_iterator itName = iNames.begin();
         itName != iNames.end();
         ++itName) {
-      STL_VECTOR(JobControlNS::Path*)::const_iterator itPath = m_paths.paths().begin();
+      std::vector<JobControlNS::Path*>::const_iterator itPath = m_paths.paths().begin();
       for(;
           itPath != m_paths.paths().end();
           ++itPath) {
          if( (*itPath)->name() == *itName ) {
             //is it already in the list?
-            for(STL_VECTOR(JobControlNS::Path*)::iterator itPath2 = pathOrder.begin();
+            for(std::vector<JobControlNS::Path*>::iterator itPath2 = pathOrder.begin();
                 itPath2 != pathOrder.end();
                 ++itPath2) {
                if( (*itPath2) == (*itPath) ) {
-                  throw CommandPattern::Keyword::UserException(string("The path ")+*itName+" appears multiple times in the list");
+                  throw CommandPattern::Keyword::UserException(std::string("The path ")+*itName+" appears multiple times in the list");
                }
             }
             pathOrder.push_back(*itPath);
@@ -584,7 +584,7 @@ PathModule::reorder(const STL_VECTOR(string)& iNames )
          }
       }
       if( itPath == m_paths.paths().end() ) {
-         throw CommandPattern::Keyword::UserException(string("No path named ")+*itName);
+         throw CommandPattern::Keyword::UserException(std::string("No path named ")+*itName);
       }
    }
    m_paths.reorder(pathOrder);
@@ -592,12 +592,3 @@ PathModule::reorder(const STL_VECTOR(string)& iNames )
 //
 // static member functions
 //
-
-typedef PathModuleNS::Ops _vector_contents_;
-#include "STLUtility/instantiate_vector.h"
-
-typedef string _map_key_;
-typedef PathModuleNS::Ops _map_contents_;
-typedef less< string > _map_compare_;
-
-#include "STLUtility/instantiate_map.h"

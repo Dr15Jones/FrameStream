@@ -18,7 +18,7 @@
 
 // system include files
 #include <assert.h>
-#include "C++Std/fstream.h"
+#include <fstream>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdexcept>
@@ -56,7 +56,7 @@
 
 int TheMain( int argc, char** argv );
 DABoolean SuezInit( Interpreter& interpreter, 
-		    const string& runFile = "",
+		    const std::string& runFile = "",
 		    DABoolean runSetupFile = false );
 
 // typedefs, enums, constants
@@ -71,10 +71,10 @@ static const char* const VersionString
 = "$Version$";
 
 
-static string welcomeMsg = 
-string( "// -----------------------------------------------------------\n" )+
-string( "//  Welcome to Suez, the CLEO III data access program         \n" )+
-string( "// -----------------------------------------------------------\n" );
+static std::string welcomeMsg = 
+std::string( "// -----------------------------------------------------------\n" )+
+std::string( "//  Welcome to Suez, the CLEO III data access program         \n" )+
+std::string( "// -----------------------------------------------------------\n" );
 
 //-----------------
 //    Main
@@ -101,124 +101,124 @@ main( int argc, char** argv )
 #ifndef CLEO_DEBUG
    }
    // all specific logic_error exceptions
-   catch( length_error& thisException )
+   catch( std::length_error& thisException )
    {
-      cerr << "ERROR: Suez caught \"length_error\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"length_error\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
-   catch( domain_error& thisException )
+   catch( std::domain_error& thisException )
    {
-      cerr << "ERROR: Suez caught \"domain_error\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"domain_error\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
-   catch( out_of_range& thisException )
+   catch( std::out_of_range& thisException )
    {
-      cerr << "ERROR: Suez caught \"out_of_range\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"out_of_range\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
-   catch( invalid_argument& thisException )
+   catch( std::invalid_argument& thisException )
    {
-      cerr << "ERROR: Suez caught \"invalid_argument\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"invalid_argument\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
    // now catch all other logic_error exceptions
-   catch( logic_error& thisException )
+   catch( std::logic_error& thisException )
    {
-      cerr << "ERROR: Suez caught \"logic_error\" exception:\n\"" 
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"logic_error\" exception:\n\"" 
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
    // now all non-logic_error, non-runtime_error exceptions
 #if !defined(UNDEF_BAD_ALLOC_EXCEPT_BUG)
-   catch( bad_alloc& thisException )
+   catch( std::bad_alloc& thisException )
    {
-      cerr << "ERROR: Suez caught \"bad_alloc\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"bad_alloc\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
 #else
 #if defined(XALLOC_NON_STANDARD_EXCEPTION_BUG)
    catch( xalloc& thisException ) 
    {
       cerr << "ERROR: Suez caught \"xalloc\" exception:\n\""
-	   << thisException.why() << "\"\n ... exiting program" << endl;
+	   << thisException.why() << "\"\n ... exiting program" << std::endl;
    }
 #endif
 #endif
 #if !defined(UNDEF_BAD_EXCEPTION_EXCEPT_BUG)
-   catch( bad_exception& thisException )
+   catch( std::bad_exception& thisException )
    {
-      cerr << "ERROR: Suez caught \"bad_exception\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"bad_exception\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
 #endif
 #if !defined(UNDEF_IOS_BASE_FAILURE_EXCEPT_BUG)
-   catch( ios_base::failure& thisException )
+   catch( std::ios_base::failure& thisException )
    {
-      cerr << "ERROR: Suez caught \"ios_base::failure\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"ios_base::failure\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
 #endif
 #if !defined(UNDEF_BAD_TYPEID_EXCEPT_BUG)
-   catch( bad_typeid& thisException )
+   catch( std::bad_typeid& thisException )
    {
-      cerr << "ERROR: Suez caught \"bad_typeid\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"bad_typeid\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
 #endif
 #if !defined(UNDEF_BAD_CAST_EXCEPT_BUG)
-   catch( bad_cast& thisException )
+   catch( std::bad_cast& thisException )
    {
-      cerr << "ERROR: Suez caught \"bad_cast\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"bad_cast\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
 #endif
    // all specific runtime_error exceptions
 #if !defined(UNDEF_UNDERFLOW_ERROR_EXCEPT_BUG)
-   catch( underflow_error& thisException )
+   catch( std::underflow_error& thisException )
    {
-      cerr << "ERROR: Suez caught \"underflow_error\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"underflow_error\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
 #endif
 #if !defined(UNDEF_OVERFLOW_ERROR_EXCEPT_BUG)
-   catch( overflow_error& thisException )
+   catch( std::overflow_error& thisException )
    {
-      cerr << "ERROR: Suez caught \"overflow_error\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"overflow_error\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
 #endif
 #if !defined(UNDEFINED_RANGE_ERROR_EXCEPT_BUG)
-   catch( range_error& thisException )
+   catch( std::range_error& thisException )
    {
-      cerr << "ERROR: Suez caught \"range_error\" exception:\n\""
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"range_error\" exception:\n\""
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
 #endif
    // now catch all other runtime_error exceptions
-   catch( runtime_error& thisException )
+   catch( std::runtime_error& thisException )
    {
-      cerr << "ERROR: Suez caught \"runtime_error\" exception:\n\"" 
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught \"runtime_error\" exception:\n\"" 
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
    // now catch DAExceptions
    catch( DAExceptionBase& thisException )
    {
-      cerr << "ERROR: Suez caught a DAException:\n\"" 
-           << thisException.exceptionStack() << endl
-	   << thisException.what() << "\"\n ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught a DAException:\n\"" 
+           << thisException.exceptionStack() << std::endl
+	   << thisException.what() << "\"\n ... exiting program" << std::endl;
    }
    // catch non-standard exceptions
 #if defined(XALLOC_NON_STANDARD_EXCEPTION_BUG)
    catch( xmsg& thisException ) 
    {
       cerr << "ERROR: Suez caught \"xmsg\" exception:\n\""
-	   << thisException.why() << "\"\n ... exiting program" << endl;
+	   << thisException.why() << "\"\n ... exiting program" << std::endl;
    }
 #endif
    // now just catch anything
    catch( ... )
    {
-      cerr << "ERROR: Suez caught an (unknown/user-defined?) exception:\n" 
-	   << " ... exiting program" << endl;
+      std::cerr << "ERROR: Suez caught an (unknown/user-defined?) exception:\n" 
+	   << " ... exiting program" << std::endl;
    }
 #endif /* in debug mode don't catch exceptions */
 
@@ -243,7 +243,7 @@ int TheMain( int argc, char** argv )
 
    // handle options
    DABoolean runGUI = false, runSetupFile = true;
-   string runFile( "" );
+   std::string runFile( "" );
    
    // handle options using the getopt standard function; if 
    int option;
@@ -281,27 +281,27 @@ int TheMain( int argc, char** argv )
 	}
 	 default: {
 	    report( WARNING, kFacilityString )
-	       << "don't understand option: " << option << endl;
+	       << "don't understand option: " << option << std::endl;
 	 }
       }
    }
 
    // print out any other non-option arguments (since we won't process them!)
    if( optind < argc ) {
-      ostream& os = report( ERROR, kFacilityString );
+     std::ostream& os = report( ERROR, kFacilityString );
       os <<"ignoring non-option ARGV-elements: \n";
       while( optind < argc ) {
 	 os << argv[optind++] << "\n";
       }
-      os << "continuing..." << endl;
+      os << "continuing..." << std::endl;
    }
    
    // --------- welcome user -------------
-   report( INFO, kFacilityString ) << "\n" << welcomeMsg << endl;
+   report( INFO, kFacilityString ) << "\n" << welcomeMsg << std::endl;
    report( INFO, kFacilityString ) << IdString  << "\n"
       //<< TagString << "\n"
       //<< VersionString << "\n"
-				   << endl;
+				   << std::endl;
    
    // create Interpreter
    Interpreter::setInterpreter( new TclInterpreter() );
@@ -322,10 +322,10 @@ int TheMain( int argc, char** argv )
    if( true == runGUI ) 
    {
       report( INFO, kFacilityString )
-	 << "starting suez in gui mode..." << endl;
+	 << "starting suez in gui mode..." << std::endl;
 
       report( ERROR, kFacilityString )
-	 << "not supported at the moment!" << endl;
+	 << "not supported at the moment!" << std::endl;
       
       //// Need to enable commands before running initialization scripts
       ////interpreter->initialize( false, argc, argv );
@@ -361,7 +361,7 @@ int TheMain( int argc, char** argv )
 
 DABoolean
 SuezInit( Interpreter& interpreter, 
-	  const string& runFile,
+	  const std::string& runFile,
 	  DABoolean runSetupFile )
 {
    DABoolean status = true;
@@ -378,9 +378,9 @@ SuezInit( Interpreter& interpreter,
 	 // only run official startup script if personal doesn't exist
 	 const char* const HOME = getenv( "HOME" );
 	 if( 0 != HOME ) {
-	    string personalStartupScript = string( HOME ) + string( "/.suezrc" );
+	    std::string personalStartupScript = std::string( HOME ) + std::string( "/.suezrc" );
 	    
-	    ifstream ifs( personalStartupScript.c_str() );
+	    std::ifstream ifs( personalStartupScript.c_str() );
 	    if( ifs ) { // personal file exists
 	       ifs.close();
 	       interpreter.runCommandFile( personalStartupScript.c_str() );
@@ -391,15 +391,15 @@ SuezInit( Interpreter& interpreter,
 	       if( 0 == C3_SUEZRC ) {
 		  report( WARNING, kFacilityString )
 		     << "cannot find C3_SUEZRC environment variable!\n " 
-		     << "May not be able to initialize properly!" << endl;
+		     << "May not be able to initialize properly!" << std::endl;
 	       }
 	       else {
 		  // need to find first entry in C3_SUEZRC string
 		  StringTokenizer c3_suezrc_tokens( C3_SUEZRC );
 		  if( c3_suezrc_tokens.hasMoreElements() ) {
 		     // now assemble file name
-		     string officialStartupScript 
-			= c3_suezrc_tokens.nextElement() + string( "/suezrc" );
+		     std::string officialStartupScript 
+			= c3_suezrc_tokens.nextElement() + std::string( "/suezrc" );
 		     interpreter.runCommandFile( officialStartupScript.c_str() );
 		  }
 	       }
@@ -408,7 +408,7 @@ SuezInit( Interpreter& interpreter,
 	 else {
 	    report( WARNING, kFacilityString )
 	       << "cannot find HOME environment variable!\n " 
-	       << "May not be able to initialize properly!" << endl;
+	       << "May not be able to initialize properly!" << std::endl;
 	 }
       } // specified script on command-line or not
    } // run setup file or not

@@ -70,7 +70,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-DummyNumberWithErrors::DummyNumberWithErrors( const string& iName,
+DummyNumberWithErrors::DummyNumberWithErrors( const std::string& iName,
 					      float         iValue,
 					      float         iPosErr,
 					      float         iNegErr )

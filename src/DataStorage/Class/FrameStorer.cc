@@ -74,12 +74,7 @@
 
 // STL classes
 #include <algorithm>
-#if defined(MULTIMAP_IS_SEPARATE_FILE_BUG)
 #  include <map>
-#  include <multimap.h>
-#else
-#  include <map>
-#endif                  
 #include <vector>
 
 //
@@ -102,10 +97,6 @@ FrameStorer::FrameStorer() :
    m_dataSinkControllers( *(new DataSinkControllers)),
    m_mustSequentiallyStore(false)
 {
-   //make sure memory was assigned
-   assert( 0 != &m_streamToRecordStorerMap );
-   assert( 0 != &m_dataSinkControllers );
-
 }
 
 

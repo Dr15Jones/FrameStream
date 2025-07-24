@@ -26,43 +26,27 @@
 //
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <map>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
-#include "JobControl/Template/Binder.cc"
+#include "DataDelivery/Template/Binder.cc"
 
 // stl includes
 #include <string>
 #include <map>
 
 
-#if ( defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) )
-// for AXP
 
-#pragma define_template Binder< _binder_ >
+template<> class Binder< _binder_ >;
 
-#pragma define_template makeChain< _binder_ >
-#pragma define_template addSourceToChain< _binder_ >
-
-#else
-
-template class Binder< _binder_ >;
-
-//template DataSourceBinder* makeChain< _binder_ >( 
-template DataSourceBinder* makeChain( 
+template<> DataSourceBinder* makeChain( 
    Chainable< _binder_ >,
-   const string&,
+   const std::string&,
    const Stream::Set& );
 
-//template void addSourceToChain< _binder_ >( 
-template void addSourceToChain( 
+template<> void addSourceToChain( 
    Chainable< _binder_ >,
    DataSourceBinder&,
    DataSourceBinder& );
 
-#endif /* defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) */
 
 #endif /* FRAMEACCESS_INSTANTIATECHAINABLEBINDER_H */

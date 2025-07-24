@@ -58,7 +58,7 @@ namespace Keyword
 //
 // constructors and destructor
 //
-Composite::Composite(const string& iName) :
+Composite::Composite(const std::string& iName) :
    Base(iName),
    m_minArgs(Base::kInfiniteMaxArgs),
    m_maxArgs(0)
@@ -74,7 +74,7 @@ Composite::Composite(const string& iName) :
 
 Composite::~Composite()
 {
-   for(STL_MAP(string,Base*)::iterator itWords =
+   for(std::map<std::string,Base*>::iterator itWords =
 	  m_keywords.begin();
        itWords != m_keywords.end(); ++itWords ) {
       delete (*itWords).second;
@@ -99,7 +99,7 @@ Composite::~Composite()
 //
 void
 Composite::add(Base* iKeyword ) {
-   STL_MAP(string,Base*)::iterator itFound = 
+   std::map<std::string,Base*>::iterator itFound = 
       m_keywords.find( iKeyword->name() );
 
    unsigned int kwMinArg = iKeyword->minArgs();
@@ -129,7 +129,7 @@ Composite::add(Base* iKeyword ) {
 	  oldMinArg == m_minArgs ) {
 	 //must search for true min number of args
 	 m_minArgs = kwMinArg;
-	 for(STL_MAP(string,Base*)::iterator itWords =
+	 for(std::map<std::string,Base*>::iterator itWords =
 		m_keywords.begin();
 	     itWords != m_keywords.end(); ++itWords ) {
 	    if( (*itWords).second->minArgs() +argSizeAdd< m_minArgs ) {
@@ -142,7 +142,7 @@ Composite::add(Base* iKeyword ) {
 	  oldMaxArg == m_maxArgs ) {
 	 //must search for true max number of args
 	 m_maxArgs = kwMaxArg;
-	 for(STL_MAP(string,Base*)::iterator itWords =
+	 for(std::map<std::string,Base*>::iterator itWords =
 		m_keywords.begin();
 	     itWords != m_keywords.end();
 	     ++itWords ) {
@@ -168,13 +168,13 @@ Composite::add(Base* iKeyword ) {
 int 
 Composite::implementExecute( int argc, char** argv )
 {
-   string keywordChoosen = name();
+   std::string keywordChoosen = name();
    int startArg = 1;
 
-   STL_MAP(string,Base*)::iterator itKeyword;
+   std::map<std::string,Base*>::iterator itKeyword;
    if( argc == 0 ) {
       //no arguments to the command
-      itKeyword = m_keywords.find(string(""));
+      itKeyword = m_keywords.find(std::string(""));
       startArg = 0;
 
       if( itKeyword == m_keywords.end() ) {
@@ -184,7 +184,7 @@ Composite::implementExecute( int argc, char** argv )
       itKeyword = m_keywords.find(argv[0]);
       if( itKeyword == m_keywords.end() ) {
 	 //try falling back to no argument
-	 itKeyword = m_keywords.find(string(""));
+	 itKeyword = m_keywords.find(std::string(""));
 	 startArg = 0;
 	 
 	 if( itKeyword == m_keywords.end() ) {

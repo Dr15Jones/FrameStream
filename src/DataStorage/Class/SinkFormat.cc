@@ -28,12 +28,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <assert.h>
-
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <set>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
+#include <cassert>
 
 // user include files
 #include "Experiment/report.h"
@@ -59,12 +54,6 @@ static const char* const kFacilityString = "DataStorage.SinkFormat" ;
 SinkFormat::SinkFormat()
    : m_extensions( *new _sinkformat_extensions_ )
 {
-   if( 0 == &m_extensions ) {
-      report( ::EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 // SinkFormat::SinkFormat( const SinkFormat& rhs )
@@ -96,7 +85,7 @@ SinkFormat::~SinkFormat()
 // member functions
 //
 void
-SinkFormat::addExtension( const string& iExtension ) 
+SinkFormat::addExtension( const std::string& iExtension ) 
 {
    m_extensions.insert( iExtension );
 }   
@@ -104,7 +93,7 @@ SinkFormat::addExtension( const string& iExtension )
 
 DataSinkBinder*
 SinkFormat::createBinder(
-   const string& iName,
+   const std::string& iName,
 	const Stream::Set& iBindStreams,
    const StreamToDataStringTagsToStoreMap& iStreamTagsMap)
 {
@@ -129,7 +118,7 @@ SinkFormat::canSpecifyDataToStore() const
 //
 // static member functions
 //
-string
+std::string
 SinkFormat::factorySymbol()
 {
    return "makeSinkFormat";

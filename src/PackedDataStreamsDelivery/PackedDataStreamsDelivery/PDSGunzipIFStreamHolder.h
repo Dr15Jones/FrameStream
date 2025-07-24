@@ -54,7 +54,7 @@ class PDSGunzipIFStreamHolder
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      PDSGunzipIFStreamHolder( const string& iFileName ) :
+      PDSGunzipIFStreamHolder( const std::string& iFileName ) :
 	 m_fileHandle(NULL),
 	 m_errorOccurred(false)
       {
@@ -63,7 +63,7 @@ class PDSGunzipIFStreamHolder
 	    if( iFileName.substr(iFileName.size()-kSizeOfExtension,
 				 kSizeOfExtension)
 		== ".gz") {
-	       m_command = string("gunzip -c ")+ iFileName;
+	       m_command = std::string("gunzip -c ")+ iFileName;
 	       m_fileHandle = popen(m_command.c_str(), "r");
 	       if( NULL == m_fileHandle) {
 		  m_errorOccurred=true;
@@ -92,7 +92,7 @@ class PDSGunzipIFStreamHolder
 	 if( NULL != m_fileHandle) {
 	    //need to call this before pclose to avoid deadlocks
 	    // (see popen's man page)
-	    fflush(m_fileHandle);
+	    fstd::flush(m_fileHandle);
 	    pclose(m_fileHandle);
 	 }
       }
@@ -102,7 +102,7 @@ class PDSGunzipIFStreamHolder
 	 if( m_fileHandle !=NULL ) {
 	    m_stream = auto_ptr<istream>(static_cast<istream*>(0));
 	    //get a new pipe
-	    fflush(m_fileHandle);
+	    fstd::flush(m_fileHandle);
 	    pclose(m_fileHandle);
 	    m_fileHandle = popen(m_command.c_str(), "r");
 	    if( NULL == m_fileHandle) {
@@ -117,7 +117,7 @@ class PDSGunzipIFStreamHolder
 	 }
       }
 
-      istream& stream() { return *m_stream;}
+      std::istream& stream() { return *m_stream;}
 
       // ---------- const member functions ---------------------
       DABoolean errorOccurred() const {
@@ -147,7 +147,7 @@ class PDSGunzipIFStreamHolder
       // ---------- data members -------------------------------
       FILE* m_fileHandle;
       DABoolean m_errorOccurred;
-      string m_command;
+      std::string m_command;
       auto_ptr<istream> m_stream;
 
       // ---------- static data members ------------------------

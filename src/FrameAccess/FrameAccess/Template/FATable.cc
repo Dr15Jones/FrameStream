@@ -102,7 +102,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kFATableFacilityString 
+static const char* const kFATableFacilityString 
 = "FrameAccess.FATable" ;
 
 //
@@ -175,7 +175,7 @@ FATable< T >::size() const
       report( ERROR ,
 	      kFATableFacilityString )
 		 << "De-referencing invalid data"
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
 #endif
@@ -239,7 +239,7 @@ FATable< T >::find( const typename T::Identifier& aIdentifier ) const
       report( ERROR ,
 	      kFATableFacilityString )
 		 << "De-referencing invalid data"
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
 #endif

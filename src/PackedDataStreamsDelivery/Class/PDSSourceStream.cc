@@ -209,7 +209,7 @@ PDSSourceStream::operator>>( double& iData )
 }
 
 SMSourceStream& 
-PDSSourceStream::operator>>( string& iData )
+PDSSourceStream::operator>>( std::string& iData )
 {
    const DABoolean byteSwapped = 
       (reinterpret_cast<SMPackerBase*>(PDSStringPacker::kByteSwapped) == 
@@ -224,7 +224,7 @@ PDSSourceStream::operator>>( string& iData )
 
    const char* startOfString = reinterpret_cast<const char*>(m_startWord) ;
    if( ! byteSwapped ) {
-      iData = string( startOfString  );
+      iData = std::string( startOfString  );
    } else {
       //need to copy the buffer and then reswap the bytes
       unsigned int distanceToFirstZero = 
@@ -245,7 +245,7 @@ PDSSourceStream::operator>>( string& iData )
 	 *itBuffer = swapBytesInUInt32(*itBuffer  );
       }
 
-      iData = string( reinterpret_cast<char*>(buffer) );
+      iData = std::string( reinterpret_cast<char*>(buffer) );
 
       delete [] buffer;
    }

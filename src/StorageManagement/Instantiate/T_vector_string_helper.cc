@@ -33,7 +33,7 @@
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 #include <string>
 
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 #include <vector>
 
@@ -44,16 +44,16 @@ INSTANTIATE_ONE(string)
 #include "STLUtility/iterator_traits_fix.h"
 #if defined(NO_ITERATOR_TRAITS_BUG)
 template<>
-struct iterator_traits<const string*> {
-   typedef string value_type;
+struct iterator_traits<const std::string*> {
+   typedef std::string value_type;
 };
 template<>
 struct iterator_traits<string*> {
-   typedef string value_type;
+   typedef std::string value_type;
 };
 #endif
 
-typedef STL_VECTOR( string ) _container_type_ ;
+typedef std::vector< std::string > _container_type_ ;
 #include "StorageManagement/instantiate_contents_builtin.h"
 
 

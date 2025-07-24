@@ -41,7 +41,7 @@ int main()
    for(FAPtrTable<Dummy>::const_iterator itr = table.begin(); itr != itrEnd;
        ++itr)
    {
-      cout<< (*itr).identifier() << endl;
+      cout<< (*itr).identifier() << std::endl;
    }
    
    return 0;

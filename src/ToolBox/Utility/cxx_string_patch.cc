@@ -1,4 +1,4 @@
-#include "C++Std/iostream.h"
+#include <iostream>
 
 #include "ToolBox/Include/bug7_deccxx.h"
 #if !defined(BUG7__DECCXX)
@@ -14,7 +14,7 @@ int main()
    string fac( ".one.two..three.four.five" ) ;
 
    while ( fac.length() > 0 ) {
-      cout << fac << endl ;
+      cout << fac << std::endl ;
 #if !defined(BUG7__DECCXX)
       size_t dot = fac.rfind(nullfac);
       if (dot != string::npos) {

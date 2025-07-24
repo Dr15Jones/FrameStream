@@ -117,7 +117,7 @@ PDSIstreamWordReader::readWords( UInt32* iBuffer,
 #if !defined(FSTREAM_CANNOT_READ_LARGE_FILES_BUG)
    if( m_stream.eof() ) { 
       report( ERROR, kFacilityString )
-         << "Unable to open input file."  << endl ;
+         << "Unable to open input file."  << std::endl ;
       return false ; 
    }
 #endif
@@ -127,7 +127,7 @@ PDSIstreamWordReader::readWords( UInt32* iBuffer,
    int fileDescriptor = m_stream.rdbuf()->fd() ;
    if ( EOF == fileDescriptor ) {
       report( ERROR, kFacilityString )
-         << "Unable to open input file."  << endl ;
+         << "Unable to open input file."  << std::endl ;
       return false;
    }
 #endif
@@ -151,8 +151,8 @@ PDSIstreamWordReader::readWords( UInt32* iBuffer,
 			sizeof(UInt32)*iNumberOfWords/sizeof(char)) ;	
    if ( 0 > n_read )
    {
-      string errorReport = string(iActivity) + string("/n system error: ")
-	 + string( strerror( errno ) );
+      std::string errorReport = std::string(iActivity) + std::string("/n system error: ")
+	 + std::string( strerror( errno ) );
       throw PDSReadFailedException( iActivity );
    }
    else if ( 0 == n_read ) {

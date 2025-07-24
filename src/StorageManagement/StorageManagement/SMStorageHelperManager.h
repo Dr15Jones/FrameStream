@@ -36,7 +36,7 @@
 #include "StorageManagement/SMCompareFactories.h"
 
 // forward declarations
-#include "STLUtility/fwd_set.h"
+#include <set>
 
 class SMStorageHelperBase;
 class SMProxyFactoryBase;
@@ -50,10 +50,10 @@ class SMStorageHelperManager
 
    public:
       // ---------- constants, enums and typedefs --------------
-      typedef STL_SET_COMP(SMStorageHelperBase*, SMCompareHelpers ) Set;
+      typedef std::set<SMStorageHelperBase*, SMCompareHelpers > Set;
       typedef Set::iterator iterator;
 
-      typedef STL_SET_COMP(SMProxyFactoryBase*, SMCompareFactories ) FactorySet;
+      typedef std::set<SMProxyFactoryBase*, SMCompareFactories > FactorySet;
       typedef FactorySet::iterator factory_iterator;
       // ---------- Constructors and destructor ----------------
       virtual ~SMStorageHelperManager();

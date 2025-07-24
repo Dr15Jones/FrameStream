@@ -49,30 +49,26 @@
 //
 // constructors and destructor
 //
-DataSinkDescriptor::DataSinkDescriptor( const string& iDataSinkID ,
-					const string& iParameters ,
+DataSinkDescriptor::DataSinkDescriptor( const std::string& iDataSinkID ,
+					const std::string& iParameters ,
 					const Stream::Type& iBindStream ) :
    m_boundStreamList( *(new Stream::Set ) ),
    m_dataSinkID(iDataSinkID),
    m_parameters(iParameters)
 {
-   assert( 0 != &m_boundStreamList );
-
    Stream::Set boundStreams;
    boundStreams.insert( iBindStream );
 
    bindStreams( boundStreams );
 }
 
-DataSinkDescriptor::DataSinkDescriptor( const string& iDataSinkID,
-					const string& iParameters,
+DataSinkDescriptor::DataSinkDescriptor( const std::string& iDataSinkID,
+					const std::string& iParameters,
 					const Stream::Set& iBindStreams ) :
    m_boundStreamList( *(new Stream::Set ) ),
    m_dataSinkID(iDataSinkID),
    m_parameters(iParameters)
 {
-   assert( 0 != &m_boundStreamList );
-
    bindStreams( iBindStreams );
 }
 
@@ -82,8 +78,6 @@ DataSinkDescriptor::DataSinkDescriptor( const DataSinkController&
    m_dataSinkID(""),
    m_parameters("")
 {
-   assert( 0 != &m_boundStreamList );
-
    bindStreams( iController.recordsToStore() );
    setDataSinkID( iController.dataSinkID() );
    setParameters( iController.parameters() );
@@ -96,8 +90,6 @@ DataSinkDescriptor::DataSinkDescriptor( const DataSinkDescriptor&
    m_dataSinkID( iDescriptor.dataSinkID() ),
    m_parameters( iDescriptor.parameters() )
 {
-   assert( 0 != &m_boundStreamList );
-
    bindStreams( iDescriptor.boundStreams() );
 }
 
@@ -141,13 +133,13 @@ DataSinkDescriptor::clearStreams( void )
 }
 
 void 
-DataSinkDescriptor::setDataSinkID( string iDataSinkID )
+DataSinkDescriptor::setDataSinkID( std::string iDataSinkID )
 {
    m_dataSinkID = iDataSinkID;
 }
 
 void 
-DataSinkDescriptor::setParameters( string iParameters ) 
+DataSinkDescriptor::setParameters( std::string iParameters ) 
 {
    m_parameters = iParameters;
 }
@@ -160,13 +152,13 @@ DataSinkDescriptor::boundStreams( void ) const
    return m_boundStreamList;
 }
 
-const string& 
+const std::string& 
 DataSinkDescriptor::dataSinkID( void ) const
 {
    return m_dataSinkID;
 }
 
-const string& 
+const std::string& 
 DataSinkDescriptor::parameters( void ) const
 {
    return m_parameters;

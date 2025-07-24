@@ -3,7 +3,7 @@
 // Package:     ToolBox
 // Module:      T_set_string
 // 
-// Description: Instantiate set< string >
+// Description: Instantiate set< std::string >
 //
 // Author:      Martin Lohner
 // Created:     Tue Dec 8 18:20:23 EDT 1998
@@ -26,6 +26,6 @@
 #include <string>
 #include <set>
 
-typedef string _set_contents_ ;
+typedef std::string _set_contents_ ;
 typedef less< _set_contents_ > _set_compare_ ;
 #include "STLUtility/instantiate_set.h"

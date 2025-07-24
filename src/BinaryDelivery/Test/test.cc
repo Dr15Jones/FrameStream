@@ -40,7 +40,7 @@
 #include "Experiment/Experiment.h"
 
 // system includes
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <stdlib.h>
 
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
@@ -87,7 +87,7 @@ void eventProcess( const Frame& iFrame)
    if( iRawEvent.valid() )
    {
       report( INFO, kFacilityString ) 
-	 << "Success extracting RawEvent from binary format" << endl;
+	 << "Success extracting RawEvent from binary format" << std::endl;
       
       const RawEventData& rawEvent ( *iRawEvent ) ;
          if( rawEvent.valid() )
@@ -101,25 +101,25 @@ void eventProcess( const Frame& iFrame)
 		  const UInt32 word ( *iCC ) ;
 		  cout << hex << word << "  " ;
 	       }
-	       cout << dec << endl ;
+	       cout << dec << std::endl ;
 	    }
 	    else
 	    {
 	       report( INFO, kFacilityString )
-		  << "rawCCHits validity check failed" << endl ;
+		  << "rawCCHits validity check failed" << std::endl ;
 	    }
 	 }
 	 else
 	 {
 	    report( INFO, kFacilityString )
-	       <<  "RawEventData are invalid" << endl ;
+	       <<  "RawEventData are invalid" << std::endl ;
 	 }
 
    } 
    else 
    {
       report( INFO, kFacilityString ) 
-	 << "No Success extracting RawEvent from binary format" << endl;
+	 << "No Success extracting RawEvent from binary format" << std::endl;
    }
 
    return;
@@ -133,7 +133,7 @@ int main( void )
    MessageLog::Tie( "." , logger );
 
    report( INFO, kFacilityString ) 
-      << "here in main" << endl;
+      << "here in main" << std::endl;
 
    FrameDeliverer::AddSourceStatus iAddError;
    FrameDeliverer::AddActiveSourceStatus iActiveError;
@@ -145,38 +145,38 @@ int main( void )
    streams.insert( Stream::kEndRun   );
 
    report( INFO, kFacilityString )
-      << "Please give filename to read" << endl;
-   string filename;
+      << "Please give filename to read" << std::endl;
+  std::string filename;
    cin >> filename;
    report( INFO, kFacilityString )
-      << "Will use " << filename << " to read from " << endl;
+      << "Will use " << filename << " to read from " << std::endl;
 
    report( INFO, kFacilityString ) 
-      << "about to make a BinarySourceBinder" << endl;
+      << "about to make a BinarySourceBinder" << std::endl;
    BinarySourceBinder binaryBinder( filename, streams );
 
    report( INFO, kFacilityString ) 
-      << "defining FrameDeliverer" << endl;
+      << "defining FrameDeliverer" << std::endl;
    FrameDeliverer frameDeliverer;
 
    // declare binder for reading
    report( INFO, kFacilityString ) 
-      << "Adding BinarySourceBinder" << endl;
+      << "Adding BinarySourceBinder" << std::endl;
    if( FrameDeliverer::kAddSourceNoError !=
        ( iAddError = frameDeliverer.addSource( binaryBinder ))) 
    {
       report( ERROR, kFacilityString ) 
-	 <<"Add Data Source error:"<< iAddError <<endl;
+	 <<"Add Data Source error:"<< iAddError <<std::endl;
       ::exit(1);
    }
 
    // declare binder for active streams
    report( INFO, kFacilityString ) 
-      << "Declaring Binder for active streams" << endl;
+      << "Declaring Binder for active streams" << std::endl;
    if( FrameDeliverer::kAddActiveSourceNoError != 
        (iActiveError = frameDeliverer.addActiveSource( binaryBinder ))){
       report( ERROR, kFacilityString ) 
-	 <<"Add Active Stream error:"<< iActiveError <<endl;
+	 <<"Add Active Stream error:"<< iActiveError <<std::endl;
       ::exit(1);
    }
 
@@ -185,22 +185,22 @@ int main( void )
    FrameDeliverer::NextStopStatus nextStopStatus;
 
    report( INFO, kFacilityString ) 
-      << "Entering event loop" << endl;
+      << "Entering event loop" << std::endl;
    int nEvents(0);
    while( !isDone )
    {
       report( INFO, kFacilityString ) 
-	 << "FrameDeliverer::gotoNextStop()" << endl;
+	 << "FrameDeliverer::gotoNextStop()" << std::endl;
       nextStopStatus = frameDeliverer.gotoNextStop();
 
       report( INFO, kFacilityString ) 
-	 << "FrameDeliverer::currentStop()" << endl;
+	 << "FrameDeliverer::currentStop()" << std::endl;
       Stream::Type currentStop = frameDeliverer.currentStop();
       
       report( INFO, kFacilityString ) 
-	 << "------------------------" << endl;
+	 << "------------------------" << std::endl;
       report( INFO, kFacilityString ) 
-	 << "NextStopStatus:" << nextStopStatus << endl;
+	 << "NextStopStatus:" << nextStopStatus << std::endl;
 
       if( Stream::kNone == currentStop )
       {
@@ -209,13 +209,13 @@ int main( void )
       else if ( Stream::kBeginRun == currentStop )
       {
 	 report( INFO, kFacilityString ) 
-	    <<"Begin Run"<<endl;
+	    <<"Begin Run"<<std::endl;
       } 
       else if ( Stream::kEvent == currentStop )
       {
 	 ++nEvents;
 	 report( INFO, kFacilityString ) 
-	    << "Event" << nEvents << endl;
+	    << "Event" << nEvents << std::endl;
 	 eventProcess( frameDeliverer.currentFrame() );
 
 	 isDone = false;
@@ -223,29 +223,29 @@ int main( void )
       else if ( Stream::kEndRun == currentStop )
       {
 	report( INFO, kFacilityString ) 
-	   <<"End Run"<<endl;
+	   <<"End Run"<<std::endl;
 	 isDone=true;
       } 
       else 
       {
 	 report( ERROR, kFacilityString ) 
-	    <<"Unknown Record:"<<currentStop<<endl;
+	    <<"Unknown Record:"<<currentStop<<std::endl;
 	 isDone=true;
       }
    }
       
    report( INFO, kFacilityString ) 
-      << "------------------------" << endl;
+      << "------------------------" << std::endl;
    report( INFO, kFacilityString ) 
       << "Next Stop Status ( End of Active Source="
       << FrameDeliverer::kNextStopReachedEndOfAnActiveSource
       << "):"
       <<nextStopStatus
-      <<endl;
+      <<std::endl;
 
   
    report( INFO, kFacilityString ) << nEvents
-				   << " events processed" << endl;
+				   << " events processed" << std::endl;
 
    return 0;
 }

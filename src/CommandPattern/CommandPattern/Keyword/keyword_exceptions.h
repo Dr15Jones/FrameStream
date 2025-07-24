@@ -41,7 +41,7 @@ namespace Keyword
 class TooFewArgsException : public ExceptionBase
 {
    public:
-      TooFewArgsException(const string& iKeyword,
+      TooFewArgsException(const std::string& iKeyword,
 				    unsigned int iNeed,
 				    unsigned int iGot ) :
 	 m_keyword(iKeyword),
@@ -51,17 +51,17 @@ class TooFewArgsException : public ExceptionBase
       const char* what() const;
 
    private:
-      string m_keyword;
+      std::string m_keyword;
       unsigned int m_need;
       unsigned int m_got;
       
-      mutable string m_result;
+      mutable std::string m_result;
 };
 
 class TooManyArgsException : public ExceptionBase
 {
    public:
-      TooManyArgsException(const string& iKeyword,
+      TooManyArgsException(const std::string& iKeyword,
 				    unsigned int iNeed,
 				    unsigned int iGot ) :
 	 m_keyword(iKeyword),
@@ -71,17 +71,17 @@ class TooManyArgsException : public ExceptionBase
       const char* what() const;
 
    private:
-      string m_keyword;
+      std::string m_keyword;
       unsigned int m_need;
       unsigned int m_got;
       
-      mutable string m_result;
+      mutable std::string m_result;
 };
 
 class WrongNumberArgsException : public ExceptionBase
 {
    public:
-      WrongNumberArgsException(const string& iKeyword,
+      WrongNumberArgsException(const std::string& iKeyword,
 				    unsigned int iGot ) :
 	 m_keyword(iKeyword),
 	 m_got(iGot) {}
@@ -89,37 +89,37 @@ class WrongNumberArgsException : public ExceptionBase
       const char* what() const;
 
    private:
-      string m_keyword;
+      std::string m_keyword;
       unsigned int m_got;
       
-      mutable string m_result;
+      mutable std::string m_result;
 };
 
 class UnknownArgException : public ExceptionBase
 {
    public:
-      UnknownArgException(const string& iKeyword,
-				    const string& iArg ) :
+      UnknownArgException(const std::string& iKeyword,
+				    const std::string& iArg ) :
 	 m_keyword(iKeyword),
 	 m_arg(iArg) {}
 
       const char* what() const;
 
    private:
-      string m_keyword;
-      string m_arg;
+      std::string m_keyword;
+      std::string m_arg;
 
-      mutable string m_result;
+      mutable std::string m_result;
 };
 
 class UserException : public ExceptionBase
 {
    public:
-     UserException(const string& iInfo) :
+     UserException(const std::string& iInfo) :
        m_info(iInfo) {}
      const char* what() const { return m_info.c_str();}
    private:
-     string m_info;
+     std::string m_info;
 };
 } //namespace Keyword
 } //namespace CommandPattern

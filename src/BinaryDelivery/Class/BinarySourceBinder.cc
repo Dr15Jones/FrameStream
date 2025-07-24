@@ -62,12 +62,12 @@ static const char* const kFacilityString = "BinaryDelivery.BinarySourceBinder" ;
 //
 // constructors and destructor
 //
-BinarySourceBinder::BinarySourceBinder(const string& iFileName,
+BinarySourceBinder::BinarySourceBinder(const std::string& iFileName,
 				       const Stream::Set& iBindStreams ) :
-   DataSourceBinder( iFileName, string(""), iBindStreams )
+   DataSourceBinder( iFileName,std::string(""), iBindStreams )
 {
    report( DEBUG, kFacilityString ) 
-      << "here in BinarySourceBinder::ctor" << endl;
+      << "here in BinarySourceBinder::ctor" << std::endl;
 }
 
 BinarySourceBinder::BinarySourceBinder()
@@ -123,7 +123,7 @@ BinarySourceBinder::createSourceController( BinaryProxyDeliverer*
 					iDeliverer ) ) ;
 }
 
-const string&
+const std::string&
 BinarySourceBinder::fileName() const
 {
    return dataSourceID();

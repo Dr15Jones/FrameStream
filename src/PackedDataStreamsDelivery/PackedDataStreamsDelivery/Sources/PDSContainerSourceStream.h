@@ -31,7 +31,7 @@
 #include "PackedDataStreamsDelivery/Sources/PDSUnpackingSourceStreamBase.h"
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
+#include <map>
 class PDSTypeSourceStream;
 
 class PDSContainerSourceStream :  public PDSUnpackingSourceStreamBase
@@ -58,7 +58,7 @@ class PDSContainerSourceStream :  public PDSUnpackingSourceStreamBase
 
       virtual SMSourceStream& operator>>( float  &);
       virtual SMSourceStream& operator>>( double &);
-      virtual SMSourceStream& operator>>( string& );
+      virtual SMSourceStream& operator>>( std::string& );
 
       virtual SMSourceStream& operator>>( const SMMakeContentsBase& );
 
@@ -88,7 +88,7 @@ class PDSContainerSourceStream :  public PDSUnpackingSourceStreamBase
 
       // ---------- data members -------------------------------
       PDSTypeSourceStream* m_typeSourceStream;
-      const STL_MAP(TypeTag, PDSTypeSourceStream*)* m_typePackingMap;
+      const std::map<TypeTag, PDSTypeSourceStream*>* m_typePackingMap;
 
       // ---------- static data members ------------------------
 

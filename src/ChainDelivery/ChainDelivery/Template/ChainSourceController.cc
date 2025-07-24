@@ -86,7 +86,7 @@
 //
 // constants, enums and typedefs
 //
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const 
+static const char* const 
 kChainSourceControllerFacilityString = "ChainDelivery.ChainSourceController" ;
 
 //
@@ -99,7 +99,7 @@ kChainSourceControllerFacilityString = "ChainDelivery.ChainSourceController" ;
 
 template< class Binder >
 ChainSourceController<Binder>::ChainSourceController( 
-				const string& iName,
+				const std::string& iName,
 #if defined(TYPEDEFS_IN_TEMPLATES_IN_ARGS_BUG)
 				const _chainsourcebinder_binders_& iBinders ,
 #else
@@ -117,7 +117,7 @@ ChainSourceController<Binder>::ChainSourceController(
 {
    if( 0 == &m_binders){
       report(EMERGENCY,kChainSourceControllerFacilityString) 
-	 <<"Out of Memory"<<endl;
+	 <<"Out of Memory"<<std::endl;
       assert(false);
       exit(1);
    }
@@ -128,14 +128,14 @@ ChainSourceController<Binder>::ChainSourceController(
    
    if( 0 == tempController ){
       report(EMERGENCY,kChainSourceControllerFacilityString) 
-	 <<"Out of Memory"<<endl;
+	 <<"Out of Memory"<<std::endl;
       assert(false);
       exit(1);
    }
    m_deliverer = (Deliverer*) (*tempController).createProxyDeliverer();
    if( 0 == m_deliverer ){
       report(EMERGENCY,kChainSourceControllerFacilityString) 
-	 <<"Out of Memory"<<endl;
+	 <<"Out of Memory"<<std::endl;
       assert(false);
       exit(1);
    }
@@ -147,7 +147,7 @@ ChainSourceController<Binder>::ChainSourceController(
    m_controller = m_binders.front().createSourceController( m_deliverer );
    if( 0 == m_controller ){
       report(EMERGENCY,kChainSourceControllerFacilityString) 
-	 <<"Out of Memory"<<endl;
+	 <<"Out of Memory"<<std::endl;
       assert(false);
       exit(1);
    }
@@ -349,7 +349,7 @@ ChainSourceController<Binder>::switchToNextSource( void )
 
    if( 0 == m_controller ){
       report(EMERGENCY,kChainSourceControllerFacilityString) 
-	 <<"Out of Memory"<<endl;
+	 <<"Out of Memory"<<std::endl;
       assert(false);
       exit(1);
    }
@@ -391,11 +391,11 @@ template< class Binder >
 string
 ChainSourceController<Binder>::parameters( void ) const
 {
-   return string("");
+   returnstd::string("");
 }
 
 template< class Binder >
-const string&
+const std::string&
 ChainSourceController<Binder>::name( void ) const
 {
    return m_name;

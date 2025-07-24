@@ -118,10 +118,10 @@ Switch::setting() const
 //
 // static member functions
 //
-string
+std::string
 Switch::toString( OnOff iSetting )
 {
-   string result = (kOn == iSetting )?"on":"off";
+   std::string result = (kOn == iSetting )?"on":"off";
    return result;
 }
    
@@ -133,19 +133,19 @@ Switch::toBoolean( OnOff iSetting )
 }
    
 Switch::OnOff
-Switch::toSwitch( const string& iSettingString )
+Switch::toSwitch( const std::string& iSettingString )
 {
    // default setting is ON
    Switch::OnOff returnValue( kOn );
 
-   if(    iSettingString == string( "on" )
-       || iSettingString == string( "ON" )
+   if(    iSettingString == std::string( "on" )
+       || iSettingString == std::string( "ON" )
       ) 
    {
       returnValue = kOn;
    } else 
-   if(    iSettingString == string( "off" )
-       || iSettingString == string( "OFF" )
+   if(    iSettingString == std::string( "off" )
+       || iSettingString == std::string( "OFF" )
       )
    {
       returnValue = kOff;
@@ -153,7 +153,7 @@ Switch::toSwitch( const string& iSettingString )
    else
    {
       report( ERROR, kFacilityString )
-	 << "bad argument: 'on/off' only! Will set to ON" << endl;
+	 << "bad argument: 'on/off' only! Will set to ON" << std::endl;
    }
    
    return returnValue;

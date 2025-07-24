@@ -65,7 +65,7 @@ static const char* const kTagString = "$Name:  $";
 // constructors and destructor
 //
 DummyNtuple::DummyNtuple( unsigned int  iId,
-			  const string& iTitle,
+			  const std::string& iTitle,
 			  unsigned int  iNumberOfVariables,
 			  unsigned int  iChunkSize,
 			  const char* const* iLabels ) :
@@ -113,8 +113,8 @@ void DummyNtuple::fill( const float* iEntry )
 // precision floating point numbers can be strored, and no data
 // compression is provided.
 //
-void DummyNtuple::book( const string& iTitle,
-			const string& iTopDir,
+void DummyNtuple::book( const std::string& iTitle,
+			const std::string& iTopDir,
 			unsigned int  iNumberOfVariables,
 			unsigned int  iChunkSize,
 			const char* const* iLabels )

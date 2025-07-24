@@ -37,7 +37,7 @@
 #include "Experiment/report.h"
 #include "BinaryDelivery/BinarySourceFormat.h"
 #include "BinaryDelivery/BinarySourceBinder.h"
-#include "JobControl/Binder.h"
+#include "DataDelivery/Binder.h"
 #include "DataHandler/StreamSet.h"
 
 
@@ -62,7 +62,7 @@ BinarySourceFormat::BinarySourceFormat()
    : SourceFormat( BinderBase::kBinary )
 {
    // add extensions that this format recognizes
-   addExtension( string( ".bin" ) );
+   addExtension(std::string( ".bin" ) );
 
    StreamSet defaults;
    defaults.insert(Stream::kBeginRun);
@@ -101,7 +101,7 @@ BinarySourceFormat::~BinarySourceFormat()
 // member functions
 //
 BinderBase*
-BinarySourceFormat::createBinder( const string& iName, 
+BinarySourceFormat::createBinder( const std::string& iName, 
 				  const Stream::Set& iBindStreams ) 
 {
    BinderBase* returnValue 
@@ -112,7 +112,7 @@ BinarySourceFormat::createBinder( const string& iName,
 
    if( 0 == returnValue ) {
       report( EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
+	 << "out of memory" << std::endl;
       assert( false );
       ::exit( 1 );
    }

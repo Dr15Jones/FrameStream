@@ -111,7 +111,7 @@
 #include "Processor/MasterProcessor.h"
 #include "Processor/MasterProducer.h"
 #include "DataHandler/StreamSet.h"
-#include "JobControl/Binder.h"
+#include "DataDelivery/Binder.h"
 
 // STL classes
 #include <map>
@@ -122,41 +122,41 @@
 //
 static const char* const kFacilityString = "JobControl.SourceCommand";
  
-const string helpMessage = 
-string( "// Description: SourceCommand                                      \n" )+
-string( "//                                                                 \n" )+
-string( "// Valid subcommands are: (nm=name, src=source, strm=stream)       \n" )+
-string( "//                                                                 \n" )+
-string( "//  source help                            see this help page      \n" )+
-string( "//  source create <nm>                     create name             \n" )+
-string( "//  source list                            list all sources        \n" )+
-string( "//  source list <nm>                       list sources in name    \n" )+
-string( "//  source ls [<nm>]                       Synonym for \"ls\"      \n" )+
-string( "//  source status                          print status            \n" )+
-string( "//                                           (Sync problems etc.)  \n" )+
-//string( "//  source stream nm ...                                        \n" )+
-//string( "//  source stream nm stream1 ...                                \n" )+
-string( "//  source edit <nm>                       edit name               \n" )+
-string( "//  source remove <nm>                     remove name             \n" )+
-string( "//  source remove <nm> <src1> [<src2>.]    del source(s) from nm\n" )+
-string( "//  source rm     <nm> [<src1>...]         Synonym: \"remove\"     \n" )+
-string( "//  source del    <nm> [<src1>...          Synonym: \"remove\"     \n" )+
-string( "//  source clear                           clear the name list     \n" )+
-string( "//  source names                           list names              \n" )+
-string( "//  source rename <oldnm> <newnm>          rename name             \n" )+
-string( "//  source bind <nm> <strm1> [<strm2..]    bind streams to name    \n" )+
-string( "//  source activate <nm> <strm1> [<strm2> ..]                      \n" )+
-string( "//                  use potentially active strms from this source  \n" )+
-string( "//  source act <nm> <strm1> [<strm2>..]    Synonym: \"activate\"   \n" )+
-string( "//  source clearactive [<nm> [<nm2> ...]   clear out active setting\n" )+
-string( "//  source clearact    [<nm> [<nm2> ...]   Synonym: \"clearactive\"\n" )+
-string( "//                                                                 \n" )+
-string( "// Standard streams are:  beginrun endrun event                    \n" )+
-string( "//                        geometry hardware user                   \n" )+
-string( "//                                                                 \n" )+
-//string( "// If no streams are specified, \"event beginrun\" are the       \n" )+
-//string( "// default streams, and \"event\" is the default active stream.  \n" )+
-string( "                                                                   \n" ); 
+const std::string helpMessage = 
+std::string( "// Description: SourceCommand                                      \n" )+
+std::string( "//                                                                 \n" )+
+std::string( "// Valid subcommands are: (nm=name, src=source, strm=stream)       \n" )+
+std::string( "//                                                                 \n" )+
+std::string( "//  source help                            see this help page      \n" )+
+std::string( "//  source create <nm>                     create name             \n" )+
+std::string( "//  source list                            list all sources        \n" )+
+std::string( "//  source list <nm>                       list sources in name    \n" )+
+std::string( "//  source ls [<nm>]                       Synonym for \"ls\"      \n" )+
+std::string( "//  source status                          print status            \n" )+
+std::string( "//                                           (Sync problems etc.)  \n" )+
+//std::string( "//  source stream nm ...                                        \n" )+
+//std::string( "//  source stream nm stream1 ...                                \n" )+
+std::string( "//  source edit <nm>                       edit name               \n" )+
+std::string( "//  source remove <nm>                     remove name             \n" )+
+std::string( "//  source remove <nm> <src1> [<src2>.]    del source(s) from nm\n" )+
+std::string( "//  source rm     <nm> [<src1>...]         Synonym: \"remove\"     \n" )+
+std::string( "//  source del    <nm> [<src1>...          Synonym: \"remove\"     \n" )+
+std::string( "//  source clear                           clear the name list     \n" )+
+std::string( "//  source names                           list names              \n" )+
+std::string( "//  source rename <oldnm> <newnm>          rename name             \n" )+
+std::string( "//  source bind <nm> <strm1> [<strm2..]    bind streams to name    \n" )+
+std::string( "//  source activate <nm> <strm1> [<strm2> ..]                      \n" )+
+std::string( "//                  use potentially active strms from this source  \n" )+
+std::string( "//  source act <nm> <strm1> [<strm2>..]    Synonym: \"activate\"   \n" )+
+std::string( "//  source clearactive [<nm> [<nm2> ...]   clear out active setting\n" )+
+std::string( "//  source clearact    [<nm> [<nm2> ...]   Synonym: \"clearactive\"\n" )+
+std::string( "//                                                                 \n" )+
+std::string( "// Standard streams are:  beginrun endrun event                    \n" )+
+std::string( "//                        geometry hardware user                   \n" )+
+std::string( "//                                                                 \n" )+
+//std::string( "// If no streams are specified, \"event beginrun\" are the       \n" )+
+//std::string( "// default streams, and \"event\" is the default active stream.  \n" )+
+std::string( "                                                                   \n" ); 
 
 //
 // static data member definitions
@@ -251,13 +251,13 @@ SourceCommand::execute( int argc, char* argv[] )
 	 result = clearActiveHandler();
       } 
       else {
-	 report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+	 report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
 	 result = COMMAND_ERROR;
       }
    } 
    else {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -269,7 +269,7 @@ int
 SourceCommand::helpHandler()
 {
    // print help from ModuleCommand.h header
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }
@@ -283,7 +283,7 @@ SourceCommand::useHandler( ) // undocumented feature! For testing only
    // eg. "source use
    if ( m_argc != 2 ) // wrong number of arguments
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    } 
    else
@@ -301,13 +301,13 @@ int
 SourceCommand::createTokenHandler( )
 {
    int result = COMMAND_OK;
-   string resultString;
+   std::string resultString;
 
    // expect 3 arguments
    // eg. "source create token
    if ( m_argc != 3 ) // wrong number of arguments
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    } 
    else
@@ -321,7 +321,7 @@ SourceCommand::createTokenHandler( )
 					  BinderBase::kNone );
       if( 0 == binder ) {
 	 report( EMERGENCY, kFacilityString )
-	    << "out of memory" << endl;
+	    << "out of memory" << std::endl;
 	 assert( false );
 	 ::exit( 1 );
       }
@@ -341,7 +341,7 @@ SourceCommand::statusHandler()
 {
    int result = COMMAND_OK;
 
-   string resultString = sourceManager().statusOfAllSources();
+   std::string resultString = sourceManager().statusOfAllSources();
    setResult( resultString );
 
    return result;
@@ -352,7 +352,7 @@ SourceCommand::listHandler()
 {
    int result = COMMAND_OK;
 
-   string resultString;
+   std::string resultString;
 
    // different options:
    // "source list"       --> list all sources
@@ -372,7 +372,7 @@ SourceCommand::listHandler()
    }
    else
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
 
@@ -386,7 +386,7 @@ SourceCommand::listTokensHandler()
 {
    int result = COMMAND_OK;
 
-   string resultString = sourceManager().listTokens();
+   std::string resultString = sourceManager().listTokens();
    setResult( resultString );
 
    return result;
@@ -408,7 +408,7 @@ SourceCommand::renameTokenHandler()
    }
    else
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
 
@@ -432,7 +432,7 @@ SourceCommand::editHandler()
    }
    else
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
 
       return result = COMMAND_ERROR;
    }
@@ -471,7 +471,7 @@ SourceCommand::removeHandler()
    }
    else
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
 
@@ -497,7 +497,7 @@ SourceCommand::bindHandler()
    // "stream bind token str1 [str2...]" --> bind streams to sinks
    if( 4 > m_argc )
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
    else
@@ -516,7 +516,7 @@ SourceCommand::bindHandler()
 	 if( true != newStreamType.isStandard() ) 
 	 {
 	    report( WARNING, kFacilityString )
-	       << "Using non-standard Stream type!" << arg << endl;
+	       << "Using non-standard Stream type!" << arg << std::endl;
 	 }
 	 streams.add( newStreamType );
       }
@@ -539,7 +539,7 @@ SourceCommand::activeHandler()
    //                                       streams to come from this source
    if( 4 > m_argc )
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       return result = COMMAND_ERROR;
    }
 
@@ -557,7 +557,7 @@ SourceCommand::activeHandler()
       if( true != newStreamType.isStandard() ) 
       {
 	 report( WARNING, kFacilityString )
-	    << "Using non-standard Stream type!" << arg << endl;
+	    << "Using non-standard Stream type!" << arg << std::endl;
       }
       toBeActiveStreams.add( newStreamType );
    }
@@ -578,7 +578,7 @@ SourceCommand::clearActiveHandler()
    // "stream clearactive [token [token2]...]" --> clear out active settings
    if( 2 > m_argc )
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       return result = COMMAND_ERROR;
    }
 

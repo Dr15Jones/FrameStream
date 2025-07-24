@@ -67,7 +67,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-HINumber::HINumber( const string& iName,
+HINumber::HINumber( const std::string& iName,
 		    float         iValue )
    : m_name( iName ),
      m_value( iValue ),

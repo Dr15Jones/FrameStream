@@ -55,15 +55,15 @@
 //
 static const char* const kFacilityString = "JobControl.SkipCommand";
 
-const string helpMessage = 
-string( "                                                     \n" )+
-string( "// Description: Skip Command                         \n" )+
-string( "//   \"skip 10\" will skip the next 10 stops.        \n" )+
-string( "//                                                   \n" )+
-string( "//   \"skip 10 event\" will skip 10 event stops.     \n" )+
-string( "//   \"skip 10 event beginrun\" will skip 10 event   \n" )+
-string( "//                          or beginrun stops.       \n" )+
-string( "//     etc...                                        \n" );
+const std::string helpMessage = 
+std::string( "                                                     \n" )+
+std::string( "// Description: Skip Command                         \n" )+
+std::string( "//   \"skip 10\" will skip the next 10 stops.        \n" )+
+std::string( "//                                                   \n" )+
+std::string( "//   \"skip 10 event\" will skip 10 event stops.     \n" )+
+std::string( "//   \"skip 10 event beginrun\" will skip 10 event   \n" )+
+std::string( "//                          or beginrun stops.       \n" )+
+std::string( "//     etc...                                        \n" );
 
 //
 // static data member definitions
@@ -132,7 +132,7 @@ SkipCommand::execute( int argc, char* argv[] )
 	       {
 		  report( WARNING, kFacilityString )
 		     << "You specified a non-standard Stream type!" 
-		     << argv[i] << "." << endl;
+		     << argv[i] << "." << std::endl;
 	       }
 	       counter.addStream( stream );
 	    }
@@ -141,14 +141,14 @@ SkipCommand::execute( int argc, char* argv[] )
 	 }
 	 else
 	 {
-	    report( SYSTEM, kFacilityString ) << "bad numerical value" << endl;
+	    report( SYSTEM, kFacilityString ) << "bad numerical value" << std::endl;
 	    result = COMMAND_ERROR;
 	 }
       }
    }
    else // number of arguments 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -161,7 +161,7 @@ int
 SkipCommand::helpHandler()
 {
    // print help from header
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }

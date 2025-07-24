@@ -78,7 +78,7 @@
 #endif /* STL_ALLOCATOR */
 
 #if !defined(STL_VECTOR)
-#  define STL_VECTOR( c ) vector< c >
+#  define std::vector< c > vector< c >
 #  define STL_VECTOR_ALLOC( c , a ) vector< c , a >
 
 #if defined(NO_ALLOCATOR_IN_STL_DECLARATION_BUG)
@@ -87,7 +87,7 @@
 
 #if (defined(NO_DEFAULT_ALLOCATOR_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_VECTOR
-#  define STL_VECTOR( c ) vector< c , allocator< c > >
+#  define std::vector< c > vector< c , allocator< c > >
 #endif /* NO_DEFAULT_ALLOCATOR_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
 
 #endif /* NO_ALLOCATOR_IN_STL_DECLARATION_BUG */

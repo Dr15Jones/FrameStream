@@ -32,6 +32,6 @@ int main()
    Handle< int > intHandle( new int( 1 ) );
 
    #if !defined(DEREF_OP_FOR_BUILTIN_TYPES_BUG)
-   cout << intHandle.operator->() << endl;
+   cout << intHandle.operator->() << std::endl:endl;
    #endif
 }

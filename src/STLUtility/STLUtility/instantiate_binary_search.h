@@ -16,8 +16,8 @@
 //       _binary_search_iterator_   = iterator type for the container to search
 //
 //    e.g. If you had an stl vector of MyItem, then you would need...
-//              typedef STL_VECTOR(MyItem)             _sort_value_type_;
-//              typedef STL_VECTOR(MyItem)::iterator   _sort_iterator_;
+//              typedef std::vector<MyItem>             _sort_value_type_;
+//              typedef std::vector<MyItem>::iterator   _sort_iterator_;
 //
 //
 // Author:      Lawrence Gibbons

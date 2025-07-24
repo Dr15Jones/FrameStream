@@ -100,8 +100,8 @@ void __distance(rb_tree< _set_contents_, _set_contents_ , ident< _set_contents_ 
 
 #else
 
-#include "STLUtility/fwd_set.h"
-template class STL_SET_COMP( _set_contents_ , _set_compare_ ) ;
+#include <set>
+template class std::set< _set_contents_ , _set_compare_ > ;
 
 #if ( defined(NO_IMPLICIT_INSTANTIATION) && defined(__DECCXX) )
 template class STLUTILITY_RB_TREE<_set_contents_, 

@@ -47,11 +47,11 @@ class PDSSinkFormat : public SinkFormat
       virtual ~PDSSinkFormat();
 
       // ---------- member functions ---------------------------
-      virtual DataSinkBinder* createBinder( const string& iName,
+      virtual DataSinkBinder* createBinder( const std::string& iName,
                                             const Stream::Set& iBindStreams );
 
       virtual DataSinkBinder*
-      createBinder( const string& iName,
+      createBinder( const std::string& iName,
 		              const Stream::Set& iBindStreams,
                     const StreamToDataStringTagsToStoreMap& iStreamTagsMap);
        // ---------- const member functions ---------------------

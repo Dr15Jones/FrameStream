@@ -41,7 +41,7 @@ class BinarySourceFormat : public SourceFormat
       virtual ~BinarySourceFormat();
 
       // ---------- member functions ---------------------------
-      virtual BinderBase* createBinder( const string& iName,
+      virtual BinderBase* createBinder( const std::string& iName,
 					const Stream::Set& iBindStreams );
 
       // ---------- const member functions ---------------------

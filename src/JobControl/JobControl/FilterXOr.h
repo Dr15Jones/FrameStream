@@ -40,13 +40,13 @@ class FilterXOr : public FilterComposite
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      FilterXOr(const string& iName) : FilterComposite(iName) {}
+      FilterXOr(const std::string& iName) : FilterComposite(iName) {}
       //virtual ~FilterXOr();
 
       // ---------- member functions ---------------------------
 
       // ---------- const member functions ---------------------
-      virtual string description() const;
+      virtual std::string description() const;
 
       // ---------- static member functions --------------------
 

@@ -17,7 +17,7 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <vector>
 #include <map>
@@ -32,9 +32,9 @@
 #include "SignalsSlots/SSSignal_2.h"
 
 // forward declarations
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <string>
+#include <vector>
+#include <map>
 class Frame;
 class FrameDeliverer;
 class StreamSet;
@@ -54,10 +54,10 @@ class MasterProcessor : public MultiLoader< Processor >, public Processor
       // member functions
 
       //signals
-      SSSignal_1<const string&> addedProcessor;
-      SSSignal_1<const string&> removingProcessor;
+      SSSignal_1<const std::string&> addedProcessor;
+      SSSignal_1<const std::string&> removingProcessor;
       ///set second argument to false if should not remove Processor in question
-      SSSignal_2<const string&, DABoolean&> requestToRemoveProcessor;
+      SSSignal_2<const std::string&, DABoolean&> requestToRemoveProcessor;
 
       // standard functions for startup and shutdown (anal1, anal5 equiv)
       virtual void init( void );
@@ -76,12 +76,12 @@ class MasterProcessor : public MultiLoader< Processor >, public Processor
       const StreamSet streamsToBeActivated() const;
 
       // pattern for listings
-      virtual string listAvailablePatternString() const { 
-	 //return string( "Proc" ); 
-	 return string( "" ); 
+      virtual std::string listAvailablePatternString() const { 
+	 //return std::string( "Proc" ); 
+	 return std::string( "" ); 
       }
 
-      STL_VECTOR(string) loadedNames() const;
+      std::vector<std::string> loadedNames() const;
 
       // static member functions
 
@@ -89,15 +89,15 @@ class MasterProcessor : public MultiLoader< Processor >, public Processor
       // protected member functions
 
       // overriden Loader<> methods
-      virtual void initialize( const string& iName, Processor& iProcessor );
-      virtual void initializeTag( const string& iTag, Processor& iProcessor );
-      virtual void finalize(   const string& iName, Processor& iProcessor );
-      virtual DABoolean canUnload(const string& iName, Processor&);
+      virtual void initialize( const std::string& iName, Processor& iProcessor );
+      virtual void initializeTag( const std::string& iTag, Processor& iProcessor );
+      virtual void finalize(   const std::string& iName, Processor& iProcessor );
+      virtual DABoolean canUnload(const std::string& iName, Processor&);
 
       // protected const member functions
 
       // warning/error messages
-      virtual string makeErrorMesg( const string& iName ) const;
+      virtual std::string makeErrorMesg( const std::string& iName ) const;
 
    private:
       // Constructors and destructor

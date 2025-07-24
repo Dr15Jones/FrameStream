@@ -46,7 +46,7 @@ class FilterBase
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      FilterBase(const string& iName);
+      FilterBase(const std::string& iName);
       virtual ~FilterBase();
 
       // ---------- member functions ---------------------------
@@ -60,15 +60,15 @@ class FilterBase
       }
       void removeRef();
       
-      void setName(const string& iName) { m_name = iName;}
+      void setName(const std::string& iName) { m_name = iName;}
       // ---------- const member functions ---------------------
       virtual StreamSet streams() const = 0;
 
       virtual DABoolean contains(const FilterBase*) const;
 
-      string name() const {return m_name.size()?m_name:description();}
+      std::string name() const {return m_name.size()?m_name:description();}
       
-      virtual string description() const = 0;
+      virtual std::string description() const = 0;
       // ---------- static member functions --------------------
 
    protected:
@@ -92,7 +92,7 @@ class FilterBase
       // ---------- data members -------------------------------
       DABoolean m_filtered;
       ActionBase::ActionResult m_result;
-      string m_name;
+      std::string m_name;
 
       unsigned int m_refCount;
       // ---------- static data members ------------------------

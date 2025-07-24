@@ -146,8 +146,8 @@
 #include "DataHandler/DataKey.h" //data member
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
-#include "STLUtility/fwd_set.h"
+#include <map>
+#include <set>
 class Frame ;
 class ProxyBase;
 class RecordKeyItr;
@@ -229,9 +229,9 @@ class Record
       // data members
       Stream::Type m_stream ;
       SyncValue m_syncValue ;
-      STL_MAP( DataKey , const ProxyBase* )& m_visible ;
-      STL_MAP( DataKey , const ProxyBase* )& m_displaced ;
-      STL_SET( DataKey )& m_extras ;
+      std::map< DataKey , const ProxyBase* >& m_visible ;
+      std::map< DataKey , const ProxyBase* >& m_displaced ;
+      std::set< DataKey >& m_extras ;
       Frame* m_frame ;
       const ProxyBase* m_latestProxy ;
       DataKey m_latestKey ;

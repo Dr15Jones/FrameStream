@@ -45,7 +45,7 @@ class NoArg : public Base
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      NoArg( const string& iName,
+      NoArg( const std::string& iName,
 		      T* iTarget,
 		      int (T::* iMethod)() ):
 	 Base(iName),

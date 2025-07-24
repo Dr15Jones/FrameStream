@@ -124,15 +124,15 @@ class DataSinkController;
 class RecordStorer;
 class DataSinkDescriptor;
 
-#include "STLUtility/fwd_multimap.h"
-#include "STLUtility/fwd_vector.h"
+#include <map>
+#include <vector>
 #include <vector>
 
 #if !defined(_framestorer_statusofsinks_)
-#  define _framestorer_statusofsinks_ STL_MULTIMAP( FrameStorer::SinkStatus, DataSinkDescriptor )
-#  define _framestorer_sinkdescriptors_ STL_VECTOR( DataSinkDescriptor )
-#  define _framestorer_sinkcontrollers_ STL_VECTOR( DataSinkController* )
-#  define _framestorer_recordstorers_ STL_MAP( Stream::Type , RecordStorer* )
+#  define _framestorer_statusofsinks_ std::multimap< FrameStorer::SinkStatus, DataSinkDescriptor >
+#  define _framestorer_sinkdescriptors_ std::vector< DataSinkDescriptor >
+#  define _framestorer_sinkcontrollers_ std::vector< DataSinkController* >
+#  define _framestorer_recordstorers_ std::map< Stream::Type , RecordStorer* >
 #endif /* _framestorer_sinkdescriptors_ */
 
 class FrameStorer

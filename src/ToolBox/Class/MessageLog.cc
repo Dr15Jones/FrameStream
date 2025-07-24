@@ -90,22 +90,12 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <map>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 #include <assert.h>
 
 // Include files
 #include "ToolBox/MessageLog.h"
 
-#if defined(MULTIMAP_IS_SEPARATE_FILE_BUG)
-#  include <multimap.h>
-#else
-#  include <map>
-#endif
-#include "STLUtility/fwd_multimap.h"
-
+#include <map>
 //
 // character translations of severity levels; must match the enum
 // in Utility/Utility/Severity.h!!! (not my fault -dsr)
@@ -128,7 +118,7 @@ static const char *SeverityLevels[] = {
 //
 
 // should not be Logger* -- FIXME
-typedef STL_MULTIMAP( string, MessageLog::Logger* ) LogMap;
+typedef std::multimap< std::string, MessageLog::Logger* > LogMap;
 
 // Map to match a facility to a set of loggers
 //MessageLog::LogMap MessageLog::_loggers;
@@ -176,7 +166,7 @@ MessageLog::~MessageLog()
 // stuff some basic info into the msgstreambuf for later recovery
 //
 void
-MessageLog::msgstreambuf::setLog(const string &f,
+MessageLog::msgstreambuf::setLog(const std::string &f,
 				 Severity s,
 				 MessageLog *m)
 {
@@ -204,7 +194,7 @@ MessageLog::msgstreambuf::sync()
    seekoff(0, ios::beg );
 #endif
 #else
-   static string kNull;
+   static std::string kNull;
    str(kNull);
 #endif
    return 0;
@@ -213,21 +203,21 @@ MessageLog::msgstreambuf::sync()
 //
 // Return our msgstream set for the given severity and facility
 //
-ostream&
+std::ostream&
 MessageLog::operator()(Severity severity)
 {
    m_os.setLog(nullfac, severity, this);
    return m_os;
 }
 
-ostream&
+std::ostream&
 MessageLog::operator()(Severity severity, const char* facility)
 {
-   return ( operator()( severity , string(facility) ) ) ;
+   return ( operator()( severity , std::string(facility) ) ) ;
 }
 
-ostream&
-MessageLog::operator()(Severity severity, const string& facility)
+std::ostream&
+MessageLog::operator()(Severity severity, const std::string& facility)
 {
    m_os.setLog(facility, severity, this);
    return m_os;
@@ -239,11 +229,11 @@ MessageLog::operator()(Severity severity, const string& facility)
 //
 void
 MessageLog::Log(Severity severity,
-		const string& facility,
-		const string& logmsg,
+		const std::string& facility,
+		const std::string& logmsg,
 		Messenger *messenger)
 {
-   string fac = facility;
+   std::string fac = facility;
 
    // dispatch is hierarchical, so work our way down the dots, trying
    // each shortening.
@@ -276,7 +266,7 @@ MessageLog::Log(Severity severity,
 #if defined(NPOS_IS_GLOBAL_CONSTANT_BUG)
       if (dot != NPOS)
 #else
-      if (dot != string::npos)
+      if (dot != std::string::npos)
 #endif
       {
 	 fac.resize(dot);
@@ -294,7 +284,7 @@ MessageLog::Log(Severity severity,
 // Tie a facility to a logger
 //
 void
-MessageLog::Tie(const string& facility, MessageLog::Logger& logger)
+MessageLog::Tie(const std::string& facility, MessageLog::Logger& logger)
 {
    initML(); // could be called before any instance constructed
    (*l_loggers).insert(LogMap::value_type(facility, &logger));
@@ -358,7 +348,7 @@ MessageLog::Logger::SeverityString(Severity severity)
 // Tie this logger to a facility
 //
 void
-MessageLog::Logger::Tie(const string& facility)
+MessageLog::Logger::Tie(const std::string& facility)
 {
    MessageLog::Tie(facility, *this);
 }
@@ -373,11 +363,11 @@ MessageLog::Logger::Dumpit(Severity)
 }
 
 #if defined(Darwin)
-typedef string _multimap_key_ ;
+typedef std::string _multimap_key_ ;
 typedef MessageLog::Logger* _multimap_contents_ ;
 typedef less< _multimap_key_ > _multimap_compare_ ;
 
 #include "STLUtility/instantiate_multimap.h"
-typedef pair<const string, MessageLog::Logger*> _pair_type_;
+typedef std::pair<const std::string, MessageLog::Logger*> _pair_type_;
 template std::_Rb_tree<string,_pair_type_, std::_Select1st<_pair_type_>, std::less<string>,std::allocator<_pair_type_> >;
 #endif

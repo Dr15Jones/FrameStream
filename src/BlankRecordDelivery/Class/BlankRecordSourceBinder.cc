@@ -47,7 +47,7 @@ static const char* const kFacilityString = "BlankRecordDelivery.BlankRecordSourc
 // constructors and destructor
 //
 BlankRecordSourceBinder::BlankRecordSourceBinder( 
-                              const string& iSourceName,
+                              const std::string& iSourceName,
 			      const Stream::Set& iUseStreams,
 			      BlankRecordStopsBase* iStops ) :
    DataSourceBinder( iSourceName,

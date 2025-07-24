@@ -84,18 +84,18 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-PDSSinkBinder::PDSSinkBinder( const string& iFileName,
+PDSSinkBinder::PDSSinkBinder( const std::string& iFileName,
 			      const Stream::Set& iBindStreams )
-   : DataSinkBinder( iFileName, string(""), iBindStreams ),
+   : DataSinkBinder( iFileName, std::string(""), iBindStreams ),
    m_streamsDataMap(0)
 {
    
 }
 
-PDSSinkBinder::PDSSinkBinder( const string& iFileName,
+PDSSinkBinder::PDSSinkBinder( const std::string& iFileName,
 			      const Stream::Set& iBindStreams,
 			      const StreamToDataStringTagsToStoreMap& iStreamsDataMap )
-   : DataSinkBinder( iFileName, string(""), iBindStreams ),
+   : DataSinkBinder( iFileName, std::string(""), iBindStreams ),
    m_streamsDataMap( new StreamToDataStringTagsToStoreMap(iStreamsDataMap))
 {
    
@@ -154,7 +154,7 @@ void
 fillDataKeysIfFactoryExists( KeyItr iKeyBegin, KeyItr iKeyEnd,
                              SMStorageHelperManager::factory_iterator iFactoryBegin,
                              SMStorageHelperManager::factory_iterator iFactoryEnd,
-                             STL_SET(DurableDataKey)& iDataKeys )
+                             std::set<DurableDataKey>& iDataKeys )
 {
    KeyItr itKey = iKeyBegin;
    SMStorageHelperManager::factory_iterator itFactory = iFactoryBegin;
@@ -184,10 +184,10 @@ PDSSinkBinder::createUsingAll() const
 
    SMStorageHelperManager& shm = SMStorageHelperManager::instance();
       
-   for(STL_SET(StreamType)::const_iterator itStream = boundStreams().begin();
+   for(std::set<StreamType>::const_iterator itStream = boundStreams().begin();
        itStream != boundStreams().end();
        ++itStream ) {
-      STL_SET(DurableDataKey)& dataKeys = dataToStore[*itStream]();
+      std::set<DurableDataKey>& dataKeys = dataToStore[*itStream]();
 
       const Record& record = 
 	 jc->frameDeliverer().recordProvider(*itStream).unsynchronizedRecord();
@@ -221,7 +221,7 @@ PDSSinkBinder::createSpecifyingData() const
         ++itStreamData ) {
       const Record& record = 
 	   jc->frameDeliverer().recordProvider((*itStreamData).first).unsynchronizedRecord();
-      STL_SET(DurableDataKey) allKeys = 
+      std::set<DurableDataKey> allKeys = 
       dataStringTagsToDataKeysUsingRecordContents( (*itStreamData).second,
                                                    record );      
 

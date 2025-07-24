@@ -68,9 +68,9 @@
 //
 // constants, enums and typedefs
 //
-const string kFacilityString = "DataStorage.RecordStorer" ;
+static const std::string kFacilityString = "DataStorage.RecordStorer" ;
 
-typedef vector< ProxyStorer* > StorerList ;
+typedef std::vector< ProxyStorer* > StorerList ;
 
 //
 // static data member definitions
@@ -83,15 +83,6 @@ RecordStorer::RecordStorer( const Stream::Type& iStream ) :
    m_stream( iStream ),
    m_storers( *( new StorerList ) )
 {
-   if (0 == &m_storers ) {
-      delete &m_storers ;
-      report( EMERGENCY ,
-	      kFacilityString )
-		 << "Unable to allocate memory"
-		 << endl ;
-      assert(false);
-      exit( 1 ) ;
-   }
 }
 
 // RecordStorer::RecordStorer( const RecordStorer& )
@@ -127,7 +118,7 @@ RecordStorer::add( ProxyStorer& iStorer )
 		 << m_stream
 		 << " stream! "
 		 << "Will ignore it."
-		 << endl ;
+		 << std::endl ;
       return ;
    }
 //
@@ -141,7 +132,7 @@ RecordStorer::add( ProxyStorer& iStorer )
 	      kFacilityString )
 		 << "\n\tTrying to `add' ProxyStorer already being used."
 		 << "\nAs order is important you need to `remove' is first."
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
 //
@@ -168,7 +159,7 @@ RecordStorer::remove( ProxyStorer& iStorer )
 	      kFacilityString )
 		 << "\n\tTrying to `remove' a ProxyStorer not used by "
 		 << "this RecordStorer."
-		 << endl ;
+		 << std::endl ;
    }
 #endif
 }
@@ -193,7 +184,7 @@ RecordStorer::store( const Frame& iFrame )
 		 << m_stream
 		 << " has no sinks."
 		 << "\nThis is a programming error."
-		 << endl ;
+		 << std::endl ;
       assert(false);
       exit( 1 ) ;
    }
@@ -236,7 +227,7 @@ RecordStorer::store( const Frame& iFrame )
    return storeStatus;
 }
 
-const vector< ProxyStorer* >& 
+const std::vector< ProxyStorer* >& 
 RecordStorer::storers( void ) const 
 {
    return ( m_storers ) ;

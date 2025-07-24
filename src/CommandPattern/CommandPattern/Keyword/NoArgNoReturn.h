@@ -45,7 +45,7 @@ class NoArgNoReturn : public Base
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      NoArgNoReturn( const string& iName,
+      NoArgNoReturn( const std::string& iName,
 			      T* iTarget,
 			      void (T::* iMethod)(),
 			      int iReturn = Command::COMMAND_OK):

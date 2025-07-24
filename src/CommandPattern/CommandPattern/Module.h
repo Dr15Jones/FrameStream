@@ -89,7 +89,7 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <string>
 #include <map>
 
@@ -106,9 +106,9 @@
 #include <string>
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
+#include <map>
 #if !defined(_module_containerOfCommands_)
-#define _module_containerOfCommands_ STL_MAP( string, Command* )
+#define _module_containerOfCommands_ std::map< std::string, Command* >
 #endif
 
 
@@ -119,7 +119,7 @@ class Module
 
    public:
       // constants, enums and typedefs
-      typedef string Name;
+      typedef std::string Name;
       typedef _module_containerOfCommands_ Commands;
 
       // Constructors and destructor
@@ -169,12 +169,12 @@ class Module
       // const member functions
 
       // interface conforming to CompositePattern
-      virtual string listModules() const;
+      virtual std::string listModules() const;
       virtual DABoolean containsModule( const Module::Name& name ) const;
       virtual const Module* fetchModule( const Module::Name& name ) const;
 
       // static member functions
-      static string factorySymbol();
+      static std::string factorySymbol();
 
    protected:
       // protected member functions

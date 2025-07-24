@@ -109,12 +109,12 @@ class SMSharingCachingPolicy
       static const T* fractionArray( unsigned int iNumberOfMantissaBits,
 				     float iFraction ) {
 	 //first see if we already have this value pre-computed
-	 typedef list<pair< pair<unsigned int, float>, T*> > List;
+	 typedef list<std::pair< std::pair<unsigned int, float>, T*> > List;
 	 List& tArrayList = fractionArrayList();
 	 for( typename List::iterator itInfo = tArrayList.begin();
 	      itInfo != tArrayList.end();
 	      ++itInfo ) {
-	    pair<unsigned int, float> values = (*itInfo).first;
+	    std::pair<unsigned int, float> values = (*itInfo).first;
 	    if( values.first == iNumberOfMantissaBits &&
 		values.second == iFraction ) {
 	       return (*itInfo).second;
@@ -133,9 +133,9 @@ class SMSharingCachingPolicy
 	 return newArray;
       }
 
-      static list<pair< pair<unsigned int, float>, T*> >&
+      static list<std::pair< std::pair<unsigned int, float>, T*> >&
       fractionArrayList() {
-	 static list<pair< pair<unsigned int, float>, T*> > s_list;
+	 static list<std::pair< std::pair<unsigned int, float>, T*> > s_list;
 	 return s_list;
       }
    protected:

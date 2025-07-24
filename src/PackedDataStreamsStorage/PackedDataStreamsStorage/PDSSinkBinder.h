@@ -44,9 +44,9 @@ class PDSSinkBinder : public DataSinkBinder
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      PDSSinkBinder( const string& iFileName,
+      PDSSinkBinder( const std::string& iFileName,
 		     const Stream::Set& iBindStreams );
-      PDSSinkBinder( const string& iFileName,
+      PDSSinkBinder( const std::string& iFileName,
 		     const Stream::Set& iBindStreams,
 		     const StreamToDataStringTagsToStoreMap& iStreamsDataMap );
       virtual ~PDSSinkBinder();
@@ -57,7 +57,7 @@ class PDSSinkBinder : public DataSinkBinder
       virtual DataSinkController*
         createDataSinkController( void ) const;
 
-      string fileName( void ) const;
+      std::string fileName( void ) const;
 
       // ---------- static member functions --------------------
 

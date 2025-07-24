@@ -46,19 +46,19 @@
 //
 static const char* const kFacilityString = "CommandPattern.HistoryCommand";
 
-static const string helpMessage = 
-string( " Controls the history mechanism.                           \n" )+
-string( "                                                           \n" )+
-string( "                         prints history list               \n" )+
-string( "    !<number>            execute numbered command in list  \n" )+
-string( "    !!                   execute previous command          \n" )+
-string( "                                                           \n" )+
-string( " Subcommands:                                              \n" )+
-string( "    length <number>      control how many entries are saved\n" )+
-string( "    file   <filename>    set filename                      \n" )+
-string( "    save                 save history                      \n" )+
-string( "    read                 read history                      \n" )+
-string( "    status               print status info                 \n" );
+static const std::string helpMessage = 
+std::string( " Controls the history mechanism.                           \n" )+
+std::string( "                                                           \n" )+
+std::string( "                         prints history list               \n" )+
+std::string( "    !<number>            execute numbered command in list  \n" )+
+std::string( "    !!                   execute previous command          \n" )+
+std::string( "                                                           \n" )+
+std::string( " Subcommands:                                              \n" )+
+std::string( "    length <number>      control how many entries are saved\n" )+
+std::string( "    file   <filename>    set filename                      \n" )+
+std::string( "    save                 save history                      \n" )+
+std::string( "    read                 read history                      \n" )+
+std::string( "    status               print status info                 \n" );
 
 //
 // static data member definitions
@@ -137,7 +137,7 @@ HistoryCommand::helpHandler()
    report( SYSTEM, kFacilityString ) 
       << "\n\nDescription: " << name() << "\n\n"
       << helpMessage << "\n" 
-      << endl;
+      << std::endl;
 
    return COMMAND_OK;
 }
@@ -173,7 +173,7 @@ HistoryCommand::setHistoryLengthHandler()
    }
    else
    {
-      report( SYSTEM, kFacilityString ) << "bad numerical value" << endl;
+      report( SYSTEM, kFacilityString ) << "bad numerical value" << std::endl;
       result = COMMAND_ERROR;
    }
 
@@ -184,7 +184,7 @@ int
 HistoryCommand::setHistoryFileHandler()
 {
    assert( m_argc == 3 );
-   string filename( m_argv[2] );
+  std::string filename( m_argv[2] );
 
    // get ahold of Interpreter
    Interpreter* interp = Interpreter::interpreter();

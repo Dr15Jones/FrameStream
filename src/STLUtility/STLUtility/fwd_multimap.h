@@ -96,7 +96,7 @@
 #endif /* STL_ALLOCATOR_TWO */
 
 #if !defined(STL_MULTIMAP)
-#  define STL_MULTIMAP( k , c ) multimap< k , c >
+#  define std::multimap< k , c > multimap< k , c >
 #  define STL_MULTIMAP_COMP( k , c , l ) multimap< k , c , l >
 #  define STL_MULTIMAP_COMP_ALLOC( k , c , l , a ) multimap< k , c , l , a >
 
@@ -104,7 +104,7 @@
 
 #if (defined(NO_DEFAULT_COMPARE_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_MULTIMAP
-#  define STL_MULTIMAP( k , c ) multimap< k , c , less< k > >
+#  define std::multimap< k , c > multimap< k , c , less< k > >
 #  undef STL_MULTIMAP_COMP_ALLOC
 #endif  /* NO_DEFAULT_COMPARE_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
 
@@ -114,20 +114,20 @@
 
 #if (defined(NO_DEFAULT_ALLOCATOR_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_MULTIMAP
-#  define STL_MULTIMAP( k , c ) multimap< k , c , less< k > , STL_ALLOCATOR_TWO( pair < const k , c > ) >
+#  define std::multimap< k , c > multimap< k , c , less< k > , STL_ALLOCATOR_TWO( pair < const k , c > ) >
 #  undef STL_MULTIMAP_COMP
 #  define STL_MULTIMAP_COMP( k , c , l ) multimap< k , c , l , STL_ALLOCATOR_TWO( pair < const k , c > ) >
 #else
 
 #if defined(MULTIMAP_ALLOCATOR_ONLY_USES_CONTENTS_BUG)
 #  undef STL_MULTIMAP
-#  define STL_MULTIMAP( k , c ) multimap< k , c , less< k > , STL_ALLOCATOR( c ) >
+#  define std::multimap< k , c > multimap< k , c , less< k > , STL_ALLOCATOR( c ) >
 #  undef STL_MULTIMAP_COMP
 #  define STL_MULTIMAP_COMP( k , c , l ) multimap< k , c , l , STL_ALLOCATOR( c ) >
 #else
 
 #  undef STL_MULTIMAP
-#  define STL_MULTIMAP( k , c ) multimap< k , c , less< k > >
+#  define std::multimap< k , c > multimap< k , c , less< k > >
 #endif /* MULTIMAP_ALLOCATOR_ONLY_USES_CONTENTS_BUG */
 
 #endif /* NO_DEFAULT_ALLOCATOR_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */

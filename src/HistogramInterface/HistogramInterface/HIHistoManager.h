@@ -80,13 +80,13 @@ class HIHistoManager
       // ---------- member functions ---------------------------
 
       // Make a  sub directory
-      virtual HIHistDir* mkdir( const string& iName) = 0;
+      virtual HIHistDir* mkdir( const std::string& iName) = 0;
 
       // create generic histograms and ntuples
       // 1D histogram
       virtual HISTOGRAMINTERFACE_NS HIHist1D* 
       histogram( Count          iId, 
-		 const string&  iTitle,
+		 const std::string&  iTitle,
 		 unsigned int   iNChannels, 
 		 float          iLowEdge,
 		 float          iHighEdge,
@@ -94,7 +94,7 @@ class HIHistoManager
 
       // 1D histogram with automatic id assignment
       virtual HISTOGRAMINTERFACE_NS HIHist1D* 
-      histogram( const string&  iTitle,
+      histogram( const std::string&  iTitle,
 		 unsigned int   iNChannels, 
 		 float          iLowEdge,
 		 float          iHighEdge,
@@ -103,7 +103,7 @@ class HIHistoManager
       // 2D histogram
       virtual HISTOGRAMINTERFACE_NS HIHist2D* 
       histogram( Count          iId,
-		 const string&  iTitle,
+		 const std::string&  iTitle,
 		 unsigned int   iNChannelsX, 
 		 float          iLowEdgeX, 
 		 float          iHighEdgeX,
@@ -114,7 +114,7 @@ class HIHistoManager
       
       // 2D histogram with automatic id assignment
       virtual HISTOGRAMINTERFACE_NS HIHist2D* 
-      histogram( const string&  iTitle,
+      histogram( const std::string&  iTitle,
 		 unsigned int   iNChannelsX, 
 		 float          iLowEdgeX, 
 		 float          iHighEdgeX,
@@ -125,7 +125,7 @@ class HIHistoManager
       
       // profile histogram
       virtual HIHistProf* profile( Count          iId,
-				   const string&  iTitle,
+				   const std::string&  iTitle,
 				   unsigned int   iNChannels, 
 				   float iLowEdgeX, 
 				   float iHighEdgeX,
@@ -134,7 +134,7 @@ class HIHistoManager
 				   HIHistProf::DisplayErrorsAs iDisplayErrorsAs ) =0;
 
       // profile histogram with automatic id assignment
-      virtual HIHistProf* profile( const string&  iTitle,
+      virtual HIHistProf* profile( const std::string&  iTitle,
 				   unsigned int   iNChannels, 
 				   float iLowEdgeX, 
 				   float iHighEdgeX,
@@ -144,22 +144,22 @@ class HIHistoManager
 
       // ntuple
       virtual HINtuple* ntuple(    Count          iId,
-			           const string&  iTitle,
+			           const std::string&  iTitle,
 				   unsigned int   iSizeOfEntry,
 				   unsigned int   iChunkSize,
 				   const char* const* iLabels) =0; 
 
       // ntuple histogram with automatic id assignment
-      virtual HINtuple* ntuple(    const string&  iTitle,
+      virtual HINtuple* ntuple(    const std::string&  iTitle,
 				   unsigned int   iSizeOfEntry,
 				   unsigned int   iChunkSize,
 				   const char* const* iLabels) =0; 
 
-      virtual HINumber* number( const string& iName,
+      virtual HINumber* number( const std::string& iName,
 				float        iValue ) =0;
 
       virtual HINumberWithErrors* numberWithErrors( 
-	 const string& iName,
+	 const std::string& iName,
 	 float        iValue,
 	 float        iPositiveError,
 	 float        iNegativeError ) =0;
@@ -169,7 +169,7 @@ class HIHistoManager
       //virtual HIDirSwitch* mkSwitch() = 0;        
       
       /// should only be called by Suez internals
-      virtual void setDefaultDir( const string& iDirectoryName ) = 0;
+      virtual void setDefaultDir( const std::string& iDirectoryName ) = 0;
 
       // ---------- const member functions ---------------------
       // Directory information

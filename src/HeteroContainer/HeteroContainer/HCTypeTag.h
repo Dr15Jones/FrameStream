@@ -70,7 +70,7 @@ class HCTypeTag
 	 return m_value >= iRHS.m_value; }
 
       ///find a type based on the types name, if not found will return default HCTypeTag
-      static HCTypeTag<Group> findType( const string& iTypeName );
+      static HCTypeTag<Group> findType( const std::string& iTypeName );
    protected:
       // ---------- protected member functions -----------------
       HCTypeTag( unsigned int iValue, const char* iName ) :

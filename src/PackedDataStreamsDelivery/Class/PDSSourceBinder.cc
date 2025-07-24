@@ -68,9 +68,9 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-PDSSourceBinder::PDSSourceBinder(const string& iFileName,
+PDSSourceBinder::PDSSourceBinder(const std::string& iFileName,
 				 const Stream::Set& iBindStreams ) :
-   DataSourceBinder(iFileName, string(""), iBindStreams )
+   DataSourceBinder(iFileName, std::string(""), iBindStreams )
 {
 }
 
@@ -116,7 +116,7 @@ PDSSourceBinder::createSourceController( PDSProxyDeliverer* iDeliverer ) const
    return ( new PDSSourceController( fileName(), boundStreams(), iDeliverer ) ) ;
 }
 
-const string&
+const std::string&
 PDSSourceBinder::fileName() const
 {
    return dataSourceID();

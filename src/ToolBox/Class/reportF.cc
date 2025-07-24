@@ -56,9 +56,9 @@ void report_( const FInteger& aSever  ,
 	      const FInteger  aMlen    )
 {
    char* crName ( new char[ aClen + 1 ] ) ;
-   copy( &aCrName[0], &aCrName[ aClen ], crName ) ;
+   std::copy( &aCrName[0], &aCrName[ aClen ], crName ) ;
    crName[ aClen ] = '\0' ;
-   const string crString ( crName ) ; // calling routine --> "facility"
+   const std::string crString ( crName ) ; // calling routine --> "facility"
 
    Severity sever ( INFO ) ; // default severity is INFO
 
@@ -86,11 +86,11 @@ void report_( const FInteger& aSever  ,
 
    const unsigned int len ( ( endChmess - pchmess ) + 1 ) ;
    char* pcMes ( new char[ len ] ) ;
-   copy( pchmess, endChmess, pcMes ) ;
+   std::copy( pchmess, endChmess, pcMes ) ;
    pcMes[ len-1 ] = '\0' ;
-   const string chmessString ( pcMes ) ;
+   const std::string chmessString ( pcMes ) ;
 
-   report( sever, crString ) << chmessString << endl ;
+   report( sever, crString ) << chmessString << std::endl ;
 
    delete [] crName ;
    delete [] pcMes  ;

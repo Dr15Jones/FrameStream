@@ -68,7 +68,7 @@
 
 // system include files
 #include <assert.h>
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <stdlib.h>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 //#include <vector>
@@ -112,14 +112,6 @@ Command::Command( const Name& iName,
      m_helpString( "" ),
      m_subcommandMap( *new SubcommandMap )
 {
-   // check for out of memory errors
-   if( 0 == &m_subcommandMap )
-   {
-      report( EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 
    // bind this command to target
    if( 0 != iTarget ) {
@@ -164,12 +156,12 @@ Command::addSubcommand( SubcommandBase* iSubcommand )
 {
    assert( 0 != iSubcommand );
 
-   pair< SubcommandMap::iterator, DABoolean > result = 
+   std::pair< SubcommandMap::iterator, DABoolean > result = 
       m_subcommandMap.insert( SubcommandMap::value_type( iSubcommand->name(),
 							 iSubcommand ) );
    if( false == result.second ) {
       report( SYSTEM, kFacilityString )
-         << "cannot insert subcommand \"" << iSubcommand->name() << "\"" << endl;
+         << "cannot insert subcommand \"" << iSubcommand->name() << "\"" << std::endl;
    }
 }
 
@@ -188,7 +180,7 @@ Command::execute( int argc, char* argv[] )
    }
    else
    {
-      string subcommandName( argv[1] );
+     std::string subcommandName( argv[1] );
       SubcommandMap::iterator subcommandIter 
 	 = m_subcommandMap.find( subcommandName );
       if( m_subcommandMap.end() == subcommandIter )
@@ -201,10 +193,10 @@ Command::execute( int argc, char* argv[] )
 
 	 Count minArgs = subcommand.minArgs();
 	 Count maxArgs = subcommand.maxArgs();
-	 if( argc < minArgs || ( maxArgs >= minArgs && argc > maxArgs > 0 ) )
+	 if( argc < minArgs || ( maxArgs >= minArgs && (argc > maxArgs) and (maxArgs > 0) ) )
 	 {
 	    report( SYSTEM, kFacilityString )
-	       << "wrong # of args " << endl;
+	       << "wrong # of args " << std::endl;
 	    result = COMMAND_ERROR;
 	 }
 	 else 
@@ -228,9 +220,9 @@ int
 Command::defaultWithArgsHandler( int iArgc, char* iArgv[] )
 {
    int result = COMMAND_ERROR;
-   string subcommandName( iArgv[1] );
+  std::string subcommandName( iArgv[1] );
    report( SYSTEM, kFacilityString )
-      << "bad subcommand \"" << subcommandName << "\"" << endl;
+      << "bad subcommand \"" << subcommandName << "\"" << std::endl;
    return result;
 }
 
@@ -294,7 +286,7 @@ Command::getArgument( int index ) const
 }
 
 void
-Command::setResult( const string& iResult ) const
+Command::setResult( const std::string& iResult ) const
 {
    Interpreter::interpreter()->setResult( iResult.c_str() );
 }

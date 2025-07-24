@@ -28,9 +28,9 @@
 
 // forward declarations
 class DataSinkBinder;
-#include "STLUtility/fwd_map.h"
+#include <map>
 #if !defined(_extensionname_map_)
-#define _extensionname_map_ map< string, StringWrapper, less< string > >
+#define _extensionname_map_ std::map< std::string, StringWrapper, std::less< std::string > >
 #endif
 template< class T > class FormatCommand;
 
@@ -43,16 +43,16 @@ class SinkFormatMap : public FormatMap< SinkFormat >
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      SinkFormatMap( const string& environment = "C3_SHLIB" );
+      SinkFormatMap( const std::string& environment = "C3_SHLIB" );
       virtual ~SinkFormatMap();
 
       // ---------- member functions ---------------------------
 
-      DataSinkBinder* createBinder( const string& iName,
+      DataSinkBinder* createBinder( const std::string& iName,
 				    const Stream::Set& iBindStreams );
 
       virtual DataSinkBinder*
-      createBinder( const string& iName,
+      createBinder( const std::string& iName,
 	            const Stream::Set& iBindStreams,
                     const StreamToDataStringTagsToStoreMap& iStreamTagsMap);
       
@@ -64,12 +64,12 @@ class SinkFormatMap : public FormatMap< SinkFormat >
       // ---------- const member functions ---------------------
 
       // overridden Loader< SinkFormat > method
-      virtual string listLoaded() const;
+      virtual std::string listLoaded() const;
 
       // pattern for listings
-      virtual string listAvailablePatternString() const { 
-	 //return string( "SinkFormat" ); 
-	 return string( "" ); 
+      virtual std::string listAvailablePatternString() const { 
+	 //return std::string( "SinkFormat" ); 
+	 return std::string( "" ); 
       }
 
       // ---------- static member functions --------------------
@@ -78,11 +78,11 @@ class SinkFormatMap : public FormatMap< SinkFormat >
       // ---------- protected member functions -----------------
 
       // overriden Loader<> methods
-      virtual void initialize( const string& iName, 
+      virtual void initialize( const std::string& iName, 
 			       SinkFormat& iSinkFormat );
-      virtual void finalize(   const string& iName, 
+      virtual void finalize(   const std::string& iName, 
 			       SinkFormat& iSinkFormat );
-      virtual void errorMesg( const string& iName ) const;
+      virtual void errorMesg( const std::string& iName ) const;
 
       // ---------- protected const member functions -----------
 
@@ -95,12 +95,12 @@ class SinkFormatMap : public FormatMap< SinkFormat >
 
       // ---------- private member functions -------------------
       // bind extensions to formats
-      virtual DABoolean bind( const string& iFormatName,
-			      const string& iExtension );
-      virtual DABoolean unbind( const string& iExtension );
+      virtual DABoolean bind( const std::string& iFormatName,
+			      const std::string& iExtension );
+      virtual DABoolean unbind( const std::string& iExtension );
       virtual DABoolean unbindAll();
 
-      DABoolean bind( const string& iFormatName,
+      DABoolean bind( const std::string& iFormatName,
 		      const SinkFormat::Extensions& iExtensions );
 
       // ---------- private const member functions -------------

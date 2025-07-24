@@ -67,28 +67,28 @@
 
 #else
 
-#include "STLUtility/fwd_vector.h"
-template class STL_VECTOR( STL_VECTOR( _vector_contents_ ) ) ;
+#include <vector>
+template class std::vector< STL_VECTOR( _vector_contents_ > ) ;
 
 #if ( defined(NO_IMPLICIT_INSTANTIATION) && defined(__DECCXX) )
 #include "STLUtility/instantiate_vector.h"
 
-template STL_VECTOR( _vector_contents_ )* 
-std::copy( STL_VECTOR( _vector_contents_ ) *, 
-      STL_VECTOR( _vector_contents_ ) *, 
-      STL_VECTOR( _vector_contents_ ) * );
+template std::vector< _vector_contents_ >* 
+std::copy( std::vector< _vector_contents_ > *, 
+      std::vector< _vector_contents_ > *, 
+      std::vector< _vector_contents_ > * );
 
-template STL_VECTOR( _vector_contents_ )* 
-std::copy( STL_VECTOR( _vector_contents_ ) const*, 
-      STL_VECTOR( _vector_contents_ ) const*, 
-      STL_VECTOR( _vector_contents_ ) * );
-template STL_VECTOR( _vector_contents_ )* 
-std::copy_backward( STL_VECTOR( _vector_contents_ )* ,  
-	       STL_VECTOR( _vector_contents_ )* ,
-	       STL_VECTOR( _vector_contents_ )* );
-template void std::fill( STL_VECTOR( _vector_contents_ )* ,  
-		    STL_VECTOR( _vector_contents_ )* ,
-		    STL_VECTOR( _vector_contents_ ) const& );
+template std::vector< _vector_contents_ >* 
+std::copy( std::vector< _vector_contents_ > const*, 
+      std::vector< _vector_contents_ > const*, 
+      std::vector< _vector_contents_ > * );
+template std::vector< _vector_contents_ >* 
+std::copy_backward( std::vector< _vector_contents_ >* ,  
+	       std::vector< _vector_contents_ >* ,
+	       std::vector< _vector_contents_ >* );
+template void std::fill( std::vector< _vector_contents_ >* ,  
+		    std::vector< _vector_contents_ >* ,
+		    std::vector< _vector_contents_ > const& );
 #endif
 #endif /* defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) */
 

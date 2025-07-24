@@ -106,19 +106,19 @@
 //
 static const char* const kFacilityString = "JobControl.GotoCommand";
 
-const string helpMessage = 
-string( "                                                                   \n" )+
-string( "// Description: Goto Command                                       \n" )+
-string( "//                                                                 \n" )+
-string( "// Usage:                                                          \n" )+
-string( "//  goto <runnumber> <eventnumber> [stream]  will proceed to a     \n" )+
-string( "//                                           given run/event number\n" )+
-string( "//                                           skipping all stops in \n" )+
-string( "//                                           between.              \n" )+
-string( "//  Please note: NO processing of that run/event takes place.      \n" )+
-string( "//               You will have to do:                              \n" )+
-string( "//                    \"go 1\" or \"go\"     to actually process it\n" )+
-string( "//                                                                 \n" );
+const std::string helpMessage = 
+std::string( "                                                                   \n" )+
+std::string( "// Description: Goto Command                                       \n" )+
+std::string( "//                                                                 \n" )+
+std::string( "// Usage:                                                          \n" )+
+std::string( "//  goto <runnumber> <eventnumber> [stream]  will proceed to a     \n" )+
+std::string( "//                                           given run/event number\n" )+
+std::string( "//                                           skipping all stops in \n" )+
+std::string( "//                                           between.              \n" )+
+std::string( "//  Please note: NO processing of that run/event takes place.      \n" )+
+std::string( "//               You will have to do:                              \n" )+
+std::string( "//                    \"go 1\" or \"go\"     to actually process it\n" )+
+std::string( "//                                                                 \n" );
 
 //
 // static data member definitions
@@ -173,7 +173,7 @@ GotoCommand::execute( int argc, char* argv[] )
       else // assume numerical value
       {    // for now only allow "goto <run> <event>"!
 	 report( SYSTEM, kFacilityString ) 
-	    << "Need <run> AND <event> numbers!" << endl;
+	    << "Need <run> AND <event> numbers!" << std::endl;
 	 result = COMMAND_ERROR;
       }
    } else
@@ -185,7 +185,7 @@ GotoCommand::execute( int argc, char* argv[] )
       if( false == isNumber )
       {
 	 report( SYSTEM, kFacilityString ) 
-	    << "bad numerical value: " << argv[1] << endl;
+	    << "bad numerical value: " << argv[1] << std::endl;
 	 result = COMMAND_ERROR;
       } 
       else // good runnumber
@@ -195,7 +195,7 @@ GotoCommand::execute( int argc, char* argv[] )
 	 if( false == isNumber ) // bad numerical value
 	 {
 	    report( SYSTEM, kFacilityString ) 
-	       << "bad numerical value: " << argv[2] << endl;
+	       << "bad numerical value: " << argv[2] << std::endl;
 	    result = COMMAND_ERROR;
 	 }
 	 else // ... and good event number
@@ -208,7 +208,7 @@ GotoCommand::execute( int argc, char* argv[] )
 	       streamType = StreamType( argv[3] );
 	       if( ! streamType.isStandard() ) {
 		  report( SYSTEM, kFacilityString ) 
-		     << "unknown stream: "<< argv[3] << endl;
+		     << "unknown stream: "<< argv[3] << std::endl;
 		  result = COMMAND_ERROR;
 	       }
 	    } 
@@ -222,7 +222,7 @@ GotoCommand::execute( int argc, char* argv[] )
    }
    else // number of arguments 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -235,7 +235,7 @@ int
 GotoCommand::helpHandler()
 {
    // print help from header
-   report( INFO, kFacilityString ) << "\n" << helpMessage << endl;
+   report( INFO, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }

@@ -22,9 +22,9 @@
 // message is dispatched to.  The return value is an ostream& which
 // the message should be streamed into.  The message is dispatched to
 // the loggers when the flush() method of the omsgstreambuf is called,
-// usually on endl.  Returns in the middle of the message should be
-// represented with '\n', not endl, to avoid premature flushing:
-//	mlog(severity, facility) << "My log message" << endl;
+// usually on std::endl.  Returns in the middle of the message should be
+// represented with '\n', not std::endl, to avoid premature flushing:
+//	mlog(severity, facility) << "My log message" << std::endl;
 //
 // Tie() is a static function which associates a Logger with a facility
 // or facility hiearchy.  NB: there is only one association map, so
@@ -124,19 +124,19 @@
 #define NILEFT_MESSAGELOG_H_
 
 // Include files
-#include "C++Std/iostream.h"
+#include <iostream>
 
 #if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
 #include <strstream.h>
 #define MESSAGELOG_BUFFER strstreambuf
 #else
 #include <sstream>
-#define MESSAGELOG_BUFFER stringbuf
+#define MESSAGELOG_BUFFER std::stringbuf
 #endif
 #include "Utility/Severity.h"
 
 #if defined(OLD_CXX_STRING_CLASS_BUG)
-#include "C++Std/fwd_string.h"
+#include <string>
 #include <String.h>
 #else
 #include <string>
@@ -159,10 +159,10 @@ class MessageLog {
 	    // messenger appears here so that the Isis News Logger
 	    // can find the dump info.  This is pretty gross...
 	    virtual void Log(Severity severity,
-			     const string& facility,
-			     const string& logmsg,
+			     const std::string& facility,
+			     const std::string& logmsg,
 			     Messenger* messenger) = 0;
-	    void Tie(const string& facility);
+	    void Tie(const std::string& facility);
 	    static const char* SeverityString(Severity severity);
 	    void setSeverity(Severity severity) { m_level = severity; }
 	    Severity getSeverity() const { return m_level; }
@@ -178,22 +178,22 @@ class MessageLog {
       // Specialization of Logger for ostreams.
       class LogStream : public Logger {
 	 public:
-	    LogStream(Severity level, ostream& out)
+	    LogStream(Severity level,std::ostream& out)
 	       : Logger(level), m_out(out) {}
 	    ~LogStream() {}
 	    void Log(Severity severity,
-		     const string& facility,
-		     const string& logmsg,
+		     const std::string& facility,
+		     const std::string& logmsg,
 		     Messenger* messenger);
 	 protected:
 	    virtual bool Dumpit(Severity severity);
 	 private:
-	    ostream& m_out;
+	   std::ostream& m_out;
       };
 
    // Constants
       // Facility separator; also the last chance facility
-      const string nullfac;
+      const std::string nullfac;
    // Constructors and destructor
       MessageLog();
       MessageLog(const MessageLog &);
@@ -204,21 +204,21 @@ class MessageLog {
       // The interface to actually log a message.  Stuffs the severity
       // and facility into the msgstreambuf and then returns the assoc.
       // msgstream.
-      ostream& operator()(Severity severity);
-      ostream& operator()(Severity severity,
+     std::ostream& operator()(Severity severity);
+     std::ostream& operator()(Severity severity,
 			  const char* facility) ;
-      ostream& operator()(Severity severity,
-			  const string& facility) ;
+     std::ostream& operator()(Severity severity,
+			  const std::string& facility) ;
       // Called by the msgstreambuf
       virtual void Log(Severity severity,
-		       const string& facility,
-		       const string& logmsg,
+		       const std::string& facility,
+		       const std::string& logmsg,
 		       Messenger *messenger);
    // Access functions
       Severity leastSeverity() const;
    // Static member functions
       // Associate a logger with a facility hierarchy.
-      static void Tie(const string& facility, Logger& logger);
+      static void Tie(const std::string& facility, Logger& logger);
       static void UnTie(Logger& logger);
    // Friend classses and functions
 
@@ -231,16 +231,16 @@ class MessageLog {
 	    msgstreambuf(int initial_size) : MESSAGELOG_BUFFER(initial_size) {}
 #endif
 	    virtual int sync();
-	    void setLog(const string &f, Severity s, MessageLog *m);
+	    void setLog(const std::string &f, Severity s, MessageLog *m);
 	 private:
-	    string m_facility;
+	    std::string m_facility;
 	    Severity m_severity;
 	    MessageLog *m_meslog;
       };
 
-      class omsgstream : public ostream {
+      class omsgstream : public std::ostream {
 	 public:
-	    omsgstream() : ostream(&m_Sb), m_Sb() {
+	    omsgstream() :std::ostream(&m_Sb), m_Sb() {
 	       init(&m_Sb);
 	    }
 	    virtual ~omsgstream() {};
@@ -249,10 +249,10 @@ class MessageLog {
 	    void freeze(int n = 1) { m_Sb.freeze(n); }
 	    char *str() { return m_Sb.str(); }
 #else
-	    string str() {return m_Sb.str(); }
+	    std::string str() {return m_Sb.str(); }
 #endif
 //	    int frozen() { return m_Sb.frozen(); }
-	    void setLog(const string &f, Severity s, MessageLog *m) {
+	    void setLog(const std::string &f, Severity s, MessageLog *m) {
 	       m_Sb.setLog(f, s, m);
 	    }
 	 private:
@@ -265,7 +265,7 @@ class MessageLog {
    private:
    // Private member functions
    // Private data members
-      // Our ostream
+      // Ourstd::ostream
       omsgstream m_os;
    // Static data members
 };

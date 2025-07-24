@@ -11,7 +11,7 @@
 //
 // Usage:
 //    This header instantiates 
-//        pair<iter1,iter2> mismatch(iter1_first, iter1_last, iter2_first);
+//        std::pair<iter1,iter2> mismatch(iter1_first, iter1_last, iter2_first);
 //
 //    The user must set these typedefs before including this header file:
 //        _mismatch_iterator1_type_ = iterator type for the first container
@@ -19,7 +19,7 @@
 //
 //    e.g. If you had an stl vector of MyItem, and an stl deque of
 //    MyItem, then you would need...
-//            typedef STL_VECTOR(MyItem)::iterator _mismatch_iterator1_type;
+//            typedef std::vector<MyItem>::iterator _mismatch_iterator1_type;
 //            typedef STL_DEQUE(MyItem)::iterator  _mismatch_iterator2_type;
 //
 // Author:      Lawrence Gibbons
@@ -39,7 +39,7 @@
 
 #if ( defined(__DECCXX) )
 
-template pair< _mismatch_iterator1_type_, _mismatch_iterator2_type_ > 
+template std::pair< _mismatch_iterator1_type_, _mismatch_iterator2_type_ > 
 STD_PREFIX mismatch( _mismatch_iterator1_type_, 
 		     _mismatch_iterator1_type_,
 		     _mismatch_iterator2_type_ );

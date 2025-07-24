@@ -75,7 +75,7 @@
 #endif /* STL_ALLOCATOR */
 
 #if !defined(STL_LIST)
-#  define STL_LIST( c ) list< c >
+#  define std::list< c > list< c >
 #  define STL_LIST_ALLOC( c , a ) list< c , a >
 
 #if defined(NO_ALLOCATOR_IN_STL_DECLARATION_BUG)
@@ -84,7 +84,7 @@
 
 #if (defined(NO_DEFAULT_ALLOCATOR_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_LIST
-#  define STL_LIST( c ) list< c , STL_ALLOCATOR( c ) >
+#  define std::list< c > list< c , STL_ALLOCATOR( c ) >
 #endif /* NO_DEFAULT_ALLOCATOR_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
 
 #endif /* NO_ALLOCATOR_IN_STL_DECLARATION_BUG */

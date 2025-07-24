@@ -36,12 +36,12 @@
 #if !defined(BOOL_NOT_DEFINED_BUG)
 typedef bool _vector_contents_ ;
 #include <vector>
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 //#include "STLUtility/instantiate_vector.h"
 
 #if ( defined(NO_IMPLICIT_INSTANTIATION) && defined(__DECCXX) )
 
-#define vec_iterator STL_VECTOR( _vector_contents_ )::iterator
+#define vec_iterator std::vector< _vector_contents_ >::iterator
 
 template vec_iterator std::copy( vec_iterator, 
 				 vec_iterator, 

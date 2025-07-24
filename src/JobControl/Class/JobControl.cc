@@ -18,17 +18,9 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <assert.h>
 #include <stddef.h>
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <vector>
-#include <map>
-#include <set>
-#if defined(MULTIMAP_IS_SEPARATE_FILE_BUG)
-#  include <multimap.h>
-#endif
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Experiment/report.h"
@@ -57,7 +49,7 @@
 #include "Processor/MasterProducer.h"
 #include "ToolBox/HistogramPackage.h"
 #include "DummyHistogram/DummyHistoManager.h"
-#include "DefaultModule/DefaultModule.h"
+#include "CommandPattern/DefaultModule.h"
 
 #include "JobControl/PathModule.h"
 
@@ -72,10 +64,7 @@
 #include <vector>
 #include <map>
 #include <set>
-#include "STLUtility/fwd_multimap.h" // to define CPP macros
-#if defined(MULTIMAP_IS_SEPARATE_FILE_BUG)
-#  include <multimap.h>
-#endif
+#include <map> // to define CPP macros
 
 //
 // constants, enums and typedefs
@@ -132,27 +121,6 @@ JobControl::JobControl()
      m_doDeleteSourceAtEnd( true )
 {
    // --------- check for out-of-memory errors -----------------
-   if(    0 == &m_frameDeliverer 
-
-	  // --------- "static" modules ------------
-       || 0 == &m_producerM
-       || 0 == &m_processorM
-
-       || 0 == &m_summaryM
-       || 0 == &m_sourceFM
-       || 0 == &m_sinkFM
-       || 0 == &m_sourceM
-       || 0 == &m_sinkM
-       || 0 == &m_defaultM
-      )
-   {
-      report( EMERGENCY ,
-              kFacilityString )
-                 << "Unable to allocate memory"
-                 << endl ;
-      assert(false);
-      ::exit( 1 );
-   }
 
    // ------ add modules ----------------
    // (Note: this gives up ownership of memory!)
@@ -265,7 +233,7 @@ JobControl::eventLoop( StopCounter& iStopCounter )
       {
 	 isDone = true;
 	 report( INFO, kFacilityString )
-	    << "Reached end of requested number of stops." << endl;
+	    << "Reached end of requested number of stops." << std::endl;
 	 break;
       }
 	 
@@ -277,7 +245,7 @@ JobControl::eventLoop( StopCounter& iStopCounter )
 	 //   after producers were added
 	 if( FrameDeliverer::kNextStopNoError!=m_frameDeliverer.resynchronize() ) {
 	    report( ERROR, kFacilityString )
-	       << "can't resynchronize properly after goto" << endl;
+	       << "can't resynchronize properly after goto" << std::endl;
 	    returnValue = false;
 	    break;
 	 }
@@ -340,7 +308,7 @@ JobControl::eventLoopSetup()
    m_histoLockedIn = true;
    if( 0 == m_histoM ) {
       report( WARNING, kFacilityString )
-	 << "no histogram manager selected! using default." << endl;
+	 << "no histogram manager selected! using default." << std::endl;
 
       if( 0 == m_defaultHistoM ) {
 	 m_defaultHistoM = new DummyHistoManager();
@@ -407,7 +375,7 @@ JobControl::goTo( int iRunNumber, int iEventNumber, const StreamType& iStream )
    // already have user-requested run and event number as input parms
 
    // Save the list of presently active sources
-   vector<DataSourceDescriptor> savedActiveSources = FD.activeSources();
+   std::vector<DataSourceDescriptor> savedActiveSources = FD.activeSources();
    FD.removeAllActiveSources();
 
    // need to add InteractiveSource as only active source
@@ -432,7 +400,7 @@ JobControl::goTo( int iRunNumber, int iEventNumber, const StreamType& iStream )
        ( iAddError = FD.addSource( intBinder )))
    {
       report( EMERGENCY, kFacilityString )
-	 << "Error adding InteractiveSource." << endl;
+	 << "Error adding InteractiveSource." << std::endl;
       returnValue=false;
    }
    else // successful addition of InteractiveSource
@@ -442,7 +410,7 @@ JobControl::goTo( int iRunNumber, int iEventNumber, const StreamType& iStream )
 	  (iActiveError = FD.addActiveSource( intBinder)))
       {
 	 report( EMERGENCY, kFacilityString )
-	    << "Error making InteractiveSource an active source." << endl;
+	    << "Error making InteractiveSource an active source." << std::endl;
 	 returnValue=false;
       }
       else // successfull activation of InteractiveSource
@@ -453,7 +421,7 @@ JobControl::goTo( int iRunNumber, int iEventNumber, const StreamType& iStream )
 	     intSource.setSyncValue( SyncValue( iRunNumber, iEventNumber ) ) )
 	 {
 	    report( EMERGENCY, kFacilityString )
-	       << "Can't goto these run/event numbers!" << endl;
+	       << "Can't goto these run/event numbers!" << std::endl;
 	    returnValue=false;
 	 }
 	 else // successful setting of run and event number
@@ -465,7 +433,7 @@ JobControl::goTo( int iRunNumber, int iEventNumber, const StreamType& iStream )
 	    if( true == isDone )
 	    {
 	       report( EMERGENCY, kFacilityString )
-		  << "Can't goto these run/event numbers!" << endl;
+		  << "Can't goto these run/event numbers!" << std::endl;
 	       returnValue=false;
 	    }	       
 	 }
@@ -479,9 +447,9 @@ JobControl::goTo( int iRunNumber, int iEventNumber, const StreamType& iStream )
    }
    
    // restore all the old active sources saved in step 1.)
-   vector<DataSourceDescriptor>::const_iterator lastSavedActiveSource 
+   std::vector<DataSourceDescriptor>::const_iterator lastSavedActiveSource 
       = savedActiveSources.end();
-   for( vector<DataSourceDescriptor>::const_iterator savedActiveSource
+   for( std::vector<DataSourceDescriptor>::const_iterator savedActiveSource
 	   = savedActiveSources.begin();
 	savedActiveSource != lastSavedActiveSource;
 	++savedActiveSource )
@@ -502,7 +470,7 @@ DABoolean
 JobControl::gotoNextStop( Stream::Type& oCurrentStop, DABoolean& oNoError )
 {
    oNoError = true;
-   //report( INFO, kFacilityString ) << "gotoNextStop()" << endl;
+   //report( INFO, kFacilityString ) << "gotoNextStop()" << std::endl;
 
    // break condition
    DABoolean isDone = false;
@@ -527,13 +495,13 @@ JobControl::gotoNextStop( Stream::Type& oCurrentStop, DABoolean& oNoError )
       case FrameDeliverer::kNextStopReachedEndOfAPassiveSource:
       {
 	 //report( ERROR, kFacilityString )
-	 //   << "FrameDeliverer::kNextStopReachedEndOfAPassiveSource" << endl;
+	 //   << "FrameDeliverer::kNextStopReachedEndOfAPassiveSource" << std::endl;
 	 report( WARNING, kFacilityString )
-	    << "Reached end of a passive source" << endl;
+	    << "Reached end of a passive source" << std::endl;
 	 
 	 // warn user that the last record might be OLD!
 	 report( WARNING, kFacilityString ) 
-	    << "Record in passive source might be old!" << endl;
+	    << "Record in passive source might be old!" << std::endl;
 
 	 // don't delete source-at-end; give warning but continue!
 	 isDone = false;
@@ -544,9 +512,9 @@ JobControl::gotoNextStop( Stream::Type& oCurrentStop, DABoolean& oNoError )
       case FrameDeliverer::kNextStopReachedEndOfAnActiveSource:
       {
 	 //report( ERROR, kFacilityString )
-	 //   << "FrameDeliverer::kNextStopReachedEndOfAnActiveSource" << endl;
+	 //   << "FrameDeliverer::kNextStopReachedEndOfAnActiveSource" << std::endl;
 	 report( INFO, kFacilityString )
-	    << "Reached end of an active source" << endl;
+	    << "Reached end of an active source" << std::endl;
 	 
 	 deleteSourceAtEnd();
 
@@ -561,8 +529,8 @@ JobControl::gotoNextStop( Stream::Type& oCurrentStop, DABoolean& oNoError )
       case FrameDeliverer::kNextStopNoActiveStreams:
       {
 	 report( ERROR, kFacilityString )
-	    //   << "FrameDeliverer::kNextStopNoActiveStreams" << endl;
-	    << "No active stream defined!" << endl;
+	    //   << "FrameDeliverer::kNextStopNoActiveStreams" << std::endl;
+	    << "No active stream defined!" << std::endl;
 
 	 // stop just in case
 	 isDone = true;
@@ -574,7 +542,7 @@ JobControl::gotoNextStop( Stream::Type& oCurrentStop, DABoolean& oNoError )
       case FrameDeliverer::kNextStopFailedToSyncAllSources:
       {
 	 report( ERROR, kFacilityString )
-	    << "FrameDeliverer::kNextStopFailedToSyncAllSources" << endl;
+	    << "FrameDeliverer::kNextStopFailedToSyncAllSources" << std::endl;
 
 	 // stop just in case
 	 isDone = true;
@@ -586,7 +554,7 @@ JobControl::gotoNextStop( Stream::Type& oCurrentStop, DABoolean& oNoError )
       case FrameDeliverer::kNextStopProblemWithASource:
       {
 	 report( ERROR, kFacilityString )
-	    << "FrameDeliverer::kNextStopProblemWithASource" << endl;
+	    << "FrameDeliverer::kNextStopProblemWithASource" << std::endl;
 
 	 // stop just in case
 	 isDone = true;
@@ -598,7 +566,7 @@ JobControl::gotoNextStop( Stream::Type& oCurrentStop, DABoolean& oNoError )
       case FrameDeliverer::kNextStopUnknownError:
       {
 	 report( ERROR, kFacilityString )
-	    << "FrameDeliverer::kNextStopUnknownError" << endl;
+	    << "FrameDeliverer::kNextStopUnknownError" << std::endl;
 
 	 // stop just in case
 	 isDone = true;
@@ -647,7 +615,7 @@ JobControl::deleteSourceAtEnd( void )
 	    DataSourceDescriptor DSD = (*which).second;
 	    SourceManager::Token token = m_sourceM.findTokenFor( DSD );
 	 //report( INFO ) 
-	 //    << "Will remove source-at-end \"" << token << "\"" << endl;
+	 //    << "Will remove source-at-end \"" << token << "\"" << std::endl;
 	    m_sourceM.list( token ); // more verbose output
 	    m_sourceM.removeSourceInUse( token );
 	    
@@ -660,7 +628,7 @@ JobControl::deleteSourceAtEnd( void )
       if( !returnValue ) 
       {
 	 report( ERROR, kFacilityString ) 
-	    << "Can't find Source-at-end to be deleted!" << endl;
+	    << "Can't find Source-at-end to be deleted!" << std::endl;
       }
    }
    return returnValue;
@@ -735,7 +703,7 @@ JobControl::setHistogramManager( HIHistoManager* iHistoM )
 {
    if( true == m_histoLockedIn && iHistoM != 0 ) {
       report( ERROR, kFacilityString )
-	 << "histogram manager has already been locked in!" << endl;
+	 << "histogram manager has already been locked in!" << std::endl;
    } else {
       m_histoM = iHistoM;
    }
@@ -854,7 +822,7 @@ JobControl::destroy()
    else
    {
       report( EMERGENCY, kFacilityString )
-	 << "JobControl::m_instance == 0" << endl;
+	 << "JobControl::m_instance == 0" << std::endl;
       assert( false );
       ::exit( 1 );
    }

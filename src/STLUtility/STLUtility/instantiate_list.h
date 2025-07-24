@@ -77,43 +77,43 @@ void __advance (list< _list_contents_ >::iterator& i, long n, bidirectional_iter
 }
 #else
 
-#include "STLUtility/fwd_list.h"
-template class STL_LIST( _list_contents_ ) ;
+#include <list>
+template class std::list< _list_contents_ > ;
 
 #if ( defined(NO_IMPLICIT_INSTANTIATION) && defined(__DECCXX) )
-template STL_LIST( _list_contents_ )::iterator std::copy(
-   STL_LIST( _list_contents_ )::iterator,
-   STL_LIST( _list_contents_ )::iterator,
-   STL_LIST( _list_contents_ )::iterator );
+template std::list< _list_contents_ >::iterator std::copy(
+   std::list< _list_contents_ >::iterator,
+   std::list< _list_contents_ >::iterator,
+   std::list< _list_contents_ >::iterator );
 
-template STL_LIST( _list_contents_ )::iterator std::copy(
-   STL_LIST( _list_contents_ )::const_iterator,
-   STL_LIST( _list_contents_ )::const_iterator,
-   STL_LIST( _list_contents_ )::iterator );
+template std::list< _list_contents_ >::iterator std::copy(
+   std::list< _list_contents_ >::const_iterator,
+   std::list< _list_contents_ >::const_iterator,
+   std::list< _list_contents_ >::iterator );
 
-template void STL_LIST(_list_contents_)::insert(
-   STL_LIST(_list_contents_)::iterator, 
-   STL_LIST(_list_contents_)::const_iterator, 
-   STL_LIST(_list_contents_ )::const_iterator);
+template void std::list<_list_contents_>::insert(
+   std::list<_list_contents_>::iterator, 
+   std::list<_list_contents_>::const_iterator, 
+   std::list<_list_contents_ >::const_iterator);
 
-template void STL_LIST(_list_contents_)::insert(
-   STL_LIST(_list_contents_)::iterator, 
-   STL_LIST(_list_contents_)::iterator, 
-   STL_LIST(_list_contents_ )::iterator);
+template void std::list<_list_contents_>::insert(
+   std::list<_list_contents_>::iterator, 
+   std::list<_list_contents_>::iterator, 
+   std::list<_list_contents_ >::iterator);
 
 #if __DECCXX_VER >= 60290024
 // list implementation changed
 #elif __DECCXX_VER >= 60190027
-template void STL_LIST(_list_contents_)::__insert(
-   STL_LIST(_list_contents_)::iterator, 
-   STL_LIST(_list_contents_)::const_iterator, 
-   STL_LIST(_list_contents_ )::const_iterator,
+template void std::list<_list_contents_>::__insert(
+   std::list<_list_contents_>::iterator, 
+   std::list<_list_contents_>::const_iterator, 
+   std::list<_list_contents_ >::const_iterator,
    __false_category );
 
-template void STL_LIST(_list_contents_)::__insert(
-   STL_LIST(_list_contents_)::iterator, 
-   STL_LIST(_list_contents_)::iterator, 
-   STL_LIST(_list_contents_ )::iterator,
+template void std::list<_list_contents_>::__insert(
+   std::list<_list_contents_>::iterator, 
+   std::list<_list_contents_>::iterator, 
+   std::list<_list_contents_ >::iterator,
    __false_category );
 #endif
 

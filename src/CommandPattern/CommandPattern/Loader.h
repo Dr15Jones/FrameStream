@@ -37,11 +37,11 @@ class Loader : public LoaderBase<T>
       // constants, enums and typedefs
 
       // Constructors and destructor
-      Loader( const string& environment );
+      Loader( const std::string& environment );
 
       // member functions
-      virtual DABoolean load( const string& iName );
-      virtual pair<string,string> disassembleName(const string& iName) const;
+      virtual DABoolean load( const std::string& iName );
+      virtual std::pair<std::string,std::string> disassembleName(const std::string& iName) const;
 
       // static factory
 
@@ -51,7 +51,7 @@ class Loader : public LoaderBase<T>
       // protected member functions
 
       // warning/error messages
-      virtual string makeErrorMesg( const string& iName ) const;
+      virtual std::string makeErrorMesg( const std::string& iName ) const;
 
       // protected const member functions
 

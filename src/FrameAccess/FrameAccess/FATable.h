@@ -63,7 +63,7 @@
        extract( frame.record(Stream::kEvent) , trackTable ) ;
      } catch( NO_TABLE_EXCEPTION(DBTrack)& iException ) {
        //print a nice diagnostic message
-       report(WARNING, kFacilityString ) << iException.what() << endl;
+       report(WARNING, kFacilityString ) << iException.what() << std::endl;
      }
      
      //want to know if the extract call worked

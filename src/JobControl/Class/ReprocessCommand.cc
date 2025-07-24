@@ -105,13 +105,13 @@
 //
 static const char* const kFacilityString = "JobControl.ReprocessCommand";
 
-const string helpMessage = 
-string( "                                                        \n" )+
-string( "// Description: Reprocess Command                       \n" )+
-string( "//              \"reprocess\" reprocesses current stop. \n" )+
-string( "//                                                      \n" )+
-string( "//   Please be aware that results of a reprocess command\n" )+
-string( "//      are NOT written to storage media!               \n" );
+const std::string helpMessage = 
+std::string( "                                                        \n" )+
+std::string( "// Description: Reprocess Command                       \n" )+
+std::string( "//              \"reprocess\" reprocesses current stop. \n" )+
+std::string( "//                                                      \n" )+
+std::string( "//   Please be aware that results of a reprocess command\n" )+
+std::string( "//      are NOT written to storage media!               \n" );
 
 //
 // static data member definitions
@@ -174,14 +174,14 @@ ReprocessCommand::execute( int argc, char* argv[] )
 	 result = helpHandler();
       } 
       else { // bad command argument!
-	 report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+	 report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
 	 result = COMMAND_ERROR;
       }
    }
    else // number of arguments 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -194,7 +194,7 @@ int
 ReprocessCommand::helpHandler()
 {
    // print help from header
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }

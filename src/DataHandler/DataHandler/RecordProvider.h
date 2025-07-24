@@ -84,7 +84,7 @@
 #include "DataHandler/Stream.h"
 
 // forward declarations
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 class SyncValue ;
 class Record ;
 class Frame ;
@@ -96,7 +96,7 @@ class RecordProvider
 
    public:
       // constants, enums and typedefs
-      typedef STL_VECTOR( ProxyProvider* ) Providers ;
+      typedef std::vector< ProxyProvider* > Providers ;
 
       // Constructors and destructor
       RecordProvider( const Stream::Type& aStream ) ;

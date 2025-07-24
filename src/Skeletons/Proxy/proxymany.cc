@@ -166,7 +166,7 @@ proxynameProxy::faultHandler( const Record& iRecord,
 //void
 //proxynameProxy::boundMethod( const Record& iRecord )
 //{
-//   report( INFO, kFacilityString) <<"BoundMethod: " <<iRecord.stream().value() << endl;
+//   report( INFO, kFacilityString) <<"BoundMethod: " <<iRecord.stream().value() << std::endl;
 //}
 
 //-----------------------------------------------

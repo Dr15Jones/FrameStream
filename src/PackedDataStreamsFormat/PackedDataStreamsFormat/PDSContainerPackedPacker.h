@@ -67,7 +67,7 @@ class PDSContainerPackedPacker : public PDSPackerBase
       // ---------- protected member functions ----------------
       void storeStrategyInfo( UInt32& ioPackedWord,
 			      unsigned char& ioStartBit,
-			      STL_VECTOR(UInt32)& ioContainer ) const {
+			      std::vector<UInt32>& ioContainer ) const {
 	 m_packer->storePackingInfo( ioPackedWord,
 				     ioStartBit,
 				     ioContainer );

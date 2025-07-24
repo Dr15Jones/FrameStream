@@ -127,7 +127,7 @@ BinaryRawEventProxy::faultHandler( const Record& iRecord,
    if( 0 == m_BinaryRawEvent )
    {
       report( EMERGENCY, kFacilityString )
-	 << "can't allocate memory; aborting" << endl;
+	 << "can't allocate memory; aborting" << std::endl;
       assert( false );
       ::exit( 1 );
    }

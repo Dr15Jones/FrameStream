@@ -66,7 +66,7 @@
 
 // STL include
 #include <string>
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 // forward declarations
 class StreamSet;
@@ -78,8 +78,8 @@ class SinkManager : public Module
 
    public:
       // constants, enums and typedefs
-      typedef string SinkName;
-      typedef string StreamName;
+      typedef std::string SinkName;
+      typedef std::string StreamName;
 
       // Constructors and destructor
       SinkManager( );
@@ -87,13 +87,13 @@ class SinkManager : public Module
 
       //signals
       //emitted just after sink added
-      SSSignal_1<const string&> addedSink;
+      SSSignal_1<const std::string&> addedSink;
 
       //emitted just before sink info is deleted
-      SSSignal_1<const string&> removingSink;
-      SSSignal_1<const string&> removingSinkInUse;
+      SSSignal_1<const std::string&> removingSink;
+      SSSignal_1<const std::string&> removingSinkInUse;
       ///set second argument to false if should not remove Sink in question
-      SSSignal_2<const string&, DABoolean&> requestToRemoveSink;
+      SSSignal_2<const std::string&, DABoolean&> requestToRemoveSink;
 
       // member functions
 
@@ -118,11 +118,11 @@ class SinkManager : public Module
 
       DataSinkBinder* binderFor( const SinkName& iName ) const;
 
-      STL_VECTOR(string) unusedSinks() const;
+      std::vector<std::string> unusedSinks() const;
 
       // listings
-      string list( const SinkName& iName ) const;
-      string listAllSinks() const;
+      std::string list( const SinkName& iName ) const;
+      std::string listAllSinks() const;
 
       // token stuff
       DABoolean hasSink( const SinkName& iName ) const;
@@ -149,8 +149,8 @@ class SinkManager : public Module
       // private member functions
 
       // private const member functions
-      string listSink( const SinkName& iName ) const;
-      string listSinkInUse( const SinkName& iName ) const;
+      std::string listSink( const SinkName& iName ) const;
+      std::string listSinkInUse( const SinkName& iName ) const;
 
       // data members
       SinkCommand m_command;

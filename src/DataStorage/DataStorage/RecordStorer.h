@@ -84,7 +84,7 @@
 class ProxyStorer ;
 class Frame;
 
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 
 class RecordStorer
@@ -118,7 +118,7 @@ class RecordStorer
 
    protected:
       // protected member functions
-      const vector< ProxyStorer* >& storers( void ) const ;
+      const std::vector< ProxyStorer* >& storers( void ) const ;
 
       // protected const member functions
 
@@ -138,7 +138,7 @@ class RecordStorer
 
       // static data members
       Stream::Type m_stream ;
-      vector< ProxyStorer* >& m_storers ;
+      std::vector< ProxyStorer* >& m_storers ;
 
 };
 

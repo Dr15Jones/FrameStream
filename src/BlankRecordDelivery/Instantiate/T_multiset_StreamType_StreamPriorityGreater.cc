@@ -36,7 +36,3 @@
 // instantiate
 //
 
-typedef Stream::Type _multiset_contents_ ;
-typedef StreamPriorityGreater _multiset_compare_ ;
-
-#include "STLUtility/instantiate_multiset.h"

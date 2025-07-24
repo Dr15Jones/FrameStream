@@ -45,7 +45,7 @@ testBoolean()
    if( true != !false )
    {
       report( EMERGENCY, kFacilityString ) 
-	 << " true is not !false; disaster!" << endl;
+	 << " true is not !false; disaster!" << std::endl;
       assert( false ) ;
       exit(1) ;
    }

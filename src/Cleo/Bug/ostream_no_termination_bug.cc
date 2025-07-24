@@ -24,7 +24,7 @@ int main()
    ostrstream number;
    number << sum;
 #endif
-   cout << "Number=" << number << endl;
+   cout << "Number=" << number << std::endl:endl;
    
    return 0;
 }

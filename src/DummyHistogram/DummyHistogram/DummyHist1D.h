@@ -44,7 +44,7 @@ class DummyHist1D : public HIHist1D
       // ---------- Constructors and destructor ----------------
       DummyHist1D(
                      unsigned int  iId,
-		     const string& iTitle,
+		     const std::string& iTitle,
 		     unsigned int  iNChannels,
 		     float         iLowEdge,
 		     float         iHighEdge,

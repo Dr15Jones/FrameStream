@@ -42,11 +42,11 @@ void eventProcess( const Frame& iFrame)
 	   <<(*eventHeader).run()
 	   <<"/"
 	   <<(*eventHeader).number()
-	   <<endl;
+	   <<std::endl;
    } 
    else 
    {
-      cout <<"Invalid Event Header"<<endl;
+      cout <<"Invalid Event Header"<<std::endl;
    }
 
 
@@ -54,7 +54,7 @@ void eventProcess( const Frame& iFrame)
    extract( iFrame.record( Stream::kEvent ), pionFits ) ;
    if( pionFits.valid() )
    {
-      cout <<"  Number of tracks:"<< pionFits.size() <<endl;
+      cout <<"  Number of tracks:"<< pionFits.size() <<std::endl;
    }
    
    return;
@@ -91,14 +91,14 @@ int main( void )
    // declare binder for reading
    if( FrameDeliverer::kAddSourceNoError !=
        (iAddError = frameDeliverer.addSource( asciiBinder))){
-      cout <<"Add Data Source error:"<< iAddError <<endl;
+      cout <<"Add Data Source error:"<< iAddError <<std::endl;
       exit(1);
    }
 
    // declare binder for active streams
    if( FrameDeliverer::kAddActiveSourceNoError != 
        (iActiveError = frameDeliverer.addActiveSource( asciiBinder))){
-      cout <<"Add Active Stream error:"<< iActiveError <<endl;
+      cout <<"Add Active Stream error:"<< iActiveError <<std::endl;
       exit(1);
    }
 
@@ -112,8 +112,8 @@ int main( void )
       nextStopStatus = frameDeliverer.gotoNextStop();
       Stream::Type currentStop = frameDeliverer.currentStop();
       
-      cout << "------------------------" << endl;
-      cout << "NextStopStatus:" << nextStopStatus << endl;
+      cout << "------------------------" << std::endl;
+      cout << "NextStopStatus:" << nextStopStatus << std::endl;
 
       if( Stream::kNone == currentStop )
       {
@@ -121,33 +121,33 @@ int main( void )
       } 
       else if ( Stream::kBeginRun == currentStop )
       {
-	 cout <<"Begin Run"<<endl;
+	 cout <<"Begin Run"<<std::endl;
       } 
       else if ( Stream::kEvent == currentStop )
       {
 	 ++nEvents;
-	 cout <<"Event"<<endl;
+	 cout <<"Event"<<std::endl;
 	 eventProcess( frameDeliverer.currentFrame() );
       } 
       else if ( Stream::kEndRun == currentStop )
       {
-	cout <<"End Run"<<endl;
+	cout <<"End Run"<<std::endl;
       } 
       else 
       {
-	 cout <<"Unknown Record:"<<currentStop<<endl;
+	 cout <<"Unknown Record:"<<currentStop<<std::endl;
 	 isDone=true;
       }
    }
       
-   cout << "------------------------" << endl;
+   cout << "------------------------" << std::endl;
    cout << "Next Stop Status ( End of Active Source="
 	<< FrameDeliverer::kNextStopReachedEndOfAnActiveSource
 	<< "):"
 	<<nextStopStatus
-	<<endl;
+	<<std::endl;
       
-   cout << nEvents<<endl;
+   cout << nEvents<<std::endl;
    return 0;
 }
 

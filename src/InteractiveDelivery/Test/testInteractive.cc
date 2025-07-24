@@ -1,4 +1,4 @@
-#include "C++Std/iostream.h"
+#include <iostream>
 #include "DataHandler/Include/Stream.h"
 #include "DataDelivery/Include/FrameDeliverer.h"
 #include "DataHandler/Include/StreamSet.h"
@@ -18,16 +18,16 @@ void eventProcess( const Frame& iFrame)
 {
    DHItem< DBEventHeader > eventHeader;
 
-   cout << "call Extractor"<<endl;
+   cout << "call Extractor"<<std::endl;
    Extractor( iFrame,
 	      eventHeader);
 
-   cout <<" called Extractor"<<endl;
+   cout <<" called Extractor"<<std::endl;
    cout <<"Run/Event:"
 	<<(*eventHeader).run()
 	<<"/"
 	<<(*eventHeader).number()
-	<<endl;
+	<<std::endl;
 
    return;
 }
@@ -51,7 +51,7 @@ int main( void )
 
    if( FrameDeliverer::kAddSourceNoError != 
        (iAddError = frameDeliverer.addSource( asciiRunEventBinder))){
-      cout <<"Add Data Source error:"<< iAddError <<endl;
+      cout <<"Add Data Source error:"<< iAddError <<std::endl;
       exit(1);
    }
 
@@ -62,14 +62,14 @@ int main( void )
 
    if( FrameDeliverer::kAddSourceNoError != 
        (iAddError = frameDeliverer.addSource( intBinder ))){
-      cout <<"Add Data Source error:"<< iAddError <<endl;
+      cout <<"Add Data Source error:"<< iAddError <<std::endl;
       exit(1);
    }
 
    FrameDeliverer::AddActiveSourceStatus iActiveError;
    if( FrameDeliverer::kAddActiveSourceNoError != 
        (iActiveError = frameDeliverer.addActiveSource( intBinder))){
-      cout <<"Add Active Stream error:"<< iActiveError <<endl;
+      cout <<"Add Active Stream error:"<< iActiveError <<std::endl;
       exit(1);
    }
 
@@ -81,7 +81,7 @@ int main( void )
       //Prompt user for run event
       DABoolean goodStop(false);
       while( !goodStop ){
-	 cout <<"---------------"<<endl;
+	 cout <<"---------------"<<std::endl;
 	 cout <<"goto Run Event:";
 	 unsigned long run, event;
 	 cin >> run >> event;
@@ -90,7 +90,7 @@ int main( void )
 	 if( intSource.setRunEvent( run, event ) ){
 	    goodStop = true;
 	 } else {
-	    cout <<"Inappropriate values"<<endl;
+	    cout <<"Inappropriate values"<<std::endl;
 	 }
       }
 	 
@@ -98,18 +98,18 @@ int main( void )
       nextStopStatus = frameDeliverer.gotoNextStop();
 
       Stream::Type currentStop = frameDeliverer.currentStop();
-      cout<<"  status:"<< nextStopStatus << endl;
+      cout<<"  status:"<< nextStopStatus << std::endl;
       if( Stream::kNone == currentStop ){
 	 isDone = true;
       } else if ( Stream::kBeginRun == currentStop ){
-	 cout <<"Begin Run"<<endl;
+	 cout <<"Begin Run"<<std::endl;
       } else if ( Stream::kEvent == currentStop ){
-	 cout <<"Event"<<endl;
+	 cout <<"Event"<<std::endl;
 	 eventProcess( frameDeliverer.currentFrame() );
       } else if ( Stream::kEndRun == currentStop ){
-	 cout <<"End Run"<<endl;
+	 cout <<"End Run"<<std::endl;
       } else {
-	 cout <<"Unknown Record:"<<currentStop<<endl;
+	 cout <<"Unknown Record:"<<currentStop<<std::endl;
 	 isDone=true;
       }
    }
@@ -118,7 +118,7 @@ int main( void )
 	<<FrameDeliverer::kNextStopReachedEndOfAnActiveSource
 	<<"):"
 	<<nextStopStatus
-	<<endl;
+	<<std::endl;
       
    return 0;
   

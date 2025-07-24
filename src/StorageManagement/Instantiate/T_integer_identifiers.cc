@@ -36,11 +36,11 @@
 
 // user include files
 //#include "Experiment/report.h"
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 #include <vector>
 
-typedef STL_VECTOR(unsigned int) _container_type_;
+typedef std::vector<unsigned int> _container_type_;
 
 #include "StorageManagement/instantiate_contents_builtin.h"
 

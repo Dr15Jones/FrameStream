@@ -11,7 +11,7 @@
 //
 //   StringTokenizer myString( "hello how are you" );
 //   while( myString.hasMoreElements() ) {
-//      cout << myString.nextElement() << endl;
+//      cout << myString.nextElement() << std::endl;
 //   }
 //
 //   will print: hello
@@ -21,7 +21,7 @@
 //
 //   StringTokenizer myString( "hello how are you", 'l' );
 //   while( myString.hasMoreElements() ) {
-//      cout << myString.nextElement() << endl;
+//      cout << myString.nextElement() << std::endl;
 //   }
 //
 //   will print: he
@@ -41,7 +41,6 @@
 // user include files
 
 // forward declarations
-#include "STLUtility/fwd_deque.h"
 
 class StringTokenizer
 {
@@ -49,19 +48,19 @@ class StringTokenizer
 
    public:
       // ---------- constants, enums and typedefs --------------
-      typedef deque< string > Tokens;
-      typedef Tokens (*ParsingFunction)( const string& aString,
+      typedef std::deque< std::string > Tokens;
+      typedef Tokens (*ParsingFunction)( const std::string& aString,
 					 char aDelimiter );
 
       // ---------- Constructors and destructor ----------------
-      StringTokenizer( const string& aString, 
+      StringTokenizer( const std::string& aString, 
 		       char aDelimiter = ' ',
 		       ParsingFunction iParsingFunction=
 		       &StringTokenizer::parseString );
       virtual ~StringTokenizer();
 
       // ---------- member functions ---------------------------
-      string nextElement();
+      std::string nextElement();
 
       // ---------- const member functions ---------------------
       DABoolean hasMoreElements() const;
@@ -90,7 +89,7 @@ class StringTokenizer
       Tokens m_tokens;
 
       // ---------- static data members ------------------------
-      static Tokens parseString( const string& aString, char aDelimiter );
+      static Tokens parseString( const std::string& aString, char aDelimiter );
 
 };
 

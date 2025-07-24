@@ -84,15 +84,15 @@
 #endif /* STL_ALLOCATOR */
 
 #if !defined(STL_SET)
-#  define STL_SET( c ) set< c >
-#  define STL_SET_COMP( c , l ) set< c , l >
+#  define std::set< c > set< c >
+#  define std::set< c , l > set< c , l >
 #  define STL_SET_COMP_ALLOC( c , l , a ) set< c , l , a >
 
 #if defined(NO_ALLOCATOR_IN_STL_DECLARATION_BUG)
 
 #if (defined(NO_DEFAULT_COMPARE_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_SET
-#  define STL_SET( c ) set< c , less< c > >
+#  define std::set< c > set< c , less< c > >
 #  undef STL_SET_COMP_ALLOC
 #endif  /* NO_DEFAULT_COMPARE_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
 
@@ -102,13 +102,13 @@
 
 #if (defined(NO_DEFAULT_ALLOCATOR_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_SET
-#  define STL_SET( c ) set< c , less< c > , STL_ALLOCATOR( c ) >
+#  define std::set< c > set< c , less< c > , STL_ALLOCATOR( c ) >
 #  undef STL_SET_COMP
-#  define STL_SET_COMP( c , l ) set< c , l , STL_ALLOCATOR( c ) >
+#  define std::set< c , l > set< c , l , STL_ALLOCATOR( c ) >
 #else
 
 #  undef STL_SET
-#  define STL_SET( c ) set< c , less< c > >
+#  define std::set< c > set< c , less< c > >
 #endif /* NO_DEFAULT_ALLOCATOR_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
 
 #endif /* NO_DEFAULT_COMPARE_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
@@ -123,6 +123,6 @@
 using namespace std;
 #endif // NO_STD_NAMESPACE_BUG
 
-#include "STLUtility/fwd_multiset.h"
+#include <set>
 
 #endif /* STLUTILITY_FWD_SET_H */

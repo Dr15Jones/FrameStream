@@ -89,12 +89,12 @@ class DataSourceBinder : public DataSourceDescriptor
       DataSourceBinder( const Stream::Set& iBindStreams );
       DataSourceBinder( const Stream::Type& iBindStream =  Stream::kNone ) ;
 
-      DataSourceBinder( const string& iDataSourceID,
-			const string& iParameters,
+      DataSourceBinder( const std::string& iDataSourceID,
+			const std::string& iParameters,
 			const Stream::Set& iBindStreams );
 
-      DataSourceBinder( const string& iDataSourceID,
-			const string& iParameters,
+      DataSourceBinder( const std::string& iDataSourceID,
+			const std::string& iParameters,
 			const Stream::Type& iBindStream );
 
       virtual ~DataSourceBinder();

@@ -104,7 +104,7 @@ void __distance(rb_tree< _multiset_contents_, _multiset_contents_ , ident< _mult
 
 #else
 
-#include "STLUtility/fwd_set.h"
+#include <set>
 template class STL_MULTISET_COMP( _multiset_contents_ , _multiset_compare_ ) ;
 
 #if ( defined(NO_IMPLICIT_INSTANTIATION) && defined(__DECCXX) )

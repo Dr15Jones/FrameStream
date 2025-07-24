@@ -63,7 +63,7 @@
 // constants, enums and typedefs
 //
 
-const string kFacilityString = "DataHandler.RecordProvider" ;
+const std::string kFacilityString = "DataHandler.RecordProvider" ;
 
 //
 // static data member definitions
@@ -87,16 +87,6 @@ RecordProvider::RecordProvider( const Stream::Type& aStream ) :
    m_record( *( RecordProvider::createRecord( aStream ) ) ) ,
    m_needReconfigure( !false )
 {
-   if ( ( 0 == &m_record ) ||
-	( 0 == &m_providers ) ) {
-      delete &m_record ;
-      delete &m_providers ;
-      report( EMERGENCY ,
-	      kFacilityString )
-		 << "Unable to allocate memory"
-		 << endl ;
-      exit( 1 ) ;
-   }
 }
 
 // RecordProvider::RecordProvider( const RecordProvider& )
@@ -138,7 +128,7 @@ RecordProvider::add( ProxyProvider& aProvider )
 		 << m_stream
 		 << " stream! "
 		 << "Will ignore it."
-		 << endl ;
+		 << std::endl ;
       return ;
    }
 //
@@ -153,7 +143,7 @@ RecordProvider::add( ProxyProvider& aProvider )
 		 << "\nTrying to `add' ProxyProvider already being used."
 		 << "\nAs order may be important you need to `remove'"
 		 << " it first."
-		 << endl ;
+		 << std::endl ;
       return ;
    }
 //
@@ -186,7 +176,7 @@ RecordProvider::remove( ProxyProvider& aProvider )
 	      kFacilityString )
 		 << "\nTrying to `remove' a ProxyProvider not used by "
 		 << "this RecordProvider."
-		 << endl ;
+		 << std::endl ;
    }
 }
 
@@ -261,7 +251,7 @@ RecordProvider::record( const SyncValue& aNow ) const
    report(DEBUG,kFacilityString) << "aNow "
 				 << aNow.runNumber() <<" "
 				 << aNow.eventNumber() << " "
-				 << aNow.time() << endl;
+				 << aNow.time() << std::endl;
 
 //
 // if zero ProxyProviders, then there has been an error
@@ -272,7 +262,7 @@ RecordProvider::record( const SyncValue& aNow ) const
 		 << "\nThe RecordProvider for "
 		 << m_stream
 		 << " has no ProxyProviders."
-		 << endl ;
+		 << std::endl ;
       return 0;
    }
 //
@@ -300,12 +290,12 @@ RecordProvider::record( const SyncValue& aNow ) const
       				<< m_stream << " "
 				<< mostRecent.runNumber() <<" "
 				<< mostRecent.eventNumber() << " "
-				<< mostRecent.time() << endl;
+				<< mostRecent.time() << std::endl;
       if(timeStamp<mostRecent.time()) timeStamp = mostRecent.time();
       mostRecent = (*(*providerToCheck)).latest( m_stream ,
 						 mostRecent ,
 						 aNow ) ;
-      report(DEBUG,kFacilityString) << mostRecent.time() <<endl;
+      report(DEBUG,kFacilityString) << mostRecent.time() <<std::endl;
 
    }
 //
@@ -317,7 +307,7 @@ RecordProvider::record( const SyncValue& aNow ) const
 //
 // Create a new syncValue with corrent time stamp out of mostRecent
 //
-   report(DEBUG,kFacilityString) << "mostRecentTime " << timeStamp << endl;
+   report(DEBUG,kFacilityString) << "mostRecentTime " << timeStamp << std::endl;
    SyncValue mostRecentTime(mostRecent.runNumber(), 
                             mostRecent.eventNumber(), timeStamp);
 
@@ -356,7 +346,7 @@ RecordProvider::unsynchronizedRecord() const
 		 << "\nThe RecordProvider for "
 		 << m_stream
 		 << " has no ProxyProviders."
-		 << endl ;
+		 << std::endl ;
    }
 //
 // if necessary fill record using ProxyProviders

@@ -27,16 +27,12 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <map>
-#include <string>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 //#include "Experiment/report.h"
 #include "HeteroContainer/HCTypeTag.h"
 
-#include "STLUtility/fwd_map.h"
+#include <map>
 
 // STL classes
 #include <map>
@@ -56,8 +52,8 @@
 template<class Group>
 class HCTypeTagNameHolder {
    public:
-      static STL_MAP(string, unsigned int)& typeNameToValueMap() {
-	 static STL_MAP(string, unsigned int) s_map;
+      static std::map<std::string, unsigned int>& typeNameToValueMap() {
+	 static std::map<std::string, unsigned int> s_map;
 	 return s_map;
       }
 };
@@ -106,9 +102,9 @@ class HCTypeTagNameHolder {
 //
 template<class Group >
 HCTypeTag< Group >
-HCTypeTag< Group >::findType( const string& iTypeName )
+HCTypeTag< Group >::findType( const std::string& iTypeName )
 {
-   STL_MAP(string, unsigned int)::iterator itFind = HCTypeTagNameHolder<Group>::typeNameToValueMap().find(
+   std::map<std::string, unsigned int>::iterator itFind = HCTypeTagNameHolder<Group>::typeNameToValueMap().find(
       iTypeName );
    
    if( itFind == HCTypeTagNameHolder<Group>::typeNameToValueMap().end() ) {
@@ -126,7 +122,7 @@ HCTypeTag< Group >::nextValue(const char* iTypeName )
    unsigned int newValue = ++presentValue;
 
    HCTypeTagNameHolder<Group>::typeNameToValueMap().insert( 
-      pair<string, unsigned int>( iTypeName,
+      std::pair<std::string, unsigned int>( iTypeName,
 				  newValue ) );
    return newValue;
 }

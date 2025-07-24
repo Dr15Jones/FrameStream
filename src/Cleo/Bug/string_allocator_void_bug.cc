@@ -52,7 +52,7 @@ typedef std::basic_string<char,
                   alloc >
 #endif
 #endif
-                 string;
+                 std::string;
 }
 #endif // NO_STD_NAMESPACE_BUG
 

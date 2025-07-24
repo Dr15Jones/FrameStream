@@ -57,7 +57,7 @@ static const char* const kTagString = "$Name:  $";
 // constructors and destructor
 //
 HIHist::HIHist( Count         iId,
-		const string& iTitle ) :
+		const std::string& iTitle ) :
   m_id( iId ) ,
   m_title( iTitle ) 
 {
@@ -99,7 +99,7 @@ HIHist::id ( void ) const
   return ( m_id ) ;
 }
 //
-const string& 
+const std::string& 
 HIHist::title ( void ) const
 {
   return ( m_title ) ;

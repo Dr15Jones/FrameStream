@@ -29,7 +29,7 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <map>
 #include <vector>
 
@@ -49,8 +49,8 @@ class PDSProxyStorer : public ProxyStorer
 
    public:
       // ---------- constants, enums and typedefs --------------
-      typedef STL_MAP(TypeTag, STL_VECTOR(PDSPackerBase*) ) PackersForTypeMap;
-      typedef STL_MAP( TypeTag, SMProxyWriterBase* ) WriterMap;
+      typedef std::map<TypeTag, std::vector<PDSPackerBase*> > PackersForTypeMap;
+      typedef std::map< TypeTag, SMProxyWriterBase* > WriterMap;
 
       // ---------- Constructors and destructor ----------------
       PDSProxyStorer(ostream& iOStream, 
@@ -79,31 +79,31 @@ class PDSProxyStorer : public ProxyStorer
 
       // ---------- private member functions -------------------
       void writeHeader( const PDSDataToStore& iDataToStore );
-      void createStreamList( STL_VECTOR(UInt32)& iContainer );
-      void createTypesInfo( STL_VECTOR(UInt32)& iContainer,
+      void createStreamList( std::vector<UInt32>& iContainer );
+      void createTypesInfo( std::vector<UInt32>& iContainer,
 			    const PDSDataToStore& iDataToStore,
-			    STL_SET(TypeTag)& oFactoryTypes );
-      void probeSchema( const STL_SET(TypeTag)& iFactoryTypes,
-			STL_SET(TypeTag)& oSubTypes );
-      void fillPackingInfo( STL_VECTOR(UInt32)& ioContainer,
-			    STL_SET(TypeTag)::const_iterator iBegin,
-			    STL_SET(TypeTag)::const_iterator iEnd );
+			    std::set<TypeTag>& oFactoryTypes );
+      void probeSchema( const std::set<TypeTag>& iFactoryTypes,
+			std::set<TypeTag>& oSubTypes );
+      void fillPackingInfo( std::vector<UInt32>& ioContainer,
+			    std::set<TypeTag>::const_iterator iBegin,
+			    std::set<TypeTag>::const_iterator iEnd );
       void createProxiesInRecordsInfo( 
-	 STL_VECTOR(UInt32)& ioContainer, 
+	 std::vector<UInt32>& ioContainer, 
 	 const PDSDataToStore& iDataToStore,
-	 const STL_SET(TypeTag)& iFactoryTypes );
+	 const std::set<TypeTag>& iFactoryTypes );
 
-      void createProxyWriters( const STL_SET(TypeTag)& iFactoryTypes );
+      void createProxyWriters( const std::set<TypeTag>& iFactoryTypes );
 
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      ostream& m_ostream;
+     std::ostream& m_ostream;
       PDSDataToStore m_dataToStore;
 
-      STL_MAP(unsigned int, unsigned int ) m_streamToIndexMap;
+      std::map<unsigned int, unsigned int > m_streamToIndexMap;
       PackersForTypeMap m_packersForTypeMap;
-      STL_VECTOR(UInt32) m_dataBuffer;
+      std::vector<UInt32> m_dataBuffer;
       WriterMap m_writers;
       // ---------- static data members ------------------------
 

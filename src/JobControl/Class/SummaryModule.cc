@@ -44,7 +44,7 @@ using namespace CommandPattern::Keyword;
 
 // STL classes
 #include <map>
-#include "STLUtility/fwd_map.h"
+#include <map>
 
 //
 // constants, enums and typedefs
@@ -56,15 +56,15 @@ static const char* const kFacilityString = "JobControl.SummaryModule" ;
 //
 // static data member definitions
 //
-static const string helpMessage = 
-string( "                                                                \n" )+
-string( "// Description: SummaryCommand                                  \n" )+
-string( "//                                                              \n" )+
-string( "//  Valid subcommands are:                                      \n" )+
-string( "//                                                              \n" )+
-string( "//                                         print statistics     \n" )+
-string( "//  help                                   see this help page   \n" )+
-string( "//  reset                                  reset counters       \n" );
+static const std::string helpMessage = 
+std::string( "                                                                \n" )+
+std::string( "// Description: SummaryCommand                                  \n" )+
+std::string( "//                                                              \n" )+
+std::string( "//  Valid subcommands are:                                      \n" )+
+std::string( "//                                                              \n" )+
+std::string( "//                                         print statistics     \n" )+
+std::string( "//  help                                   see this help page   \n" )+
+std::string( "//  reset                                  reset counters       \n" );
 
 //
 // constructors and destructor
@@ -74,7 +74,7 @@ SummaryModule::SummaryModule()
      m_command( "summary", this, false, helpMessage ),
      m_counter( *new Counter )
 {
-   m_command.add( new NoArgReturnResult<SummaryModule, string>(
+   m_command.add( new NoArgReturnResult<SummaryModule, std::string>(
       "", this, &SummaryModule::list, &m_command) );
    m_command.add( new NoArgNoReturn<SummaryModule>(
       "reset",this, &SummaryModule::reset ) );
@@ -90,7 +90,7 @@ SummaryModule::SummaryModule()
 SummaryModule::~SummaryModule()
 {
    // print out final statistics
-   report( INFO, kFacilityString ) << list() << endl;
+   report( INFO, kFacilityString ) << list() << std::endl;
 
    delete &m_counter;
 }
@@ -126,10 +126,10 @@ SummaryModule::operator[]( const Stream::Type& iStreamType )
 //
 // const member functions
 //
-string
+std::string
 SummaryModule::list()
 {
-   string resultString( "\n ***** Summary Info *****\n\n" );
+   std::string resultString( "\n ***** Summary Info *****\n\n" );
 
    Counter::const_iterator itEnd = m_counter.end();
    Count sumAll=0;
@@ -137,50 +137,16 @@ SummaryModule::list()
 	it != itEnd;
 	++it )
    {
-// buggy ostrstream implementation and no stringstream in sight 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#if defined(OSTRSTREAM_NO_TERMINATION_BUG)
-      const unsigned int kSize=100;
-      char number[kSize];
-      snprintf( number, kSize, "%d", (*it).second );
-      resultString += string( " Stream " ) + (*it).first.value() 
-	 + string( " : " ) + string( number ) + string(  "\n" );
-#else
-      //ostringstream number; // not yet available: <sstream>
-      ostrstream number;
+      std::ostringstream number;
       number << (*it).second;
-      resultString += string( " Stream " ) + (*it).first.value() 
-	 + string( " : " ) + number.str() + string(  "\n" );
-#endif
-#else
-      ostringstream number;
-      number << (*it).second;
-      resultString += string( " Stream " ) + (*it).first.value() 
-	 + string( " : " ) + number.str() + string(  "\n" );
-#endif
+      resultString += std::string( " Stream " ) + (*it).first.value() 
+	 + std::string( " : " ) + number.str() + std::string(  "\n" );
       sumAll += (*it).second;
    }
-// buggy ostrstream implementation and no stringstream in sight 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#if defined(OSTRSTREAM_NO_TERMINATION_BUG)
-   const unsigned int kSize=100;
-   char summaryNumber[kSize];
-   snprintf( summaryNumber, kSize, "%d", sumAll );
-   resultString += string( "   Processed " ) + string( summaryNumber )
-      + string( " stops.\n\n" );
-#else
-   //ostringstream summaryNumber; // not yet available: <sstream>
-   ostrstream summaryNumber;
+   std::ostringstream summaryNumber;
    summaryNumber << sumAll;
-   resultString += string( "   Processed " ) + summaryNumber.str()
-      + string( " stops.\n\n" );
-#endif
-#else
-   ostringstream summaryNumber;
-   summaryNumber << sumAll;
-   resultString += string( "   Processed " ) + summaryNumber.str()
-      + string( " stops.\n\n" );
-#endif   
+   resultString += std::string( "   Processed " ) + summaryNumber.str()
+      + std::string( " stops.\n\n" );
    return resultString;
 }
 

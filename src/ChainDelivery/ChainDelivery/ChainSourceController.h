@@ -110,7 +110,7 @@ class ChainSourceController : public DataSourceController
       typedef typename Binder::Deliverer Deliverer;
 
       // Constructors and destructor
-      ChainSourceController( const string& iName,
+      ChainSourceController( const std::string& iName,
 			     const typename ChainSourceBinder< Binder >::Binders& iBinders,
 			     const Stream::Set& iReadStreams);
 
@@ -133,10 +133,10 @@ class ChainSourceController : public DataSourceController
       // const member functions
       virtual DABoolean canRandomAccess( void ) const;
 
-      virtual string dataSourceID( void ) const;
-      virtual string parameters( void ) const;
+      virtualstd::string dataSourceID( void ) const;
+      virtualstd::string parameters( void ) const;
 
-      const string& name( void ) const;
+      const std::string& name( void ) const;
       // static member functions
 
    protected:
@@ -160,7 +160,7 @@ class ChainSourceController : public DataSourceController
 
       // data members
       _chainsourcecontroller_deque_& m_binders;
-      string m_name;
+     std::string m_name;
       Controller* m_controller;
       Deliverer* m_deliverer;
       DABoolean m_ownsDeliverer;

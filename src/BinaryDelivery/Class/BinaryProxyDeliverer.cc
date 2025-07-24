@@ -98,7 +98,7 @@ BinaryProxyDeliverer::BinaryProxyDeliverer() :
       report( ERROR ,
               kFacilityString )
                  << "Out of memory"
-                 << endl ;
+                 << std::endl ;
       assert( 0 != &m_streamToBufferMap ) ;
       assert( 0 != &m_available ) ;
       exit( 1 );
@@ -264,7 +264,7 @@ BinaryProxyDeliverer::buffer( const Stream::Type& iStream )
          report( ERROR ,
                  kFacilityString )
                     << "Out of memory"
-                    << endl ;
+                    << std::endl ;
          assert( 0 != buffer );
          exit( 1 );
       }

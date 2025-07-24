@@ -67,7 +67,7 @@ static const char* const kTagString = "$Name:  $";
 
 SSSlotted::~SSSlotted()
 {
-   for(list<SSSignalBase*>::iterator itSignal = m_signals.begin();
+   for(std::list<SSSignalBase*>::iterator itSignal = m_signals.begin();
        itSignal != m_signals.end();
        ++itSignal) {
       (*itSignal)->detach(this);

@@ -189,13 +189,13 @@ void
 PDSUnpackingStringSourceStream<T>::fillStringFromBuffer(string& iData )
 {
    const char* startOfString = reinterpret_cast<const char*>(startWord()) ;
-   iData = string( startOfString  );
+   iData = std::string( startOfString  );
 }
 
 template<>
 void
 PDSUnpackingStringSourceStream<DIFF_ENDIAN>::fillStringFromBuffer( 
-   string& iData )
+   std::string& iData )
 {
    const char* startOfString = reinterpret_cast<const char*>(startWord()) ;
 
@@ -223,12 +223,12 @@ PDSUnpackingStringSourceStream<DIFF_ENDIAN>::fillStringFromBuffer(
       *itBuffer = swapBytesInUInt32(*itBuffer  );
    }
    
-   iData = string( reinterpret_cast<char*>(m_buffer) );
+   iData = std::string( reinterpret_cast<char*>(m_buffer) );
 }
 
 template<PDSSTRINGENDIAN T>
 SMSourceStream& 
-PDSUnpackingStringSourceStream<T>::operator>>( string& iData )
+PDSUnpackingStringSourceStream<T>::operator>>( std::string& iData )
 {
 
    //the string has been padded so that it starts on a 32bit boundary

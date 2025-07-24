@@ -53,18 +53,18 @@
         }
 	catch( MyException& iException) {
            report( EMERGENCY, kFacilityString )
-	     << "handling MyException: " << iException.what() << endl;
+	     << "handling MyException: " << iException.what() << std::endl;
 	   // do further handling of exception...
         }
 	catch( DAException& iException) {
            report( EMERGENCY, kFacilityString )
-	     << "handling DAException: " << iException.what() << endl;
+	     << "handling DAException: " << iException.what() << std::endl;
 	   // do further handling of exception...
         }
 	catch( DAExceptionBase& iException) {
            report( EMERGENCY, kFacilityString )
 	     << "handling DAException exception: " 
-	     << iException.what() << endl;
+	     << iException.what() << std::endl;
 	   // do further handling of exception...
         }
 \endcode
@@ -85,7 +85,7 @@
 \endcode
 
 	For all those people out there worrying about DAException
-	making a copy of the string passed in: yes, there is a problem
+	making a copy of the std::string passed in: yes, there is a problem
 	with an out-of-memory exception occuring when the DAException is 
 	actively being handled. Well, first of all, while an exception is active,
 	another exception being thrown would terminate the program!
@@ -166,7 +166,7 @@ class DAExceptionBase
       virtual const char* what () const =0;
 
       // Information about stack
-      const string exceptionStack () const;
+      const std::string exceptionStack () const;
 
       // ---------- static member functions --------------------
 

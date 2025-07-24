@@ -119,7 +119,7 @@ ParameterBase::execute( int argc, char* argv[] )
    } 
    else {
       report( ERROR, kFacilityString )
-	 << "wrong # args" << endl;
+	 << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
    
@@ -150,7 +150,7 @@ ParameterBase::setHandler()
 	 returnValue= ((*m_parmChangeCallBack)()==true) ? COMMAND_OK : COMMAND_ERROR; 
 	 if( COMMAND_ERROR == returnValue ) {
 	    report( SYSTEM, kFacilityString )
-	       << "ERROR: resetting to default" << endl;
+	       << "ERROR: resetting to default" << std::endl;
 	    setDefaultHandler();
 	 }
       }
@@ -184,27 +184,27 @@ ParameterBase::setDefaultHandler()
 int
 ParameterBase::helpHandler()
 {
-   const string helpMessage1 = 
-      string( "                                                          \n" )+
-      string( "  Description: Parameter " ) + name() + string( "         \n" );
+   const std::string helpMessage1 = 
+      std::string( "                                                          \n" )+
+      std::string( "  Description: Parameter " ) + name() + std::string( "         \n" );
 
-   const string helpMessage2 =
-      string( "  Valid subcommands are:                                  \n" )+
-      string( "                                                          \n" )+
-      string( "  " ) + name() + string( " help      prints this help page\n" )+
-      string( "  " ) + name() + string( " <value>   " ) 
-      + name() + string( " = <value>       \n" )+
-      string( "  " ) + name() + string( "           list value           \n" )+
-      string( "  " ) + name() + string( " def       " )
-      + name() + string( " = default       \n" )+
-      string( "                                                          \n" );
+   const std::string helpMessage2 =
+      std::string( "  Valid subcommands are:                                  \n" )+
+      std::string( "                                                          \n" )+
+      std::string( "  " ) + name() + std::string( " help      prints this help page\n" )+
+      std::string( "  " ) + name() + std::string( " <value>   " ) 
+      + name() + std::string( " = <value>       \n" )+
+      std::string( "  " ) + name() + std::string( "           list value           \n" )+
+      std::string( "  " ) + name() + std::string( " def       " )
+      + name() + std::string( " = default       \n" )+
+      std::string( "                                                          \n" );
 
    // print help
    report( INFO, kFacilityString )
       << "\n" << helpMessage1
       << "\n" << "  Type: " << typeName() << "\n"
       << "\n" << helpString() << "\n"
-      << "\n" << helpMessage2 << endl;
+      << "\n" << helpMessage2 << std::endl;
       
    return COMMAND_OK;
 }

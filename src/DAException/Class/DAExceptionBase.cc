@@ -29,16 +29,11 @@
 
 // system include files
 #include <string>
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#include <strstream.h>
-#else
 #include <sstream>
-#endif
 
 // user includes
 #include "DAException/DAExceptionBase.h"
 #include "DAException/DAExceptionStack.h"
-#include "DAException/instantiate_DAExceptionStack.h"
 
 //
 // constructors and destructor
@@ -51,29 +46,25 @@ DAExceptionBase::DAExceptionBase()
 //
 // member functions
 //
-const string 
+const std::string 
 DAExceptionBase::exceptionStack () const 
 {
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-   strstream message;
-#else
-   stringstream message;
-#endif
+   std::stringstream message;
    DAExceptionStack* stack = DAExceptionStack::instance();
    if(stack) {
 
      DAExceptionStack::StackNames names = stack->stackNames();
      if(names.size()) 
      {
-       message << "Starting from " << names[0].first << " we called extract for" << endl;
+       message << "Starting from " << names[0].first << " we called extract for" << std::endl;
      } else {
-       message << "no names of procs/sinks recorded into stack" << endl;
+       message << "no names of procs/sinks recorded into stack" << std::endl;
      }
 
      DAExceptionStack::StackList list = stack->stackList();
      if(!list.size()) 
      {
-       message << "no extracts called" << endl;
+       message << "no extracts called" << std::endl;
      }
 
      for(int i=0; i<m_size; i++) {
@@ -82,13 +73,13 @@ DAExceptionBase::exceptionStack () const
        {
          if(i==names[j].second)
          {
-           message << " while in " << names[j].first << " we called extract for" << endl;
+           message << " while in " << names[j].first << " we called extract for" << std::endl;
          }
        }
        
-       message << "["<<i+1<<"] type \""<<(list[i]).type().name() <<"\""
-               << " usage \""<<(list[i]).usage().value() <<"\""
-               << " production \""<<(list[i]).production().value()<<"\"";
+       message << "["<<i+1<<"] type \""<<(list[i]).m_type <<"\""
+               << " usage \""<<(list[i]).m_usage <<"\""
+               << " production \""<<(list[i]).m_production<<"\"";
        if(0 != stack->size() && i == stack->size() -1) 
        {
            message <<" <== exception caught";	
@@ -97,14 +88,14 @@ DAExceptionBase::exceptionStack () const
        {
            message <<" <== exception occured";
        }
-       message << endl;
+       message << std::endl;
      }
 
 
    } else {
-     message << "There is no stack" << endl;
+     message << "There is no stack" << std::endl;
    }
-   message << "\0" << flush;
+   message << "\0" << std::flush;
    return message.str();
 }
 

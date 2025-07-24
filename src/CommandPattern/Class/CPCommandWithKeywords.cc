@@ -60,10 +60,10 @@ static const char* const kTagString = "$Name:  $";
 // constructors and destructor
 //
 CPCommandWithKeywords::CPCommandWithKeywords(
-   const string& iName,
+   const std::string& iName,
    Module* iModule,
    DABoolean iInternalCommand,
-   const string& iHelpString) :
+   const std::string& iHelpString) :
    Command(iName, iModule, iInternalCommand)
 {
    setHelpString(iHelpString);
@@ -119,9 +119,9 @@ CPCommandWithKeywords::execute(int argc, char* argv[] )
       //strip of the first argument since it is the name of the command
       return m_keywords->execute(argc-1, argv+1 );
    } catch(ExceptionBase& iException ) {
-      string userCommand( argv[0] );
+     std::string userCommand( argv[0] );
 
-      const string kSpace(" ");
+      const std::string kSpace(" ");
       for( int index = 1; index < argc; ++ index ) {
 	 userCommand += kSpace;
 	 userCommand += argv[index];
@@ -129,7 +129,7 @@ CPCommandWithKeywords::execute(int argc, char* argv[] )
       report(ERROR,name().c_str()) << "command \""
 				   << userCommand <<"\"\n"
 				   << "had the error "<<"\n"
-				   <<iException.what() <<endl;
+				   <<iException.what() <<std::endl;
    }
    return COMMAND_ERROR;
 }
@@ -138,7 +138,7 @@ CPCommandWithKeywords::execute(int argc, char* argv[] )
 int
 CPCommandWithKeywords::helpHandler() 
 {
-   report(SYSTEM, name().c_str() ) << "\n" << helpString() << endl;
+   report(SYSTEM, name().c_str() ) << "\n" << helpString() << std::endl;
    return COMMAND_OK;
 }
 

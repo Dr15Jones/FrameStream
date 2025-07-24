@@ -109,7 +109,7 @@
 //
 // constants, enums and typedefs
 //
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kExtractFacilityString 
+static const char* const kExtractFacilityString 
 = "FrameAccess.extract";
 
 template < class FAContainer >
@@ -124,9 +124,9 @@ void extract( const Record& aRecord ,
 //   // construct key
 //   typedef FAContainer::contents DataType;
 //   static IfdDictKeyT< DataType > key( IfdTypeKey< DataType >() );
-//   key.add( IfdStrKey( string( aUseLabel ) ) );
+//   key.add( IfdStrKey( std::string( aUseLabel ) ) );
 //   if( ! strcmp( aProducerLabel, "" ) ) {
-//      key.add( IfdStrKey( string( aProducerLabel ) ) );
+//      key.add( IfdStrKey( std::string( aProducerLabel ) ) );
 //   }
 //
 //   // for now just ignore producer label
@@ -162,7 +162,7 @@ void extract( const Record& aRecord ,
    if( 0 == hold )
    {
       report( WARNING, kExtractFacilityString )
-	 << "contents=0" << endl;
+	 << "contents=0" << std::endl;
    }
 #endif
 

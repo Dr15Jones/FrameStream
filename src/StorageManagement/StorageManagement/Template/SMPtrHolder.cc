@@ -84,7 +84,7 @@ template<class T_Ptr, class T_valueType>
 SMPtrHolder<T_Ptr, T_valueType>::SMPtrHolder(const SMPtrHolder<T_Ptr, T_valueType>& h)
 {
 
-     back_insert_iterator<STL_VECTOR(T_Ptr)>  inserter(m_val);
+     back_insert_iterator<std::vector<T_Ptr>>  inserter(m_val);
      copy(h.m_val.begin(), h.m_val.end(), inserter);
 }
 

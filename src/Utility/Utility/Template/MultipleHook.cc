@@ -10,7 +10,7 @@
 //
 // $Log: MultipleHook.cc,v $
 // Revision 1.14  1998/09/23 19:36:35  mkl
-// rename kFacilityString in Template/*cc files and take care of FILESCOPE_IN_TEMPLATE_CC_BUG
+// rename kFacilityString in Template/*cc files and take care of static
 //
 // Revision 1.13  1998/02/06 20:36:24  mkl
 // left-over edits for switch to STLUtility
@@ -73,7 +73,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kMultipleHookFacilityString 
+static const char* const kMultipleHookFacilityString 
 = "Utility.MultiHook" ;
 
 //
@@ -92,7 +92,7 @@ MultipleHook<T>::MultipleHook( const short aSize ) :
       report( EMERGENCY ,
 	      kMultipleHookFacilityString )
 		 << "Unable to allocate memory"
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
 }
@@ -141,7 +141,7 @@ DABoolean	MultipleHook<T>::unHook( T* pPartner )
 	 report( EMERGENCY ,
 		 kMultipleHookFacilityString )
 		    << "Can not cleanly unhook, probably corrupted"
-		    << endl ;
+		    << std::endl ;
 	 return ( false ) ;
       }
    }
@@ -153,7 +153,7 @@ DABoolean	MultipleHook<T>::unHook( T* pPartner )
 // List the partners that are currently hooked
 //
 template <class T>
-void	MultipleHook<T>::partners( STL_VECTOR( T* )* pPartnerList ) const
+void	MultipleHook<T>::partners( std::vector< T* >* pPartnerList ) const
 {
    short index = 0 ;
    while ( index < _last ) {

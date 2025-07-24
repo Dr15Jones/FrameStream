@@ -77,11 +77,11 @@
 #include "DataHandler/Frame.h"
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
+#include <map>
 class SyncValue ;
 class RecordProvider ;
 
-#  define _frameprovider_recordproviders_ STL_MAP( Stream::Type , RecordProvider* )
+#  define _frameprovider_recordproviders_ std::map< Stream::Type , RecordProvider* >
 
 class FrameProvider
 {

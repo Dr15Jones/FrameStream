@@ -102,9 +102,6 @@ DataSourceController::DataSourceController( void ) :
    m_proxyDeliverer( 0 ),
    m_ownsDeliverer(true)
 {
-   assert( 0 != &m_readStreams);
-   assert( 0 != &m_activeStreams);
- 
 }
 
 DataSourceController::DataSourceController(ProxyDeliverer* iDeliverer ) :
@@ -117,9 +114,6 @@ DataSourceController::DataSourceController(ProxyDeliverer* iDeliverer ) :
    m_proxyDeliverer( iDeliverer ),
    m_ownsDeliverer(false)
 {
-   assert( 0 != &m_readStreams);
-   assert( 0 != &m_activeStreams);
- 
 }
 
 // DataSourceController::DataSourceController( const DataSourceController& )

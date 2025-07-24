@@ -416,8 +416,8 @@ class DataSourceController
 
       ProxyDeliverer*  proxyDeliverer( void ) const;
 
-      virtual string dataSourceID( void ) const = 0;
-      virtual string parameters( void ) const = 0;
+      virtual std::string dataSourceID( void ) const = 0;
+      virtual std::string parameters( void ) const = 0;
 
       // static member functions
 

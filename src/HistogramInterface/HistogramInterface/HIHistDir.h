@@ -43,7 +43,7 @@
 
 // system include files
 #include <string>
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 #include "HistogramInterface/HIHistProf.h"
 // user include files
 
@@ -68,22 +68,22 @@ class HINumberWithErrors;
 #define HIDIR_FUNCS(_type_, _prefix_) \
 public:\
 const_ ## _prefix_ ## _iterator _prefix_ ## _begin() const { \
-   STL_VECTOR(void*)::const_iterator t = m_ ## _prefix_ ## List.begin(); \
+   std::vector<void*>::const_iterator t = m_ ## _prefix_ ## List.begin(); \
    return *reinterpret_cast<const_ ## _prefix_ ## _iterator *>(&t); } \
 const_ ## _prefix_ ## _iterator _prefix_ ## _end() const { \
-   STL_VECTOR(void*)::const_iterator t = m_ ## _prefix_ ## List.end(); \
+   std::vector<void*>::const_iterator t = m_ ## _prefix_ ## List.end(); \
    return *reinterpret_cast<const_ ## _prefix_ ## _iterator *> (&t); } \
 protected: \
 _prefix_ ## _iterator _prefix_ ## _begin() { \
-   STL_VECTOR(void*)::iterator t = m_ ## _prefix_ ## List.begin(); \
+   std::vector<void*>::iterator t = m_ ## _prefix_ ## List.begin(); \
    return *reinterpret_cast< _prefix_ ## _iterator *>(&t); } \
 _prefix_ ## _iterator _prefix_ ## _end() { \
-   STL_VECTOR(void*)::iterator t = m_ ## _prefix_ ## List.end(); \
+   std::vector<void*>::iterator t = m_ ## _prefix_ ## List.end(); \
    return *reinterpret_cast< _prefix_ ## _iterator *> (&t); } \
 void _prefix_ ## Empty(); \
 private: \
 _type_* insert( _type_ * iEntry ) { m_ ## _prefix_ ## List.push_back(iEntry); return iEntry; }\
-STL_VECTOR(void*) m_ ## _prefix_ ##List; \
+std::vector<void*> m_ ## _prefix_ ##List; \
 public:
 
 
@@ -93,36 +93,36 @@ class HIHistDir
 
    public:
       // ---------- constants, enums and typedefs --------------
-      typedef STL_VECTOR(HISTOGRAMINTERFACE_NS HIHist1D*)::const_iterator const_h1d_iterator;
-      typedef STL_VECTOR(HISTOGRAMINTERFACE_NS HIHist2D*)::const_iterator const_h2d_iterator;
-      typedef STL_VECTOR(HINtuple*)::const_iterator const_nt_iterator;
-      typedef STL_VECTOR(HIHistProf*)::const_iterator const_prof_iterator;
-      typedef STL_VECTOR(HINumber*)::const_iterator const_n_iterator;
-      typedef STL_VECTOR(HINumberWithErrors*)::const_iterator const_ne_iterator;
-      typedef STL_VECTOR(HIHistDir*)::const_iterator const_dir_iterator;
+      typedef std::vector<HISTOGRAMINTERFACE_NS HIHist1D*>::const_iterator const_h1d_iterator;
+      typedef std::vector<HISTOGRAMINTERFACE_NS HIHist2D*>::const_iterator const_h2d_iterator;
+      typedef std::vector<HINtuple*>::const_iterator const_nt_iterator;
+      typedef std::vector<HIHistProf*>::const_iterator const_prof_iterator;
+      typedef std::vector<HINumber*>::const_iterator const_n_iterator;
+      typedef std::vector<HINumberWithErrors*>::const_iterator const_ne_iterator;
+      typedef std::vector<HIHistDir*>::const_iterator const_dir_iterator;
 
-      typedef STL_VECTOR(HISTOGRAMINTERFACE_NS HIHist1D*)::iterator h1d_iterator;
-      typedef STL_VECTOR(HISTOGRAMINTERFACE_NS HIHist2D*)::iterator h2d_iterator;
-      typedef STL_VECTOR(HINtuple*)::iterator nt_iterator;
-      typedef STL_VECTOR(HIHistProf*)::iterator prof_iterator;
-      typedef STL_VECTOR(HINumber*)::iterator n_iterator;
-      typedef STL_VECTOR(HINumberWithErrors*)::iterator ne_iterator;
-      typedef STL_VECTOR(HIHistDir*)::iterator dir_iterator;
+      typedef std::vector<HISTOGRAMINTERFACE_NS HIHist1D*>::iterator h1d_iterator;
+      typedef std::vector<HISTOGRAMINTERFACE_NS HIHist2D*>::iterator h2d_iterator;
+      typedef std::vector<HINtuple*>::iterator nt_iterator;
+      typedef std::vector<HIHistProf*>::iterator prof_iterator;
+      typedef std::vector<HINumber*>::iterator n_iterator;
+      typedef std::vector<HINumberWithErrors*>::iterator ne_iterator;
+      typedef std::vector<HIHistDir*>::iterator dir_iterator;
       // ---------- Constructors and destructor ----------------     
-      HIHistDir( const string& iName ) : m_name( iName ) {}
+      HIHistDir( const std::string& iName ) : m_name( iName ) {}
       virtual ~HIHistDir();
 
       // ---------- member functions ---------------------------
 
       /// Make a  sub directory with name iName
-      virtual HIHistDir* mkdir( const string& iName) {
+      virtual HIHistDir* mkdir( const std::string& iName) {
 	 return insert(makeDir(iName) ); }
 
       // create generic histograms and ntuples
       /// 1D histogram
       HISTOGRAMINTERFACE_NS HIHist1D*
       histogram( Count          iId, 
-		 const string&  iTitle,
+		 const std::string&  iTitle,
 		 unsigned int   iNChannels, 
 		 float          iLowEdge,
 		 float          iHighEdge,
@@ -131,7 +131,7 @@ class HIHistDir
       
       /// 1D histogram with automatic id assignment
       HISTOGRAMINTERFACE_NS HIHist1D* 
-      histogram( const string&  iTitle,
+      histogram( const std::string&  iTitle,
 		 unsigned int   iNChannels, 
 		 float          iLowEdge,
 		 float          iHighEdge,
@@ -141,7 +141,7 @@ class HIHistDir
       /// 2D histogram
       HISTOGRAMINTERFACE_NS HIHist2D* 
       histogram( Count          iId,
-		 const string&  iTitle,
+		 const std::string&  iTitle,
 		 unsigned int   iNChannelsX, 
 		 float          iLowEdgeX, 
 		 float          iHighEdgeX,
@@ -153,7 +153,7 @@ class HIHistDir
       
       /// 2D histogram with automatic id assignment
       HISTOGRAMINTERFACE_NS HIHist2D* 
-      histogram( const string&  iTitle,
+      histogram( const std::string&  iTitle,
 		 unsigned int   iNChannelsX, 
 		 float          iLowEdgeX, 
 		 float          iHighEdgeX,
@@ -165,7 +165,7 @@ class HIHistDir
       
       /// profile histogram
       HIHistProf* profile( Count          iId,
-			   const string&  iTitle,
+			   const std::string&  iTitle,
 			   unsigned int   iNChannels, 
 			   float iLowEdgeX, 
 			   float iHighEdgeX,
@@ -175,7 +175,7 @@ class HIHistDir
 	 return insert(makeProfile(iId, iTitle, iNChannels, iLowEdgeX, iHighEdgeX, iLowEdgeY, iHighEdgeY, iDisplayErrorsAs)); }
 
       /// profile histogram with automatic id assignment
-      virtual HIHistProf* profile( const string&  iTitle,
+      virtual HIHistProf* profile( const std::string&  iTitle,
 				   unsigned int   iNChannels, 
 				   float iLowEdgeX, 
 				   float iHighEdgeX,
@@ -186,34 +186,34 @@ class HIHistDir
 
       /// ntuple
       HINtuple* ntuple(    Count          iId,
-			   const string&  iTitle,
+			   const std::string&  iTitle,
 			   unsigned int   iSizeOfEntry,
 			   unsigned int   iChunkSize,
 			   const char* const* iLabels) { 
 	 return insert(makeNtuple(iId, iTitle, iSizeOfEntry, iChunkSize, iLabels)); }
  
       /// ntuple histogram with automatic id assignment
-      HINtuple* ntuple(    const string&  iTitle,
+      HINtuple* ntuple(    const std::string&  iTitle,
 			   unsigned int   iSizeOfEntry,
 			   unsigned int   iChunkSize,
 			   const char* const* iLabels) { 
 	 return insert(makeNtuple(nextId(),iTitle, iSizeOfEntry, iChunkSize, iLabels)); }
 
       /// create an updatable number (needed for Online)
-      HINumber* number( const string& iName,
+      HINumber* number( const std::string& iName,
 			float        iValue ) { 
 	 return insert(makeNumber(iName, iValue)); }
 
       /// create an updatable number with errors (needed for Online)
       HINumberWithErrors* numberWithErrors( 
-	 const string& iName,
+	 const std::string& iName,
 	 float        iValue,
 	 float        iPositiveError,
 	 float        iNegativeError ) { 
 	 return insert(makeNumberWithErrors(iName, iValue, iPositiveError, iNegativeError)); }
       
       // ---------- const member functions ---------------------
-      const string& name() const { return m_name; }
+      const std::string& name() const { return m_name; }
 
       HIDIR_FUNCS(HISTOGRAMINTERFACE_NS HIHist1D, h1d)
       HIDIR_FUNCS(HISTOGRAMINTERFACE_NS HIHist2D, h2d)
@@ -229,12 +229,12 @@ class HIHistDir
       // ---------- protected member functions -----------------
 
       // Make a  sub directory with name iName
-      virtual HIHistDir* makeDir( const string& iName) = 0;
+      virtual HIHistDir* makeDir( const std::string& iName) = 0;
 
       // create generic histograms and ntuples
       virtual HISTOGRAMINTERFACE_NS HIHist1D* 
       makeHistogram( Count          iId, 
-		     const string&  iTitle,
+		     const std::string&  iTitle,
 		     unsigned int   iNChannels, 
 		     float          iLowEdge,
 		     float          iHighEdge,
@@ -242,7 +242,7 @@ class HIHistDir
             
       virtual HISTOGRAMINTERFACE_NS HIHist2D* 
       makeHistogram( Count          iId,
-		     const string&  iTitle,
+		     const std::string&  iTitle,
 		     unsigned int   iNChannelsX, 
 		     float          iLowEdgeX, 
 		     float          iHighEdgeX,
@@ -252,7 +252,7 @@ class HIHistDir
 		     float          BitsPerChannel=0) =0;
       
       virtual HIHistProf* makeProfile( Count          iId,
-				       const string&  iTitle,
+				       const std::string&  iTitle,
 				       unsigned int   iNChannels, 
 				       float iLowEdgeX, 
 				       float iHighEdgeX,
@@ -261,16 +261,16 @@ class HIHistDir
 				       HIHistProf::DisplayErrorsAs iDisplayErrorsAs ) =0;
       
       virtual HINtuple* makeNtuple(    Count          iId,
-				       const string&  iTitle,
+				       const std::string&  iTitle,
 				       unsigned int   iSizeOfEntry,
 				       unsigned int   iChunkSize,
 				       const char* const* iLabels) =0; 
             
-      virtual HINumber* makeNumber( const string& iName,
+      virtual HINumber* makeNumber( const std::string& iName,
 				    float        iValue ) =0;
       
       virtual HINumberWithErrors* makeNumberWithErrors( 
-	 const string& iName,
+	 const std::string& iName,
 	 float        iValue,
 	 float        iPositiveError,
 	 float        iNegativeError ) =0;
@@ -290,7 +290,7 @@ class HIHistDir
       // ---------- private const member functions -------------
       
       // ---------- data members -------------------------------
-      string m_name;
+      std::string m_name;
       
       // ---------- static data members ------------------------
       

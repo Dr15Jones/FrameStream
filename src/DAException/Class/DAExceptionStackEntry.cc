@@ -27,19 +27,14 @@
 // user includes
 #include "DAException/DAExceptionStackEntry.h"
 
-//
-// constructors and destructor
-//
-DAExceptionStackEntry::DAExceptionStackEntry(const DataKey& key) :
-       m_stack( DAExceptionStack::instance() )
-{
-       m_stack->add(key);
-}
 
-DAExceptionStackEntry::DAExceptionStackEntry(const DataKey& key, UseDurable) :
-       m_stack( DAExceptionStack::instance() )
-{
-       m_stack->addDurable(key);
+void DAExceptionStackEntry::passToStack(DAExceptionStackDataKey const&iKey, bool iDurable) {
+       m_stack = DAExceptionStack::instance();
+       if(iDurable) {
+              m_stack->addDurable(iKey);
+       } else {
+              m_stack->add(iKey);
+       }
 }
 
 DAExceptionStackEntry::~DAExceptionStackEntry() {

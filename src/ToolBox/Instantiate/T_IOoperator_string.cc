@@ -45,12 +45,12 @@
 #else
 #define ALLOCATOR_TYPE char
 #endif
-template ostream& 
+template std::ostream& 
 std::operator <<(ostream&, 
 		 const std::basic_string<char, 
 		                         std::char_traits<char>, 
 		                         std::allocator<ALLOCATOR_TYPE> >&);
-template istream&
+template std::istream&
 std::operator >>(istream&, 
 		 std::basic_string<char, 
 		                   std::char_traits<char>, 

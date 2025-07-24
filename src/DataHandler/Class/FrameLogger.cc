@@ -34,7 +34,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include "C++Std/iomanip.h"
+#include <iomanip>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <string>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
@@ -59,7 +59,7 @@
 // constructors and destructor
 //
 FrameLogger::FrameLogger( Severity level ,
-			  ostream& out     ) :
+			 std::ostream& out     ) :
    Logger     ( level       ) ,
    m_out      ( out         ) ,
    m_oldTime  ( ::time( 0 ) ) ,
@@ -132,8 +132,8 @@ FrameLogger::Dumpit( Severity severity )
 
 void
 FrameLogger::Log(Severity      severity ,
-		 const string& facility ,
-		 const string& logmsg   ,
+		 const std::string& facility ,
+		 const std::string& logmsg   ,
 		 Messenger*    messenger  )
 {
    if( Logit( severity ) ) 
@@ -143,8 +143,8 @@ FrameLogger::Log(Severity      severity ,
       const DABoolean ptrOK ( 0 != m_framePtr ) ;
       const UInt32 run  ( ptrOK ? m_framePtr->syncValue().runNumber()  :0 ) ;
       const UInt32 evt  ( ptrOK ? m_framePtr->syncValue().eventNumber():0 ) ;
-      const string stop ( ptrOK ? m_framePtr->stopStream().value() : 
-			  string(" ") ) ;
+      const std::string stop ( ptrOK ? m_framePtr->stopStream().value() : 
+			  std::string(" ") ) ;
 
       const DABoolean newFrame ( run  != 0 &&  // log only if any have changed
 				 ( ( run  != m_oldRun  )  ||
@@ -157,19 +157,19 @@ FrameLogger::Log(Severity      severity ,
 
       if( newFrame )
       {
-	 const string chartime ( ::ctime( &now ) ) ; // with embedded "\n"
-	 const string timeNoCR ( chartime.substr(0, chartime.length()-1 ) ) ;
+	 const std::string chartime ( ::ctime( &now ) ) ; // with embedded "\n"
+	 const std::string timeNoCR ( chartime.substr(0, chartime.length()-1 ) ) ;
 
 	 m_out << "\n >> " 
 	       << timeNoCR ; // no carriage-return
 
 	 m_out << " Run:" 
-	       << setw(8) << run ;
+	       << std::setw(8) << run ;
 
 	 if( ( 0 != evt ) && ( "event" == stop ) )
 	 {
 	    m_out << " Event:"
-		  << setw(8) << evt ;
+		  << std::setw(8) << evt ;
 	 }
 
 	 m_out << " Stop: "
@@ -193,7 +193,7 @@ FrameLogger::Log(Severity      severity ,
 //	 messenger->Dump(m_out);
 //      }
 //
-      m_out << flush ;
+      m_out << std::flush ;
    }
 }
 

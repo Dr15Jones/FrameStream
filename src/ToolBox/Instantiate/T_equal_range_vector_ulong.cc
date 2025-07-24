@@ -28,7 +28,7 @@
 
 // user include files
 //#include "Experiment/report.h"
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 // STL classes
 #include <vector>
@@ -38,6 +38,6 @@
 //
 
 typedef unsigned long _equal_range_value_type_; 
-typedef STL_VECTOR(_equal_range_value_type_)::iterator _equal_range_iterator_ ;
+typedef std::vector<_equal_range_value_type_>::iterator _equal_range_iterator_ ;
 #include "STLUtility/instantiate_equal_range.h"
 

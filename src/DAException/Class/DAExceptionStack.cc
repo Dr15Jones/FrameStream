@@ -26,7 +26,6 @@
 // user includes
 #include "DAException/DAExceptionStack.h"
 #include "DAException/DAExceptionStackManager.h"
-#include "DataHandler/DataKey.h"
 
 //
 // constructors and destructor
@@ -48,13 +47,27 @@ DAExceptionStack* DAExceptionStack::instance()
 //
 // member functions
 //
-void DAExceptionStack::addDurable(const DataKey& key) 
+void DAExceptionStack::addDurable(const DAExceptionStackDataKey& key) 
 {
-  m_durableKey=key; 
-  m_keyManager.add(m_durableKey);
+  DAExceptionStackDataKey newKey;
+    m_durableKey.m_type = key.m_type;
+    newKey.m_type = m_durableKey.m_type.data();
+    if( key.m_usage) {
+      m_durableKey.m_usage = key.m_usage;
+      newKey.m_usage = m_durableKey.m_usage.data();
+    } else {
+      newKey.m_usage = nullptr;
+    }
+    if(key.m_production) {
+      m_durableKey.m_production = key.m_production;
+      newKey.m_production = m_durableKey.m_production.data();
+    } else {
+      newKey.m_production = nullptr;
+    }
+    m_keyManager.add(newKey);
 }
 
-void DAExceptionStack::add(const DataKey& key) 
+void DAExceptionStack::add(const DAExceptionStackDataKey& key) 
 { 
   m_keyManager.add(key);
 }
@@ -65,7 +78,7 @@ void DAExceptionStack::pop()
   m_keyManager.pop(); 
 }
 
-void DAExceptionStack::addName(const string& name) 
+void DAExceptionStack::addName(const std::string& name) 
 { 
   m_pairManager.add(make_pair(name,this->size()));
 }

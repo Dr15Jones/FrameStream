@@ -46,7 +46,7 @@ class Base
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      Base(const string& iName) :
+      Base(const std::string& iName) :
 	 m_name(iName) {}
       virtual ~Base() {}
 
@@ -64,7 +64,7 @@ class Base
       ///maximum number of arguments following keyword. Must be >= minArgs()
       virtual unsigned int maxArgs() const = 0;
 
-      const string& name() { return m_name; }
+      const std::string& name() { return m_name; }
       // ---------- static member functions --------------------
 
    protected:
@@ -86,7 +86,7 @@ class Base
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      string m_name;
+      std::string m_name;
 
       // ---------- static data members ------------------------
 

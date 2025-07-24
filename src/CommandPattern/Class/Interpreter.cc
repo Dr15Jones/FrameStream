@@ -121,14 +121,14 @@ Interpreter::pushActiveModule( Module* iModule )
 {
    if ( ! m_activeModuleStack.empty() ) {
       m_activeModuleStack.back()->disableCommands();
-      string newPrompt( commandPrompt() );
+      std::string newPrompt( commandPrompt() );
       //the "-2" removes the old "> "
       newPrompt = newPrompt.substr(0,newPrompt.size() - 2) + "." +
         iModule->name() + "> ";
       setCommandPrompt( newPrompt.c_str() );
    } else {
       //no previous Module on the stack
-      string newPrompt = iModule->name() + "> ";
+      std::string newPrompt = iModule->name() + "> ";
       setCommandPrompt( newPrompt.c_str() );
    }
    m_activeModuleStack.push_back( iModule );
@@ -148,12 +148,12 @@ Interpreter::popActiveModule()
       m_activeModuleStack.back()->enableCommands();
       //now reset the prompt
       if ( 1 == m_activeModuleStack.size() ) {
-         string newPrompt = m_activeModuleStack.front()->name();
+         std::string newPrompt = m_activeModuleStack.front()->name();
          newPrompt += "> ";
          setCommandPrompt(newPrompt.c_str() );
       } else {
          //3 because of the "." at the front and the "> " at the end
-         string newPrompt( commandPrompt());
+         std::string newPrompt( commandPrompt());
          newPrompt = newPrompt.substr(0, newPrompt.size() -1*( deactivate->name().size() + 3));
          newPrompt += "> ";
          setCommandPrompt(newPrompt.c_str() );

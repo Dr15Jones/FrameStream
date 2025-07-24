@@ -62,7 +62,7 @@ static const char* const kTagString = "$Name:  $";
 static 
 void 
 stringToTags( const DataStringTagsToStore::Tags& iStringTags,
-              STL_SET(DurableDataKey)& oTags )
+              std::set<DurableDataKey>& oTags )
 {
    DataStringTagsToStore::Tags::const_iterator itEnd 
       = iStringTags.end();
@@ -82,34 +82,34 @@ stringToTags( const DataStringTagsToStore::Tags& iStringTags,
          oTags.insert( key );
       } else {
          report( ERROR, kFacilityString )
-                  << "unknown TypeTag( " << (*it).type() << " )" << endl;
+                  << "unknown TypeTag( " << (*it).type() << " )" << std::endl;
       }
    }
 }
 
-STL_SET(DurableDataKey)
+std::set<DurableDataKey>
 dataStringTagsToDataKeysUsingRecordContents( const DataStringTagsToStore& iStore,
                                              const Record& iRecord )
 {
-   STL_SET(DurableDataKey) returnValue; 
+   std::set<DurableDataKey> returnValue; 
    if( iStore.storeThese() ) {
    	//this is a list of things to store
-   	STL_SET(DurableDataKey) storeKeys;
+   	std::set<DurableDataKey> storeKeys;
    	stringToTags(iStore(), storeKeys );
 
       //only store the stuff that is actually in the record
-      insert_iterator<STL_SET(DurableDataKey) > insertItr(returnValue, returnValue.begin());
+      std::insert_iterator<std::set<DurableDataKey> > insertItr(returnValue, returnValue.begin());
       set_intersection( storeKeys.begin(), storeKeys.end(), 
                         iRecord.begin_key(), iRecord.end_key(), insertItr );
 
       //warn user if there was some data item they wanted to store that isn't available
-      STL_SET(DurableDataKey) missingStuff;
-      insert_iterator<STL_SET(DurableDataKey) > insertItr2(missingStuff, missingStuff.begin());
+      std::set<DurableDataKey> missingStuff;
+      std::insert_iterator<std::set<DurableDataKey> > insertItr2(missingStuff, missingStuff.begin());
       set_difference( storeKeys.begin(), storeKeys.end(), 
                         iRecord.begin_key(), iRecord.end_key(), insertItr2 );
       
-      ostream& reportWarning = report(WARNING, kFacilityString);
-      for( STL_SET(DurableDataKey)::iterator itDataKey = missingStuff.begin();
+     std::ostream& reportWarning = report(WARNING, kFacilityString);
+      for( std::set<DurableDataKey>::iterator itDataKey = missingStuff.begin();
            itDataKey != missingStuff.end();
            ++itDataKey ) {
          reportWarning <<" will not store \""
@@ -119,15 +119,15 @@ dataStringTagsToDataKeysUsingRecordContents( const DataStringTagsToStore& iStore
             <<iRecord.stream().value()<<"\n";
       }
       if( 0 != missingStuff.size() ) {
-         reportWarning <<flush;
+         reportWarning <<std::flush;
       }
    } else {
    	//this is a list of things not to store
-   	STL_SET(DurableDataKey) doNotStore;
+   	std::set<DurableDataKey> doNotStore;
    	stringToTags(iStore(), doNotStore );
    	
    	//keep only stuff that is in Record that is NOT also in doNotStore
-      insert_iterator<STL_SET(DurableDataKey) > insertItr(returnValue, returnValue.begin());
+      std::insert_iterator<std::set<DurableDataKey> > insertItr(returnValue, returnValue.begin());
       set_difference( iRecord.begin_key(), iRecord.end_key(), 
                       doNotStore.begin(), doNotStore.end(), insertItr );
 
@@ -149,34 +149,24 @@ dataStringTagsToDataKeysUsingRecordContents( const DataStringTagsToStore& iStore
 namespace std {
 #endif
 template 
-insert_iterator<STL_SET(DurableDataKey) > 
+std::insert_iterator<std::set<DurableDataKey> > 
 STD_PREFIX set_difference( Record::const_key_iterator, Record::const_key_iterator,
- STL_SET(DurableDataKey)::iterator, STL_SET(DurableDataKey)::iterator,
- insert_iterator<STL_SET(DurableDataKey) > );  
+ std::set<DurableDataKey>::iterator, std::set<DurableDataKey>::iterator,
+ std::insert_iterator<std::set<DurableDataKey> > );  
  
 template 
-insert_iterator<STL_SET(DurableDataKey) > 
-STD_PREFIX set_difference( STL_SET(DurableDataKey)::iterator, STL_SET(DurableDataKey)::iterator,
+std::insert_iterator<std::set<DurableDataKey> > 
+STD_PREFIX set_difference( std::set<DurableDataKey>::iterator, std::set<DurableDataKey>::iterator,
 Record::const_key_iterator, Record::const_key_iterator,
-  insert_iterator<STL_SET(DurableDataKey) > );  
+  std::insert_iterator<std::set<DurableDataKey> > );  
 
 template 
-insert_iterator<STL_SET(DurableDataKey) > 
-STD_PREFIX set_intersection( STL_SET(DurableDataKey)::iterator, STL_SET(DurableDataKey)::iterator,
+std::insert_iterator<std::set<DurableDataKey> > 
+STD_PREFIX set_intersection( std::set<DurableDataKey>::iterator, std::set<DurableDataKey>::iterator,
  Record::const_key_iterator, Record::const_key_iterator,
- insert_iterator<STL_SET(DurableDataKey) > );  
+ std::insert_iterator<std::set<DurableDataKey> > );  
 #if defined(NEED_TO_BE_IN_NAMESPACE_TO_INSTANTIATE_TEMPLATE_BUG)
 #undef STD_PREFIX
 }
 #endif
  
-//copy is used by difference
-#define _copy_in_iterator_ STL_SET(DurableDataKey)::iterator 
-typedef insert_iterator<STL_SET(DurableDataKey) > _copy_out_iterator_;
-#include "STLUtility/instantiate_copy.h"
-
-#undef STLUTILITY_INSTANTIATE_COPY_H
-#undef _copy_in_iterator_
-
-#define _copy_in_iterator_ Record::const_key_iterator 
-#include "STLUtility/instantiate_copy.h"

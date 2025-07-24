@@ -39,7 +39,7 @@
 // user include files
 
 // forward declarations
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 class DummyDir : public HIHistDir
 {
@@ -49,7 +49,7 @@ class DummyDir : public HIHistDir
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      DummyDir( const string& iName );
+      DummyDir( const std::string& iName );
       virtual ~DummyDir();
 
       // ---------- member functions ---------------------------
@@ -61,13 +61,13 @@ class DummyDir : public HIHistDir
    protected:
       // ---------- protected member functions -----------------
       // Make a  sub directory
-      virtual HIHistDir* makeDir( const string& iName) ;
+      virtual HIHistDir* makeDir( const std::string& iName) ;
 
       // create generic histograms and ntuples
       // 1D histogram
       virtual HISTOGRAMINTERFACE_NS HIHist1D* 
       makeHistogram( Count          iId, 
-		     const string&  iTitle,
+		     const std::string&  iTitle,
 		     unsigned int   iNChannels, 
 		     float          iLowEdge,
 		     float          iHighEdge,
@@ -76,7 +76,7 @@ class DummyDir : public HIHistDir
       // 2D histogram
       virtual HISTOGRAMINTERFACE_NS HIHist2D* 
       makeHistogram( Count          iId,
-		     const string&  iTitle,
+		     const std::string&  iTitle,
 		     unsigned int   iNChannelsX, 
 		     float          iLowEdgeX, 
 		     float          iHighEdgeX,
@@ -87,7 +87,7 @@ class DummyDir : public HIHistDir
       
       // profile histogram
       virtual HIHistProf* makeProfile( Count          iId,
-				   const string&  iTitle,
+				   const std::string&  iTitle,
 				   unsigned int   iNChannels, 
 				   float iLowEdgeX, 
 				   float iHighEdgeX,
@@ -97,16 +97,16 @@ class DummyDir : public HIHistDir
 
       // ntuple
       virtual HINtuple* makeNtuple(    Count          iId,
-			           const string&  iTitle,
+			           const std::string&  iTitle,
 				   unsigned int   iSizeOfEntry,
 				   unsigned int   iChunkSize,
 				   const char* const* iLabels) ; 
 
-      virtual HINumber* makeNumber( const string& iName,
+      virtual HINumber* makeNumber( const std::string& iName,
 				float         iValue ) ;
 
       virtual HINumberWithErrors* makeNumberWithErrors( 
-	 const string& iName,
+	 const std::string& iName,
 	 float        iValue,
 	 float        iPositiveError,
 	 float        iNegativeError ) ;

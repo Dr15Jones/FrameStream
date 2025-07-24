@@ -20,8 +20,8 @@
 //        For example, if you had an stl vector of doubles to be sorted
 //
 // typedef double                               _partial_sort_value_type_    ;
-// typedef STL_VECTOR( Value )::iterator        _partial_sort_iterator_      ;
-// typedef STL_VECTOR( Value )::difference_type _partial_sort_distance_type_ ;
+// typedef std::vector< Value >::iterator        _partial_sort_iterator_      ;
+// typedef std::vector< Value >::difference_type _partial_sort_distance_type_ ;
 // typedef less<double>                         _partial_sort_compare_class_ ;
 //
 //

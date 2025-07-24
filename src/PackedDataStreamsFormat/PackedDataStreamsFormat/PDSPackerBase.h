@@ -41,7 +41,7 @@
 #include "StorageManagement/Compression/SMFixedPacker.h"
 
 // forward declarations
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 class PDSPackerBase
 {
@@ -60,7 +60,7 @@ class PDSPackerBase
       // ---------- const member functions ---------------------
       void storePackingInfo( UInt32& ioPackedWord,
 			     unsigned char& ioStartBit,
-			     STL_VECTOR(UInt32)& oContainer) const {
+			     std::vector<UInt32>& oContainer) const {
 	 storeType( ioPackedWord, ioStartBit, oContainer );
 	 storeStrategy( ioPackedWord, ioStartBit, oContainer );
 	 storeStrategyInfo( ioPackedWord, ioStartBit, oContainer);
@@ -95,12 +95,12 @@ class PDSPackerBase
       // ---------- protected const member functions -----------
       virtual void storeStrategyInfo( UInt32& ioPackedWord,
 				     unsigned char& ioStartBit,
-				     STL_VECTOR(UInt32)& ) const = 0;
+				     std::vector<UInt32>& ) const = 0;
 
       void putInContainerIfPackedWordFull( UInt32& ioPackedWord,
 					   UInt32& ioOverflow,
 					   unsigned char& ioStartBit,
-					   STL_VECTOR(UInt32)& oContainer ) const{
+					   std::vector<UInt32>& oContainer ) const{
 	 if( ioStartBit >= 32 ) {
 	    ioStartBit -= 32;
 	    oContainer.push_back( ioPackedWord );
@@ -133,7 +133,7 @@ class PDSPackerBase
       // ---------- private member functions -------------------
       void storeType( UInt32& ioPackedWord, 
 		      unsigned char& ioStartBit,
-		      STL_VECTOR(UInt32)& oContainer ) const {
+		      std::vector<UInt32>& oContainer ) const {
 	 UInt32 overflow=0;
 	 s_typePacker.pack( type(), ioPackedWord, overflow, ioStartBit ); 
 	 putInContainerIfPackedWordFull( ioPackedWord, overflow, ioStartBit,
@@ -142,7 +142,7 @@ class PDSPackerBase
 
       void storeStrategy( UInt32& ioPackedWord, 
 			  unsigned char& ioStartBit,
-			  STL_VECTOR(UInt32)& oContainer ) const {
+			  std::vector<UInt32>& oContainer ) const {
 	 UInt32 overflow=0;
 	 s_strategyPacker.pack(strategy(), ioPackedWord, overflow, ioStartBit); 
 	 putInContainerIfPackedWordFull( ioPackedWord, overflow, ioStartBit,

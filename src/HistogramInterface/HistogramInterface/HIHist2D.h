@@ -70,7 +70,7 @@ class HIHist2D : public HIHist
       // ---------- Constructors and destructor ----------------
 
       HIHist2D( Count   iId,
-                const string&  iTitle,
+                const std::string&  iTitle,
                 unsigned int   iNChannelsX,
                 float          iLowEdgeX,
                 float           iHighEdgeX,
@@ -136,10 +136,10 @@ class HIHist2D : public HIHist
       float highEdgeY  ( void ) const ;
       float bitsPerChannel ( void ) const ;
 
-      pair<float,float> channelLoEdge( unsigned int iXChannel ,
+      std::pair<float,float> channelLoEdge( unsigned int iXChannel ,
 				       unsigned int iYChannel  ) const ;
 
-      pair<float,float> channelCenter( unsigned int iXChannel ,
+      std::pair<float,float> channelCenter( unsigned int iXChannel ,
 				       unsigned int iYChannel  ) const ;
 
       float channelValue( unsigned int iXChannel,

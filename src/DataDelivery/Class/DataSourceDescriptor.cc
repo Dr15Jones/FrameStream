@@ -32,10 +32,8 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <string>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
-#include <assert.h>
+#include <cassert>
 
 // user include files
 #include "DataDelivery/DataSourceDescriptor.h"
@@ -56,14 +54,13 @@
 //
 // constructors and destructor
 //
-DataSourceDescriptor::DataSourceDescriptor( const string& iDataSourceID,
-					    const string& iParameters,
+DataSourceDescriptor::DataSourceDescriptor( const std::string& iDataSourceID,
+					    const std::string& iParameters,
 					    const Stream::Type& iBindStream) :
    m_boundStreamList( *(new Stream::Set ) ),
    m_dataSourceID(iDataSourceID),
    m_parameters(iParameters)
 {
-   assert( 0 != &m_boundStreamList );
 
    Stream::Set boundStreams;
    boundStreams.insert( iBindStream );
@@ -71,14 +68,13 @@ DataSourceDescriptor::DataSourceDescriptor( const string& iDataSourceID,
    bindStreams( boundStreams );
 }
 
-DataSourceDescriptor::DataSourceDescriptor( const string& iDataSourceID,
-					    const string& iParameters,
+DataSourceDescriptor::DataSourceDescriptor( const std::string& iDataSourceID,
+					    const std::string& iParameters,
 					    const Stream::Set& iBindStreams ) :
    m_boundStreamList( *(new Stream::Set ) ),
    m_dataSourceID(iDataSourceID),
    m_parameters(iParameters)
 {
-   assert( 0 != &m_boundStreamList );
 
    bindStreams( iBindStreams );
 }
@@ -89,7 +85,6 @@ DataSourceDescriptor::DataSourceDescriptor( const DataSourceController&
    m_dataSourceID(""),
    m_parameters("")
 {
-   assert( 0 != &m_boundStreamList );
 
    bindStreams( iController.recordsToRetrieve() );
    setDataSourceID( iController.dataSourceID() );
@@ -102,7 +97,6 @@ DataSourceDescriptor::DataSourceDescriptor( const DataSourceDescriptor&
    m_dataSourceID( iDescriptor.dataSourceID() ),
    m_parameters( iDescriptor.parameters() )
 {
-   assert( 0 != &m_boundStreamList );
 
    bindStreams( iDescriptor.boundStreams() );
 }
@@ -147,13 +141,13 @@ DataSourceDescriptor::clearStreams( void )
 
 
 void
-DataSourceDescriptor::setDataSourceID( string iDataSourceID )
+DataSourceDescriptor::setDataSourceID( std::string iDataSourceID )
 {
    m_dataSourceID = iDataSourceID;
 }
 
 void
-DataSourceDescriptor::setParameters( string iParameters )
+DataSourceDescriptor::setParameters( std::string iParameters )
 {
    m_parameters = iParameters;
 }
@@ -166,13 +160,13 @@ DataSourceDescriptor::boundStreams( void ) const
    return m_boundStreamList;
 }
 
-const string&
+const std::string&
 DataSourceDescriptor::dataSourceID( void ) const
 {
    return m_dataSourceID;
 }
 
-const string&
+const std::string&
 DataSourceDescriptor::parameters( void ) const
 {
    return m_parameters;

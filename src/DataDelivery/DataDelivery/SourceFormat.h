@@ -43,15 +43,11 @@
 
 // user include files
 #include "DataHandler/Stream.h"
-#include "JobControl/BinderType.h"
+#include "DataDelivery/BinderType.h"
 
 // forward declarations
-#include "STLUtility/fwd_set.h"
 #include <set>
-
-#if !defined(_sourceformat_extensions_)
-#define _sourceformat_extensions_ STL_SET( string )
-#endif
+#include <string>
 
 class SourceFormat
 {
@@ -59,14 +55,14 @@ class SourceFormat
 
    public:
       // ---------- constants, enums and typedefs --------------
-      typedef _sourceformat_extensions_ Extensions;
+      typedef std::set<std::string> Extensions;
 
       // ---------- Constructors and destructor ----------------
       SourceFormat( BinderType iType );
       virtual ~SourceFormat();
 
       // ---------- member functions ---------------------------
-      virtual BinderBase* createBinder( const string& iName,
+      virtual BinderBase* createBinder( const std::string& iName,
 					const Stream::Set& iBindStreams ) = 0;
 
       // ---------- const member functions ---------------------
@@ -76,14 +72,14 @@ class SourceFormat
 
       //override this if the source can choose its default streams
       // be looking at the file
-      virtual const Stream::Set& defaultStreams( const string& iName);
+      virtual const Stream::Set& defaultStreams( const std::string& iName);
 
       // ---------- static member functions --------------------
-      static string factorySymbol();
+      static std::string factorySymbol();
 
    protected:
       // ---------- protected member functions -----------------
-      void addExtension( const string& iExtension );
+      void addExtension( const std::string& iExtension );
       void setDefaultStreams( const Stream::Set& iStreamSet );
 
       // ---------- protected const member functions -----------

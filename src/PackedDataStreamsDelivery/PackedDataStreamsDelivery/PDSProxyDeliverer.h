@@ -47,8 +47,8 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
-#include "C++Std/fstream.h"
+#include <iostream>
+#include <fstream>
 #include <vector>
 #include <map>
 #include <string>
@@ -60,8 +60,8 @@
 #include "PackedDataStreamsDelivery/PDSFileHeaderInfo.h"
 
 // forward declarations
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <vector>
+#include <map>
 class PDSTypeUnpackingInfo;
 class PDSRecordReadBuffer;
 
@@ -76,8 +76,8 @@ class PDSProxyDeliverer : public ProxyDeliverer
 
    public:
       // ---------- constants, enums and typedefs --------------
-      typedef STL_VECTOR( PDSSourceStream* ) SourceStreams;
-      typedef STL_MAP( Stream::Type, SourceStreams ) StreamToSourcesMap;
+      typedef std::vector< PDSSourceStream* > SourceStreams;
+      typedef std::map< Stream::Type, SourceStreams > StreamToSourcesMap;
       typedef PDSTypeToUnpackingInfoMap TypeToUnpackingInfoMap;
 
       // ---------- Constructors and destructor ----------------
@@ -90,7 +90,7 @@ class PDSProxyDeliverer : public ProxyDeliverer
 
       ///throws PDSDExceptionBase if problem encountered
       void readBody( const Stream::Type& iStream,
-		     istream& iIFStream,
+		     std::istream& iIFStream,
 		     UInt32 iWordsToRead );
 
       PDSIstreamWordReader* wordReader() { return m_headerInfo.wordReader(); }
@@ -98,7 +98,7 @@ class PDSProxyDeliverer : public ProxyDeliverer
       //needed for chaining
       void changeSourceController( PDSSourceController& );
       //used by the EventStore
-      void changeIStream( istream& iStream);
+      void changeIStream( std::istream& iStream);
 
       // ---------- const member functions ---------------------
       const StreamType& recordIndexToStreamType( UInt32 iRecordIndex ) const {
@@ -128,13 +128,13 @@ class PDSProxyDeliverer : public ProxyDeliverer
 
       // ---------- data members -------------------------------
       PDSFileHeaderInfo m_headerInfo;
-      STL_MAP(StreamType, PDSRecordReadBuffer*) m_streamToBufferMap;
+      std::map<StreamType, PDSRecordReadBuffer*> m_streamToBufferMap;
 
       StreamToSourcesMap m_streamToSourcesMap;
 
       //needed for chaining
       DABoolean m_haveRecordsFromPreviousFiles;
-      STL_MAP(StreamType, TypeToUnpackingInfoMap*) m_presentPackingInfo;
+      std::map<StreamType, TypeToUnpackingInfoMap*> m_presentPackingInfo;
       // ---------- static data members ------------------------
 
 };

@@ -20,49 +20,30 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <assert.h>
-#if defined(OSTRSTREAM_NO_TERMINATION_BUG)
-#include <stdio.h>
-#endif
+#include <cassert>
 
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>                                         
-#include <vector>
-#include <map>
-#include <set>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#include <strstream.h>
-#else
 #include <sstream>
-#endif
 
 // user include files
 #include "Experiment/report.h"
 #include "JobControl/SourceManager.h"
 #include "JobControl/SinkManager.h"
 #include "Utility/FileNameUtils.h"
-#include "JobControl/Binder.h"
+#include "DataDelivery/Binder.h"
 #include "DataDelivery/DataSourceBinder.h"
 #include "ChainDelivery/ChainSourceBinder.h"
 #include "DataDelivery/FrameDeliverer.h"
 #include "DataHandler/StreamSet.h"
 #include "Processor/MasterProcessor.h"
-#include "DefaultModule/DefaultModule.h"
+#include "CommandPattern/DefaultModule.h"
 // temporarily needed; will use JobContext in future
 #include "JobControl/JobControl.h"
 #include "JobControl/CompareDataSourceDescriptors.h"
 
 // STL classes
 #include <vector>
-#if defined(MULTIMAP_IS_SEPARATE_FILE_BUG)
-#  include <map>
-#  include <multimap.h>
-#else
-#  include <map>
-#endif                   
-#include "STLUtility/fwd_set.h"
+#include <map>
 #include <set>
 
 // static (local) functions
@@ -72,24 +53,9 @@ addCountToToken( SourceManager::Token& iStumpToken, Count iCount )
 {
    SourceManager::Token newToken;
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-// buggy ostrstream implementation and no stringstream in sight 
-#if defined(OSTRSTREAM_NO_TERMINATION_BUG)
-   const unsigned int kSize=100;
-   char number[kSize];
-   snprintf( number, kSize, "%d", iCount );
-   newToken = iStumpToken + string( "_" ) + string( number );
-#else
-   //ostringstream number; // not yet available: <sstream>
-   ostrstream number;
+   std::ostringstream number; // not yet available: <sstream>
    number << iCount;
-   newToken = iStumpToken + string( "_" ) + string( number.str() );
-#endif
-#else
-   ostringstream number; // not yet available: <sstream>
-   number << iCount;
-   newToken = iStumpToken + string( "_" ) + number.str();
-#endif
+   newToken = iStumpToken + std::string( "_" ) + number.str();
 
    return newToken;
 }
@@ -116,18 +82,6 @@ SourceManager::SourceManager( FrameDeliverer& iDeliverer )
      m_streamsToBeActivated( *new StreamSet ),
      m_frameDeliverer( iDeliverer )
 {
-   if(    0 == &m_sourceMap
-       || 0 == &m_sourceInUseMap
-       || 0 == &m_streamsToBeActivated
-      )
-   {
-      report( EMERGENCY ,
-              kFacilityString )
-                 << "Unable to allocate memory"
-                 << endl ;
-      assert(false);
-      ::exit( 1 );
-   }
 }
 
 // SourceManager::SourceManager( const SourceManager& )
@@ -179,7 +133,7 @@ SourceManager::addSource( BinderBase* iBinder, Token& ioToken )
    if( m_sourceInUseMap.end() != tokenInUseIter )
    {
       report( ERROR, kFacilityString ) 
-	 << "Source in use; need to use edit command first!" << endl;
+	 << "Source in use; need to use edit command first!" << std::endl;
       return( status = false );
    }
    //See if a source with the same sourceID and parameter already exist
@@ -194,7 +148,7 @@ SourceManager::addSource( BinderBase* iBinder, Token& ioToken )
 	 report( ERROR, kFacilityString)
 	    <<"Source in use with exact same id ("<<(*iBinder)->dataSourceID()
 	    <<") and parameters ("
-	    <<(*iBinder)->parameters()<<")\n  Use edit command to change the original source "<<(*itSource).first <<endl;
+	    <<(*iBinder)->parameters()<<")\n  Use edit command to change the original source "<<(*itSource).first <<std::endl;
 	 return (status = false );
       }
    }
@@ -211,7 +165,7 @@ SourceManager::addSource( BinderBase* iBinder, Token& ioToken )
 	 report( ERROR, kFacilityString)
 	    <<"Source with exact same id ("<<(*iBinder)->dataSourceID()
 	    <<") and parameters ("
-	    <<(*iBinder)->parameters()<<")\n  Use 'source' command to change or remove the original source "<<(*itSource).first <<endl;
+	    <<(*iBinder)->parameters()<<")\n  Use 'source' command to change or remove the original source "<<(*itSource).first <<std::endl;
 	 return (status = false );
       }
    }
@@ -223,11 +177,11 @@ SourceManager::addSource( BinderBase* iBinder, Token& ioToken )
 
    // if no such token exists yet, create new one
    if( m_sourceMap.end() == tokenIter
-      || string( "" ) == ioToken
+      || std::string( "" ) == ioToken
       || iBinder->isDummy() )
    {
       // if token is not given, base token on sourceName!
-      if( string( "" ) == ioToken ) {
+      if( std::string( "" ) == ioToken ) {
 	 ioToken = iBinder->dataSourceID();
       }
 
@@ -247,15 +201,15 @@ SourceManager::addSource( BinderBase* iBinder, Token& ioToken )
 	    
 	    iBinder->bindStreams( streams );
 
-	    string message( "using default streams:" );
+	    std::string message( "using default streams:" );
 	    Stream::Set::const_iterator itEnd = streams.end();
 	    for( Stream::Set::const_iterator it = streams.begin();
 		 it != itEnd;
 		 ++it )
 	    {
-	       message += string(" ")+(*it).value();
+	       message += std::string(" ")+(*it).value();
 	    }
-	    report( INFO, kFacilityString ) << message << endl;
+	    report( INFO, kFacilityString ) << message << std::endl;
 	 }
       }	 
 
@@ -324,35 +278,35 @@ SourceManager::useSources( DABoolean& oNewSources )
       if( FrameDeliverer::kAddSourceNoError !=
 	  ( status = m_frameDeliverer.addSource( DSB ) ) )
       {
-	 string sourceName( DSB.dataSourceID() );
+	 std::string sourceName( DSB.dataSourceID() );
 	 switch( status )
 	 {
 	    case FrameDeliverer::kAddSourceBinderFailedToMakeController:
 	    {
 	       report( EMERGENCY, kFacilityString )
 		  << "Source \"" << sourceName << "\": " 
-		  << "failed to make Controller" << endl;
+		  << "failed to make Controller" << std::endl;
 	       break;
 	    }
 	    case FrameDeliverer::kAddSourceInvalidStopsForSource:
 	    {
 	       report( EMERGENCY, kFacilityString )
 		  << "Source \"" << sourceName << "\": " 
-		  << "can't goto those stops" << endl;
+		  << "can't goto those stops" << std::endl;
 	       break;
 	    }
 	    case FrameDeliverer::kAddSourceSourceInaccessible:
 	    {
 	       report( EMERGENCY, kFacilityString )
 		  << "Source \"" << sourceName << "\": " 
-		  << "inaccessible " << endl;
+		  << "inaccessible " << std::endl;
 	       break;
 	    }
 	    case FrameDeliverer::kAddSourceBadParameters:
 	    {
 	       report( EMERGENCY, kFacilityString )
 		  << "Source \"" << sourceName << "\": " 
-		  << "Bad Source parameters" << endl;
+		  << "Bad Source parameters" << std::endl;
 	       break;
 	    }
 	    case FrameDeliverer::kAddSourceUnknownError:
@@ -360,7 +314,7 @@ SourceManager::useSources( DABoolean& oNewSources )
 	    {
 	       report( EMERGENCY, kFacilityString )
 		  << "Source \"" << sourceName << "\": " 
-		  << "Unknown AddSource error from FrameDeliverer" << endl;
+		  << "Unknown AddSource error from FrameDeliverer" << std::endl;
 	       break;
 	    }
 	 }
@@ -369,7 +323,7 @@ SourceManager::useSources( DABoolean& oNewSources )
       else
       {
 	 report( INFO, kFacilityString )
-	    << "Opened data source \"" << (*source).first << "\"." << endl;
+	    << "Opened data source \"" << (*source).first << "\"." << std::endl;
 
 	 // move source over to sourceInUseMap
 	 m_sourceInUseMap.insert( *source );
@@ -402,14 +356,14 @@ SourceManager::editSource( const Token& iToken )
    if( m_sourceInUseMap.end() == tokenIter  ) 
    {
       report( ERROR, kFacilityString ) 
-	 << "No such source \"" << iToken << "\" in use!" << endl;
+	 << "No such source \"" << iToken << "\" in use!" << std::endl;
 
       success = false;
    }
    else
    {
       report( WARNING, kFacilityString ) 
-	 << "Editing a source will recycle it!" << endl;
+	 << "Editing a source will recycle it!" << std::endl;
 
       DABoolean status = removeSourceInUse( iToken );
 
@@ -420,7 +374,7 @@ SourceManager::editSource( const Token& iToken )
 	 // list it to be nice to user for editing
 	 report( INFO, kFacilityString )
 	    << listSource( iToken )
-	    << endl;
+	    << std::endl;
 	 success = true;
       }
 
@@ -447,7 +401,7 @@ SourceManager::removeSource( const Token& iToken )
       delete (*tokenIter).second;
       m_sourceMap.erase( tokenIter );
       report( INFO, kFacilityString ) 
-	 << "Removed source \"" << iToken << "\"." << endl;
+	 << "Removed source \"" << iToken << "\"." << std::endl;
       success = true;
    }
 
@@ -467,7 +421,7 @@ SourceManager::removeSource( const Token& iToken )
        && false == sourceInUseMap )
    {
       report( WARNING, kFacilityString ) 
-	 << "Can't remove unknown source \"" << iToken << "\"." << endl;
+	 << "Can't remove unknown source \"" << iToken << "\"." << std::endl;
       success = false;
    }
 
@@ -515,14 +469,14 @@ SourceManager::removeSourceInUse( const Token& iToken )
    if( m_sourceInUseMap.end() == sourceInUse  ) 
    {
       report( WARNING, kFacilityString ) 
-	 << "Can't remove source-in-use \"" << iToken << "\"." << endl;
+	 << "Can't remove source-in-use \"" << iToken << "\"." << std::endl;
 
       success = false;
    }
    else
    {
       //report( INFO, kFacilityString )
-      //  << "Will remove source-in-use \""<< iToken << "\"." << endl;
+      //  << "Will remove source-in-use \""<< iToken << "\"." << std::endl;
 
       // remove DataSourceBinder from FrameDeliverer
       DataSourceBinder& DSB = (*(*sourceInUse).second).dsBinder();
@@ -535,13 +489,13 @@ SourceManager::removeSourceInUse( const Token& iToken )
 	    case FrameDeliverer::kRemoveSourceNoMatchingSource:
 	    {
 	       report( EMERGENCY, kFacilityString ) 
-		  << "No matching source." << endl;
+		  << "No matching source." << std::endl;
 	       break;
 	    }
 	    default:
 	    {
 	       report( EMERGENCY, kFacilityString ) 
-		  << "Unknown error." << endl;
+		  << "Unknown error." << std::endl;
 	       break;
 	    }
 	 }
@@ -550,7 +504,7 @@ SourceManager::removeSourceInUse( const Token& iToken )
       else
       {
 	 report( INFO, kFacilityString )
-	    << "Removed source-in-use \"" << iToken << "\"" << endl;
+	    << "Removed source-in-use \"" << iToken << "\"" << std::endl;
 	 delete (*sourceInUse).second;
 	 m_sourceInUseMap.erase( sourceInUse );
 
@@ -572,7 +526,7 @@ SourceManager::removeSourceFromChain( const Token& iToken,
       report( ERROR, kFacilityString ) 
 	 << "Can't remove source \"" << sourceName 
 	 << "\"\n because \"" << iToken 
-	 << "\" is in use;\n use edit command first!" << endl;
+	 << "\" is in use;\n use edit command first!" << std::endl;
 
       return( success = false );
    }
@@ -583,7 +537,7 @@ SourceManager::removeSourceFromChain( const Token& iToken,
    {
       report( ERROR, kFacilityString ) 
 	 << "Can't remove source \"" << sourceName 
-	 << "\" from unknown \"" << iToken << "\"." << endl;
+	 << "\" from unknown \"" << iToken << "\"." << std::endl;
 
       return( success = false );
    }
@@ -593,7 +547,7 @@ SourceManager::removeSourceFromChain( const Token& iToken,
    {
       report( ERROR, kFacilityString ) 
 	 << "Can't remove source \"" << sourceName 
-	 << "\" from Non-Chain \"" << iToken << "\"." << endl;
+	 << "\" from Non-Chain \"" << iToken << "\"." << std::endl;
       return( success = false );
    }
    // have a chain in front of us
@@ -606,7 +560,7 @@ SourceManager::removeSourceFromChain( const Token& iToken,
    {
       report( ERROR, kFacilityString ) 
 	 << "Can't remove source \"" << sourceName 
-	 << "\" from chain \"" << iToken << "\"." << endl;
+	 << "\" from chain \"" << iToken << "\"." << std::endl;
       return( success = false );
    }
 	   
@@ -624,7 +578,7 @@ SourceManager::bindStreamsToSource( const Token& iToken,
    if( m_sourceInUseMap.end() != tokenInUseIter )
    {
       report( ERROR, kFacilityString ) 
-	 << "Source in use; need to use edit command first!" << endl;
+	 << "Source in use; need to use edit command first!" << std::endl;
       return( status = false );
    }
    // token not in use
@@ -652,7 +606,7 @@ SourceManager::setToBeActiveStreamsInSource(
    if( m_sourceInUseMap.end() != tokenInUseIter )
    {
       report( ERROR, kFacilityString ) 
-	 << "Source in use; need to use edit command first!" << endl;
+	 << "Source in use; need to use edit command first!" << std::endl;
       return( status = false );
    }
    // token not in use
@@ -667,7 +621,7 @@ SourceManager::setToBeActiveStreamsInSource(
    else 
    {
       report( ERROR, kFacilityString ) 
-	 << "Unknown Source " << iToken << endl;
+	 << "Unknown Source " << iToken << std::endl;
       return( status = false );
    }
 
@@ -684,7 +638,7 @@ SourceManager::clearToBeActiveStreamsInSource( const Token& iToken )
    if( m_sourceInUseMap.end() != tokenInUseIter )
    {
       report( ERROR, kFacilityString ) 
-	 << "Source in use; need to use edit command first!" << endl;
+	 << "Source in use; need to use edit command first!" << std::endl;
       return( status = false );
    }
    // token not in use
@@ -699,7 +653,7 @@ SourceManager::clearToBeActiveStreamsInSource( const Token& iToken )
    else 
    {
       report( ERROR, kFacilityString ) 
-	 << "Unknown Source " << iToken << endl;
+	 << "Unknown Source " << iToken << std::endl;
       return( status = false );
    }
 
@@ -763,7 +717,7 @@ SourceManager::streamsToBeActivated( const MasterProcessor& iMasterProcessor,
       {
 	 //report( INFO, kFacilityString ) 
 	 //   << "stream \"" << (*procStream).value() 
-	 //   << "\" bound to action" << endl;
+	 //   << "\" bound to action" << std::endl;
 	 m_streamsToBeActivated.insert( *procStream );
       }
    }
@@ -782,7 +736,7 @@ SourceManager::streamsToBeActivated( const MasterProcessor& iMasterProcessor,
       {
 	 //report( INFO, kFacilityString ) 
 	 //   << "stream \"" << (*sinkStream).value() 
-	 //   << "\" to be written to a sink" << endl;
+	 //   << "\" to be written to a sink" << std::endl;
 	 m_streamsToBeActivated.insert( *sinkStream );
       }
    }
@@ -813,7 +767,7 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
 	 << "No Active Streams specified!\n" 
 	 << "(Make sure you have a processor selected\n"
 	 << "with at least one action bound to a stream!)"
-	 << endl;
+	 << std::endl;
       return( success = false );
    }
 
@@ -821,7 +775,7 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
 
    // make a mmap<stream,sources>: 
    //     for a given stream which sources can provide it
-   typedef multimap< StreamType, const BinderBase*, less<StreamType> > 
+   typedef std::multimap< StreamType, const BinderBase*, std::less<StreamType> > 
       StreamSourceMM;
    StreamSourceMM streamSourceMM;
    
@@ -850,7 +804,7 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
 
    // make a set< DataSourceDescriptor >:
    //     to be able to find DataSourceDescriptors by name easily
-   typedef STL_SET_COMP( DataSourceDescriptor, CompareDataSourceDescriptors )
+   typedef std::set< DataSourceDescriptor, CompareDataSourceDescriptors >
       SourceDescriptorSet;
    SourceDescriptorSet sourceDescriptorSet;
 
@@ -874,7 +828,7 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
 	 {
 	    report( ERROR, kFacilityString ) 
 	       << "There is no Source that can supply "
-	       << "Active Stream \"" << (*stream).value() << "\"!" << endl;
+	       << "Active Stream \"" << (*stream).value() << "\"!" << std::endl;
 	    sourceDescriptor = 0;
 	    success = false;
 	    break;
@@ -914,7 +868,7 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
 	       {
 		  report( ERROR, kFacilityString ) 
 		     << "couldn't find " 
-		     << (*source).second->dataSourceID() << endl;
+		     << (*source).second->dataSourceID() << std::endl;
 	       }
 	    }
 	    // if found one, don't need to go further
@@ -992,7 +946,7 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
       report( SYSTEM, kFacilityString )
 	 << "Stream \"" << (*itStream).value() 
 	 << "\" can be supplied by more than one source.\n"
-	 << "Please advise on which one to use (by number):" << endl;
+	 << "Please advise on which one to use (by number):" << std::endl;
 
       count = 0;
       {
@@ -1001,13 +955,13 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
 	   ++it )
       {
 	 if( ++count == whichOne ) {
-	    cout <<"*";
+	    std::cout <<"*";
 	 } else {
-	    cout <<" ";
+	    std::cout <<" ";
 	 }
-	 cout 
+	 std::cout 
 	    << count << ") " 
-	    << (*it).second->dataSourceID() << endl;
+	    << (*it).second->dataSourceID() << std::endl;
       }
       }
       if( Switch::kOn 
@@ -1017,11 +971,11 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
 	 do
 	 {
 	    DABoolean badInput = false;
-	    cin >> whichOne;
-	    if( ios::failbit == cin.fail() ) {
+	    std::cin >> whichOne;
+	    if( std::cin.fail() ) {
 	       badInput = true;
-	       cin.clear(); // reset bad state
-	       cin.ignore( 80, '\n' ); // throw away input (up to 80chars)
+	       std::cin.clear(); // reset bad state
+	       std::cin.ignore( 80, '\n' ); // throw away input (up to 80chars)
 	    }
 	    validChoice = 
 	       ( true == badInput 
@@ -1029,7 +983,7 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
 	    if( false == validChoice )
 	    {
 	       report( SYSTEM, kFacilityString ) 
-		  << "Bad choice. Try again!" << endl;
+		  << "Bad choice. Try again!" << std::endl;
 	    }
 	 } 
 	 while( false == validChoice );
@@ -1093,13 +1047,13 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
 	    report( INFO, kFacilityString )
 	       << (*streamIter).value() << " ";
 	 }
-	 report( INFO, kFacilityString ) << endl;
+	 report( INFO, kFacilityString ) << std::endl;
       }
    }
    if( true == success )
    {
       report( INFO, kFacilityString )
-         << "Defined active streams." <<endl;
+         << "Defined active streams." <<std::endl;
 
       success = true;
    }
@@ -1111,7 +1065,7 @@ SourceManager::activateStreams( const MasterProcessor& iMasterProcessor,
    {
       report( ERROR, kFacilityString ) 
 	 << "Couldn't find sources providing the specified Active Streams" 
-	 << endl;
+	 << std::endl;
       success = false;
    }
 
@@ -1135,23 +1089,23 @@ SourceManager::handActiveDSDToFrameDeliverer(
          case FrameDeliverer::kAddActiveSourceDataSourceNotPresent:
          {
             report( EMERGENCY, kFacilityString ) 
-               // << "kAddActiveStreamDataSourceNotPresent" << endl;
+               // << "kAddActiveStreamDataSourceNotPresent" << std::endl;
                << "No datasource defined. Please first define source!" 
-	       << endl;
+	       << std::endl;
             break; 
          }
          case FrameDeliverer::kAddActiveSourceInvalidStreamsForSource:
          {
             report( EMERGENCY, kFacilityString )
-               // << "kAddActiveStreamInvalidStreamsForSource" << endl;
+               // << "kAddActiveStreamInvalidStreamsForSource" << std::endl;
                << "Invalid streams for this source type; please try again!" 
-	       << endl;
+	       << std::endl;
 	    break;
          }
          default:
          {
             report( EMERGENCY, kFacilityString )
-               << "Unknown error (?)" << endl;
+               << "Unknown error (?)" << std::endl;
             break;
          }
       }
@@ -1170,7 +1124,7 @@ SourceManager::renameToken( const Token& iOldToken, const Token& iNewToken )
    if( true == isSourceInUseMap( iOldToken ) )
    {
       report( ERROR, kFacilityString ) 
-	 << "Can't change Source Name for source in use" << endl;
+	 << "Can't change Source Name for source in use" << std::endl;
       return success = false;
    }
       
@@ -1180,7 +1134,7 @@ SourceManager::renameToken( const Token& iOldToken, const Token& iNewToken )
    {
       report( ERROR, kFacilityString ) 
 	 << "New Source Name \"" << iNewToken 
-	 << "\" already exists; choose new one!" << endl;
+	 << "\" already exists; choose new one!" << std::endl;
       return success = false;
    }
 
@@ -1189,7 +1143,7 @@ SourceManager::renameToken( const Token& iOldToken, const Token& iNewToken )
    {
       report( ERROR, kFacilityString ) 
 	 << "Couldn't change unknown source \"" 
-	 << iOldToken << "\"" << endl;
+	 << iOldToken << "\"" << std::endl;
       success = false;
    }
    else
@@ -1241,7 +1195,7 @@ SourceManager::createToken( Token iToken ) const
    }
    else
    {
-      newToken = string( "source" );
+      newToken = std::string( "source" );
    }
    Token stumpToken = newToken;
    //newToken = addCountToToken( stumpToken, 1 );
@@ -1250,14 +1204,14 @@ SourceManager::createToken( Token iToken ) const
    { 
       //report( INFO, kFacilityString ) 
       // << "Source Name \"" << newToken 
-      // << "\" already exists; trying another ..." << endl;
+      // << "\" already exists; trying another ..." << std::endl;
       
       newToken = addCountToToken( stumpToken, count );
       ++count;
    }
 
    report( INFO, kFacilityString )
-      << "creating Source Name \"" << newToken << "\" " << endl;
+      << "creating Source Name \"" << newToken << "\" " << std::endl;
 
    return newToken;
 }
@@ -1290,10 +1244,10 @@ SourceManager::checkIfTokenExists( const Token& iToken ) const
    return exists;
 }
 
-string
+std::string
 SourceManager::statusOfAllSources() const
 {
-   string resultString;
+   std::string resultString;
 
    typedef FrameDeliverer::StatusOfSources StatusOfSources;
    StatusOfSources statusOfSources = m_frameDeliverer.statusOfSources();
@@ -1303,28 +1257,12 @@ SourceManager::statusOfAllSources() const
 	++it )
    {
       FrameDeliverer::SourceStatus status( (*it).first );
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#if defined(OSTRSTREAM_NO_TERMINATION_BUG)
-      const unsigned int kSize=100;
-      char codeString[kSize];
-      snprintf( codeString, kSize, "%d", status );
-      string statusString = (status == FrameDeliverer::kSourceNoError ) 
-	 ? string("ok") : string( "bad (code=" )+string( codeString )+string(")");
-#else
-      //ostringstream number; // not yet available: <sstream>
-      ostrstream codeString;
+      std::ostringstream codeString;
       codeString << int( status );
-      string statusString = (status == FrameDeliverer::kSourceNoError ) 
-	 ? string("ok") : string( "bad (code=" )+codeString.str()+string(")");
-#endif
-#else
-      ostringstream codeString;
-      codeString << int( status );
-      string statusString = (status == FrameDeliverer::kSourceNoError ) 
-	 ? string("ok") : string( "bad (code=" )+codeString.str()+string(")");
-#endif
+      std::string statusString = (status == FrameDeliverer::kSourceNoError ) 
+	 ? std::string("ok") : std::string( "bad (code=" )+codeString.str()+std::string(")");
       resultString += findTokenFor((*it).second)
-	 +string( " : " )+statusString+ string( "\n" );
+	 +std::string( " : " )+statusString+ std::string( "\n" );
    }
    
    return resultString;
@@ -1362,18 +1300,18 @@ SourceManager::findTokenFor( const DataSourceDescriptor& iDescriptor ) const
    return returnValue;
 }
 
-string
+std::string
 SourceManager::listTokens() const
 {
-   string resultString;
-   //resultString += string( "\nListing of all Tokens:\n" );
+   std::string resultString;
+   //resultString += std::string( "\nListing of all Tokens:\n" );
 
    SourceMap::const_iterator lastToken = m_sourceMap.end();
    for( SourceMap::const_iterator iter = m_sourceMap.begin();
 	iter != lastToken;
 	++iter )
    {
-      resultString += string( "   " ) + (*iter).first + string( "\n" );
+      resultString += std::string( "   " ) + (*iter).first + std::string( "\n" );
    }
 
    SourceMap::const_iterator lastInUseToken = m_sourceInUseMap.end();
@@ -1381,16 +1319,16 @@ SourceManager::listTokens() const
 	iterInUse != lastInUseToken;
 	++iterInUse )
    {
-      resultString += string( " * " ) + (*iterInUse).first + string( "\n" );
+      resultString += std::string( " * " ) + (*iterInUse).first + std::string( "\n" );
    }
 
    return resultString;
 }
 
-const vector<SourceManager::Token>
+const std::vector<SourceManager::Token>
 SourceManager::tokens() const
 {
-   vector<Token> tokens;
+   std::vector<Token> tokens;
 
    SourceMap::const_iterator lastToken = m_sourceMap.end();
    for( SourceMap::const_iterator iter = m_sourceMap.begin();
@@ -1403,12 +1341,12 @@ SourceManager::tokens() const
    return tokens;
 }
 
-string
+std::string
 SourceManager::list( const Token& iToken ) const
 {
-   string resultString;
-   //resultString += string( "Listing source \"" );
-   resultString += iToken + string( "\":\n" );
+   std::string resultString;
+   //resultString += std::string( "Listing source \"" );
+   resultString += iToken + std::string( "\":\n" );
 
    resultString += listSource( iToken );
    resultString += listSourceInUse( iToken );
@@ -1416,18 +1354,18 @@ SourceManager::list( const Token& iToken ) const
    return resultString;
 }
 
-string
+std::string
 SourceManager::listAllSources() const
 {
-   string resultString;
+   std::string resultString;
 
    if( true == m_sourceMap.empty() && true == m_sourceInUseMap.empty() )
    {
-      resultString += string( "\n" );
+      resultString += std::string( "\n" );
    }
    else
    {
-      //resultString += string( "\nListing all Sources:\n" );
+      //resultString += std::string( "\nListing all Sources:\n" );
 
       SourceMap::const_iterator lastToken( m_sourceMap.end() );
       for( SourceMap::const_iterator tokenIter = m_sourceMap.begin();
@@ -1450,30 +1388,30 @@ SourceManager::listAllSources() const
    return resultString;
 }
 
-string
+std::string
 SourceManager::listSource( const Token& iToken ) const
 {
    return listSourceImplementation( iToken, m_sourceMap );
 }
 
-string
+std::string
 SourceManager::listSourceInUse( const Token& iToken ) const 
 {
    return listSourceImplementation( iToken, m_sourceInUseMap, "*" );
 }
 
-string
+std::string
 SourceManager::listSourceImplementation( const Token& iToken, 
 					 const SourceMap& iMap,
-					 string iSpecialPrint ) const
+					 std::string iSpecialPrint ) const
 {
-   string resultString;
-   const string indentation( "     " );
+   std::string resultString;
+   const std::string indentation( "     " );
 
    SourceMap::const_iterator source = iMap.find( iToken );
    if( iMap.end() == source )
    {
-      resultString += string( "\n" );
+      resultString += std::string( "\n" );
    }
    else
    {
@@ -1481,13 +1419,13 @@ SourceManager::listSourceImplementation( const Token& iToken,
       
       if( true == binder->isDummy() )
       {
-	 resultString += string( " " ) + iSpecialPrint 
-	    + string( " Source \"" ) + iToken + string( "\": empty\n" );
+	 resultString += std::string( " " ) + iSpecialPrint 
+	    + std::string( " Source \"" ) + iToken + std::string( "\": empty\n" );
       } else
       if( true == binder->isChain() )
       {
-	 resultString += string( " " ) + iSpecialPrint 
-	    + string( " Source \"" ) + iToken + string( "\":\n" );
+	 resultString += std::string( " " ) + iSpecialPrint 
+	    + std::string( " Source \"" ) + iToken + std::string( "\":\n" );
 	 resultString += listSourcesInChain( binder );
       }
       else
@@ -1497,16 +1435,16 @@ SourceManager::listSourceImplementation( const Token& iToken,
 	 // only print token name, if sourceName != token
 	 if( sourceName == iToken )
 	 {
-	    resultString += string( " " ) + iSpecialPrint
-	       + string( " Source " ) + sourceName;
+	    resultString += std::string( " " ) + iSpecialPrint
+	       + std::string( " Source " ) + sourceName;
 	 }
 	 else
 	 {
-	    resultString += string( " " ) + iSpecialPrint 
-	       + string( " Source \"" ) + iToken + string( "\":\n" );
+	    resultString += std::string( " " ) + iSpecialPrint 
+	       + std::string( " Source \"" ) + iToken + std::string( "\":\n" );
 	    resultString += indentation + sourceName;
 	 }
-	 resultString += string( "\n" ) + indentation + string( "Streams: " );
+	 resultString += std::string( "\n" ) + indentation + std::string( "Streams: " );
 	 const StreamSet& streams = binder->boundStreams();
 	 StreamSet::const_iterator endStream = streams.end();
 	 for( StreamSet::const_iterator stream = streams.begin();
@@ -1515,20 +1453,20 @@ SourceManager::listSourceImplementation( const Token& iToken,
 	 {
 	    if( true == binder->isToBeActiveStream( *stream ) )
 	    {
-	       resultString += string( " " ) + iSpecialPrint + (*stream).value();
+	       resultString += std::string( " " ) + iSpecialPrint + (*stream).value();
 	    }
 	    else
 	    {
-	       resultString += string( " " )  + (*stream).value();
+	       resultString += std::string( " " )  + (*stream).value();
 	    }
 	 }
-	 resultString += string( "\n" );
+	 resultString += std::string( "\n" );
 
 	 // and parameters
-	 if( binder->parameters() != string( "" ) )
+	 if( binder->parameters() != std::string( "" ) )
 	 {
-	    resultString += indentation + string( "Parameters: " ) 
-	       + binder->parameters() + string( "\n" );
+	    resultString += indentation + std::string( "Parameters: " ) 
+	       + binder->parameters() + std::string( "\n" );
 	 }
       }
 
@@ -1537,36 +1475,36 @@ SourceManager::listSourceImplementation( const Token& iToken,
    return resultString;
 }
 
-string
+std::string
 SourceManager::listSourcesInChain( const BinderBase* iBinder ) const
 {
-   string resultString;
-   const string indentation( "      " );
+   std::string resultString;
+   const std::string indentation( "      " );
 
    assert( true == iBinder->isChain() );
 
    ChainSourceBinderBase& CSB = (ChainSourceBinderBase&)(*iBinder).dsBinder();
 
-   typedef vector<DataSourceDescriptor> Sources;
+   typedef std::vector<DataSourceDescriptor> Sources;
    Sources sources = CSB.sources();
    
    // print out streams for chain
-   resultString += indentation + string( "Streams: " );
+   resultString += indentation + std::string( "Streams: " );
    const StreamSet& streams = CSB.boundStreams();
    StreamSet::const_iterator endStream = streams.end();
    for( StreamSet::const_iterator stream = streams.begin();
 	stream != endStream;
 	++stream )
    {
-      resultString += string( " " ) + (*stream).value();
+      resultString += std::string( " " ) + (*stream).value();
    }
-   resultString += string( "\n" );
+   resultString += std::string( "\n" );
    
    // and parameters
-   if( iBinder->parameters() != string( "" ) )
+   if( iBinder->parameters() != std::string( "" ) )
    {
-      resultString += indentation + string( "Parameters: " ) 
-	 + iBinder->parameters() + string( "\n" );
+      resultString += indentation + std::string( "Parameters: " ) 
+	 + iBinder->parameters() + std::string( "\n" );
    }
 
    // loop over all entries in chain
@@ -1576,21 +1514,21 @@ SourceManager::listSourcesInChain( const BinderBase* iBinder ) const
 	++i )
    {
       resultString += 
-	 string( "      " ) + (*i).dataSourceID() + string( "\n" );
+	 std::string( "      " ) + (*i).dataSourceID() + std::string( "\n" );
    }
   
    return resultString;
 }
 
-string
+std::string
 SourceManager::listStreams() const
 {
-   string resultString;
+   std::string resultString;
 
    // ------ reevaluate streams based on sources every time we're called!
    // make a mmap<stream,sources>: 
    //     for a given stream which sources can provide it
-   typedef multimap< StreamType, BinderBase*, less<StreamType> > StreamSourceMM;
+   typedef std::multimap< StreamType, BinderBase*, std::less<StreamType> > StreamSourceMM;
    StreamSourceMM streamSourceMM;
    
    SourceMap::const_iterator endSrcIt = m_sourceMap.end();
@@ -1634,14 +1572,14 @@ SourceManager::listStreams() const
    }
 
    // print out streams for chain
-   resultString += string( "Streams:\n" );
+   resultString += std::string( "Streams:\n" );
 
    StreamSourceMM::const_iterator endStream = streamSourceMM.end();
    for( StreamSourceMM::const_iterator stream = streamSourceMM.begin();
 	stream != endStream;
 	++stream )
    {
-      resultString += string( " " ) + (*stream).first.value() + string( ":\n" );
+      resultString += std::string( " " ) + (*stream).first.value() + std::string( ":\n" );
       
       StreamSourceMM::iterator lastSource
 	 = streamSourceMM.upper_bound( (*stream).first ); 
@@ -1656,27 +1594,27 @@ SourceManager::listStreams() const
 	    sourceName = (*source).first.value().c_str();
 	 }
 
-	 resultString += string( "    " );
+	 resultString += std::string( "    " );
 
 	 // print special if stream is toBeActive
 	 if( true == binder->isToBeActiveStream( (*stream).first ) )
 	 {
-	    resultString += string( "*" );
+	    resultString += std::string( "*" );
 	 }
-	 resultString += sourceName + string( "\n" );
+	 resultString += sourceName + std::string( "\n" );
       }
    }
    
    return resultString;
 }
 
-string
+std::string
 SourceManager::listStreamsToBeActivated() const
 {
-   string resultString;
+   std::string resultString;
 
    // print out streams for chain
-   resultString += string( "Active Streams: " );
+   resultString += std::string( "Active Streams: " );
 
    const StreamSet& streams = streamsToBeActivated();
 
@@ -1685,9 +1623,9 @@ SourceManager::listStreamsToBeActivated() const
 	stream != endStream;
 	++stream )
    {
-      resultString += string( " " ) + (*stream).value();
+      resultString += std::string( " " ) + (*stream).value();
    }
-   resultString += string( "\n" );
+   resultString += std::string( "\n" );
    
    return resultString;
 }
@@ -1790,7 +1728,7 @@ SourceManager::streamsToBeActivated() const
 // force reload of proxies after new source is added
 //
 // Revision 1.46  1999/12/11 19:07:32  mkl
-// added 'source status' command; use bug flag for linux string compare function problem
+// added 'source status' command; use bug flag for linux std::string compare function problem
 //
 // Revision 1.45  1999/10/08 21:46:44  mkl
 // put in hooks for pattern searching in loading (if we ever decide to use it); fix bug with file chaining

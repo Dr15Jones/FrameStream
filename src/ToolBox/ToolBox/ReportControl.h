@@ -50,7 +50,7 @@
 
    if( repCon.nCalls() < repCon.plateau() )
    {
-      repcon() << "Here is an error for daqId=" << daqId << endl ;
+      repcon() << "Here is an error for daqId=" << daqId << std::endl ;
    }
 
 
@@ -80,7 +80,7 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 
 // user include files
 #include <string>
@@ -97,8 +97,8 @@ class ReportControl
 
       // ---------- Constructors and destructor ----------------
       ReportControl( const Severity& aSeverity ,
-		     const string&   aFacility ,
-		     const string&   aPreface  ,
+		     const std::string&   aFacility ,
+		     const std::string&   aPreface  ,
 		     const UInt32    aFactor   ,
 		     const UInt32    aPlateau    );
       virtual ~ReportControl();
@@ -106,13 +106,13 @@ class ReportControl
 
       // ---------- member functions ---------------------------
 
-      ostream& operator()() ;
+     std::ostream& operator()() ;
 
       // ---------- const member functions ---------------------
 
       const Severity& severity() ;
-      const string&   facility() ;
-      const string&   preface()  ;
+      const std::string&   facility() ;
+      const std::string&   preface()  ;
       UInt32          factor()   ;
       UInt32          plateau()  ;
 
@@ -140,8 +140,8 @@ class ReportControl
       // ---------- data members -------------------------------
 
       Severity m_severity ;
-      string   m_facility ;
-      string   m_preface  ;
+      std::string   m_facility ;
+      std::string   m_preface  ;
       UInt32   m_factor   ;
       UInt32   m_plateau  ;
 	                  

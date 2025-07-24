@@ -35,7 +35,7 @@
 //
 
 // system include files
-#include "C++Std/fstream.h"
+#include <fstream>
 
 // user include files
 
@@ -49,7 +49,7 @@ class PDSIstreamWordReader
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      PDSIstreamWordReader( istream& iIstream ) : m_stream(iIstream) {}
+      PDSIstreamWordReader( std::istream& iIstream ) : m_stream(iIstream) {}
       virtual ~PDSIstreamWordReader();
 
       // ---------- member functions ---------------------------
@@ -66,7 +66,7 @@ class PDSIstreamWordReader
 
       void skipWords( unsigned int iNumberOfWordsToSkip );
 
-      istream& stream() { return m_stream; }
+      std::istream& stream() { return m_stream; }
       // ---------- const member functions ---------------------
       virtual DABoolean isByteSwapping() const { return false; }
 
@@ -89,7 +89,7 @@ class PDSIstreamWordReader
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      istream& m_stream;
+      std::istream& m_stream;
       // ---------- static data members ------------------------
 
 };

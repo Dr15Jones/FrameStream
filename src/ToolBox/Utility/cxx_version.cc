@@ -1,8 +1,8 @@
-#include "C++Std/iostream.h"
+#include <iostream>
 
 int main()
 {
    int i = __DECCXX_VER ;
-   cout << i << endl ;
+   cout << i << std::endl ;
    return( 0 ) ;
 }

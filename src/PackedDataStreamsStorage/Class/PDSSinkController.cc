@@ -68,7 +68,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-PDSSinkController::PDSSinkController(const string& iFileName,
+PDSSinkController::PDSSinkController(const std::string& iFileName,
 				     const Stream::Set& iWriteStreams,
 				     const PDSDataToStore& iDataToStore ) :
    m_fileName(iFileName),
@@ -89,7 +89,7 @@ PDSSinkController::PDSSinkController(const string& iFileName,
               kFacilityString )
                  << "\n\tUnable to open PDS file called "
                  << m_fileName
-                 << endl ;
+                 << std::endl ;
       setInitializationStatus( kInitSinkInaccessible ) ;
 
    } else {

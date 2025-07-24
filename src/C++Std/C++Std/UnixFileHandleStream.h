@@ -83,7 +83,7 @@ class UnixFileHandleStream : public basic_istream<char>
 
 };
 #else
-#include "C++Std/fstream.h"
+#include <fstream>
 //ifstream already takes file handle as a constructor argument
 typedef ifstream UnixFileHandleStream;
 

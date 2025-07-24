@@ -39,6 +39,6 @@
 //
 // constants, enums and typedefs
 //
-typedef pair< pair< unsigned int, float>, float*> _list_contents_;
+typedef std::pair< std::pair< unsigned int, float>, float*> _list_contents_;
 
 #include "STLUtility/instantiate_list.h"

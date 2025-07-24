@@ -120,9 +120,9 @@
 // system include files
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
-#include "C++Std/iostream.h"
-#include "C++Std/iomanip.h"
-#include "C++Std/fstream.h"
+#include <iostream>
+#include <iomanip>
+#include <fstream>
 #include <unistd.h>  // Must do standard C read on SUN
 #include <errno.h>
 #include <string.h>
@@ -158,7 +158,7 @@ BDRecordHeader::BDRecordHeader():
   m_headerBuffer = new UInt32[ kMinRecordSize ];
    if( 0 == m_headerBuffer ){
       report( ERROR, kFacilityString )
-         << "Unable to create buffer for event header; out of memory" << endl ;
+         << "Unable to create buffer for event header; out of memory" << std::endl ;
       assert( 0 != m_headerBuffer );
       ::exit(1);
    }
@@ -204,7 +204,7 @@ BDRecordHeader::read( ifstream& iIFStream )
    if ( 0 > fileDescriptor )
    {
       report( ERROR, kFacilityString )
-         << "Unable to open input file."  << endl ;
+         << "Unable to open input file."  << std::endl ;
       returnFlag = -1 ;  // Flag the failure to open
    }
 #endif
@@ -213,7 +213,7 @@ BDRecordHeader::read( ifstream& iIFStream )
    if ( 0 == returnFlag )
    {
       report ( INFO, kFacilityString )
-	 << "Detected EOF of binary source; will not attempt read" << endl ;
+	 << "Detected EOF of binary source; will not attempt read" << std::endl ;
    }
 // Read twelve words into the recordHeader
    if ( 0 < returnFlag )
@@ -230,14 +230,14 @@ BDRecordHeader::read( ifstream& iIFStream )
 	 {
 	    returnFlag = 0 ;  // Flag EOF
 	    report ( INFO, kFacilityString )
-	       << "Reached EOF of binary source" << endl ;
+	       << "Reached EOF of binary source" << std::endl ;
 	 }
 	 else
 	 {
 	    returnFlag = -1 ; // Flag read error
 	    report ( INFO, kFacilityString )
 	       << "Error " << iIFStream.rdstate()
-	       << " reading next event header" << endl ;
+	       << " reading next event header" << std::endl ;
 	 }
       }
 #else
@@ -248,14 +248,14 @@ BDRecordHeader::read( ifstream& iIFStream )
          report( ERROR, kFacilityString )
             << "C read fails for next event header\n"
             << "    System error message is: "
-            << strerror( errno ) << endl ;
+            << strerror( errno ) << std::endl ;
          returnFlag = n_read ;    // Flag read error to calling routine
       }
       else if ( 0 == n_read )
       {
 	 returnFlag = 0 ;
 	 report ( INFO, kFacilityString )
-	    << "Reached EOF of binary source" << endl ;
+	    << "Reached EOF of binary source" << std::endl ;
       }
 #endif
       else                 //  Successful read
@@ -270,7 +270,7 @@ BDRecordHeader::read( ifstream& iIFStream )
 	    report( ERROR, kFacilityString )
 	       << m_headerBuffer[0]
 	       << " is too few words to hold a valid event record.  Aborting"
-	       << endl ;
+	       << std::endl ;
 	    assert( kMinRecordSize <= m_headerBuffer[0] );
 	    ::exit(1) ;
 	 }
@@ -294,7 +294,7 @@ BDRecordHeader::read( ifstream& iIFStream )
       {
 	 returnFlag = -1 ;
 	 report ( ERROR, kFacilityString )
-	    << "Have reached EOF of binary source" << endl ; // This
+	    << "Have reached EOF of binary source" << std::endl ; // This
 //              is an error because we shouldn't hit EOF in mid-event
       }
 #if ( AC_BIGENDIAN == 0 )
@@ -318,7 +318,7 @@ BDRecordHeader::read( ifstream& iIFStream )
 	    << hex << m_headerBuffer[1]
 	    << ", should be "  << kRAWD
 	    << " (RAWD) for raw data events" << dec
-	    << endl ;
+	    << std::endl ;
 	 dumpHeaderBufferContents() ;
 
 // If RAWD comes out DWAR, then byteswapping code is defective
@@ -333,7 +333,7 @@ BDRecordHeader::read( ifstream& iIFStream )
 	       << "Coding error:  CPU has AC_BIGENDIAN = "
 	       << ac_bigendian << "\n"
 	       << "However ASCII tag is byte-swapped" 
-	       << " RAWD dataID flag has come out DWAR" << endl ;
+	       << " RAWD dataID flag has come out DWAR" << std::endl ;
 	    assert( kDWAR != m_headerBuffer[1] ) ;
 	    // (There will not be an assertion for corrupt data)
 	 }
@@ -349,7 +349,7 @@ BDRecordHeader::read( ifstream& iIFStream )
 	    << hex << m_headerBuffer[4]
 	    << ", should be " << kHEAD << dec
 	    << " (HEAD) for record header information"
-	    << endl ;
+	    << std::endl ;
 	 dumpHeaderBufferContents() ;
       }
 
@@ -415,9 +415,9 @@ void
 BDRecordHeader::dumpHeaderBufferContents() const
 {
       report( INFO, kFacilityString )
-	 << "Dumping 12-word header buffer" << endl
-	 << " 0: " << setw(8) << hex << m_headerBuffer[0] << 
-	 " record length    " << dec << m_headerBuffer[0] << endl;
+	 << "Dumping 12-word header buffer" << std::endl
+	 << " 0: " << std::setw(8) << hex << m_headerBuffer[0] << 
+	 " record length    " << dec << m_headerBuffer[0] << std::endl;
 
       char asciiID[5] ;
 #if ( AC_BIGENDIAN != 0 )
@@ -430,17 +430,17 @@ BDRecordHeader::dumpHeaderBufferContents() const
 #endif
       asciiID[4] = '\0' ;
       report( INFO, kFacilityString )
-	 << " 1: " << setw(8) << hex << m_headerBuffer[1] << 
-	 " ASCII identifier " << asciiID << endl ;
+	 << " 1: " << std::setw(8) << hex << m_headerBuffer[1] << 
+	 " ASCII identifier " << asciiID << std::endl ;
 
       report( INFO, kFacilityString )
-	 << " 2: " << setw(8) << hex << m_headerBuffer[2] << 
+	 << " 2: " << std::setw(8) << hex << m_headerBuffer[2] << 
 	 " Type and version " << ( 0xffff & ( m_headerBuffer[2] >> 16 ))
-	 << "  "  << (0xffff & m_headerBuffer[2]) << endl ;
+	 << "  "  << (0xffff & m_headerBuffer[2]) << std::endl ;
 
       report( INFO, kFacilityString )
-	 << " 3: " << setw(8) << hex << m_headerBuffer[3] << 
-	 " HEAD length      " << dec << m_headerBuffer[3] << endl ;
+	 << " 3: " << std::setw(8) << hex << m_headerBuffer[3] << 
+	 " HEAD length      " << dec << m_headerBuffer[3] << std::endl ;
 
 #if ( AC_BIGENDIAN != 0 )
       memcpy( asciiID, (char*)(m_headerBuffer+4), 4) ;
@@ -449,37 +449,37 @@ BDRecordHeader::dumpHeaderBufferContents() const
       memcpy( asciiID, (char*)ptr, 4 ) ;
 #endif
       report( INFO, kFacilityString )
-	 << " 4: " << setw(8) << hex << m_headerBuffer[4] << 
-	 " ASCII identifier " << asciiID << endl ;
+	 << " 4: " << std::setw(8) << hex << m_headerBuffer[4] << 
+	 " ASCII identifier " << asciiID << std::endl ;
 
       report( INFO, kFacilityString )
-	 << " 5: " << setw(8) << hex << m_headerBuffer[5] << 
-	 " Time seconds     " << dec << m_headerBuffer[5] << endl ;
+	 << " 5: " << std::setw(8) << hex << m_headerBuffer[5] << 
+	 " Time seconds     " << dec << m_headerBuffer[5] << std::endl ;
 
       report( INFO, kFacilityString )
-	 << " 6: " << setw(8) << hex << m_headerBuffer[6] << 
-	 " Time usecs       " << dec << m_headerBuffer[6] << endl ;
+	 << " 6: " << std::setw(8) << hex << m_headerBuffer[6] << 
+	 " Time usecs       " << dec << m_headerBuffer[6] << std::endl ;
 
       report( INFO, kFacilityString )
-	 << " 7: " << setw(8) << hex << m_headerBuffer[7] << 
-	 " Run number       " << dec << m_headerBuffer[7] << endl ;
+	 << " 7: " << std::setw(8) << hex << m_headerBuffer[7] << 
+	 " Run number       " << dec << m_headerBuffer[7] << std::endl ;
 
       report( INFO, kFacilityString )
-	 << " 8: " << setw(8) << hex << m_headerBuffer[8] << 
-	 " Event number     " << m_headerBuffer[8] << endl ;
+	 << " 8: " << std::setw(8) << hex << m_headerBuffer[8] << 
+	 " Event number     " << m_headerBuffer[8] << std::endl ;
 
       report( INFO, kFacilityString )
-	 << " 9: " << setw(8) << hex << m_headerBuffer[9] << 
-	 " Level3 tag       " << endl ;
+	 << " 9: " << std::setw(8) << hex << m_headerBuffer[9] << 
+	 " Level3 tag       " << std::endl ;
 
       report( INFO, kFacilityString )
-	 << "10: " << setw(8) << hex << m_headerBuffer[10] << 
-	 " HEAD length      " << m_headerBuffer[10] << endl ;
+	 << "10: " << std::setw(8) << hex << m_headerBuffer[10] << 
+	 " HEAD length      " << m_headerBuffer[10] << std::endl ;
 
       report( INFO, kFacilityString )
-	 << "11: " << setw(8) << hex << m_headerBuffer[11] << 
+	 << "11: " << std::setw(8) << hex << m_headerBuffer[11] << 
 	 " Length           " << dec << m_headerBuffer[11] <<
-	 "\n" << endl ;
+	 "\n" << std::endl ;
 	 return ;
 }
 //

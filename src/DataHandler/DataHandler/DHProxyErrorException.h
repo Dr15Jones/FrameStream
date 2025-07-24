@@ -19,7 +19,7 @@
     E.g.
     \code
     if( outOfBoundsValue ) {
-      throw DHProxyErrorException<value_type>(string(kFacilityString) +
+      throw DHProxyErrorException<value_type>(std::string(kFacilityString) +
                                               " value out of bounds",
                                               iRecord.stream(),
 					      iDataKey );
@@ -65,7 +65,7 @@ class DHProxyErrorException : public DAExceptionBase
 	 m_dataKey( iDataKey ),
 	 m_message(),
          m_builtMessage(false){}
-      DHProxyErrorException( const string& iMessage, 
+      DHProxyErrorException( const std::string& iMessage, 
 			     const Stream::Type& iStream,
 			     const DataKey& iDataKey ) : 
 	 m_stream( iStream ),
@@ -82,21 +82,21 @@ class DHProxyErrorException : public DAExceptionBase
 	 if( ! m_builtMessage ) {
 	    const_cast<DHProxyErrorException<T>*>(this)->m_builtMessage = true;
 	    //should make m_message mutable
-	    string& message = 
+	    std::string& message = 
 	       const_cast<DHProxyErrorException<T>*>(this)->m_message;
 
-	    message = string("Proxy error while extracting ") 
-	       +string("\"")
-	         +string(HCTypeTagTemplate<T,DataKey>::className()) 
-	       +string("\" ")
-	       +string("\"")
-	         +string(m_dataKey.usage().value() )
-	       +string("\" ")
-	       +string("\"")
-	         +string(m_dataKey.production().value() )
-	       +string("\" ")
-	       +string("in Record ")
-	       +string(m_stream.value())
+	    message = std::string("Proxy error while extracting ") 
+	       +std::string("\"")
+	         +std::string(HCTypeTagTemplate<T,DataKey>::className()) 
+	       +std::string("\" ")
+	       +std::string("\"")
+	         +std::string(m_dataKey.usage().value() )
+	       +std::string("\" ")
+	       +std::string("\"")
+	         +std::string(m_dataKey.production().value() )
+	       +std::string("\" ")
+	       +std::string("in Record ")
+	       +std::string(m_stream.value())
 	       +"\n" + m_message;
 	 }
 	 return m_message.c_str();
@@ -123,7 +123,7 @@ class DHProxyErrorException : public DAExceptionBase
       // ---------- data members -------------------------------
       Stream::Type m_stream;
       DurableDataKey m_dataKey;
-      string m_message;
+      std::string m_message;
       DABoolean m_builtMessage;
 
       // ---------- static data members ------------------------

@@ -48,7 +48,7 @@
 #include "Experiment/types.h"
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <string>
 #include <vector>
@@ -71,7 +71,7 @@ INSTANTIATE_PARAMETER( int )
 INSTANTIATE_PARAMETER( unsigned int )
 INSTANTIATE_PARAMETER( long )
 INSTANTIATE_PARAMETER( unsigned long )
-INSTANTIATE_PARAMETER( string )
+INSTANTIATE_PARAMETER( std::string )
 #if !defined(BOOL_NOT_DEFINED_BUG)
 INSTANTIATE_PARAMETER( DABoolean )
 #endif

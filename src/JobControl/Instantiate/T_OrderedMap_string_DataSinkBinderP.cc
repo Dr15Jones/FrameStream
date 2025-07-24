@@ -37,7 +37,7 @@
 
 class DataSinkBinder ;
 
-typedef string _orderedmap_key_;
+typedef std::string _orderedmap_key_;
 typedef DataSinkBinder* _orderedmap_contents_;
 
 #include "CommandPattern/instantiate_OrderedMap.h"

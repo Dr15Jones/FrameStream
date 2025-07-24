@@ -43,7 +43,7 @@
 #if !defined(_chainsourcebinderbase_descriptors_)
 // the following CPP macro is used to avoid having a typedef
 // from a template in the constructor arguments
-#define _chainsourcebinderbase_descriptors_ STL_VECTOR( DataSourceDescriptor )
+#define _chainsourcebinderbase_descriptors_ std::vector< DataSourceDescriptor >
 #endif /* _chainsourcebinder_descriptors_ */
 
 class ChainSourceBinderBase : public DataSourceBinder
@@ -55,8 +55,8 @@ class ChainSourceBinderBase : public DataSourceBinder
       typedef _chainsourcebinderbase_descriptors_ Descriptors ;
 
       // Constructors and destructor
-      ChainSourceBinderBase( const string& iName,
-			     const string& iParameters,
+      ChainSourceBinderBase( const std::string& iName,
+			     const std::string& iParameters,
 			     const Stream::Set& iBindStreams )
 	 : DataSourceBinder( iName, iParameters, iBindStreams ) {}
       virtual ~ChainSourceBinderBase() {}
@@ -71,7 +71,7 @@ class ChainSourceBinderBase : public DataSourceBinder
 
       virtual const Descriptors sources( void ) const = 0;
 
-      const string& name() const;
+      const std::string& name() const;
 
       // static member functions
 
@@ -99,7 +99,7 @@ class ChainSourceBinderBase : public DataSourceBinder
 
 // inline function definitions
 inline
-const string& 
+const std::string& 
 ChainSourceBinderBase::name() const 
 { 
    return dataSourceID(); 

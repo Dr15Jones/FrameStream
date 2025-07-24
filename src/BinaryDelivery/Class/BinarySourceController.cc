@@ -141,8 +141,8 @@
 #include <string>
 #include <map>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
-#include "C++Std/iostream.h"
-#include "C++Std/fstream.h"
+#include <iostream>
+#include <fstream>
 #include <stdlib.h>
 #include <assert.h>
 #if defined(FSTREAM_CANNOT_READ_LARGE_FILES_BUG)
@@ -209,7 +209,7 @@ convertSearchStatusToSyncStatus( const DataSourceController::SearchStatus&
 //
 // constructors and destructor
 //
-BinarySourceController::BinarySourceController( const string& iFileName,
+BinarySourceController::BinarySourceController( const std::string& iFileName,
 						const Stream::Set& iReadStreams,
 						BinaryProxyDeliverer* iDeliverer):
    DataSourceController( iDeliverer ),
@@ -238,13 +238,13 @@ BinarySourceController::BinarySourceController( const string& iFileName,
       ) {
       report( ERROR , kFacilityString ) <<
 	 "\n  Unable to open binary data file " <<
-	 m_fileName << endl ;
+	 m_fileName << std::endl ;
 #else                                              // C open
    if ( 0 > m_fileDescriptor )
    {
       report( ERROR, kFacilityString ) <<
 	 "\n  Open failed for " << iFileName <<
-	 ": "  << strerror(errno) << endl ;
+	 ": "  << strerror(errno) << std::endl ;
 #endif  // FSTREAM_CANNOT_READ_LARGE_FILES_BUG
 
 // Open failed; set flags and quit
@@ -275,7 +275,7 @@ BinarySourceController::BinarySourceController( const string& iFileName,
 	       << " " << *streamName ;
 	 }
       }
-      report( ERROR, kFacilityString ) << endl ;
+      report( ERROR, kFacilityString ) << std::endl ;
       return;
    }
 #if defined(FSTREAM_CANNOT_READ_LARGE_FILES_BUG)
@@ -458,7 +458,7 @@ BinarySourceController::gotoNextRecord( void )
       setCurrentStop( Stream::kNone );
       report( ERROR , kFacilityString )
                  << "No buffer available from binaryProxyDeliverer "
-                 << endl ;
+                 << std::endl ;
       return kSearchProblemWithSource;
    }
 
@@ -493,7 +493,7 @@ BinarySourceController::gotoNextRecord( void )
 	    << m_nextRecordHeader.runNumber()
 	    << ", event "
 	    << m_nextRecordHeader.eventNumber()
-	    << endl ;
+	    << std::endl ;
       }
       setCurrentStop( Stream::kNone );
       return m_peekAheadStatus ;
@@ -515,7 +515,7 @@ BinarySourceController::gotoNextRecord( void )
       report( ERROR , kFacilityString )
                  << "Unable to mark finishedWritingToBuffer to "
 		 << "binaryProxyDeliverer"
-                 << endl ;
+                 << std::endl ;
       return kSearchProblemWithSource;
    }
 
@@ -581,7 +581,7 @@ BinarySourceController::movePeekToNextRecord( void )
 		       << "Unable to read nextRecordHeader on "
 		       << m_fileName
                << ", readStatus = " << readStatus
-		       << endl ;
+		       << std::endl ;
 	 }
 	 isGood = false ;
       }
@@ -670,7 +670,7 @@ BinarySourceController::ignoreRemainderOfUnwantedRecord( void )
 	 report( ERROR , kFacilityString )
                  << "Read error reading length of next record in "
                  << m_fileName
-                 << endl ;
+                 << std::endl ;
       }
       if ( 0 == n_read )
       {
@@ -692,7 +692,7 @@ BinarySourceController::ignoreRemainderOfUnwantedRecord( void )
 	    << lengthCheck
 	    << " at end of record "
 	    << m_nextRecordHeader.eventNumber()
-	    << endl ;
+	    << std::endl ;
 	 m_peekAheadStatus = kSearchProblemWithSource ;
       }
    }
@@ -716,7 +716,7 @@ BinarySourceController::dataSourceID( void ) const
 string
 BinarySourceController::parameters( void ) const
 {
-   return string("");
+   returnstd::string("");
 }
 
 ProxyDeliverer*
@@ -741,7 +741,7 @@ BinarySourceController::createProxyDeliverer( void ) const
 const Stream::Type&
 BinarySourceController::logicalRecordIDToStreamType( int iRecordID )
 {
-   typedef STL_MAP(int, Stream::Type) IDToTypeMap;
+   typedef std::map<int, Stream::Type> IDToTypeMap;
 
    static DABoolean isFirstTime(true);
    static IDToTypeMap idToTypeMap;

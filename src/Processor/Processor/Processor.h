@@ -83,11 +83,11 @@
 #include "Processor/ActionCommand.h"
 
 // forward declarations
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <vector>
+#include <map>
 
 #if !defined(_producer_stream2actions_)
-#define _processor_stream2actions_ STL_MAP( Stream::Type , Processor::ActionInfo )
+#define _processor_stream2actions_ std::map< Stream::Type , Processor::ActionInfo >
 #endif
 
 
@@ -128,7 +128,7 @@ class Processor : public Producer
       const _processor_stream2actions_& actions( void ) const;
 
       // static member functions
-      static string factorySymbol();
+      static std::string factorySymbol();
 
    protected:
       // protected member functions

@@ -68,19 +68,19 @@
 #  pragma define_template multimap< _multimap_key_ ,  _multimap_contents_ , _multimap_compare_ >
 
 #if defined(NO_DEFAULT_PARAMETERS_FOR_RBTREE_BUG)
-#  pragma define_template rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >
+#  pragma define_template rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >
 //
 // Have to define the functions here as 'cxx' does not allow you to "pick"
 //   which template to use when there are multiple ones on offer!
-void __distance(rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >::iterator first,
-		rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >::iterator last, 
+void __distance(rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >::iterator first,
+		rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >::iterator last, 
 		unsigned long& n,
 		bidirectional_iterator_tag) {
    while (first != last) { ++first; ++n; }
 }
 
-void __distance(rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >::const_iterator first,
-		rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >::const_iterator last, 
+void __distance(rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >::const_iterator first,
+		rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ , allocator< _multimap_contents_ > >::const_iterator last, 
 		unsigned long& n,
 		bidirectional_iterator_tag) {
    while (first != last) { ++first; ++n; }
@@ -88,19 +88,19 @@ void __distance(rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap
 
 #else
 
-#  pragma define_template rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >
+#  pragma define_template rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >
 //
 // Have to define the functions here as 'cxx' does not allow you to "pick"
 //   which template to use when there are multiple ones on offer!
-void __distance(rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >::iterator first,
-		rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >::iterator last, 
+void __distance(rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >::iterator first,
+		rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >::iterator last, 
 		unsigned long& n,
 		bidirectional_iterator_tag) {
    while (first != last) { ++first; ++n; }
 }
 
-void __distance(rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >::const_iterator first,
-		rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >::const_iterator last, 
+void __distance(rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >::const_iterator first,
+		rb_tree<_multimap_key_ , std::pair< const _multimap_key_ ,  _multimap_contents_ > , select1st< std::pair< const _multimap_key_ ,  _multimap_contents_ > , _multimap_key_ > , _multimap_compare_ >::const_iterator last, 
 		unsigned long& n,
 		bidirectional_iterator_tag) {
    while (first != last) { ++first; ++n; }
@@ -111,7 +111,7 @@ void __distance(rb_tree<_multimap_key_ , pair< const _multimap_key_ ,  _multimap
 
 #else
 
-#include "STLUtility/fwd_map.h"
+#include <map>
 template class STL_MULTIMAP_COMP( _multimap_key_ , _multimap_contents_ , _multimap_compare_ ) ;
 
 #if ( defined(NO_IMPLICIT_INSTANTIATION) && defined(__DECCXX) )

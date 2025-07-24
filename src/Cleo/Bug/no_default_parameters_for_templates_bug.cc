@@ -38,7 +38,7 @@ template < class T , class U = int > class Junk
 	    U b ) :
 	 m_a( a ) ,
 	 m_b( b ) {}
-      void print() { cout << m_a << " " << m_b << endl ; }
+      void print() { cout << m_a << " " << m_b << std::endl:endl ; }
    private:
       T m_a ;
       T m_b ;

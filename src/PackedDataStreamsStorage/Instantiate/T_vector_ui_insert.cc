@@ -36,10 +36,10 @@
 
 // user include files
 //#include "Experiment/report.h"
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 #if defined(NO_IMPLICIT_INSTANTIATION)
 #if !defined(NO_STL_TEMPLATED_MEMBER_FUNCTIONS_BUG)
-template void STL_VECTOR(unsigned int)::insert(unsigned int*, unsigned int*, unsigned int*);
+template void std::vector<unsigned int>::insert(unsigned int*, unsigned int*, unsigned int*);
 #endif
 #endif

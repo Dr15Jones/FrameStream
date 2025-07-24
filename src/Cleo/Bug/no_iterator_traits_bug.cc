@@ -58,11 +58,11 @@ void tester( Iterator  ) {
 }
 
 void tester_iterator_type( int* ) {
-   cout <<"int" << endl;
+   cout <<"int" << std::endl:endl;
 }
 
 void tester_iterator_type( unsigned int* ) {
-   cout <<"unsigned int" << endl;
+   cout <<"unsigned int" << std::endl:endl;
 }
 
 int main()

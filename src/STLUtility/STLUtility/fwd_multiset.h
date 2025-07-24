@@ -81,7 +81,7 @@
 #endif /* STL_ALLOCATOR */
 
 #if !defined(STL_MULTISET)
-#  define STL_MULTISET( c ) multiset< c >
+#  define std::multiset< c > multiset< c >
 #  define STL_MULTISET_COMP( c , l ) multiset< c , l >
 #  define STL_MULTISET_COMP_ALLOC( c , l , a ) multiset< c , l , a >
 
@@ -89,7 +89,7 @@
 
 #if (defined(NO_DEFAULT_COMPARE_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_MULTISET
-#  define STL_MULTISET( c ) multiset< c , less< c > >
+#  define std::multiset< c > multiset< c , less< c > >
 #  undef STL_MULTISET_COMP_ALLOC
 #endif  /* NO_DEFAULT_COMPARE_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
 
@@ -99,13 +99,13 @@
 
 #if (defined(NO_DEFAULT_ALLOCATOR_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_MULTISET
-#  define STL_MULTISET( c ) multiset< c , less< c > , STL_ALLOCATOR( c ) >
+#  define std::multiset< c > multiset< c , less< c > , STL_ALLOCATOR( c ) >
 #  undef STL_MULTISET_COMP
 #  define STL_MULTISET_COMP( c , l ) multiset< c , l , STL_ALLOCATOR( c ) >
 #else
 
 #  undef STL_MULTISET
-#  define STL_MULTISET( c ) multiset< c , less< c > >
+#  define std::multiset< c > multiset< c , less< c > >
 #endif /* NO_DEFAULT_ALLOCATOR_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
 
 #endif /* NO_DEFAULT_COMPARE_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */

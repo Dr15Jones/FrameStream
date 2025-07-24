@@ -38,9 +38,9 @@
 // user include files
 //#include "Experiment/report.h"
 #include "DataHandler/DataKeyTags.h"
-#include "STLUtility/fwd_set.h"
+#include <set>
 
-typedef insert_iterator< STL_SET(TypeTag) > _copy_out_iterator_;
-typedef STL_SET( TypeTag )::const_iterator _copy_in_iterator_;
+typedef insert_iterator< std::set<TypeTag> > _copy_out_iterator_;
+typedef std::set< TypeTag >::const_iterator _copy_in_iterator_;
 
 #include "STLUtility/instantiate_copy.h"

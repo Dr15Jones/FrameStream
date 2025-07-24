@@ -48,8 +48,8 @@
 // constructors and destructor
 //
 InteractiveSourceBinder::InteractiveSourceBinder( InteractiveSource* iSource):
-   DataSourceBinder( string(InteractiveSourceController::kID),
-		     string(""),
+   DataSourceBinder( std::string(InteractiveSourceController::kID),
+		     std::string(""),
 		     iSource->stream() ),
    m_source(iSource)
 {

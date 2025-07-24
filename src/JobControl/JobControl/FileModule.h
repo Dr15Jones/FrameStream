@@ -81,18 +81,18 @@ class FileModule : public Module
       // member functions
 
       // ------------ input module -----------------
-      DABoolean addSource( const string& iSourceName, 
+      DABoolean addSource( const std::string& iSourceName, 
 			   const StreamSet& iReadStreams,
-			   string& iToken );
-      DABoolean checkIfSourceExists( string& iSourceName );
+			   std::string& iToken );
+      DABoolean checkIfSourceExists( std::string& iSourceName );
       
       // ------------ output module -----------------
-      DABoolean addSink( const string& iSinkName, 
+      DABoolean addSink( const std::string& iSinkName, 
 			 const StreamSet& iStreamSet );
-      DABoolean addSink( const string& iSinkName, 
+      DABoolean addSink( const std::string& iSinkName, 
 			 const StreamSet& iStreamSet,
 			 const  StreamToDataStringTagsToStoreMap& iStreamTagsMap);
-      DABoolean checkSinkName( string& iSinkName );
+      DABoolean checkSinkName( std::string& iSinkName );
       
       // const member functions
       

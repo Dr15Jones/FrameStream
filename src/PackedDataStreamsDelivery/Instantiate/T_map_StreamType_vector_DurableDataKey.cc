@@ -51,10 +51,10 @@
 //
 // constants, enums and typedefs
 //
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 typedef StreamType _map_key_;
-typedef STL_VECTOR(DurableDataKey) _map_contents_;
+typedef std::vector<DurableDataKey> _map_contents_;
 typedef less<_map_key_> _map_compare_;
 
 #include "STLUtility/instantiate_map.h"

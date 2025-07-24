@@ -121,7 +121,7 @@ class HINtupleArray
       void fill( HINtuple* iNtuple ) {
          bool allValuesHaveBeenSet = (m_setValues.count() == m_setValues.size());
          if ( ! allValuesHaveBeenSet ) {
-            ostream& myReport = report(EMERGENCY, "HistogramInterface.HINtupleArray");
+           std::ostream& myReport = report(EMERGENCY, "HistogramInterface.HINtupleArray");
              myReport <<
                "not all values have been set before trying to fill Ntuple\n  "
                <<iNtuple->title()
@@ -131,7 +131,7 @@ class HINtupleArray
                      myReport << iNtuple->labels()[index];
                   }
                }
-               myReport<<endl;
+               myReport<<std::endl;
             assert(allValuesHaveBeenSet );
          }
          iNtuple->fill(m_values);

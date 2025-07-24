@@ -57,9 +57,9 @@ class SourceManager : public Module
 
    public:
       // constants, enums and typedefs
-      typedef string SourceName;
-      typedef string StreamName;
-      typedef string Token;
+      typedef std::string SourceName;
+      typedef std::string StreamName;
+      typedef std::string Token;
 
       // Constructors and destructor
       SourceManager( FrameDeliverer& iFrameDeliverer );
@@ -108,16 +108,16 @@ class SourceManager : public Module
       void resetSourcesToBeginning();
 
       // listings
-      string list( const Token& iToken ) const;
-      string listAllSources() const;
-      string listStreams() const;
-      string listStreamsToBeActivated() const;
-      string statusOfAllSources() const;
+      std::string list( const Token& iToken ) const;
+      std::string listAllSources() const;
+      std::string listStreams() const;
+      std::string listStreamsToBeActivated() const;
+      std::string statusOfAllSources() const;
 
       // token stuff
       Token findTokenFor( const DataSourceDescriptor& iDescriptor) const;
-      string listTokens() const;
-      const vector<Token> tokens() const;
+      std::string listTokens() const;
+      const std::vector<Token> tokens() const;
 
       DABoolean hasSource( const Token& iToken ) const;
       DABoolean checkIfTokenExists( const Token& iToken ) const;
@@ -142,12 +142,12 @@ class SourceManager : public Module
       DABoolean removeSourceInUseFromChain( const Token& iToken,
 					    const SourceName& sourceName="" );
       // private const member functions
-      string listSource( const Token& iToken ) const;
-      string listSourceInUse( const Token& iToken ) const;
-      string listSourcesInChain( const BinderBase* iBinder ) const;
-      string listSourceImplementation( const Token& iToken, 
+      std::string listSource( const Token& iToken ) const;
+      std::string listSourceInUse( const Token& iToken ) const;
+      std::string listSourcesInChain( const BinderBase* iBinder ) const;
+      std::string listSourceImplementation( const Token& iToken, 
 				       const SOURCEMANAGER_SOURCEMAP & iMap,
-				       string iSpecialPrint="" ) const;
+				       std::string iSpecialPrint="" ) const;
 
       DABoolean isSourceInMap( const Token& iToken ) const;
       DABoolean isSourceInUseMap( const Token& iToken ) const;

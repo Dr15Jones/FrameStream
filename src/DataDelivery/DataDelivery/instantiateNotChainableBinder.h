@@ -29,7 +29,7 @@
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
-#include "JobControl/Template/Binder.cc"
+#include "DataDelivery/Template/Binder.cc"
 
 // stl includes
 #include <string>

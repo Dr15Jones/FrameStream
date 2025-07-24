@@ -27,6 +27,6 @@
 #include <string>
 #include <vector>
 
-typedef string _vector_contents_ ;
+typedef std::string _vector_contents_ ;
 #include "STLUtility/instantiate_vector.h"
 

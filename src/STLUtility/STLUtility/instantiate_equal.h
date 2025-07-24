@@ -18,7 +18,7 @@
 //
 //    e.g. If you had an stl vector of MyItem, and an stl deque of
 //    MyItem, then you would need...
-//            typedef STL_VECTOR(MyItem)::iterator _equal_iterator1_type;
+//            typedef std::vector<MyItem>::iterator _equal_iterator1_type;
 //            typedef STL_DEQUE(MyItem)::iterator  _equal_iterator2_type;
 //
 // Author:      Lawrence Gibbons

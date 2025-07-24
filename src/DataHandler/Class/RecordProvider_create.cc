@@ -37,7 +37,7 @@
 // constants, enums and typedefs
 //
 
-const string kFacilityString = "DataDelivery.RecordProvider" ;
+const std::string kFacilityString = "DataDelivery.RecordProvider" ;
 
 //
 // static member functions
@@ -50,7 +50,7 @@ RecordProvider::createRecord( const Stream::Type& aStream )
       report( ERROR ,
 	      kFacilityString )
 		 << "Record is not associated with a Stream."
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
    return ( new Record( aStream ) ) ;

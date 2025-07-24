@@ -58,8 +58,8 @@
 //
 static const char* const kFacilityString = "CommandPattern.QuitCommand";
 
-const string helpMessage = 
-string( "              \"quit\" exists module in a quick way.\n" );
+const std::string helpMessage = 
+std::string( "              \"quit\" exists module in a quick way.\n" );
 
 //
 // static data member definitions
@@ -113,14 +113,14 @@ QuitCommand::execute( int argc, char* argv[] )
 	 result = helpHandler();
       } 
       else { // bad command argument!
-	 report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+	 report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
 	 result = COMMAND_ERROR;
       }
    }
    else // number of arguments 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -136,7 +136,7 @@ QuitCommand::helpHandler()
    report( SYSTEM, kFacilityString ) 
       << "\n\nDescription: " << name() << "\n\n"
       << helpMessage << "\n" 
-      << endl;
+      << std::endl;
 
    return COMMAND_OK;
 }

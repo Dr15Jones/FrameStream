@@ -34,13 +34,13 @@
 #include "DataHandler/Stream.h"
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
-#include "STLUtility/fwd_set.h"
+#include <map>
+#include <set>
 
 
 struct DataKeySet { // introduce utility class to 
       // ease map-of-set instantiation
-      typedef STL_SET( DurableDataKey ) DataKeys;
+      typedef std::set< DurableDataKey > DataKeys;
       typedef DataKeys::const_iterator const_iterator;
       typedef DataKeys::iterator iterator;
       DataKeys& operator()() { return m_dataKeys; }
@@ -49,7 +49,7 @@ struct DataKeySet { // introduce utility class to
       DataKeys m_dataKeys;
 };
 
-typedef STL_MAP( Stream::Type, DataKeySet ) PDSDataToStore;
+typedef std::map< Stream::Type, DataKeySet > PDSDataToStore;
 
 
 // inline function definitions

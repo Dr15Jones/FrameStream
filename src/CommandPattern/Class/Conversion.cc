@@ -118,16 +118,12 @@ Conversion::stringToLong( const char* c, DABoolean& isNumber )
    long returnValue;
    isNumber = true;
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-   istrstream str( c );
-#else
-   istringstream str( c );
-#endif
+   std::istringstream str( c );
    str >> returnValue;
    // error handling
-   if( ios::failbit == str.fail() ) {
+   if(str.fail() ) {
       report( ERROR, kFacilityString )
-         << "bad argument; can't interpret" << endl;
+         << "bad argument; can't interpret" << std::endl;
       isNumber = false;
    }
 
@@ -146,16 +142,12 @@ Conversion::stringToULong( const char* c, DABoolean& isNumber )
    unsigned long returnValue;
    isNumber = true;
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-   istrstream str( c );
-#else
-   istringstream str( c );
-#endif
+   std::istringstream str( c );
    str >> returnValue;
    // error handling
-   if( ios::failbit == str.fail() ) {
+   if( str.fail() ) {
       report( ERROR, kFacilityString )
-         << "bad argument; can't interpret" << endl;
+         << "bad argument; can't interpret" << std::endl;
       isNumber = false;
    }
 

@@ -90,7 +90,7 @@
 // constants, enums and typedefs
 //
 
-const string kFacilityString = "DataDelivery.ProxyDeliverer" ;
+const std::string kFacilityString = "DataDelivery.ProxyDeliverer" ;
 
 typedef _proxydeliverer_syncvalues_ ValueMap ;
 
@@ -105,14 +105,6 @@ ProxyDeliverer::ProxyDeliverer( const ProxyProvider::Identifier& aId ) :
    ProxyProvider( aId ) ,
    m_syncValues( *(new ValueMap ) )
 {
-   if ( 0 == &m_syncValues ) {
-      report( EMERGENCY ,
-	      kFacilityString )
-		 << "Unable to allocate memory"
-		 << endl ;
-      delete &m_syncValues ;
-      exit( 1 ) ;
-   }
 }
 
 // ProxyDeliverer::ProxyDeliverer( const ProxyDeliverer& )

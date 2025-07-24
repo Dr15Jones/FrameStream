@@ -51,10 +51,10 @@ class CPCommandWithKeywords : public Command
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      CPCommandWithKeywords(const string& iName,
+      CPCommandWithKeywords(const std::string& iName,
 			    Module* iModule,
 			    DABoolean iInternalCommand,
-			    const string& iHelpString );
+			    const std::string& iHelpString );
 
       virtual ~CPCommandWithKeywords();
 

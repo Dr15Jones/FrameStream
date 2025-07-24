@@ -52,10 +52,10 @@
 // constants, enums and typedefs
 //
 class PDSSourceStream;
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 typedef StreamType _map_key_;
-typedef STL_VECTOR(PDSSourceStream*) _map_contents_;
+typedef std::vector<PDSSourceStream*> _map_contents_;
 typedef less< _map_key_ > _map_compare_;
 
 #include "STLUtility/instantiate_map.h"

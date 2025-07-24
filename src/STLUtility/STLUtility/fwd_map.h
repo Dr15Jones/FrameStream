@@ -97,7 +97,7 @@
 #endif /* STL_ALLOCATOR_TWO */
 
 #if !defined(STL_MAP)
-#  define STL_MAP( k , c ) map< k , c >
+#  define std::map< k , c > map< k , c >
 #  define STL_MAP_COMP( k , c , l ) map< k , c , l >
 #  define STL_MAP_COMP_ALLOC( k , c , l , a ) map< k , c , l , a >
 
@@ -105,7 +105,7 @@
 
 #if (defined(NO_DEFAULT_COMPARE_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_MAP
-#  define STL_MAP( k , c ) map< k , c , less< k > >
+#  define std::map< k , c > map< k , c , less< k > >
 #  undef STL_MAP_COMP_ALLOC
 #endif  /* NO_DEFAULT_COMPARE_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
 
@@ -115,20 +115,20 @@
 
 #if (defined(NO_DEFAULT_ALLOCATOR_IN_STL_BUG) || defined(NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG))
 #  undef STL_MAP
-#  define STL_MAP( k , c ) map< k , c , less< k > , STL_ALLOCATOR_TWO( pair < const k , c > ) >
+#  define std::map< k , c > map< k , c , less< k > , STL_ALLOCATOR_TWO( pair < const k , c > ) >
 #  undef STL_MAP_COMP
 #  define STL_MAP_COMP( k , c , l ) map< k , c , l , STL_ALLOCATOR_TWO( pair < const k , c > ) >
 #else
 
 #if defined(MAP_ALLOCATOR_ONLY_USES_CONTENTS_BUG)
 #  undef STL_MAP
-#  define STL_MAP( k , c ) map< k , c , less< k > , STL_ALLOCATOR( c ) >
+#  define std::map< k , c > map< k , c , less< k > , STL_ALLOCATOR( c ) >
 #  undef STL_MAP_COMP
 #  define STL_MAP_COMP( k , c , l ) map< k , c , l , STL_ALLOCATOR( c ) >
 #else
 
 #  undef STL_MAP
-#  define STL_MAP( k , c ) map< k , c , less< k > >
+#  define std::map< k , c > map< k , c , less< k > >
 #endif /* MAP_ALLOCATOR_ONLY_USES_CONTENTS_BUG */
 
 #endif /* NO_DEFAULT_ALLOCATOR_IN_STL_BUG || NO_DEFAULT_PARAMETERS_FOR_TEMPLATES_BUG */
@@ -145,6 +145,6 @@
 using namespace std;
 #endif // NO_STD_NAMESPACE_BUG
 
-#include "STLUtility/fwd_multimap.h"
+#include <map>
 
 #endif /* STLUTILITY_FWD_MAP_H */

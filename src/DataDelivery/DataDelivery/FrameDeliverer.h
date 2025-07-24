@@ -87,7 +87,7 @@
 //      } else {
 //         // Something has gone very wrong! Should never get here
 //         report(ERROR,"JobControl")
-//                <<"FrameDeliverer stopped at the wrong type of record"<<endl;
+//                <<"FrameDeliverer stopped at the wrong type of record"<<std::endl;
 //      }
 //    }     
 //
@@ -207,17 +207,17 @@ class DataSourceBinder;
 class ProxyProvider ;
 class StreamPriorityGreater;
 
-#include "STLUtility/fwd_map.h"
-#include "STLUtility/fwd_multimap.h"
-#include "STLUtility/fwd_vector.h"
+#include <map>
+#include <map>
+#include <vector>
 #include <vector>
 
 #if !defined(_framedeliverer_sourcecontrollers_)
-#  define _framedeliverer_sourcecontrollers_ STL_VECTOR( DataSourceController* )
+#  define _framedeliverer_sourcecontrollers_ std::vector< DataSourceController* >
 typedef DataSourceController* SourceStatusKey;
-#  define _framedeliverer_sourcesstatus_ STL_MAP( SourceStatusKey, FrameDeliverer::SourceStatus )
-//#  define _framedeliverer_sourcesstatus_ STL_MAP( DataSourceController*, FrameDeliverer::SourceStatus )
-#  define _framedeliverer_keyedsourcecontrollers_ STL_MULTIMAP_COMP( Stream::Type , DataSourceController* , StreamPriorityGreater )
+#  define _framedeliverer_sourcesstatus_ std::map< SourceStatusKey, FrameDeliverer::SourceStatus >
+//#  define _framedeliverer_sourcesstatus_ std::map< DataSourceController*, FrameDeliverer::SourceStatus >
+#  define _framedeliverer_keyedsourcecontrollers_ std::multimap< Stream::Type , DataSourceController* , StreamPriorityGreater >
 #endif /* _framedeliverer_sourcecontrollers_ */
 
 class FrameDeliverer : public FrameProvider
@@ -267,8 +267,8 @@ class FrameDeliverer : public FrameProvider
 			  kSourceUnknownError
       };
 
-      typedef STL_VECTOR( DataSourceDescriptor ) DataSourceDescriptors ;
-      typedef STL_MULTIMAP( FrameDeliverer::SourceStatus , DataSourceDescriptor ) StatusOfSources ;
+      typedef std::vector< DataSourceDescriptor > DataSourceDescriptors ;
+      typedef std::multimap< FrameDeliverer::SourceStatus , DataSourceDescriptor > StatusOfSources ;
 
       // Constructors and destructor
       FrameDeliverer( void );

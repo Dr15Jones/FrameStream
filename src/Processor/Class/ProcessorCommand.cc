@@ -29,7 +29,6 @@
 
 #include "Processor/ProcessorCommand.h"
 #include "Processor/MasterProcessor.h"
-#include "JobControl/JobControl.h"
 
 #include "CommandPattern/Interpreter.h"
 
@@ -101,7 +100,7 @@ ProcessorCommand::helpHandler( )
    
    report( SYSTEM, kFacilityString ) 
       << "\n//  " << name()
-      << " reorder <proc1> <proc2> [..] Reorder processors" << endl;;
+      << " reorder <proc1> <proc2> [..] Reorder processors" << std::endl;;
 
    return COMMAND_OK;
 }
@@ -113,7 +112,7 @@ ProcessorCommand::reorderHandler()
 
    if( m_argc <= 2 )
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       return result = COMMAND_ERROR;
    }
    // correct number of args
@@ -122,11 +121,11 @@ ProcessorCommand::reorderHandler()
 
    const char* arg;
    int index = 2;
-   string listString;
+   std::string listString;
    while ( 0 != ( arg = getArgument( index++ ) ) )
    {
-      string name( arg );
-      listString += name + string( " " );
+      std::string name( arg );
+      listString += name + std::string( " " );
    }
 
    // reorder 
@@ -135,7 +134,7 @@ ProcessorCommand::reorderHandler()
       report( SYSTEM, kFacilityString )
 	 << "problem reordering: \n"
 	 << listString
-	 << endl;
+	 << std::endl;
       result = COMMAND_ERROR;
    }
 

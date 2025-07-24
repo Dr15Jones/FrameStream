@@ -129,14 +129,14 @@ ModnameInternalCommand::~ModnameInternalCommand()
 //	 result = doHandler();
 //      }
 //      else { // bad command argument!
-//         report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+//         report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 //	 helpHandler();
 //         result = COMMAND_ERROR;
 //      }
 //   }
 //   else // number of arguments
 //   {
-//      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+//      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
 //      helpHandler();
 //      result = COMMAND_ERROR;
 //   }
@@ -150,17 +150,17 @@ ModnameInternalCommand::helpHandler()
    int returnValue = COMMAND_OK;
 
    // print help from header
-   static const string helpMessage =
-      string( " calls Modname.\n" )+
-      string( "                    \n" )+
-      string( " Subcommands are:   \n" )+
-      string( "    help            \n" )+
-      string( "    print <number>  \n" );
+   static const std::string helpMessage =
+      std::string( " calls Modname.\n" )+
+      std::string( "                    \n" )+
+      std::string( " Subcommands are:   \n" )+
+      std::string( "    help            \n" )+
+      std::string( "    print <number>  \n" );
 
    report( SYSTEM, kFacilityString )
       << "\n\nDescription: " << name() << "\n\n"
       << helpMessage
-      << endl;
+      << std::endl;
 
    return returnValue;
 }
@@ -185,7 +185,7 @@ ModnameInternalCommand::printHandler()
    }
    else
    {
-      report( SYSTEM, kFacilityString ) << "bad numerical value" << endl;
+      report( SYSTEM, kFacilityString ) << "bad numerical value" << std::endl;
       returnValue = COMMAND_ERROR;
    }
 

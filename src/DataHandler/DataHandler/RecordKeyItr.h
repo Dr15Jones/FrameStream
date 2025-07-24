@@ -29,7 +29,7 @@
 
 // user include files
 #include "DataHandler/DataKey.h" //need for map
-#include "STLUtility/fwd_map.h"
+#include <map>
 
 // forward declarations
 class ProxyBase;
@@ -48,8 +48,8 @@ class RecordKeyItr
       typedef const DataKey& reference;
 
 #if !defined(NO_ITERATOR_TRAITS_BUG)      
-      typedef STL_MAP( DataKey, const ProxyBase* )::iterator::difference_type difference_type;
-      typedef STL_MAP( DataKey, const ProxyBase* )::iterator::iterator_category iterator_category;
+      typedef std::map< DataKey, const ProxyBase* >::iterator::difference_type difference_type;
+      typedef std::map< DataKey, const ProxyBase* >::iterator::iterator_category iterator_category;
 #endif
 
       // ---------- Constructors and destructor ----------------
@@ -90,7 +90,7 @@ class RecordKeyItr
    private:
       // ---------- Constructors and destructor ----------------
       //RecordKeyItr( const RecordKeyItr& ); // stop default
-      RecordKeyItr( const STL_MAP(DataKey, const ProxyBase*)::iterator&  
+      RecordKeyItr( const std::map<DataKey, const ProxyBase*>::iterator&  
                           iIterator) : m_iterator( iIterator ) {}
 
       // ---------- assignment operator(s) ---------------------
@@ -101,7 +101,7 @@ class RecordKeyItr
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      STL_MAP( DataKey, const ProxyBase* )::iterator m_iterator;
+      std::map< DataKey, const ProxyBase* >::iterator m_iterator;
 
       // ---------- static data members ------------------------
 

@@ -54,7 +54,7 @@ class StringParser
       unsigned int maxArgs() const {
          return 1;
       }
-      string parse(int iArgC, char** iArgV) {
+      std::string parse(int iArgC, char** iArgV) {
          return iArgV[0];
       }
    // ---------- static member functions --------------------

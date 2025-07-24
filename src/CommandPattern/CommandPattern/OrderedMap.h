@@ -21,11 +21,11 @@
 // user include files
 
 // forward declarations
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <string>
+#include <vector>
+#include <map>
 #if !defined(_OrderedMap_items_)
-#define _OrderedMap_items_ STL_VECTOR( value_type )
+#define _OrderedMap_items_ std::vector< value_type >
 #endif
 
 template< class Key, class Item >
@@ -73,7 +73,7 @@ class OrderedMap
       DABoolean empty() const;
 
       // listings
-      string list() const;
+      std::string list() const;
 
       // static member functions
 

@@ -62,7 +62,6 @@
 
 #include "Processor/ProducerCommand.h"
 #include "Processor/MasterProducer.h"
-#include "JobControl/JobControl.h"
 
 #include "CommandPattern/Interpreter.h"
 
@@ -135,7 +134,7 @@ ProducerCommand::helpHandler( )
    
    report( SYSTEM, kFacilityString ) 
       << "\n//  " << name()
-      << " reorder <prod1> <prod2> [..] Reorder producers" << endl;
+      << " reorder <prod1> <prod2> [..] Reorder producers" << std::endl;
 
    return COMMAND_OK;
 }
@@ -147,7 +146,7 @@ ProducerCommand::reorderHandler()
 
    if( m_argc <= 2 )
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       return result = COMMAND_ERROR;
    }
    // correct number of args
@@ -161,7 +160,7 @@ ProducerCommand::reorderHandler()
    int index = 2;
    while ( 0 != ( arg = getArgument( index++ ) ) )
    {
-      string name( arg );
+      std::string name( arg );
 
       if( masterProducer->load( name ) ) 
       {
@@ -170,7 +169,7 @@ ProducerCommand::reorderHandler()
       else 
       {
 	 report( SYSTEM, kFacilityString ) 
-	    << "No producer " << name << "." << endl;
+	    << "No producer " << name << "." << std::endl;
 	 result = COMMAND_ERROR;
       }
    }

@@ -54,7 +54,7 @@
 //
 class DLFactoryBase;
 
-typedef string _map_key_;
+typedef std::string _map_key_;
 typedef DLFactoryBase* _map_contents_;
 typedef less<string> _map_compare_;
 

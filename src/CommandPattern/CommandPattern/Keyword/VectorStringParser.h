@@ -57,8 +57,8 @@ class VectorStringParser
       unsigned int maxArgs() const {
          return m_max;
       }
-      vector<string> parse(int iArgC, char** iArgV) {
-         vector<string> returnValue;
+      std::vector<std::string> parse(int iArgC, char** iArgV) {
+         std::vector<std::string> returnValue;
          returnValue.reserve(iArgC);
          for(int itArg= 0; itArg != iArgC; ++itArg) {
             returnValue.push_back(iArgV[itArg]);

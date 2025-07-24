@@ -47,7 +47,7 @@ class BinarySourceBinder : public DataSourceBinder
       typedef BinarySourceController Controller;
 
       // ---------- Constructors and destructor ----------------
-      BinarySourceBinder( const string& iFileName,
+      BinarySourceBinder( const std::string& iFileName,
 			  const Stream::Set& iBindStreams );
 
       //Needed by STL, no one else should call this
@@ -68,7 +68,7 @@ class BinarySourceBinder : public DataSourceBinder
       BinarySourceController* createSourceController( 
 	 BinaryProxyDeliverer* iDeliverer ) const;
 
-      const string& fileName() const;
+      const std::string& fileName() const;
 
       // ---------- static member functions --------------------
 

@@ -29,7 +29,7 @@
 //
 
 // system include files
-#include "C++Std/fstream.h"
+#include <fstream>
 
 // user include files
 #include "DataStorage/DataSinkController.h"
@@ -46,7 +46,7 @@ class PDSSinkController : public DataSinkController
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      PDSSinkController( const string& iFileName,
+      PDSSinkController( const std::string& iFileName,
 			 const Stream::Set& iWriteStreams,
 			 const PDSDataToStore& iDataToStore );
       virtual ~PDSSinkController();
@@ -57,15 +57,15 @@ class PDSSinkController : public DataSinkController
 	 return true; }
 
       /// Sink ID is the output file name
-      virtual string dataSinkID() const {
+      virtual std::string dataSinkID() const {
 	 return m_fileName; }
 
       /// No parameters allowed for PDSSinkController ==> blank
-      virtual string parameters() const {
+      virtual std::string parameters() const {
 	 return ""; }
 
       /// Name of the output .pds file
-      const string& fileName() const {
+      const std::string& fileName() const {
 	 return m_fileName; }
 
       // ---------- const member functions ---------------------
@@ -90,7 +90,7 @@ class PDSSinkController : public DataSinkController
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      string m_fileName ;
+      std::string m_fileName ;
       ofstream& m_oStream ;
       PDSProxyStorer* m_proxyStorer;
 

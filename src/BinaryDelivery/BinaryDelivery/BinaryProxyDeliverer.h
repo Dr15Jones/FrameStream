@@ -30,8 +30,8 @@
 // forward declarations
 class BDRecordBuffer ;
 class BinarySourceController ;
-#include "STLUtility/fwd_map.h"
-#include "STLUtility/fwd_vector.h"
+#include <map>
+#include <vector>
 
 class BinaryProxyDeliverer : public ProxyDeliverer
 {
@@ -61,7 +61,7 @@ class BinaryProxyDeliverer : public ProxyDeliverer
    protected:
       // protected member functions
       void registerProxies(const Stream::Type & iStream, 
-                              STL_VECTOR( KeyedProxy ) &iProxyList);
+                              std::vector< KeyedProxy > &iProxyList);
       virtual void resetCache( const Stream::Type& aStream );
 
       // protected const member functions
@@ -78,9 +78,9 @@ class BinaryProxyDeliverer : public ProxyDeliverer
       // private const member functions
 
       // data members
-      STL_MAP( Stream::Type,BDRecordBuffer*)& m_streamToBufferMap;
+      std::map< Stream::Type,BDRecordBuffer*>& m_streamToBufferMap;
 
-      STL_VECTOR( DABoolean )& m_available ;
+      std::vector< DABoolean >& m_available ;
 
       // static data members
 

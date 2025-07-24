@@ -30,14 +30,14 @@
 
 // STL include files
 #if defined(OLD_CXX_STRING_CLASS_BUG)
-#include "C++Std/fwd_string.h"
+#include <string>
 #include <String.h>
 #else
 #include <string>
 #endif /* OLD_CXX_STRING_CLASS_BUG */
 #include <map>
 
-typedef string _map_key_ ;
+typedef std::string _map_key_ ;
 typedef unsigned int _map_contents_ ;
 typedef less< _map_key_ > _map_compare_ ;
 

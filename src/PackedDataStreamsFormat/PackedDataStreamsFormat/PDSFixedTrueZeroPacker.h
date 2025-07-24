@@ -82,7 +82,7 @@ class PDSFixedTrueZeroPacker : public PDSPackerTemplate<T>
       // ---------- protected const member functions -----------
       void storeStrategyInfo( UInt32& ioPackedWord,
 			     unsigned char& ioStartBit,
-			     STL_VECTOR(UInt32)& ioContainer ) const {
+			     std::vector<UInt32>& ioContainer ) const {
 	 UInt32 overflow = 0;
 	 numberOfBitsPacker().pack(m_packer.numberOfBits(),
 				   ioPackedWord,

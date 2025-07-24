@@ -114,7 +114,7 @@ PDSFileHeaderInfo::~PDSFileHeaderInfo()
 //
 static
 inline
-void check_for_exceptions( istream& iIStream, 
+void check_for_exceptions( std::istream& iIStream, 
 			   const char* iHappenedWhile ) 
 {
    if( iIStream.eof() ) {
@@ -134,7 +134,7 @@ PDSFileHeaderInfo::dropOwnershipOfTypeToUnpackingInfoMap() {
 
 void
 PDSFileHeaderInfo::readNameList( const UInt32* & ioHeader, 
-				 STL_VECTOR(string)& oNames )
+				 std::vector<string>& oNames )
 {
    //First entry is the size (in UInt32s) of the name list
    UInt32 numberOfWords = *ioHeader;
@@ -156,7 +156,7 @@ PDSFileHeaderInfo::readNameList( const UInt32* & ioHeader,
       const char* pEndOfNames = pBeginningOfName + numberOfChars;
       while( !foundNullString && 
 	     (pBeginningOfName < pEndOfNames ) ){
-	 string name(pBeginningOfName);
+	 std::string name(pBeginningOfName);
 	 //The +1 is to get rid of the terminating '\0'
 	 pBeginningOfName += name.size() +1;
 	 if( 0 != name.size() ) {
@@ -173,7 +173,7 @@ PDSFileHeaderInfo::readNameList( const UInt32* & ioHeader,
 
 void
 PDSFileHeaderInfo::readTypeNames(const UInt32*& ioHeader, 
-				 STL_VECTOR(string)& oNames )
+				 std::vector<string>& oNames )
 {
    readNameList( ioHeader, oNames);
    readNameList( ioHeader, oNames);
@@ -182,7 +182,7 @@ PDSFileHeaderInfo::readTypeNames(const UInt32*& ioHeader,
 
 
 void
-PDSFileHeaderInfo::readHeader( istream& iIStream )
+PDSFileHeaderInfo::readHeader( std::istream& iIStream )
 {
    //check to see if this is the proper type
    UInt32 pdsTypeVersionInfo;
@@ -218,7 +218,7 @@ PDSFileHeaderInfo::readHeader( istream& iIStream )
    if( pdsVersion != PDSHeaderConstants::kInitialVersion ) {
       DEFINE_OSTR(versionNumberStream)
       versionNumberStream << pdsVersion << '\0';
-      string iErrorMessage = string("Unknown version of PDS file format ")
+      std::string iErrorMessage = std::string("Unknown version of PDS file format ")
 	 + GET_STR(versionNumberStream);
       throw PDSDExceptionBase( iErrorMessage.c_str() );
    }
@@ -251,19 +251,19 @@ PDSFileHeaderInfo::readHeader( istream& iIStream )
    if( sizeOfHeaderInWords != *(pHeaderUInt32 + sizeOfHeaderInWords -1 ) ) {
       throw PDSDExceptionBase("Beginning and end header size do not agree");
    }
-   //cout <<"header size :" << sizeOfHeaderInWords << endl;
+   //cout <<"header size :" << sizeOfHeaderInWords << std::endl;
 
    readStreams(pHeaderUInt32);
 
-   STL_VECTOR(string) typeNames;
+   std::vector<string> typeNames;
 
    readTypeNames(pHeaderUInt32, typeNames);
 
    /*
-   for(STL_VECTOR(string)::iterator itTypeName = typeNames.begin();
+   for(std::vector<string>::iterator itTypeName = typeNames.begin();
        itTypeName != typeNames.end();
        ++itTypeName ) {
-      cout <<"type " <<"\""<<*itTypeName<<"\""<<endl;
+      cout <<"type " <<"\""<<*itTypeName<<"\""<<std::endl;
    }
     */
 
@@ -277,26 +277,26 @@ PDSFileHeaderInfo::readHeader( istream& iIStream )
 	 PDSTypeUnpackingInfo* pTemp = new PDSTypeUnpackingInfo;
 	 pTemp->readPackingInfo( pHeaderUInt32,
 				 m_wordReader->isByteSwapping() );
-	 //cout <<"  add packing for type " << typeNames[typeIndex] << " "<<pTemp << endl;
+	 //cout <<"  add packing for type " << typeNames[typeIndex] << " "<<pTemp << std::endl;
 	 (*m_typeToUnpackingInfoMap)[typeTag] = pTemp;	 
       } else {
 	 //Need to read (and then discard) the info
-	 //cout <<"  NO packing for type " << typeNames[typeIndex] << endl;
+	 //cout <<"  NO packing for type " << typeNames[typeIndex] << std::endl;
 	 PDSTypeUnpackingInfo temp;
 	 temp.readPackingInfo( pHeaderUInt32, false );
       }
    }
 
    //Read proxy info for each stream
-   for( STL_VECTOR(StreamType)::iterator itStream =m_indexToStreamType.begin();
+   for( std::vector<StreamType>::iterator itStream =m_indexToStreamType.begin();
 	itStream != m_indexToStreamType.end();
 	++itStream ) {
 
       const unsigned int numberOfProxies = (*pHeaderUInt32);
       ++pHeaderUInt32;
 
-      //cout <<"stream: " << (*itStream).value() << "# proxies:"<<numberOfProxies<<endl;
-      STL_VECTOR(DurableDataKey)& dataKeys = 
+      //cout <<"stream: " << (*itStream).value() << "# proxies:"<<numberOfProxies<<std::endl;
+      std::vector<DurableDataKey>& dataKeys = 
 	 m_streamProxyFactoryInfoMap[*itStream];
 
       if( dataKeys.size() != 0 ) {
@@ -312,8 +312,8 @@ PDSFileHeaderInfo::readHeader( istream& iIStream )
 	    reinterpret_cast<const char*>(pHeaderUInt32);
 	 m_wordReader->unswapString( const_cast<UInt32*>(pHeaderUInt32), 2 );
 
-	 string usageTag( pHeaderChar);
-	 string productionTag( pHeaderChar + usageTag.size() + 1);
+	 std::string usageTag( pHeaderChar);
+	 std::string productionTag( pHeaderChar + usageTag.size() + 1);
 
 	 dataKeys.push_back(
 	    DataKey( TypeTag::findType( typeNames[typeIdentifier] ),
@@ -329,7 +329,7 @@ PDSFileHeaderInfo::readHeader( istream& iIStream )
 	 /*
 	 cout <<" proxy: \""<< dataKeys.back().type().name() <<"\" \""
 	      <<dataKeys.back().usage().value()<<"\" \""
-	      <<dataKeys.back().production().value()<<"\""<<endl;
+	      <<dataKeys.back().production().value()<<"\""<<std::endl;
 	 */     
       }
    }
@@ -348,7 +348,7 @@ PDSFileHeaderInfo::readHeader( istream& iIStream )
 void
 PDSFileHeaderInfo::readStreams( const UInt32* &iHeader )
 {
-   STL_VECTOR(string) streamNames;
+   std::vector<string> streamNames;
    readNameList( iHeader, streamNames );
 
    //Create the streams
@@ -356,10 +356,10 @@ PDSFileHeaderInfo::readStreams( const UInt32* &iHeader )
                               m_indexToStreamType.end() );
    m_indexToStreamType.reserve(streamNames.size());
 
-   for( STL_VECTOR(string)::iterator itStreamName = streamNames.begin();
+   for( std::vector<string>::iterator itStreamName = streamNames.begin();
 	itStreamName != streamNames.end();
 	++itStreamName ) {
-      //cout <<"stream " <<"\""<<*itStreamName<<"\""<< endl;
+      //cout <<"stream " <<"\""<<*itStreamName<<"\""<< std::endl;
 
       StreamType stream( *itStreamName );
 

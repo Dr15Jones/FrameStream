@@ -50,7 +50,7 @@
 
 #include "JobControl/JobControl.h"
 #include "JobControl/SourceManager.h"
-#include "JobControl/Binder.h"
+#include "DataDelivery/Binder.h"
 
 // STL classes
 #include <vector>
@@ -94,10 +94,10 @@ BlankRecordModule::~BlankRecordModule()
 // member functions
 //
 DABoolean 
-BlankRecordModule::addSource( const string& iSourceName, 
+BlankRecordModule::addSource( const std::string& iSourceName, 
 			      const StreamSet& iReadStreams,
 			      BlankRecordStopsBase* iStops, 
-			      string& ioToken )
+			      std::string& ioToken )
 {
    DABoolean success = true;
 
@@ -111,7 +111,7 @@ BlankRecordModule::addSource( const string& iSourceName,
 }
 
 BinderBase*
-BlankRecordModule::createBinder( const string& sourceName,
+BlankRecordModule::createBinder( const std::string& sourceName,
 				 const StreamSet& readStreams,
 				 BlankRecordStopsBase* iStops )
 {

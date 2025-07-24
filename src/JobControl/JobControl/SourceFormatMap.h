@@ -27,9 +27,9 @@
 
 // forward declarations
 class BinderBase;
-#include "STLUtility/fwd_map.h"
+#include <map>
 #if !defined(_extensionname_map_)
-#define _extensionname_map_ map< string, StringWrapper, less< string > >
+#define _extensionname_map_ std::map< std::string, StringWrapper, std::less< std::string > >
 #endif
 template< class T > class FormatCommand;
 
@@ -41,15 +41,15 @@ class SourceFormatMap : public FormatMap< SourceFormat >
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      SourceFormatMap( const string& environment = "C3_SHLIB" );
+      SourceFormatMap( const std::string& environment = "C3_SHLIB" );
       virtual ~SourceFormatMap();
 
       // ---------- member functions ---------------------------
 
-      BinderBase* createBinder( const string& iName,
+      BinderBase* createBinder( const std::string& iName,
 				const Stream::Set& iBindStreams );
       // default streams based on extension (given by name)
-      Stream::Set defaultStreams( const string& iName );
+      Stream::Set defaultStreams( const std::string& iName );
 
       // clear all formats
       virtual DABoolean clearAll();
@@ -57,12 +57,12 @@ class SourceFormatMap : public FormatMap< SourceFormat >
       // ---------- const member functions ---------------------
 
       // overridden Loader< SourceFormat > method
-      virtual string listLoaded() const;
+      virtual std::string listLoaded() const;
 
       // pattern for listings
-      virtual string listAvailablePatternString() const { 
-	 //return string( "SourceFormat" ); 
-	 return string( "" ); 
+      virtual std::string listAvailablePatternString() const { 
+	 //return std::string( "SourceFormat" ); 
+	 return std::string( "" ); 
       }
 
       // ---------- static member functions --------------------
@@ -71,11 +71,11 @@ class SourceFormatMap : public FormatMap< SourceFormat >
       // ---------- protected member functions -----------------
 
       // overriden Loader<> methods
-      virtual void initialize( const string& iName, 
+      virtual void initialize( const std::string& iName, 
 			       SourceFormat& iSourceFormat );
-      virtual void finalize(   const string& iName, 
+      virtual void finalize(   const std::string& iName, 
 			       SourceFormat& iSourceFormat );
-      virtual void errorMesg( const string& iName ) const;
+      virtual void errorMesg( const std::string& iName ) const;
 
       // ---------- protected const member functions -----------
 
@@ -88,12 +88,12 @@ class SourceFormatMap : public FormatMap< SourceFormat >
 
       // ---------- private member functions -------------------
       // bind extensions to formats
-      virtual DABoolean bind( const string& iFormatName,
-			      const string& iExtension );
-      virtual DABoolean unbind( const string& iExtension );
+      virtual DABoolean bind( const std::string& iFormatName,
+			      const std::string& iExtension );
+      virtual DABoolean unbind( const std::string& iExtension );
       virtual DABoolean unbindAll();
 
-      DABoolean bind( const string& iFormatName,
+      DABoolean bind( const std::string& iFormatName,
 		      const SourceFormat::Extensions& iExtensions );
 
       // ---------- private const member functions -------------

@@ -74,8 +74,8 @@ LogStream::Dumpit(Severity severity)
 //
 void
 LogStream::Log(Severity severity,
-	       const string& facility,
-	       const string& logmsg,
+	       const std::string& facility,
+	       const std::string& logmsg,
 	       Messenger* messenger)
 {
    if (Logit(severity)) {
@@ -89,6 +89,6 @@ LogStream::Log(Severity severity,
 //	 messenger->Dump(m_out);
 //      }
 //
-      m_out << flush;
+      m_out << std::flush;
    }
 }

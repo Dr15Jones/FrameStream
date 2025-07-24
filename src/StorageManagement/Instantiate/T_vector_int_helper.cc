@@ -26,12 +26,12 @@
 #include <vector>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 #include <vector>
 
 // user include files
 
-typedef STL_VECTOR( int ) _container_type_ ;
+typedef std::vector< int > _container_type_ ;
 #include "StorageManagement/instantiate_contents_builtin.h"
 

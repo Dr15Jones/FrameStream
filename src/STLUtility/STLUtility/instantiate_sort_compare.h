@@ -19,7 +19,7 @@
 //
 //    e.g. If you had an stl vector of MyItem*, then you would need...
 //              typedef MyItem*                         _sort_value_type_;
-//              typedef STL_VECTOR(MyItem*)::iterator   _sort_iterator_;
+//              typedef std::vector<MyItem*>::iterator   _sort_iterator_;
 //              typedef MyItemPtrCompare                _sort_compare_class_;
 //              
 //

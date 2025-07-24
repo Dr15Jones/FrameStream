@@ -112,7 +112,7 @@ m_sinksChanged(false)
 
 ProcessingPaths::~ProcessingPaths()
 {
-   for( STL_VECTOR(Path*)::iterator itPath = m_paths.begin();
+   for( std::vector<Path*>::iterator itPath = m_paths.begin();
         itPath != m_paths.end();
         ++itPath ) {
       delete (*itPath);
@@ -145,21 +145,21 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
          //doing this for the first time?
          if(m_paths.empty() ) {
             //Create the Filter
-            auto_ptr<FilterAnd> defaultFilter( new FilterAnd("default") );
+            std::unique_ptr<FilterAnd> defaultFilter( new FilterAnd("default") );
             
-            for( STL_VECTOR(JobControlNS::Holder<FilterProc> )::iterator itFilter = m_filterProcs.begin();
+            for( std::vector<JobControlNS::Holder<FilterProc> >::iterator itFilter = m_filterProcs.begin();
                  itFilter != m_filterProcs.end();
                  ++itFilter ) {
                defaultFilter->add( (*itFilter).get() );
-               //cout <<"added "<<(*itFilter)->processor()->name()<<endl;
+               //cout <<"added "<<(*itFilter)->processor()->name()<<std::endl;
             }
             
-            const STL_VECTOR(string) sinkNames = m_sinkManager->unusedSinks();
+            const std::vector<std::string> sinkNames = m_sinkManager->unusedSinks();
             
-            STL_VECTOR(DataSinkBinder*) binders;
+            std::vector<DataSinkBinder*> binders;
             binders.reserve(sinkNames.size() );
             
-            for( STL_VECTOR(string)::const_iterator itName = sinkNames.begin();
+            for( std::vector<std::string>::const_iterator itName = sinkNames.begin();
                  itName != sinkNames.end();
                  ++itName ) {
                DataSinkBinder* dsb = m_sinkManager->binderFor(*itName);
@@ -178,7 +178,7 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
             }
       
             //Create the path
-            STL_VECTOR(Processor*) noProcessors;
+            std::vector<Processor*> noProcessors;
 
             m_defaultFilter = defaultFilter.get();
             m_definedFilters.push_back( defaultFilter.release() );
@@ -198,13 +198,13 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
             if(m_procsChanged) {
                if(0 == m_defaultFilter) {
                   //Create the Filter
-                  auto_ptr<FilterAnd> defaultFilter( new FilterAnd("default") );
+                  std::unique_ptr<FilterAnd> defaultFilter( new FilterAnd("default") );
                   
-                  for( STL_VECTOR(JobControlNS::Holder<FilterProc> )::iterator itFilter = m_filterProcs.begin();
+                  for( std::vector<JobControlNS::Holder<FilterProc> >::iterator itFilter = m_filterProcs.begin();
                        itFilter != m_filterProcs.end();
                        ++itFilter ) {
                      defaultFilter->add( (*itFilter).get() );
-                     //cout <<"added "<<(*itFilter)->processor()->name()<<endl;
+                     //cout <<"added "<<(*itFilter)->processor()->name()<<std::endl;
                   }
                   m_defaultFilter = defaultFilter.get();
                   m_definedFilters.push_back( defaultFilter.release() );
@@ -213,9 +213,9 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
             }
             if(m_sinksChanged){
                //Add new sinks to default path
-               const STL_VECTOR(string) sinkNames = m_sinkManager->unusedSinks();
+               const std::vector<std::string> sinkNames = m_sinkManager->unusedSinks();
                
-               for( STL_VECTOR(string)::const_iterator itName = sinkNames.begin();
+               for( std::vector<std::string>::const_iterator itName = sinkNames.begin();
                     itName != sinkNames.end();
                     ++itName ) {
                   DataSinkBinder* dsb = m_sinkManager->binderFor(*itName);
@@ -242,12 +242,12 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
    } else {
       DABoolean properlyConfigured = true;
       //check to make sure all filters, processors, and sinks are being used
-      for( STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterBase> )::iterator itFilter = m_definedFilters.begin();
+      for( std::vector<JobControlNS::Holder<JobControlNS::FilterBase> >::iterator itFilter = m_definedFilters.begin();
            itFilter != m_definedFilters.end();
            ++itFilter ) {
          DABoolean used = false;
          //is this used in a path?
-         for(STL_VECTOR(JobControlNS::Path*)::iterator itPath = m_paths.begin();
+         for(std::vector<JobControlNS::Path*>::iterator itPath = m_paths.begin();
              itPath != m_paths.end();
              ++itPath) {
             if( (*itPath)->filter() == (*itFilter).get() ) {
@@ -263,7 +263,7 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
             //is this used by another filter? (Since filters must be defined before they can be used by other
             // filters it means that only filters later in the list could use this filter)
 	    //or it can be used by an unnamed filter created for a Path
-            for(STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterBase> )::iterator itFilter2 = itFilter+1;
+            for(std::vector<JobControlNS::Holder<JobControlNS::FilterBase> >::iterator itFilter2 = itFilter+1;
                 itFilter2 != m_definedFilters.end();
                 ++itFilter2){
                if( (*itFilter2)->contains( (*itFilter).get() ) ) {
@@ -273,7 +273,7 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
             }
             if(!used) {
 	       //is it used in a Path?
-	       for(STL_VECTOR(JobControlNS::Path*)::iterator itPath = m_paths.begin();
+	       for(std::vector<JobControlNS::Path*>::iterator itPath = m_paths.begin();
 		   itPath != m_paths.end();
 		   ++itPath) {
 		  if( (*itPath)->filter()->contains( (*itFilter).get() ) ) {
@@ -283,17 +283,17 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
 	       }
 	    } 
 	    if( !used) {
-               report(SYSTEM,kFacilityString) <<"The filter "<<(*itFilter)->name()<<" is not being used"<<endl;
+               report(SYSTEM,kFacilityString) <<"The filter "<<(*itFilter)->name()<<" is not being used"<<std::endl;
                properlyConfigured = false;
             }
          }
       }
       //Processors
-      for(STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterProc> )::iterator itFProc = m_filterProcs.begin();
+      for(std::vector<JobControlNS::Holder<JobControlNS::FilterProc> >::iterator itFProc = m_filterProcs.begin();
           itFProc != m_filterProcs.end();
           ++itFProc ) {
          DABoolean used = false;
-         for( STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterBase> )::iterator itFilter = 
+         for( std::vector<JobControlNS::Holder<JobControlNS::FilterBase> >::iterator itFilter = 
               m_definedFilters.begin();
               itFilter != m_definedFilters.end();
               ++itFilter ) {
@@ -304,7 +304,7 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
          }
          if( !used ) {
 	    //see if it is in a Path
-	    for(STL_VECTOR(JobControlNS::Path*)::iterator itPath = m_paths.begin();
+	    for(std::vector<JobControlNS::Path*>::iterator itPath = m_paths.begin();
 		itPath != m_paths.end();
 		++itPath) {
 	       //is it in the filter?
@@ -313,7 +313,7 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
 		  break;
 	       }
 	       //is it in the operation?
-	       for( STL_VECTOR(Processor*)::const_iterator itProc = (*itPath)->operations().begin();
+	       for( std::vector<Processor*>::const_iterator itProc = (*itPath)->operations().begin();
 		    itProc != (*itPath)->operations().end();
 		    ++itProc) {
 		  if( (*itProc) == (*itFProc).get()->processor() ) {
@@ -324,28 +324,28 @@ ProcessingPaths::initialize(FrameDeliverer& iFD)
 	       if(used) {break;}
 	    }
 	    if( !used ) {
-	       report(SYSTEM,kFacilityString)<<"The processor "<<(*itFProc)->processor()->name() <<" is not begin used"<<endl;
+	       report(SYSTEM,kFacilityString)<<"The processor "<<(*itFProc)->processor()->name() <<" is not begin used"<<std::endl;
 	       properlyConfigured = false;
 	    }
          }
       }
       //Sinks
-      STL_VECTOR(string) unused = m_sinkManager->unusedSinks();
-      for(STL_VECTOR(string)::iterator itSinkName = unused.begin();
+      std::vector<std::string> unused = m_sinkManager->unusedSinks();
+      for(std::vector<std::string>::iterator itSinkName = unused.begin();
           itSinkName != unused.end();
           ++itSinkName ) {
-         report(SYSTEM,kFacilityString)<<"The sink "<<(*itSinkName) <<" is not being used"<<endl;
+         report(SYSTEM,kFacilityString)<<"The sink "<<(*itSinkName) <<" is not being used"<<std::endl;
          properlyConfigured = false;
       }
       if(!properlyConfigured) {
-         report(SYSTEM,kFacilityString)<<" Path configuration error: please remove all unused filters, processors and sinks"<<endl;
+         report(SYSTEM,kFacilityString)<<" Path configuration error: please remove all unused filters, processors and sinks"<<std::endl;
          returnValue = false;
       }
    }
    //sinks must be initialized AFTER all sources and producers/processors
    // because sinks may need to know what proxies will be available
    if(returnValue) {
-      for(STL_VECTOR(JobControlNS::Path*)::iterator itPath = m_paths.begin();
+      for(std::vector<JobControlNS::Path*>::iterator itPath = m_paths.begin();
 	  itPath != m_paths.end();
 	  ++itPath) {
 	 (*itPath)->initializeSinks();
@@ -368,13 +368,13 @@ ProcessingPaths::processStop(Frame& iFrame, DABoolean iContinueOnException)
    DABoolean returnValue = true;
    //Need to reset all filters before processing the paths
    // since multiple paths may share the same filter
-   for( STL_VECTOR(Path*)::iterator itPath = m_paths.begin();
+   for( std::vector<Path*>::iterator itPath = m_paths.begin();
        itPath != m_paths.end();
        ++itPath ) {
      (*itPath)->filter()->reset();
    }
 
-   for( STL_VECTOR(Path*)::iterator itPath = m_paths.begin();
+   for( std::vector<Path*>::iterator itPath = m_paths.begin();
        itPath != m_paths.end();
        ++itPath ) {
 #ifndef CLEO_DEBUG
@@ -391,7 +391,7 @@ ProcessingPaths::processStop(Frame& iFrame, DABoolean iContinueOnException)
             report(ERROR,kFacilityString) << thisException.exceptionStack() 
 					  << "caught a DAException:\n\"" 
 					  << thisException.what() << "\""
-					  << "\n; will continue..."<<endl;
+					  << "\n; will continue..."<<std::endl;
          } else {
             throw;
          }
@@ -428,19 +428,19 @@ ProcessingPaths::add(FilterBase* iFilter)
 }
 
 void 
-ProcessingPaths::addSink(const string&)
+ProcessingPaths::addSink(const std::string&)
 {
    m_sinksChanged=true;
 }
 void 
-ProcessingPaths::removeSink(const string& iName)
+ProcessingPaths::removeSink(const std::string& iName)
 {
    DataSinkBinder* binder = m_sinkManager->binderFor(iName);
    assert(0!= binder);
    
    DABoolean sinkInUse =false;
    //see if a path is using this sink
-   STL_VECTOR(Path*)::iterator itPath = m_paths.begin();
+   std::vector<Path*>::iterator itPath = m_paths.begin();
    for( ;
         itPath != m_paths.end();
         ++itPath ) {
@@ -451,16 +451,16 @@ ProcessingPaths::removeSink(const string& iName)
       }
    }
    if( sinkInUse && !m_usingDefault) {
-      report(WARNING,kFacilityString)<<"removed Sink from path "<<(*itPath)->name()<<endl;
+      report(WARNING,kFacilityString)<<"removed Sink from path "<<(*itPath)->name()<<std::endl;
    }
 }
 
 void 
-ProcessingPaths::addProcessor(const string& iName)
+ProcessingPaths::addProcessor(const std::string& iName)
 {
    m_procsChanged=true;
    
-   //cout <<iName<<endl;
+   //cout <<iName<<std::endl;
    
    FilterProc* temp = new FilterProc(m_masterProcessor->fetch( iName ));
    m_filterProcs.push_back(temp);
@@ -480,12 +480,12 @@ ProcessingPaths::addProcessor(const string& iName)
 }
 
 void 
-ProcessingPaths::removeProcessor(const string& iName)
+ProcessingPaths::removeProcessor(const std::string& iName)
 {
    m_procsChanged=true;
 
    Processor* proc = m_masterProcessor->fetch( iName );
-   STL_VECTOR(JobControlNS::Holder<FilterProc> )::iterator itFilter = m_filterProcs.begin();
+   std::vector<JobControlNS::Holder<FilterProc> >::iterator itFilter = m_filterProcs.begin();
    for(;
        itFilter != m_filterProcs.end();
        ++itFilter) {
@@ -509,18 +509,18 @@ ProcessingPaths::removeProcessor(const string& iName)
 }
 
 void
-ProcessingPaths::reorder(const STL_VECTOR(JobControlNS::Path*)& iOrder )
+ProcessingPaths::reorder(const std::vector<JobControlNS::Path*>& iOrder )
 {
    m_paths = iOrder;
 }
 
 void 
-ProcessingPaths::processorNotBeingUsed(const string& iName, DABoolean& iFlag)
+ProcessingPaths::processorNotBeingUsed(const std::string& iName, DABoolean& iFlag)
 {
    if(!m_usingDefault) {
       //see if any filters use this
       FilterBase* procFilter = 0;
-      for(STL_VECTOR(JobControlNS::Holder<FilterProc> )::iterator itFilter = m_filterProcs.begin();
+      for(std::vector<JobControlNS::Holder<FilterProc> >::iterator itFilter = m_filterProcs.begin();
           itFilter != m_filterProcs.end();
           ++itFilter ) {
          if( (*itFilter)->processor()->name() == iName ) {
@@ -529,7 +529,7 @@ ProcessingPaths::processorNotBeingUsed(const string& iName, DABoolean& iFlag)
          }
       }
       assert( 0 != procFilter);
-      for(STL_VECTOR(JobControlNS::Holder<FilterBase> )::iterator itFilter = m_definedFilters.begin();
+      for(std::vector<JobControlNS::Holder<FilterBase> >::iterator itFilter = m_definedFilters.begin();
           itFilter != m_definedFilters.end();
           ++itFilter) {
          if( (*itFilter)->contains(procFilter) ) {
@@ -544,7 +544,7 @@ ProcessingPaths::processorNotBeingUsed(const string& iName, DABoolean& iFlag)
 DABoolean
 ProcessingPaths::remove(JobControlNS::Path* iPath )
 {
-   for(STL_VECTOR(Path*)::iterator itPath = m_paths.begin();
+   for(std::vector<Path*>::iterator itPath = m_paths.begin();
        itPath != m_paths.end();
        ++itPath) {
       if( *itPath == iPath ) {
@@ -559,9 +559,9 @@ ProcessingPaths::remove(JobControlNS::Path* iPath )
 DABoolean
 ProcessingPaths::remove(JobControlNS::FilterBase* iFilter )
 {
-   STL_VECTOR(JobControlNS::Holder<FilterBase> )::iterator itFoundFilter = m_definedFilters.end();
+   std::vector<JobControlNS::Holder<FilterBase> >::iterator itFoundFilter = m_definedFilters.end();
    //being used by another filter?
-   for(STL_VECTOR(JobControlNS::Holder<FilterBase> )::iterator itFilter = m_definedFilters.begin();
+   for(std::vector<JobControlNS::Holder<FilterBase> >::iterator itFilter = m_definedFilters.begin();
        itFilter != m_definedFilters.end();
        ++itFilter) {
       if((*itFilter).get() == iFilter) {
@@ -576,7 +576,7 @@ ProcessingPaths::remove(JobControlNS::FilterBase* iFilter )
    }
    
    //being used in a path?
-   for(STL_VECTOR(Path*)::iterator itPath = m_paths.begin();
+   for(std::vector<Path*>::iterator itPath = m_paths.begin();
        itPath != m_paths.end();
        ++itPath) {
       if( (*itPath)->filter() == iFilter ) {

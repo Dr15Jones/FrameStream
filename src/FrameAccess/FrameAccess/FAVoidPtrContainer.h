@@ -61,18 +61,18 @@
 // user include files
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
-#include "STLUtility/fwd_vector.h"
+#include <map>
+#include <vector>
 
 template <class T>
-class FAVoidPtrContainer : public STL_MAP(T,void*)
+class FAVoidPtrContainer : public std::map<T,void*>
 {
       // ---------- friend classes and functions ---------------
 
    public:
       // ---------- constants, enums and typedefs --------------
-      typedef typename STL_MAP(T,void*)::const_iterator const_iterator;
-      typedef typename STL_MAP(T,void*)::iterator iterator;
+      typedef typename std::map<T,void*>::const_iterator const_iterator;
+      typedef typename std::map<T,void*>::iterator iterator;
 
       // ---------- Constructors and destructor ----------------
       FAVoidPtrContainer() {}
@@ -85,7 +85,7 @@ class FAVoidPtrContainer : public STL_MAP(T,void*)
       // ---------- const member functions ---------------------
 
       const_iterator find( const T& iIdentifier ) {
-	 return STL_MAP(T,void*)::find( iIdentifier ); }
+	 return std::map<T,void*>::find( iIdentifier ); }
       
       // ---------- static member functions --------------------
 
@@ -132,11 +132,11 @@ struct FAVoidPtrIntegralIdPairFirstCompare {
 };
 
 template<class T>
-class FAVoidPtrIntegralIdContainer : public vector< pair<T,void *> >
+class FAVoidPtrIntegralIdContainer : public std::vector< std::pair<T,void *> >
 {
       
    public:
-      typedef vector< pair<T,void*> > ParentClass;
+      typedef std::vector< std::pair<T,void*> > ParentClass;
       typedef typename ParentClass::value_type value_type;
       typedef typename ParentClass::iterator iterator;
       typedef typename ParentClass::const_iterator const_iterator;

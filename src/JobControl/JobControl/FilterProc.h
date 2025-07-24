@@ -52,7 +52,7 @@ class FilterProc : public FilterBase
 
       const Processor* processor() const { return m_proc; }
       
-      virtual string description() const ;
+      virtual std::string description() const ;
       // ---------- static member functions --------------------
 
    protected:

@@ -37,34 +37,16 @@
 #include "Experiment/report.h"
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-// You may have to uncomment some of these or other stl headers
-// depending on what other header files you include (e.g. FrameAccess etc.)!
-//#include <string>
-//#include <vector>
-//#include <set>
-//#include <map>
-//#include <algorithm>
-//#include <utility>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
-//#include "Experiment/report.h"
 #include "StorageManagement/SMProxyWriter.h"
 #include "DataHandler/RecordMethods.h"
 #include "DAException/DANoProxyException.h"
 #include "DAException/DANoDataException.h"
 #include "DAException/DAExceptionStack.h"
+#include "DAException/DAExceptionStackEntry.h"
 
 // STL classes
-// You may have to uncomment some of these or other stl headers
-// depending on what other header files you include (e.g. FrameAccess etc.)!
-//#include <string>
-//#include <vector>
-//#include <set>
-//#include <map>
-//#include <algorithm>
-//#include <utility>
 
 //
 // constants, enums and typedefs

@@ -54,7 +54,7 @@
 // system include files
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #if defined(OLD_CXX_STRING_CLASS_BUG)
-#include "C++Std/fwd_string.h"
+#include <string>
 #include <String.h>
 #else
 #include <string>
@@ -70,7 +70,7 @@
 // user include files
 
 #if defined(OLD_CXX_STRING_CLASS_BUG)
-#include "C++Std/fwd_string.h"
+#include <string>
 #include <String.h>
 #else
 #include <string>
@@ -82,8 +82,8 @@
 #  include <map>
 #endif                    
 
-typedef string _multimap_key_ ;
-typedef string _multimap_contents_ ;
+typedef std::string _multimap_key_ ;
+typedef std::string _multimap_contents_ ;
 typedef less< _multimap_key_ > _multimap_compare_ ;
 
 #include "STLUtility/instantiate_multimap.h"

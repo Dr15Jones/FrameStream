@@ -27,8 +27,8 @@
 // forward declarations
 class Command;
 class Module;
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_vector.h"
+#include <string>
+#include <vector>
 
 class Interpreter
 {
@@ -57,7 +57,7 @@ class Interpreter
       virtual void readHistory() = 0;
       virtual void saveHistory() = 0;
       virtual void setHistoryLength( Count iLength ) = 0;
-      virtual void setHistoryFile( const string& iFile ) = 0;
+      virtual void setHistoryFile( const std::string& iFile ) = 0;
       virtual void printHistoryInfo() const = 0;
       virtual void printHistory() const = 0;
 
@@ -68,7 +68,7 @@ class Interpreter
        const Module* activeModule() const;
        unsigned int activeModuleStackSize() const;
       // ---------- const member functions ---------------------
-      virtual StatusCode parseArgs( const string formalCmd, 
+      virtual StatusCode parseArgs( const std::string formalCmd, 
 				    int argc, 
 				    char *argv[] ) const = 0;
 
@@ -98,7 +98,7 @@ class Interpreter
 
       // ---------- data members -------------------------------
       char* m_commandPrompt;
-      STL_VECTOR(Module*) m_activeModuleStack;
+      std::vector<Module*> m_activeModuleStack;
 
       // ---------- static data members ------------------------
       static Interpreter* m_interpreter;

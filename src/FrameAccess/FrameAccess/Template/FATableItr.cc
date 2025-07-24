@@ -107,7 +107,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kFATableItrFacilityString 
+static const char* const kFATableItrFacilityString 
 = "FrameAccess.FATableItr" ;
 
 //

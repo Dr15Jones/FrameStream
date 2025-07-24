@@ -47,7 +47,7 @@
 // user include files
 
 // forward declarations
-#include "STLUtility/fwd_list.h"
+#include <list>
 
 typedef long relative_address;
 

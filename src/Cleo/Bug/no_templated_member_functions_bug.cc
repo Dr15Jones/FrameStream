@@ -31,7 +31,7 @@ class MyPrinter {
       template<class Iterator> void print( const Iterator& itStart, 
 					   const Iterator& itEnd ) {
 	 for( Iterator itObj = itStart; itObj != itEnd; ++itObj ) {
-	    cout << *itObj << endl;
+	    cout << *itObj << std::endl:endl;
 	 }
       }
 };

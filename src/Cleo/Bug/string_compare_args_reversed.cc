@@ -38,14 +38,14 @@ using namespace std;
 
 int main()
 {
-   string anExample( "Example" );
+   std::string anExample( "Example" );
 
 #ifdef STRING_COMPARE_ARGS_REVERSED
-   string( "Example" ).compare( anExample,
+   std::string( "Example" ).compare( anExample,
 				0,
 				anExample.length() );
 #else
-   string( "Example" ).compare( 0,
+   std::string( "Example" ).compare( 0,
 				anExample.length(),
 				anExample );
 #endif

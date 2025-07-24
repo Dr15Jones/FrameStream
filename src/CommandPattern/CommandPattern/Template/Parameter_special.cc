@@ -24,17 +24,9 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <ctype.h>
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#include <strstream.h>
-#else
 #include <sstream>
-#endif
-
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string.h>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Experiment/report.h"
@@ -47,7 +39,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const 
+static const char* const 
 kFacilityStringSpecial = "CommandPattern.Parameter_special" ;
 
 //
@@ -55,11 +47,11 @@ kFacilityStringSpecial = "CommandPattern.Parameter_special" ;
 //
 static
 DABoolean
-stringContainsWhiteSpace( const string& iString )
+stringContainsWhiteSpace( const std::string& iString )
 {
    DABoolean returnValue = false;
 
-   for( string::const_iterator it = iString.begin();
+   for( std::string::const_iterator it = iString.begin();
 	it != iString.end();
 	++it )
    {
@@ -83,13 +75,13 @@ stringContainsWhiteSpace( const string& iString )
 // --------------- string -----------------------
 template <>
 void 
-Parameter< string >::setValue( string& value )
+Parameter< std::string >::setValue( std::string& value )
 {
    assert( 2 <= m_argc );
 
    if( 2 < m_argc ) {
       report( SYSTEM, kFacilityStringSpecial )
-	 << "will ignore extra arguments!" << endl;
+	 << "will ignore extra arguments!" << std::endl;
    }
 
    value = getArgument( 1 );
@@ -104,7 +96,7 @@ Parameter< DABoolean >::setValue( DABoolean& value )
 
    if( 2 < m_argc ) {
       report( SYSTEM, kFacilityStringSpecial )
-	 << "will ignore extra arguments!" << endl;
+	 << "will ignore extra arguments!" << std::endl;
    }
 
    if(    't' == getArgument(1)[0] 
@@ -117,17 +109,12 @@ Parameter< DABoolean >::setValue( DABoolean& value )
    }
    else {
       report( SYSTEM, "Suez" )
-	 << "value must start with [TFtf]" << endl;
+	 << "value must start with [TFtf]" << std::endl;
    }
 }
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#define DEFINE_OSTR(_arg_) ostrstream _arg_; 
-#define GET_STR(_var_) _var_.str()
-#else
-#define DEFINE_OSTR(_arg_) ostringstream _arg_; 
+#define DEFINE_OSTR(_arg_) std::ostringstream _arg_; 
 #define GET_STR(_var_) _var_.str().c_str()
-#endif
 
 template <>
 int
@@ -137,10 +124,10 @@ Parameter<DABoolean>::listHandler()
 
    DEFINE_OSTR(str);
    if( true == value() ) {
-      str << "true" << endl;
+      str << "true" << std::endl;
    }
    else {
-      str << "false" << endl;
+      str << "false" << std::endl;
    }
    Interpreter::interpreter()->setResult(GET_STR(str));
 
@@ -156,13 +143,13 @@ Parameter<DABoolean>::listHandler()
 #define PARAMETER_VECTOR_LISTHANDLER( T ) \
 template <> \
 int \
-Parameter< vector< T > >::listHandler() \
+Parameter< std::vector< T > >::listHandler() \
 { \
    Command::Result returnValue = Command::COMMAND_OK; \
 \
    DEFINE_OSTR(os); \
-   vector< T >::const_iterator itEnd = value().end(); \
-   for( vector< T >::const_iterator it = value().begin(); \
+   std::vector< T >::const_iterator itEnd = value().end(); \
+   for( std::vector< T >::const_iterator it = value().begin(); \
 	it != itEnd; \
 	++it ) \
    { \
@@ -170,7 +157,7 @@ Parameter< vector< T > >::listHandler() \
       os << *it; \
    } \
    if( value().empty() ) { os << "empty"; } \
-   os << endl; \
+   os << std::endl; \
    Interpreter::interpreter()->setResult(GET_STR(os)); \
 \
    return returnValue; \
@@ -184,13 +171,13 @@ Parameter< vector< T > >::listHandler() \
 #define PARAMETER_VECTOR_STRING_LISTHANDLER \
 template <> \
 int \
-Parameter< vector< string > >::listHandler() \
+Parameter< std::vector< std::string > >::listHandler() \
 { \
    Command::Result returnValue = Command::COMMAND_OK; \
 \
    DEFINE_OSTR(os); \
-   vector< string >::const_iterator itEnd = value().end(); \
-   for( vector< string >::const_iterator it = value().begin(); \
+   std::vector< std::string >::const_iterator itEnd = value().end(); \
+   for( std::vector< std::string >::const_iterator it = value().begin(); \
 	it != itEnd; \
 	++it ) \
    { \
@@ -201,7 +188,7 @@ Parameter< vector< string > >::listHandler() \
       if( true == containsWhiteSpace ) { os << "}"; } \
    } \
    if( value().empty() ) { os << "empty"; } \
-   os << endl; \
+   os << std::endl; \
    Interpreter::interpreter()->setResult(GET_STR(os)); \
 \
    return returnValue; \
@@ -211,29 +198,25 @@ Parameter< vector< string > >::listHandler() \
 //void 
 //Parameter< vector< T > >::setValue( vector< T >& value )
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#define DEFINE_STR(_arg_) istrstream str( getArgument( _arg_ ) ); 
-#else
-#define DEFINE_STR(_arg_) istringstream str( getArgument( _arg_ ) ); 
-#endif
+#define DEFINE_STR(_arg_) std::istringstream str( getArgument( _arg_ ) ); 
 
 #define PARAMETER_VECTOR_SETVALUE( T ) \
 template <> \
 void \
-Parameter< vector< T > >::setValue( vector< T >& value ) \
+Parameter< std::vector< T > >::setValue( std::vector< T >& value ) \
 { \
    assert( 2 <= m_argc ); \
 \
    DABoolean statusOK = true; \
-   vector< T > tempVector; \
+   std::vector< T > tempVector; \
    for( Count i=1; i<(Count)m_argc; ++i ) \
    { \
       T tempValue; \
       DEFINE_STR( i ); \
       str >> tempValue; \
-      if( ios::failbit == str.fail() ) { \
+      if(  str.fail() ) { \
 	 report( SYSTEM, kFacilityStringSpecial ) \
-	    << "bad argument; can't interpret" << endl; \
+	    << "bad argument; can't interpret" << std::endl; \
 \
 	 statusOK = false; \
 	 break; \
@@ -254,24 +237,24 @@ Parameter< vector< T > >::setValue( vector< T >& value ) \
 #define PARAMETER_VECTOR_IMPLEMENTSETHANDLER( T ) \
 template <> \
 int \
-Parameter< vector< T > >::implementSetHandler( ) \
+Parameter< std::vector< T > >::implementSetHandler( ) \
 { \
    Command::Result returnValue = Command::COMMAND_OK; \
    \
    if ( m_argc < 2 ) { \
       report( SYSTEM, kParameterFacilityString ) \
-         << "too few arguments" << endl; \
+         << "too few arguments" << std::endl; \
    } \
    else { \
       setValue( m_value ); \
       DEFINE_OSTR(str); \
-      vector< T >::const_iterator end = value().end(); \
-      vector< T >::const_iterator itr = value().begin(); \
+      std::vector< T >::const_iterator end = value().end(); \
+      std::vector< T >::const_iterator itr = value().begin(); \
       for( ; itr != end; ++itr) \
       { \
          str<<(*itr)<<" "; \
       } \
-      str<<ends; \
+      str<<std::ends; \
       Interpreter::interpreter()->setResult(GET_STR(str)); \
    } \
  \
@@ -281,24 +264,24 @@ Parameter< vector< T > >::implementSetHandler( ) \
 #define PARAMETER_VECTOR_IMPLEMENTSETDEFAULTHANDLER( T ) \
 template <> \
 int \
-Parameter< vector< T > >::implementSetDefaultHandler( ) \
+Parameter< std::vector< T > >::implementSetDefaultHandler( ) \
 { \
    Command::Result returnValue = Command::COMMAND_OK; \
    \
    if ( m_argc < 2 ) { \
       report( SYSTEM, kParameterFacilityString ) \
-         << "too few arguments" << endl; \
+         << "too few arguments" << std::endl; \
    } \
    else { \
       m_value = m_defaultValue; \
       DEFINE_OSTR(str); \
-      vector< T >::const_iterator end = value().end(); \
-      vector< T >::const_iterator itr = value().begin(); \
+      std::vector< T >::const_iterator end = value().end(); \
+      std::vector< T >::const_iterator itr = value().begin(); \
       for( ; itr != end; ++itr) \
       { \
          str<<(*itr)<<" "; \
       } \
-      str<<ends; \
+      str<<std::ends; \
       Interpreter::interpreter()->setResult(GET_STR(str)); \
    } \
  \
@@ -308,11 +291,11 @@ Parameter< vector< T > >::implementSetDefaultHandler( ) \
 
 //template<>
 //void 
-//Parameter< vector< string > >::setValue( vector< string >& value )
+//Parameter< vector< std::string > >::setValue( vector< std::string >& value )
 #define PARAMETER_VECTOR_STRING_SETVALUE \
 template <> \
 void \
-Parameter< vector< string > >::setValue( vector< string >& value ) \
+Parameter< std::vector< std::string > >::setValue( std::vector< std::string >& value ) \
 { \
    assert( 2 <= m_argc ); \
 \
@@ -321,7 +304,7 @@ Parameter< vector< string > >::setValue( vector< string >& value ) \
 \
    for( Count i=1; i<(Count)m_argc; ++i ) \
    { \
-      string tempValue( getArgument( i ) ); \
+      std::string tempValue( getArgument( i ) ); \
       value.push_back( tempValue ); \
    } \
 }
@@ -330,7 +313,7 @@ Parameter< vector< string > >::setValue( vector< string >& value ) \
 #define PARAMETER_VECTOR_TYPENAME( Tname ) \
 template <> \
 const char* \
-Parameter< vector< Tname > >::typeName() \
+Parameter< std::vector< Tname > >::typeName() \
 { return "vector<" #Tname ">" ; }
 
 // define macro (since template instantiation doesn't work)
@@ -340,16 +323,16 @@ PARAMETER_VECTOR_LISTHANDLER( T ) \
 PARAMETER_VECTOR_SETVALUE( T ) \
 PARAMETER_VECTOR_IMPLEMENTSETHANDLER( T ) \
 PARAMETER_VECTOR_IMPLEMENTSETDEFAULTHANDLER( T ) \
-template class Parameter< vector< T > >;
+template class Parameter< std::vector< T > >;
 
-// define special string macro (since template instantiation doesn't work)
+// define special std::string macro (since template instantiation doesn't work)
 #define INSTANTIATE_PARAMETER_VECTOR_STRING \
-PARAMETER_VECTOR_TYPENAME( string ) \
+PARAMETER_VECTOR_TYPENAME( std::string ) \
 PARAMETER_VECTOR_STRING_LISTHANDLER \
 PARAMETER_VECTOR_STRING_SETVALUE \
-PARAMETER_VECTOR_IMPLEMENTSETHANDLER( string ) \
-PARAMETER_VECTOR_IMPLEMENTSETDEFAULTHANDLER( string ) \
-template class Parameter< vector< string > >;
+PARAMETER_VECTOR_IMPLEMENTSETHANDLER( std::string ) \
+PARAMETER_VECTOR_IMPLEMENTSETDEFAULTHANDLER( std::string ) \
+template class Parameter< std::vector< std::string > >;
 
 //
 // const member functions

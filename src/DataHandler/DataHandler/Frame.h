@@ -113,12 +113,12 @@
 #include "DataHandler/SyncValue.h" 
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
+#include <map>
 class Record ;
 class FrameRecordItr;
 
 #if !defined(_frame_records_)
-#  define _frame_records_ STL_MAP( Stream::Type , Record* )
+#  define _frame_records_ std::map< Stream::Type , Record* >
 #endif /* _frame_records_ */
 
 

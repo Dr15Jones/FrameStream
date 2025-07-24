@@ -10,15 +10,15 @@
 class Base
 {
    public:
-      virtual void virtFunction() { cout << "here in base" << endl; }
+      virtual void virtFunction() { cout << "here in base" << std::endl:endl; }
       virtual void virtFunction( int ) { 
-	 cout << "here in overridden base" << endl; }
+	 cout << "here in overridden base" << std::endl:endl; }
 };
 
 class Derived : public Base
 {
    public:
-      virtual void virtFunction() { cout << "here in derived" << endl; }
+      virtual void virtFunction() { cout << "here in derived" << std::endl:endl; }
 };
 
 

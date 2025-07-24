@@ -34,8 +34,8 @@
 #include "DataHandler/DataKey.h"
 
 // forward declarations
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <vector>
+#include <map>
 class PDSPackerBase;
 
 class PDSWriteDataSinkStream : public SMSinkStream
@@ -46,7 +46,7 @@ class PDSWriteDataSinkStream : public SMSinkStream
       // ---------- constants, enums and typedefs --------------
       class PackerHolder {
 	 public:
-	    PackerHolder( const STL_VECTOR(PDSPackerBase*)* iPackers,
+	    PackerHolder( const std::vector<PDSPackerBase*>* iPackers,
 			  DABoolean iShouldIncrement = true ) :
 	       m_packers(iPackers),
 	       m_index(0),
@@ -58,7 +58,7 @@ class PDSWriteDataSinkStream : public SMSinkStream
 	       return (*m_packers)[ m_shouldIncrement? m_index++ : m_index ];
 	    }
 	 private:
-	    const STL_VECTOR(PDSPackerBase*)* m_packers;
+	    const std::vector<PDSPackerBase*>* m_packers;
 	    UInt32 m_index;
 	    DABoolean m_shouldIncrement;
       };
@@ -80,18 +80,18 @@ class PDSWriteDataSinkStream : public SMSinkStream
 
       virtual void put( const char * iFieldName, float );
       virtual void put( const char * iFieldName, double );
-      virtual void put( const char * iFieldName, const string& );
+      virtual void put( const char * iFieldName, const std::string& );
 
       virtual void put( const char * iFieldName, const SMContentsBase& );
 
       virtual void beginObject( const TypeTag& );
       virtual void endObject();
 
-      void setContainer( STL_VECTOR(UInt32)& iContainer ) {
+      void setContainer( std::vector<UInt32>& iContainer ) {
 	 m_container = & iContainer;
       }
       
-      void setPackers( const STL_MAP(TypeTag, STL_VECTOR(PDSPackerBase*) )&
+      void setPackers( const std::map<TypeTag, std::vector<PDSPackerBase*> >&
       iPackers ) { m_typeToPackersMap = & iPackers; }
 
       void setTypeIndex( UInt32 iTypeIndex ) {
@@ -127,9 +127,9 @@ class PDSWriteDataSinkStream : public SMSinkStream
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      STL_VECTOR(UInt32)* m_container;
-      const STL_MAP(TypeTag, STL_VECTOR(PDSPackerBase*) )* m_typeToPackersMap;
-      STL_VECTOR(PackerHolder) m_packerStack;
+      std::vector<UInt32>* m_container;
+      const std::map<TypeTag, std::vector<PDSPackerBase*> >* m_typeToPackersMap;
+      std::vector<PackerHolder> m_packerStack;
       PackerHolder m_presentPacker;
       UInt32 m_typeIndex;
       UInt32 m_startSizeOfContainer;

@@ -63,7 +63,7 @@ class SMSinkStream
 
       virtual void put( const char * iFieldName, float ) = 0;
       virtual void put( const char * iFieldName, double ) = 0;
-      virtual void put( const char * iFieldName, const string& ) = 0;
+      virtual void put( const char * iFieldName, const std::string& ) = 0;
 
       //used to tell sink that we are outputting a container
       virtual void put( const char * iFieldName, const SMContentsBase& ) = 0;

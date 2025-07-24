@@ -64,7 +64,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-SubcommandBase::SubcommandBase( const string& iName,
+SubcommandBase::SubcommandBase( const std::string& iName,
 				Count iMinArgs,
 				Count iMaxArgs )
    : m_name( iName ),

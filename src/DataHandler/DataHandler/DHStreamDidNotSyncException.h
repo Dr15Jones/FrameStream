@@ -45,8 +45,8 @@ class DHStreamDidNotSyncException : public DAExceptionBase
       // ---------- Constructors and destructor ----------------
       DHStreamDidNotSyncException( const Stream::Type& iStream )
 	 : m_stream( iStream ) {
-	    m_message = string("No source has a ") +
-	       m_stream.value()+string(" Record for this stop");
+	    m_message = std::string("No source has a ") +
+	       m_stream.value()+std::string(" Record for this stop");
       }
       //virtual ~DHStreamDidNotSyncException();
 
@@ -79,7 +79,7 @@ class DHStreamDidNotSyncException : public DAExceptionBase
 
       // ---------- data members -------------------------------
       Stream::Type m_stream;
-      string m_message;
+      std::string m_message;
 
       // ---------- static data members ------------------------
 

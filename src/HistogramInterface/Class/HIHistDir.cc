@@ -74,7 +74,7 @@ inline
 void
 deleteContained( Iter iBegin, Iter iEnd )
 {
-   for( iBegin; iBegin != iEnd; ++iBegin ) {
+   for( ; iBegin != iEnd; ++iBegin ) {
       delete *iBegin;
    }
 }

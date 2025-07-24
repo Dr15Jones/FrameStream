@@ -31,8 +31,8 @@
 class PDSUnpackingStringSameEndian
 {
    public:
-      void charToString(const char*& iArray, string& oString) {
-	 oString = string(iArray);
+      void charToString(const char*& iArray, std::string& oString) {
+	 oString = std::string(iArray);
       }
 };
 
@@ -46,7 +46,7 @@ class PDSUnpackingStringDifferentEndian
 	 delete [] m_buffer;
       }
 
-      void charToString(const char*& iArray, string& oString);
+      void charToString(const char*& iArray, std::string& oString);
    private:
       UInt32* m_buffer;
       unsigned int m_bufferSize;
@@ -84,7 +84,7 @@ class PDSUnpackingStringSourceStream :  public PDSUnpackingSourceStreamBase
 
       virtual SMSourceStream& operator>>( float  &);
       virtual SMSourceStream& operator>>( double &);
-      virtual SMSourceStream& operator>>( string& );
+      virtual SMSourceStream& operator>>( std::string& );
 
       virtual SMSourceStream& operator>>( const SMMakeContentsBase& );
 

@@ -69,6 +69,7 @@
 //#include <algorithm>
 //#include <utility>
 
+using namespace std;
 //
 // constants, enums and typedefs
 //
@@ -93,8 +94,8 @@ static ostringstream k_myNullStream;
 // constructors and destructor
 //
 ReportControl::ReportControl( const Severity& aSeverity ,
-			      const string&   aFacility ,
-			      const string&   aPreface  ,
+			      const std::string&   aFacility ,
+			      const std::string&   aPreface  ,
 			      const UInt32    aFactor   ,
 			      const UInt32    aPlateau    ) :
    m_severity ( aSeverity ) ,   
@@ -149,7 +150,7 @@ ReportControl::operator()()
 	 << " and will not be repeated again\n" 
 	 << "-----------------------------------------------"
 	 << "--------------------\n"
-	 << endl ;
+	 << std::endl ;
    }
    ++m_nCalls ;
    if( nCalls() <= plateau() )
@@ -184,13 +185,13 @@ ReportControl::severity()
    return m_severity ;
 }
 
-const string&   
+const std::string&   
 ReportControl::facility()
 {
    return m_facility ;
 }
 
-const string&   
+const std::string&   
 ReportControl::preface()  
 {
    return m_preface ;

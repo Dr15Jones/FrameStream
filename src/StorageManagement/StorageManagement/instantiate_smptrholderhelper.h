@@ -18,7 +18,7 @@
 // Revision history
 
 // system include files
-//#include "STLUtility/fwd_vector.h"
+//#include <vector>
 
 // user include files
 #include "StorageManagement/SMPtrHolder.h"

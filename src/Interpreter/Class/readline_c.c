@@ -50,6 +50,7 @@
 /* system include files */
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /* gnu readline support */
 #include <readline/readline.h>
@@ -61,7 +62,7 @@
    start at the top of the list. */
 extern 
 char*
-command_matches( char* text, int state );
+command_matches( const char* text, int state );
 
 /* Attempt to complete on the contents of TEXT.  START and END bound the
    region of rl_line_buffer that contains the word to complete.  TEXT is
@@ -71,7 +72,7 @@ command_matches( char* text, int state );
    or NULL if there aren't any. */
 static
 char**
-command_completion( char* text, int start, int end )
+command_completion( const char* text, int start, int end )
 {
    char **matches;
    
@@ -81,7 +82,7 @@ command_completion( char* text, int start, int end )
       to complete.  Otherwise it is the name of a file in the current
       directory. */
    if( 0 == start ) {
-      matches = completion_matches( text, command_matches );
+      matches = rl_completion_matches( text, command_matches );
    }
 
    return( matches );
@@ -95,7 +96,7 @@ readline_init( const char* iInputRcName )
   rl_readline_name = strdup( iInputRcName );
   
   /* Tell the completer that we want a crack first. */
-  rl_attempted_completion_function = (CPPFunction *)command_completion;
+  rl_attempted_completion_function = command_completion;
 }
 
 char*

@@ -28,7 +28,7 @@
 
 #include "Experiment/Experiment.h"
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <vector>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
@@ -45,7 +45,7 @@
 //
 // constants, enums and typedefs
 //
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kMultiLoaderCommandString 
+static const char* const kMultiLoaderCommandString 
 = "CommandPattern.MultiLoaderCommand";
 
 //
@@ -143,7 +143,7 @@ MultiLoaderCommand< T >::execute( int argc, char* argv[] )
        }
        else
        {
-	  string result( "ERROR: invalid command arg" );
+	  std::string result( "ERROR: invalid command arg" );
 	  this->setResult( result );
 	  this->helpHandler();
 	  returnValue = Command::COMMAND_ERROR;
@@ -151,7 +151,7 @@ MultiLoaderCommand< T >::execute( int argc, char* argv[] )
     }
     else
     {
-       string result( "ERROR: wrong # args" );
+       std::string result( "ERROR: wrong # args" );
        this->setResult( result );
        helpHandler();
        returnValue = Command::COMMAND_ERROR;
@@ -165,72 +165,72 @@ template< class T >
 int
 MultiLoaderCommand< T >::helpHandler()
 {
-   static const string helpMessage = 
-      string( "                                                                      \n" )+
-      string( " Description:                                                         \n" )+
-      string( "      " ) + this->name() +
-      string( " command.                                                             \n" )+
-      string( "                                                                      \n" )+
-      string( "      Valid subcommands are:                                          \n" )+
-      string( "                                                                      \n" )+
-      string( "  " ) + this->name() +
-      string( " help                                            see this help page   \n" )+
-      string( "  " ) + this->name() +
-      string( " list                                            List available mods  \n" )+
-      string( "  " ) + this->name() +
-      string( " ls                                              Synonym: \"list\"    \n" )+
-      string( "  " ) + this->name() +
-      string( " listsel                                         List selected mods   \n" )+
-      string( "  " ) + this->name() +
-      string( " lss                                             Synonym: \"listsel\" \n" )+
-      string( "  " ) + this->name() +
-      string( " select   <mod1> [<mod2>..]                      Select mods          \n" )+
-      string( "       select   <mod1> [<mod2>..] production <tag>     with production tag\n" )+
-      string( "                                                       New name: <mod>@<tag>\n" )+
-      string( "  " ) + this->name() +
-      string( " sel      <mod1> [<mod2>..]                      Synonym: \"select\"  \n" )+
-      string( "       sel      <mod1> [<mod2>..] production <tag>                    \n" )+
-      string( "                                                                      \n" )+
-      string( "  " ) + this->name() +
-      string( " deselect <mod1> [<mod2>..]                      Deselect mods        \n" )+
-      string( "  " ) + this->name() +
-      string( " desel    <mod1> [<mod2>..]                      Synonym: \"deselect\"\n" )+
-      string( "  " ) + this->name() +
-      string( " clear                                           Empty the mod list   \n" )+
-      string( "                                                                      \n" )+
-      string( "  " ) + this->name() +
-      string( " interact <mod>                                  interact w/ mod      \n" )+
-      string( "  " ) + this->name() +
-      string( " inter    <mod>                                  Synonym: \"interact\"\n");
+   static const std::string helpMessage = 
+      std::string( "                                                                      \n" )+
+      std::string( " Description:                                                         \n" )+
+      std::string( "      " ) + this->name() +
+      std::string( " command.                                                             \n" )+
+      std::string( "                                                                      \n" )+
+      std::string( "      Valid subcommands are:                                          \n" )+
+      std::string( "                                                                      \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " help                                            see this help page   \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " list                                            List available mods  \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " ls                                              Synonym: \"list\"    \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " listsel                                         List selected mods   \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " lss                                             Synonym: \"listsel\" \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " select   <mod1> [<mod2>..]                      Select mods          \n" )+
+      std::string( "       select   <mod1> [<mod2>..] production <tag>     with production tag\n" )+
+      std::string( "                                                       New name: <mod>@<tag>\n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " sel      <mod1> [<mod2>..]                      Synonym: \"select\"  \n" )+
+      std::string( "       sel      <mod1> [<mod2>..] production <tag>                    \n" )+
+      std::string( "                                                                      \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " deselect <mod1> [<mod2>..]                      Deselect mods        \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " desel    <mod1> [<mod2>..]                      Synonym: \"deselect\"\n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " clear                                           Empty the mod list   \n" )+
+      std::string( "                                                                      \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " interact <mod>                                  interact w/ mod      \n" )+
+      std::string( "  " ) + this->name() +
+      std::string( " inter    <mod>                                  Synonym: \"interact\"\n");
 
-   static string helpMessageExample;
+   static std::string helpMessageExample;
    if(this->name()=="proc") {
       helpMessageExample = 
-      string( "                                                                      \n" )+
-      string( "  Example: \n" )+
-      string( "  proc sel MyProc YourProc production com                             \n" )+
-      string( "  proc lss\n" )+
-      string( "    MyProc@com : <full_path_to_shared_MyProc>/libMyProc.so            \n" )+
-      string( "    YourProc@com : <full_path_to_shared_YourProc>/libYourProc.so      \n" )+
-      string( "  proc desel MyProc@com                                               \n" )+
-      string( "                                                                      \n" );
+      std::string( "                                                                      \n" )+
+      std::string( "  Example: \n" )+
+      std::string( "  proc sel MyProc YourProc production com                             \n" )+
+      std::string( "  proc lss\n" )+
+      std::string( "    MyProc@com : <full_path_to_shared_MyProc>/libMyProc.so            \n" )+
+      std::string( "    YourProc@com : <full_path_to_shared_YourProc>/libYourProc.so      \n" )+
+      std::string( "  proc desel MyProc@com                                               \n" )+
+      std::string( "                                                                      \n" );
   } else if(this->name()=="prod") {
       helpMessageExample =
-      string( "                                                                      \n" )+
-      string( "  Example: \n" )+
-      string( "  prod sel MyProd YourProd production com                             \n" )+
-      string( "  prod lss\n" )+
-      string( "    MyProd@com : <full_path_to_shared_MyProd>/libMyProd.so            \n" )+
-      string( "    YourProd@com : <full_path_to_shared_YourProd>/libYourProd.so      \n" )+
-      string( "  prod desel MyProd@com                                               \n" )+
-      string( "                                                                      \n" );
+      std::string( "                                                                      \n" )+
+      std::string( "  Example: \n" )+
+      std::string( "  prod sel MyProd YourProd production com                             \n" )+
+      std::string( "  prod lss\n" )+
+      std::string( "    MyProd@com : <full_path_to_shared_MyProd>/libMyProd.so            \n" )+
+      std::string( "    YourProd@com : <full_path_to_shared_YourProd>/libYourProd.so      \n" )+
+      std::string( "  prod desel MyProd@com                                               \n" )+
+      std::string( "                                                                      \n" );
   } else {
       helpMessageExample =
-      string( "                                                                      \n");
+      std::string( "                                                                      \n");
   }
 
    report( INFO, kMultiLoaderCommandString ) << "\n" 
-      << helpMessage << helpMessageExample << endl;
+      << helpMessage << helpMessageExample << std::endl;
    return Command::COMMAND_OK;
 }
 
@@ -242,8 +242,8 @@ MultiLoaderCommand< T >::loadHandler()
 
    if( this->m_argc <= 2 )
    {
-      //report( ERROR, kMultiLoaderCommandString ) << "wrong # args" << endl;
-      string result( "ERROR: wrong # arguments" );
+      //report( ERROR, kMultiLoaderCommandString ) << "wrong # args" << std::endl;
+      std::string result( "ERROR: wrong # arguments" );
       this->setResult( result );
 
       return returnValue = Command::COMMAND_ERROR;
@@ -254,9 +254,9 @@ MultiLoaderCommand< T >::loadHandler()
    int index = 3;
 
    // loop over all supplied names and check for "production" keyword
-   string tag="";
+   std::string tag="";
    while ( 0 != ( arg = this->getArgument( index ) ) ) {
-     string name{ arg };
+     std::string name{ arg };
 
      if( name=="production" ) {
      // special keyword to load multiple times same object
@@ -264,7 +264,7 @@ MultiLoaderCommand< T >::loadHandler()
        int ii = index+1;
 
        if( 0 != ( inst = this->getArgument( ii ) ) ) {
-         tag = string(inst);
+         tag = std::string(inst);
 
          break;
        } 
@@ -275,7 +275,7 @@ MultiLoaderCommand< T >::loadHandler()
    index = 2;
    while ( 0 != ( arg = this->getArgument( index++ ) ) )
    {
-     string name{ arg };
+     std::string name{ arg };
       
       // if found "production" tag keyword stop looping
       if(name=="production") break; 
@@ -294,8 +294,8 @@ MultiLoaderCommand< T >::loadHandler()
       else 
       {
 	 //report( ERROR, kMultiLoaderCommandString )
-	 //  << "Cannot load " << name << "." << endl;
-	 string result( "ERROR: cannot load " );
+	 //  << "Cannot load " << name << "." << std::endl;
+	 std::string result( "ERROR: cannot load " );
 	 result += name + ".";
 	 this->setResult( result );
 	 returnValue = Command::COMMAND_ERROR;

@@ -55,7 +55,7 @@ class PDSUnpackingSourceStreamTemplate : class PDSUnpackingSourceStreamBase
 
       virtual SMSourceStream& operator>>( float  &);
       virtual SMSourceStream& operator>>( double &);
-      virtual SMSourceStream& operator>>( string& );
+      virtual SMSourceStream& operator>>( std::string& );
 
       virtual SMSourceStream& operator>>( const SMMakeContentsBase& );
 

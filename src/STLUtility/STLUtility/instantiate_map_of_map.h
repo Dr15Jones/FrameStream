@@ -52,21 +52,21 @@
 //
 // required for map
 #  pragma define_template map< _map_key_ ,  _map_contents_ , _map_compare_ >
-#  pragma define_template rb_tree<_map_key_, pair<const _map_key_, _map_contents_>, select1st<pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >
+#  pragma define_template rb_tree<_map_key_, std::pair<const _map_key_, _map_contents_>, select1st<std::pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >
 
 #  pragma define_template map< _map_of_map_key_, map< _map_key_ ,  _map_contents_ , _map_compare_ >, _map_of_map_compare_ >
 
 // normal map
-# pragma define_template rb_tree< _map_of_map_key_, pair< const
+# pragma define_template rb_tree< _map_of_map_key_, std::pair< const
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ > >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ > >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ > >,
 _map_of_map_key_ >, _map_of_map_compare_ >
 
 // map pointer
-# pragma define_template rb_tree< _map_of_map_key_, pair< const
+# pragma define_template rb_tree< _map_of_map_key_, std::pair< const
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ >* >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ >* >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ >* >,
 _map_of_map_key_ >, _map_of_map_compare_ >
 
@@ -75,15 +75,15 @@ _map_of_map_key_ >, _map_of_map_compare_ >
 //   which template to use when there are multiple ones on offer!
 
 // ----------- map --------------
-void __distance( rb_tree<_map_key_, pair<const _map_key_, _map_contents_>, select1st<pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >::iterator first,
-		 rb_tree<_map_key_, pair<const _map_key_, _map_contents_>, select1st<pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >::iterator last,
+void __distance( rb_tree<_map_key_, std::pair<const _map_key_, _map_contents_>, select1st<std::pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >::iterator first,
+		 rb_tree<_map_key_, std::pair<const _map_key_, _map_contents_>, select1st<std::pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >::iterator last,
 		unsigned long& n,
 		bidirectional_iterator_tag) {
    while (first != last) { ++first; ++n; }
 }
 
-void __distance( rb_tree<_map_key_, pair<const _map_key_, _map_contents_>, select1st<pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >::const_iterator first,
-		 rb_tree<_map_key_, pair<const _map_key_, _map_contents_>, select1st<pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >::const_iterator last,
+void __distance( rb_tree<_map_key_, std::pair<const _map_key_, _map_contents_>, select1st<std::pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >::const_iterator first,
+		 rb_tree<_map_key_, std::pair<const _map_key_, _map_contents_>, select1st<std::pair<const _map_key_, _map_contents_>, _map_key_>, _map_compare_ >::const_iterator last,
 		unsigned long& n,
 		bidirectional_iterator_tag) {
    while (first != last) { ++first; ++n; }
@@ -92,14 +92,14 @@ void __distance( rb_tree<_map_key_, pair<const _map_key_, _map_contents_>, selec
 // --------- map of map ---------
 // normal map
 // iterator
-void __distance( rb_tree< _map_of_map_key_, pair< const 
+void __distance( rb_tree< _map_of_map_key_, std::pair< const 
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ > >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ > >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ > >,
 _map_of_map_key_ >, _map_of_map_compare_ >::iterator first,
-		 rb_tree< _map_of_map_key_, pair< const
+		 rb_tree< _map_of_map_key_, std::pair< const
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ > >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ > >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ > >,
 _map_of_map_key_ >, _map_of_map_compare_ >::iterator last, 
 		unsigned long& n,
@@ -109,14 +109,14 @@ _map_of_map_key_ >, _map_of_map_compare_ >::iterator last,
 
 // normal map
 // const iterator
-void __distance( rb_tree< _map_of_map_key_, pair< const
+void __distance( rb_tree< _map_of_map_key_, std::pair< const
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ > >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ > >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ > >,
 _map_of_map_key_ >, _map_of_map_compare_ >::const_iterator first,
-		 rb_tree< _map_of_map_key_, pair< const
+		 rb_tree< _map_of_map_key_, std::pair< const
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ > >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ > >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ > >,
 _map_of_map_key_ >, _map_of_map_compare_ >::const_iterator last, 
 		unsigned long& n,
@@ -126,14 +126,14 @@ _map_of_map_key_ >, _map_of_map_compare_ >::const_iterator last,
 
 // map pointer
 // iterator
-void __distance( rb_tree< _map_of_map_key_, pair< const 
+void __distance( rb_tree< _map_of_map_key_, std::pair< const 
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ >* >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ >* >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ >* >,
 _map_of_map_key_ >, _map_of_map_compare_ >::iterator first,
-		 rb_tree< _map_of_map_key_, pair< const
+		 rb_tree< _map_of_map_key_, std::pair< const
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ >* >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ >* >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ >* >,
 _map_of_map_key_ >, _map_of_map_compare_ >::iterator last, 
 		unsigned long& n,
@@ -143,14 +143,14 @@ _map_of_map_key_ >, _map_of_map_compare_ >::iterator last,
 
 // map pointer
 // const iterator
-void __distance( rb_tree< _map_of_map_key_, pair< const
+void __distance( rb_tree< _map_of_map_key_, std::pair< const
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ >* >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ >* >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ >* >,
 _map_of_map_key_ >, _map_of_map_compare_ >::const_iterator first,
-		 rb_tree< _map_of_map_key_, pair< const
+		 rb_tree< _map_of_map_key_, std::pair< const
 _map_of_map_key_, map< _map_key_, _map_contents_,
-_map_compare_ >* >, select1st< pair< const _map_of_map_key_, map<
+_map_compare_ >* >, select1st< std::pair< const _map_of_map_key_, map<
 _map_key_, _map_contents_, _map_compare_ >* >,
 _map_of_map_key_ >, _map_of_map_compare_ >::const_iterator last, 
 		unsigned long& n,
@@ -160,7 +160,7 @@ _map_of_map_key_ >, _map_of_map_compare_ >::const_iterator last,
 
 #else
 
-#include "STLUtility/fwd_map.h"
+#include <map>
 template class STL_MAP_COMP( _map_of_map_key_, STL_MAP_COMP( _map_key_ , _map_contents_, _map_compare_ ), _map_of_map_compare_ ) ;
 
 #endif /* PRAGMA_TEMPLATE_INSTANTIATION_BUG && __DECCXX */

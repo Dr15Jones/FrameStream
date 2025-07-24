@@ -27,22 +27,13 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <map>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "JobControl/SourceManager.h"
-#include "JobControl/BinderBase.h"
+#include "DataDelivery/BinderBase.h"
 
 // stl includes
 #include <string>
 #include <map>
 
-typedef SourceManager::Token _map_key_ ;
-typedef BinderBase* _map_contents_ ;
-typedef less< _map_key_ > _map_compare_ ;
-
-#include "STLUtility/instantiate_map.h"
 

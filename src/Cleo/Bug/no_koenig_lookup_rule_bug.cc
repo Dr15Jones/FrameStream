@@ -20,7 +20,7 @@ void f(Arg a, long i) {}
 int main() {
    Arg w = one;
    #if !defined(NO_KOENIG_LOOKUP_RULE_BUG)
-   if(f(w,0)) cout << "koenig lookup rule is enacted" << endl;
+   if(f(w,0)) cout << "koenig lookup rule is enacted" << std::endl:endl;
    #endif // NO_KOENIG_LOOKUP_RULE_BUG
    return 0;
 }

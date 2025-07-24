@@ -75,7 +75,7 @@
 //
 // constants, enums and typedefs
 //
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kMultiLoaderFacilityString
+static const char* const kMultiLoaderFacilityString
  = "CommandPattern.MultiLoader";
 
 //
@@ -86,16 +86,10 @@ FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kMultiLoaderFacilityString
 // constructors and destructor
 //
 template< class T >
-MultiLoader< T >::MultiLoader( const string& environment ) 
+MultiLoader< T >::MultiLoader( const std::string& environment ) 
    :  LoaderBase<T>( environment ),
       m_loaded( *new _loader_loaded_ )
 {
-   if( 0 == &m_loaded ) {
-     report( EMERGENCY, kMultiLoaderFacilityString )
-       << "out of memory" << endl;
-     assert( false );
-     ::exit( 1 );
-   }
 }
 
 template< class T >
@@ -122,22 +116,22 @@ MultiLoader< T >::~MultiLoader()
 
 template< class T >
 DABoolean
-MultiLoader< T >::load( const string& iName )
+MultiLoader< T >::load( const std::string& iName )
 {
    DABoolean status = true;
 
    // get shortName first
-   string sName = LoaderBase<T>::shortName(iName);
+   std::string sName = LoaderBase<T>::shortName(iName);
  
    if(!LoaderBase<T>::alreadyLoaded(sName)) {
-     string pName = LoaderBase<T>::localPath(iName);
+     std::string pName = LoaderBase<T>::localPath(iName);
      status = LoaderBase<T>::load(pName+sName);
      if(status) {
        m_loaded.push_back( sName );
        T* object = LoaderBase<T>::fetch(sName);
        initializeTag("", *object);
        report( DEBUG, kMultiLoaderFacilityString )
-         << "load iName "<<iName<<" shortName "<<sName<<" object address "<<object<<endl;
+         << "load iName "<<iName<<" shortName "<<sName<<" object address "<<object<<std::endl;
      }
    }
    return status;
@@ -145,23 +139,23 @@ MultiLoader< T >::load( const string& iName )
 
 template< class T >
 DABoolean
-MultiLoader< T >::load( const string& iName, const string& iTag )
+MultiLoader< T >::load( const std::string& iName, const std::string& iTag )
 {
 
    // get shortName first & local path
-   string sName = LoaderBase<T>::shortName(iName);
-   string pName = LoaderBase<T>::localPath(iName);
+   std::string sName = LoaderBase<T>::shortName(iName);
+   std::string pName = LoaderBase<T>::localPath(iName);
 
    // build fullName out of shortName and provided Tag
-   string fullName = pName+sName+"@"+iTag;
-   string tagName  = sName+"@"+iTag;
+   std::string fullName = pName+sName+"@"+iTag;
+   std::string tagName  = sName+"@"+iTag;
 
    DABoolean returnValue = false;
 
    // check that iName doesn't already exist!
    if( LoaderBase<T>::alreadyLoaded(fullName) ) {
        report( INFO, kMultiLoaderFacilityString )
-         << " To load object multiple times specify unique production tag" << endl;
+         << " To load object multiple times specify unique production tag" << std::endl;
      return true;
    }
 
@@ -178,13 +172,13 @@ MultiLoader< T >::load( const string& iName, const string& iTag )
    initializeTag( iTag, *object ); 
 
    report( DEBUG, kMultiLoaderFacilityString )
-     << "loaded iName "<<iName<<" fullName "<<fullName<<" object address "<<object<<endl;
+     << "loaded iName "<<iName<<" fullName "<<fullName<<" object address "<<object<<std::endl;
    return returnValue;
 }
 
 template< class T >
 DABoolean 
-MultiLoader< T >::reorder( const string& iListString )
+MultiLoader< T >::reorder( const std::string& iListString )
 {
    DABoolean returnValue = true;
 
@@ -195,7 +189,7 @@ MultiLoader< T >::reorder( const string& iListString )
    StringTokenizer items( iListString );
    while( true == items.hasMoreElements() )
    {
-      string nextItem( items.nextElement() );
+      std::string nextItem( items.nextElement() );
 
       // find in our copied list
       _loader_loaded_::iterator which = copyOfLoaded.begin();
@@ -207,7 +201,7 @@ MultiLoader< T >::reorder( const string& iListString )
 	 report( ERROR, kMultiLoaderFacilityString )
 	    << nextItem 
 	    << " is not a valid entry"
-	    << endl;
+	    << std::endl;
 	 return returnValue = false;
       }
       else
@@ -219,16 +213,16 @@ MultiLoader< T >::reorder( const string& iListString )
    // now check that there aren't any left over items!
    if( false == copyOfLoaded.empty() )
    {
-      string errorMessage( "Left-overs:\n" );
+      std::string errorMessage( "Left-overs:\n" );
       _loader_loaded_::iterator which = copyOfLoaded.begin();
       _loader_loaded_::iterator end = copyOfLoaded.end();
       for( ; which != end; ++which )
       {
-	 errorMessage += *which + string( " " );
+	 errorMessage += *which + std::string( " " );
       }
       report( ERROR, kMultiLoaderFacilityString )
 	 << errorMessage
-	 << endl;
+	 << std::endl;
       return returnValue = false;
    }
    
@@ -251,9 +245,9 @@ MultiLoader< T >::unloadAll()
    // clear out vector (and with it map)
    while( !m_loaded.empty() )
    {
-      string object = m_loaded.back();
+      std::string object = m_loaded.back();
       report( DEBUG, kMultiLoaderFacilityString )
-	 << "unloading " << object << endl;
+	 << "unloading " << object << std::endl;
       unload( object );
    }
 
@@ -261,7 +255,7 @@ MultiLoader< T >::unloadAll()
 
 template< class T >
 DABoolean
-MultiLoader< T >::unload( const string& iName )
+MultiLoader< T >::unload( const std::string& iName )
 {
    DABoolean returnValue = true;
 
@@ -276,7 +270,7 @@ MultiLoader< T >::unload( const string& iName )
 
       // look for names with tags
       report( DEBUG, kMultiLoaderFacilityString )
-	 << "unloading " << iName << endl;
+	 << "unloading " << iName << std::endl;
 
       // erase Object from _loader_loaded_map_ using its short name
       if( LoaderBase<T>::unload(iName) ) {
@@ -297,31 +291,31 @@ MultiLoader< T >::unload( const string& iName )
 
 
 template< class T >
-pair<string,string>
-MultiLoader< T >::disassembleName(const string& iName) const
+std::pair<std::string,std::string>
+MultiLoader< T >::disassembleName(const std::string& iName) const
 {
    // first disassemble <full_path_to_object>/ part
-   string shortName=LoaderBase<T>::shortName(iName);
+   std::string shortName=LoaderBase<T>::shortName(iName);
 
    // now do a job with extension
    int iSearch = shortName.find("@");
-   string tag="";
+   std::string tag="";
 
-   if(iSearch!=string::npos) {
+   if(iSearch!=std::string::npos) {
      tag.assign(shortName,iSearch,shortName.size());
      shortName.replace(iSearch,shortName.size()-iSearch,"");
    }
    report( DEBUG, kMultiLoaderFacilityString )
-     << "disassemple " <<iName << " into name "<< shortName << " tag " << tag << endl;
+     << "disassemple " <<iName << " into name "<< shortName << " tag " << tag << std::endl;
 
-   return pair<string,string>(shortName,tag);
+   return std::pair<std::string,std::string>(shortName,tag);
 }
 
 template< class T >
-string
-MultiLoader< T >::makeErrorMesg( const string& iName ) const
+std::string
+MultiLoader< T >::makeErrorMesg( const std::string& iName ) const
 {
-   string returnValue = string( "MultiLoader " ) + LoaderBase<T>::makeErrorMesg(iName);
+   std::string returnValue = std::string( "MultiLoader " ) + LoaderBase<T>::makeErrorMesg(iName);
    return returnValue;
 }
 

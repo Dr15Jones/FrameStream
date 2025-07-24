@@ -67,7 +67,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-DummyDir::DummyDir( const string& iName ) 
+DummyDir::DummyDir( const std::string& iName ) 
    : HIHistDir( iName ),
      m_nextId( 0 )
 {
@@ -101,7 +101,7 @@ DummyDir::~DummyDir()
 // member functions
 //
 HIHistDir*
-DummyDir::makeDir( const string& iName ) 
+DummyDir::makeDir( const std::string& iName ) 
 {
    HIHistDir* histDir = new DummyDir( iName );
    return histDir;
@@ -109,14 +109,14 @@ DummyDir::makeDir( const string& iName )
 
 HIHist1D* 
 DummyDir::makeHistogram( Count          iId,
-		     const string&  iTitle,
+		     const std::string&  iTitle,
 		     Count   iNChannels,
 		     float          iLowEdge,
 		     float          iHighEdge,
 		     float          iBitsPerChannel )
 {
    report( DEBUG, kFacilityString )
-      << "New Dummy 1D histogram." << endl;
+      << "New Dummy 1D histogram." << std::endl;
 
    Count id = checkValidId( iId );
    DummyHist1D* hist = new DummyHist1D( id,
@@ -131,7 +131,7 @@ DummyDir::makeHistogram( Count          iId,
 // 2D histogram
 HIHist2D* 
 DummyDir::makeHistogram( Count          iId,
-			      const string&  iTitle,
+			      const std::string&  iTitle,
 			      unsigned int   iNChannelsX, 
 			      float          iLowEdgeX, 
 			      float          iHighEdgeX,
@@ -141,7 +141,7 @@ DummyDir::makeHistogram( Count          iId,
 			      float          iBitsPerChannel )
 {
    report( DEBUG, kFacilityString )
-      << "New Dummy 2D histo." << endl;
+      << "New Dummy 2D histo." << std::endl;
    
    Count id = checkValidId( iId );
    DummyHist2D* hist = new DummyHist2D( id,
@@ -159,7 +159,7 @@ DummyDir::makeHistogram( Count          iId,
 // profile histogram
 HIHistProf* 
 DummyDir::makeProfile( Count          iId,
-		   const string&  iTitle,
+		   const std::string&  iTitle,
 		   unsigned int   iNChannels, 
 		   float          iLowEdgeX, 
 		   float          iHighEdgeX,
@@ -168,7 +168,7 @@ DummyDir::makeProfile( Count          iId,
 		   HIHistProf::DisplayErrorsAs iDisplayErrorsAs )
 {
    report( DEBUG, kFacilityString )
-      << "New Dummy profile histo." << endl;
+      << "New Dummy profile histo." << std::endl;
 
    Count id = checkValidId( iId );
    DummyHistProf* hist = new DummyHistProf( id,
@@ -185,13 +185,13 @@ DummyDir::makeProfile( Count          iId,
 // ntuple
 HINtuple* 
 DummyDir::makeNtuple( Count          iId,
-			   const string&  iTitle,
+			   const std::string&  iTitle,
 			   unsigned int   iNumberOfVariables,
 			   unsigned int   iChunkSize,
 			   const char* const* iLabels )
 {
    report( DEBUG, kFacilityString )
-      << "New Dummy ntuple." << endl;
+      << "New Dummy ntuple." << std::endl;
    
    Count id = checkValidId( iId );
    DummyNtuple* ntuple = new DummyNtuple( id,
@@ -203,11 +203,11 @@ DummyDir::makeNtuple( Count          iId,
 }
 
 HINumber* 
-DummyDir::makeNumber( const string& iName,
+DummyDir::makeNumber( const std::string& iName,
 		  float         iValue )
 {
    report( DEBUG, kFacilityString )
-      << "New Dummy number." << endl;
+      << "New Dummy number." << std::endl;
    
    DummyNumber* number( new DummyNumber( iName,
 					 iValue ) );
@@ -216,13 +216,13 @@ DummyDir::makeNumber( const string& iName,
 }
 
 HINumberWithErrors* 
-DummyDir::makeNumberWithErrors( const string& iName,
+DummyDir::makeNumberWithErrors( const std::string& iName,
 			    float         iValue,
 			    float         iPositiveError,
 			    float         iNegativeError )
 {
    report( WARNING, kFacilityString )
-      << "New Dummy number." << endl;
+      << "New Dummy number." << std::endl;
    
    DummyNumberWithErrors* numberWithErrors =
       new DummyNumberWithErrors( iName,

@@ -83,10 +83,10 @@ class SMCachingFractionalPacker : public SMFractionalPacker<T>
 	 compressedValue -= 1;
 
 	 T power = m_powerArray[mask() & compressedValue];
-	 //cout <<"power " <<power<<endl;
-	 //cout <<" index " << (compressedValue >> numberOfExponentBits())<<endl;
+	 //cout <<"power " <<power<<std::endl;
+	 //cout <<" index " << (compressedValue >> numberOfExponentBits())<<std::endl;
 	 T f = m_fractionArray[compressedValue >> numberOfExponentBits()];
-         //cout <<"fraction "<<f<<endl;
+         //cout <<"fraction "<<f<<std::endl;
 	 return sign*f*power;
       }
 

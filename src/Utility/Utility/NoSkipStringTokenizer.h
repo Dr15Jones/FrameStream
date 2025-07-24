@@ -25,7 +25,7 @@
 #include "Utility/StringTokenizer.h"
 
 // forward declarations
-#include "C++Std/fwd_string.h"
+#include <string>
 
 class NoSkipStringTokenizer : public StringTokenizer
 {
@@ -36,7 +36,7 @@ class NoSkipStringTokenizer : public StringTokenizer
       typedef StringTokenizer::Tokens Tokens;
 
       // ---------- Constructors and destructor ----------------
-      NoSkipStringTokenizer( const string& aString, 
+      NoSkipStringTokenizer( const std::string& aString, 
 			     char aDelimiter = ' ' );
       virtual ~NoSkipStringTokenizer();
 
@@ -65,7 +65,7 @@ class NoSkipStringTokenizer : public StringTokenizer
 
       // ---------- static data members ------------------------
       static Tokens 
-      parseString( const string& aString, char aDelimiter );
+      parseString( const std::string& aString, char aDelimiter );
       
 };
 
