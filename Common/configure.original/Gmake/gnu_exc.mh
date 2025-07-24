@@ -1,8 +1,0 @@
-	- @ $(RM) $@
-	$(CXX) $(CXXFLAGS) $(DEBUG) -S $< -o $*_awk.s
-	@ $(AWK) -f $(AWKPROG) $*_awk.s >$*.s
-	@ $(RM) $*_awk.s
-	$(CXX) $(CXXFLAGS) $(DEBUG) -c $*.s -o $*.o
-	@ $(RM) $*.s
-
-AWKPROG = $(WIND_BASE)/host/src/change_section.awk

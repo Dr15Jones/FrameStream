@@ -1,6 +1,0 @@
-@TAIL_USER@
-
-# Set guard
-GUARD_MAKEFILE = Makefile
-
-@TAIL_GUARDMAKE@
