@@ -36,7 +36,7 @@
 #include "Utility/Hook.h"
 
 template <class T> class SingleHook ;
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 template <class T>
 class MultipleHook : public Hook<T>
@@ -52,7 +52,7 @@ class MultipleHook : public Hook<T>
       DABoolean	unHook( T* pPartner ) ;
  
 // Accessors
-      void	partners( STL_VECTOR( T* )* pPartnerList ) const ;
+      void	partners( std::vector< T* >* pPartnerList ) const ;
       DABoolean	hooked( void ) const ;
       DABoolean	hooked( const T* pPartner ) const ;
       

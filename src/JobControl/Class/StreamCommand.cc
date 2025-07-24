@@ -93,22 +93,22 @@
 //
 static const char* const kFacilityString = "JobControl.StreamCommand";
  
-const string helpMessage = 
-string( "// Description: StreamCommand                                      \n" )+
-string( "//                                                                 \n" )+
-string( "// Valid subcommands are: (strm=stream)                            \n" )+
-string( "//                                                                 \n" )+
-string( "//  stream help                            see this help page      \n" )+
-string( "//  stream activate <strm1> [<strm2> ..]   set active strms        \n" )+
-string( "//  stream act      <strm1> [<strm2> ..]   synonym: \"activate\"   \n" )+
-string( "//  stream list                            list streams            \n" )+
-string( "//  stream ls                              synonym for \"ls\"      \n" )+
-string( "//  stream bind <token> <strm1> [<strm2..] bind streams to token   \n" )+
-string( "//                                                                 \n" )+
-string( "// Standard streams are:  beginrun endrun event                    \n" )+
-string( "//                        geometry hardware user                   \n" )+
-string( "//                                                                 \n" )+
-string( "                                                                   \n" ); 
+const std::string helpMessage = 
+std::string( "// Description: StreamCommand                                      \n" )+
+std::string( "//                                                                 \n" )+
+std::string( "// Valid subcommands are: (strm=stream)                            \n" )+
+std::string( "//                                                                 \n" )+
+std::string( "//  stream help                            see this help page      \n" )+
+std::string( "//  stream activate <strm1> [<strm2> ..]   set active strms        \n" )+
+std::string( "//  stream act      <strm1> [<strm2> ..]   synonym: \"activate\"   \n" )+
+std::string( "//  stream list                            list streams            \n" )+
+std::string( "//  stream ls                              synonym for \"ls\"      \n" )+
+std::string( "//  stream bind <token> <strm1> [<strm2..] bind streams to token   \n" )+
+std::string( "//                                                                 \n" )+
+std::string( "// Standard streams are:  beginrun endrun event                    \n" )+
+std::string( "//                        geometry hardware user                   \n" )+
+std::string( "//                                                                 \n" )+
+std::string( "                                                                   \n" ); 
 
 //
 // static data member definitions
@@ -170,13 +170,13 @@ StreamCommand::execute( int argc, char* argv[] )
 	 result = useHandler();            // for testing only!
       }
       else {
-	 report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+	 report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
 	 result = COMMAND_ERROR;
       }
    } 
    else {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -188,7 +188,7 @@ int
 StreamCommand::helpHandler()
 {
    // print help from ModuleCommand.h header
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }
@@ -204,7 +204,7 @@ StreamCommand::activateHandler()
    // eg. "stream act <stream1> [<stream2> etc.]"
    if ( 3 > m_argc ) 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
    else
@@ -221,7 +221,7 @@ StreamCommand::activateHandler()
 	 if( true != newStreamType.isStandard() ) 
 	 {
 	    report( WARNING, kFacilityString )
-	       << "Using non-standard Stream type!" << arg << "." << endl;
+	       << "Using non-standard Stream type!" << arg << "." << std::endl;
 	 }
 	 streams.add( newStreamType );
       }
@@ -244,7 +244,7 @@ StreamCommand::listHandler()
 
    SourceManager* SM = (SourceManager*)target();
 
-   string resultString;
+   std::string resultString;
 
    // "stream list"       --> list active sources
    if( 2 == m_argc )
@@ -254,7 +254,7 @@ StreamCommand::listHandler()
    }
    else
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
    setResult( resultString );
@@ -272,7 +272,7 @@ StreamCommand::bindHandler()
    // "stream bind token str1 [str2...]"       --> list active sources
    if( 4 > m_argc )
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
    else
@@ -291,7 +291,7 @@ StreamCommand::bindHandler()
 	 if( true != newStreamType.isStandard() ) 
 	 {
 	    report( WARNING, kFacilityString )
-	       << "Using non-standard Stream type!" << arg << "." << endl;
+	       << "Using non-standard Stream type!" << arg << "." << std::endl;
 	 }
 	 streams.add( newStreamType );
       }
@@ -319,7 +319,7 @@ StreamCommand::useHandler()
    // eg. "stream use"
    if ( 2 > m_argc ) 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
    else

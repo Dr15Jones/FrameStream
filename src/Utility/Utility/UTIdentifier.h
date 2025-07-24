@@ -29,11 +29,11 @@
 //      UTIdentifier< string, Stream> beginRun( "beginrun");
 //
 //      if( event != beginRun ){
-//        cout <<event.value()<<"!="<<beginRun.value()<<endl;
+//        cout <<event.value()<<"!="<<beginRun.value()<<std::endl;
 //      } else {
 //        cout <<"Error"<<event.value()<<"["<<event.index()<<"]"
 //                      <<"=="
-//                      <<beginRun.value()<<"["<<beginRun.index()<<"]"<<endl;
+//                      <<beginRun.value()<<"["<<beginRun.index()<<"]"<<std::endl;
 //      }
 //
 // Author:      Chris D. Jones
@@ -97,14 +97,13 @@
 // user include files
 
 // forward declarations
-#include "C++Std/fwd_istream.h"
-#include "C++Std/fwd_ostream.h"
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <iosfwd>
+#include <vector>
+#include <map>
 
 #if !defined(_utidentifier_counts_)
-#define _utidentifier_counts_ STL_MAP( ID , Count )
-#define _utidentifier_ids_ STL_VECTOR( ID )
+#define _utidentifier_counts_ std::map< ID , Count >
+#define _utidentifier_ids_ std::vector< ID >
 #endif /* _uTIdentifier_counts_ */
 
 template< class ID, class T >
@@ -165,12 +164,12 @@ class UTIdentifier
 
 // utility functions
 template< class ID, class T>
-ostream& 
-operator<<( ostream& iOStream, const UTIdentifier< ID, T>& iIdentifier );
+std::ostream& 
+operator<<(std::ostream& iOStream, const UTIdentifier< ID, T>& iIdentifier );
 
 template< class ID, class T>
-istream&
-operator>>( istream& iIStream , UTIdentifier< ID, T>& iIdentifier ) ;
+std::istream&
+operator>>( std::istream& iIStream , UTIdentifier< ID, T>& iIdentifier ) ;
 
 #if defined(INCLUDE_TEMPLATE_DEFINITIONS)
 // function definitions

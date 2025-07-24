@@ -57,7 +57,7 @@
 
 #include "Experiment/Experiment.h"
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <vector>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
@@ -74,7 +74,7 @@
 //
 // constants, enums and typedefs
 //
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kLoaderCommandString 
+static const char* const kLoaderCommandString 
 = "CommandPattern.LoaderCommand";
 
 //
@@ -172,7 +172,7 @@ LoaderCommand< T >::execute( int argc, char* argv[] )
        }
        else
        {
-	  string result( "ERROR: invalid command arg" );
+	  std::string result( "ERROR: invalid command arg" );
 	  setResult( result );
 	  helpHandler();
 	  returnValue = COMMAND_ERROR;
@@ -180,7 +180,7 @@ LoaderCommand< T >::execute( int argc, char* argv[] )
     }
     else
     {
-       string result( "ERROR: wrong # args" );
+       std::string result( "ERROR: wrong # args" );
        setResult( result );
        helpHandler();
        returnValue = COMMAND_ERROR;
@@ -194,43 +194,43 @@ template< class T >
 int
 LoaderCommand< T >::helpHandler()
 {
-   static const string helpMessage = 
-      string( "                                                             \n" )+
-      string( "// Description:                                              \n" )+
-      string( "//      " ) + name() +
-      string( " command.         \n" )+
-      string( "//                                                           \n" )+
-      string( "//      Valid subcommands are:                               \n" )+
-      string( "//                                                           \n" )+
-      string( "//  " ) + name() +
-      string( " help                         see this help page   \n" )+
-      string( "//  " ) + name() +
-      string( " list                         List available mods  \n" )+
-      string( "//  " ) + name() +
-      string( " ls                           Synonym: \"list\"    \n" )+
-      string( "//  " ) + name() +
-      string( " listsel                      List selected mods   \n" )+
-      string( "//  " ) + name() +
-      string( " lss                          Synonym: \"listsel\" \n" )+
-      string( "//  " ) + name() +
-      string( " select   <mod1> [<mod2>..]   Select mods          \n" )+
-      string( "//  " ) + name() +
-      string( " sel      <mod1> [<mod2>..]   Synonym: \"select\"  \n" )+
-      string( "//  " ) + name() +
-      string( " deselect <mod1> [<mod2>..]   Deselect mods        \n" )+
-      string( "//  " ) + name() +
-      string( " desel    <mod1> [<mod2>..]   Synonym: \"deselect\"\n" )+
-      string( "//  " ) + name() +
-      string( " clear                        Empty the mod list   \n" )+
-      string( "//                                                 \n" )+
-      string( "//  " ) + name() +
-      string( " interact <mod>               interact w/ mod      \n" )+
-      string( "//  " ) + name() +
-      string( " inter    <mod>               Synonym: \"interact\"\n" )+
-      string( "//                                                 \n" ); 
+   static const std::string helpMessage = 
+      std::string( "                                                             \n" )+
+      std::string( "// Description:                                              \n" )+
+      std::string( "//      " ) + name() +
+      std::string( " command.         \n" )+
+      std::string( "//                                                           \n" )+
+      std::string( "//      Valid subcommands are:                               \n" )+
+      std::string( "//                                                           \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " help                         see this help page   \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " list                         List available mods  \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " ls                           Synonym: \"list\"    \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " listsel                      List selected mods   \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " lss                          Synonym: \"listsel\" \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " select   <mod1> [<mod2>..]   Select mods          \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " sel      <mod1> [<mod2>..]   Synonym: \"select\"  \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " deselect <mod1> [<mod2>..]   Deselect mods        \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " desel    <mod1> [<mod2>..]   Synonym: \"deselect\"\n" )+
+      std::string( "//  " ) + name() +
+      std::string( " clear                        Empty the mod list   \n" )+
+      std::string( "//                                                 \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " interact <mod>               interact w/ mod      \n" )+
+      std::string( "//  " ) + name() +
+      std::string( " inter    <mod>               Synonym: \"interact\"\n" )+
+      std::string( "//                                                 \n" ); 
 
 
-   report( INFO, kLoaderCommandString ) << "\n" << helpMessage << endl;
+   report( INFO, kLoaderCommandString ) << "\n" << helpMessage << std::endl;
    return COMMAND_OK;
 }
 
@@ -241,7 +241,7 @@ LoaderCommand< T >::listHandler()
    DABoolean returnValue = COMMAND_OK;
 
    //ostream& os = report( INFO, kLoaderCommandString );
-   string result = target()->listAvailable();
+   std::string result = target()->listAvailable();
    setResult( result );
 
    return returnValue;
@@ -254,7 +254,7 @@ LoaderCommand< T >::listSelectedHandler()
    DABoolean returnValue = COMMAND_OK;
 
    //ostream& os = report( INFO, kLoaderCommandString );
-   string result = target()->listLoaded();
+   std::string result = target()->listLoaded();
    setResult( result );
 
    return returnValue;
@@ -268,8 +268,8 @@ LoaderCommand< T >::loadHandler()
 
    if( m_argc <= 2 )
    {
-      //report( ERROR, kLoaderCommandString ) << "wrong # args" << endl;
-      string result( "ERROR: wrong # arguments" );
+      //report( ERROR, kLoaderCommandString ) << "wrong # args" << std::endl;
+      std::string result( "ERROR: wrong # arguments" );
       setResult( result );
 
       return returnValue = COMMAND_ERROR;
@@ -280,7 +280,7 @@ LoaderCommand< T >::loadHandler()
    int index = 2;
    while ( 0 != ( arg = getArgument( index++ ) ) )
    {
-      string name( arg );
+      std::string name( arg );
       
       if( target()->load( name ) ) 
       {
@@ -289,8 +289,8 @@ LoaderCommand< T >::loadHandler()
       else 
       {
 	 //report( ERROR, kLoaderCommandString )
-	 //  << "Cannot load " << name << "." << endl;
-	 string result( "ERROR: cannot load " );
+	 //  << "Cannot load " << name << "." << std::endl;
+	 std::string result( "ERROR: cannot load " );
 	 result += name + ".";
 	 setResult( result );
 	 returnValue = COMMAND_ERROR;
@@ -308,8 +308,8 @@ LoaderCommand< T >::unloadHandler()
 
    if( m_argc <= 2 )
    {
-      //report( ERROR, kLoaderCommandString ) << "wrong # args" << endl;
-      string result( "ERROR: wrong # arguments" );
+      //report( ERROR, kLoaderCommandString ) << "wrong # args" << std::endl;
+      std::string result( "ERROR: wrong # arguments" );
       setResult( result );
       return returnValue = COMMAND_ERROR;
    }
@@ -319,13 +319,13 @@ LoaderCommand< T >::unloadHandler()
    int index = 2;
    while ( 0 != ( arg = getArgument( index++ ) ) )
    {
-      string name( arg );
+      std::string name( arg );
       
       if( !target()->unload( name ) ) 
       {
 	 //report( ERROR, kLoaderCommandString ) 
-	 //  << "Cannot unload " << name << "." << endl;
-	 string result( "ERROR: cannot unload " );
+	 //  << "Cannot unload " << name << "." << std::endl;
+	 std::string result( "ERROR: cannot unload " );
 	 result += name + ".";
 	 setResult( result );
 	 returnValue = COMMAND_ERROR;
@@ -354,14 +354,14 @@ LoaderCommand< T >::interactHandler()
 
    if( m_argc != 3 )
    {
-      //report( ERROR, kLoaderCommandString ) << "wrong # args" << endl;
-      string result( "ERROR: wrong # arguments" );
+      //report( ERROR, kLoaderCommandString ) << "wrong # args" << std::endl;
+      std::string result( "ERROR: wrong # arguments" );
       setResult( result );
       return returnValue = COMMAND_ERROR;
    }
    // correct number of args
 
-   string name( getArgument( 2 ) );
+   std::string name( getArgument( 2 ) );
    
    Module* module=0;
    
@@ -375,8 +375,8 @@ LoaderCommand< T >::interactHandler()
    else 
    {
       //report( ERROR, kLoaderCommandString ) 
-      // << name << " unknown." << endl;
-      string result( "ERROR: " );
+      // << name << " unknown." << std::endl;
+      std::string result( "ERROR: " );
       result += name + " unknown.";
       setResult( result );
       returnValue = COMMAND_ERROR;

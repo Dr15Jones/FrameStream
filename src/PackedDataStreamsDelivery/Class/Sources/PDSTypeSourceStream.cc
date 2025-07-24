@@ -146,7 +146,7 @@ PDSTypeSourceStream::operator>>( double& iData )
 }
 
 SMSourceStream& 
-PDSTypeSourceStream::operator>>( string& iData )
+PDSTypeSourceStream::operator>>( std::string& iData )
 {
    DO_WORK;
 }
@@ -229,7 +229,7 @@ PDSTypeSourceStream::readPackingInfo( const UInt32*& ioHeader,
       presentStream = stream;
       /*
       cout <<"  field type: " << m_packers.back()->type() 
-	   <<" strategy: " << m_packers.back()->strategy() << endl;
+	   <<" strategy: " << m_packers.back()->strategy() << std::endl;
 	   */
    }
    //all type info begins on 32bit boundary

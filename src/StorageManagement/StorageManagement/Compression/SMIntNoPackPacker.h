@@ -70,7 +70,7 @@ class SMIntNoPackPacker : public SMPackerTemplate<T>
 	    compressedValue = iValue - minValue();
 	 }
 
-	 doBitShifting( compressedValue,
+	 this->doBitShifting( compressedValue,
 			ioStartWord,
 			oOverflowWord,
 			ioStartBit );
@@ -79,7 +79,7 @@ class SMIntNoPackPacker : public SMPackerTemplate<T>
       virtual T unpack( const UInt32 iStartWord,
 			const UInt32 iOverflowWord,
 			unsigned char& ioStartBit ) const {
-	 UInt32 compressedValue = undoBitShifting( iStartWord,
+	 UInt32 compressedValue = this->undoBitShifting( iStartWord,
 						   iOverflowWord,
 						   ioStartBit );
 	 return compressedValue + minValue();

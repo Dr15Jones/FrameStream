@@ -25,17 +25,14 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
-//#include "Experiment/report.h"
 #include "Utility/StringWrapper.h"
 
 // STL classes
 #include <string>
 
+using namespace std;
 //
 // constants, enums and typedefs
 //
@@ -52,7 +49,7 @@ static const char* const kFacilityString = "Utility.StringWrapper" ;
 StringWrapper::StringWrapper()
 {
 }
-StringWrapper::StringWrapper( string& iString )
+StringWrapper::StringWrapper( std::string& iString )
    : m_string( iString ) 
 {
 }
@@ -82,7 +79,7 @@ StringWrapper::operator()()
 }
 
 // const member functions
-const string& 
+const std::string& 
 StringWrapper::operator()() const 
 {
    return m_string;

@@ -78,7 +78,7 @@ class DANoProxyException : public DANoDataException<T>
 #if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
    strstream m_stream1, m_stream2;
 #else
-   stringstream m_stream1, m_stream2;
+   std::stringstream m_stream1, m_stream2;
 #endif
         // Evaluate more precisely what is going on with thrown exception
 
@@ -86,13 +86,13 @@ class DANoProxyException : public DANoDataException<T>
         const Frame& iFrame = m_record.frame();
         Frame::const_iterator fIter = iFrame.begin();
         Frame::const_iterator fIEnd = iFrame.end();
-        string o_record_proxy = "";
+        std::string o_record_proxy = "";
         while( fIter != fIEnd ) 
         { // loop over all records in current frame
           if( fIter->find( this->dataKey() ) )
           { // search if proxy exist in other record
             o_record_proxy = "However this data has been found in ";
-            m_stream1 << fIter->stream() << " record." << "\0" << flush;
+            m_stream1 << fIter->stream() << " record." << "\0" << std::flush;
             o_record_proxy+= m_stream1.str();
           }
           fIter++;
@@ -101,7 +101,7 @@ class DANoProxyException : public DANoDataException<T>
         // search if proxy has another tags
         Record::const_key_iterator pIter = m_record.begin_key();
         Record::const_key_iterator iEnd  = m_record.end_key();
-        string sametype_proxy = "";
+        std::string sametype_proxy = "";
         while( pIter != iEnd )
         {
           if( pIter->type()  > this->dataKey().type() ) 
@@ -117,26 +117,26 @@ class DANoProxyException : public DANoDataException<T>
             }
             m_stream2 <<" usage \"" << pIter->usage().value() << "\""
                       <<" production \""
-                      << pIter->production().value() << "\""<< "\0" << flush;
+                      << pIter->production().value() << "\""<< "\0" << std::flush;
             sametype_proxy+= m_stream2.str();
           }
           pIter++;
         }
         
         if( m_message.size() == 0 ) {
-          string& message = 
+          std::string& message = 
             const_cast<DANoProxyException<T>*>(this)->m_message;
           message = this->dataTypeMessage();
           
           if(o_record_proxy.size()) {
-            message += string(" \n ")+o_record_proxy;
-            message += string(" \n Perhaps you need to change your extract call to use a different record.");
+            message += std::string(" \n ")+o_record_proxy;
+            message += std::string(" \n Perhaps you need to change your extract call to use a different record.");
           } else if(sametype_proxy.size()) {
-            message += string(" \n ")+sametype_proxy;
-            message += string(" \n Please check your code and/or scripts for correct usage/production tag.");
+            message += std::string(" \n ")+sametype_proxy;
+            message += std::string(" \n Please check your code and/or scripts for correct usage/production tag.");
           } else {
-            message += string(" \n ")
-                    +string("Please add a Source or Producer to your job which can deliver this data.");
+            message += std::string(" \n ")
+                    +std::string("Please add a Source or Producer to your job which can deliver this data.");
           }
         }
         return m_message.c_str();
@@ -162,7 +162,7 @@ class DANoProxyException : public DANoDataException<T>
 
       // ---------- data members -------------------------------
       const Record& m_record;
-      string m_message;
+      std::string m_message;
       
       // ---------- static data members ------------------------
 

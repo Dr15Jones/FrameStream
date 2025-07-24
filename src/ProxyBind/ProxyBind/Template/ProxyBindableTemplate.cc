@@ -40,7 +40,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kProxyBindableTemplateReportString = "ProxyBind.ProxyBindableTemplate" ;
+static const char* const kProxyBindableTemplateReportString = "ProxyBind.ProxyBindableTemplate" ;
 
 //
 // static data member definitions
@@ -66,8 +66,8 @@ template< class T>
 ProxyBindableTemplate<T>::~ProxyBindableTemplate()
 {
    if( 0 != m_pActions ) {
-      STL_VECTOR(ProxyBoundActionBase*)::iterator itEnd = m_pActions->end();
-      for( STL_VECTOR(ProxyBoundActionBase*)::iterator itAction = 
+      std::vector<ProxyBoundActionBase*>::iterator itEnd = m_pActions->end();
+      for( std::vector<ProxyBoundActionBase*>::iterator itAction = 
 	      m_pActions->begin();
 	   itAction != itEnd;
 	   ++itAction ) {
@@ -99,9 +99,9 @@ ProxyBindableTemplate<T>::bind( ProxyBoundActionBase* iAction,
 				const Stream::Type& iRecord)
 {
    if( 0 == m_pActions ) {
-      m_pActions = new STL_VECTOR(ProxyBoundActionBase*);
+      m_pActions = new std::vector<ProxyBoundActionBase*>;
       if( 0 == m_pActions ) {
-	 report(EMERGENCY, kProxyBindableTemplateReportString ) <<"out of memory" << endl;
+	 report(EMERGENCY, kProxyBindableTemplateReportString ) <<"out of memory" << std::endl;
       }
       m_pActions->reserve(1);
    }
@@ -121,8 +121,8 @@ ProxyBindableTemplate<T>::get( const Record& iRecord,
 
       if( 0 != m_pActions ) {
 	 //Loop through our action list
-	 STL_VECTOR(ProxyBoundActionBase*)::iterator itEnd = m_pActions->end();
-	 for( STL_VECTOR(ProxyBoundActionBase*)::iterator itAction = 
+	 std::vector<ProxyBoundActionBase*>::iterator itEnd = m_pActions->end();
+	 for( std::vector<ProxyBoundActionBase*>::iterator itAction = 
 		 m_pActions->begin();
 	      itAction != itEnd;
 	      ++itAction ) {

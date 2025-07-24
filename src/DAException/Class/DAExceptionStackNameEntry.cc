@@ -30,7 +30,7 @@
 //
 // constructors and destructor
 //
-DAExceptionStackNameEntry::DAExceptionStackNameEntry(const string& name) :
+DAExceptionStackNameEntry::DAExceptionStackNameEntry(const std::string& name) :
        m_stack( DAExceptionStack::instance() )
 {
        m_stack->addName(name);

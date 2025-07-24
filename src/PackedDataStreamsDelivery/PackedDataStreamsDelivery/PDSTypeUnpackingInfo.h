@@ -43,7 +43,7 @@
 class PDSPackerBase;
 class PDSPackerFactory;
 class SMPackerBase;
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 #include "PackedDataStreamsFormat/pds_packing_enums.h"
 
 class PDSTypeUnpackingInfo
@@ -82,8 +82,8 @@ class PDSTypeUnpackingInfo
 
    protected:
       // ---------- protected member functions -----------------
-      STL_VECTOR(PDSPackerBase*)& packers() { return m_packers;}
-      STL_VECTOR(TypePacker)& typePackers() { return m_typePackers;}
+      std::vector<PDSPackerBase*>& packers() { return m_packers;}
+      std::vector<TypePacker>& typePackers() { return m_typePackers;}
 
       // ---------- protected const member functions -----------
 
@@ -101,8 +101,8 @@ class PDSTypeUnpackingInfo
       static PDSPackerFactory& packerFactory();
       // ---------- data members -------------------------------
       unsigned int m_version;
-      STL_VECTOR(PDSPackerBase*) m_packers;
-      STL_VECTOR(TypePacker) m_typePackers;
+      std::vector<PDSPackerBase*> m_packers;
+      std::vector<TypePacker> m_typePackers;
 
       // ---------- static data members ------------------------
 

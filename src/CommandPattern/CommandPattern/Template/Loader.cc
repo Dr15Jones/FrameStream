@@ -62,7 +62,7 @@
 //
 // constants, enums and typedefs
 //
-//FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kLoaderFacilityString
+//static const char* const kLoaderFacilityString
 static const char* const kLoaderFacilityString
  = "CommandPattern.Loader";
 
@@ -74,7 +74,7 @@ static const char* const kLoaderFacilityString
 // constructors and destructor
 //
 template< class T >
-Loader< T >::Loader( const string& environment ) 
+Loader< T >::Loader( const std::string& environment ) 
    :  LoaderBase<T>(environment)
 {
 }
@@ -84,28 +84,28 @@ Loader< T >::Loader( const string& environment )
 //
 template< class T >
 DABoolean
-Loader< T >::load( const string& iName )
+Loader< T >::load( const std::string& iName )
 {
   return LoaderBase<T>::load(iName);
 }
 
 template< class T >
-pair<string,string>
-Loader< T >::disassembleName(const string& iName) const
+std::pair<std::string,std::string>
+Loader< T >::disassembleName(const std::string& iName) const
 {
 
-   // first disassemble <full_path_to_object>/ part and return remaining string
-   string shortName = LoaderBase<T>::shortName(iName);
-   string blank = "";
-   return pair<string,string>(shortName,blank);
+   // first disassemble <full_path_to_object>/ part and return remaining std::string
+   std::string shortName = LoaderBase<T>::shortName(iName);
+   std::string blank = "";
+   return std::pair<std::string,std::string>(shortName,blank);
 
 }
 
 template< class T >
-string
-Loader< T >::makeErrorMesg( const string& iName ) const
+std::string
+Loader< T >::makeErrorMesg( const std::string& iName ) const
 {
-   string returnValue = string( "Loader " ) + LoaderBase<T>::makeErrorMesg(iName);
+   std::string returnValue = std::string( "Loader " ) + LoaderBase<T>::makeErrorMesg(iName);
    return returnValue;
 }
 

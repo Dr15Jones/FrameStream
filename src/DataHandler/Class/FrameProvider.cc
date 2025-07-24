@@ -41,9 +41,6 @@
 
 // system include files
 #include <stdlib.h>  // For 'exit'
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <map>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Experiment/report.h"
@@ -75,13 +72,6 @@ static const char* const kFacilityString = "DataHandler.FrameProvider" ;
 FrameProvider::FrameProvider() :
    m_providers( *( new Providers ) )
 {
-   if ( 0 == &m_providers ) {
-      report( EMERGENCY ,
-	      kFacilityString )
-		 << "Unable to allocate memory"
-		 << endl ;
-      exit( 1 ) ;
-   }
 }
 
 // FrameProvider::FrameProvider( const FrameProvider& )
@@ -163,7 +153,7 @@ FrameProvider::recordProvider( const Stream::Type& aStream )
 		 << " for the "
 		 << aStream
 		 << " stream"
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
    return ( *((*(m_providers.find( aStream ))).second) ) ;
@@ -181,7 +171,7 @@ FrameProvider::insert( RecordProvider* pProvider )
 	      kFacilityString )
 		 << "\nTrying to `insert' Stream that already exists in Frame."
 		 << "\nThis will be ignored, but you should check the code!"
-		 << endl ;
+		 << std::endl ;
       return ;
    }
 //
@@ -209,7 +199,7 @@ FrameProvider::erase( const Stream::Type& aStream )
       report( WARNING ,
 	      kFacilityString )
 		 << "\nTrying to `erase' a Stream that is not is the Frame"
-		 << endl ;
+		 << std::endl ;
    }
 }
 

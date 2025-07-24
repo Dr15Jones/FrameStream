@@ -76,11 +76,11 @@
 //
 static const char* const kFacilityString = "JobControl.InteractCommand";
  
-const string helpMessage = 
-string( "// Description: ParameterCommand                              \n" )+
-string( "//                                                            \n" )+
-string( "//  inter <Module> <command> [<arg1> <arg2> ...]              \n" )+
-string( "                                                              \n" );
+const std::string helpMessage = 
+std::string( "// Description: ParameterCommand                              \n" )+
+std::string( "//                                                            \n" )+
+std::string( "//  inter <Module> <command> [<arg1> <arg2> ...]              \n" )+
+std::string( "                                                              \n" );
 
 //
 // static data member definitions
@@ -128,7 +128,7 @@ InteractCommand::execute( int argc, char* argv[] )
       }
    } 
    else {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -140,7 +140,7 @@ int
 InteractCommand::helpHandler()
 {
    // print help from ModuleCommand.h header
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }
@@ -153,7 +153,7 @@ InteractCommand::moduleHandler()
    JobControl* jobControl = (JobControl*)target();
 
    // get ahold of Module with name <modulename>
-   string name( m_argv[1] );
+   std::string name( m_argv[1] );
    // look for processors
    Module* module = jobControl->masterProcessor().fetch( name );
    if( 0 == module ) { // look for producers
@@ -184,7 +184,7 @@ InteractCommand::moduleHandler()
    else
    {
       report( SYSTEM, kFacilityString )
-	 << "no module " << name << endl;
+	 << "no module " << name << std::endl;
       result = COMMAND_ERROR;
    }
 

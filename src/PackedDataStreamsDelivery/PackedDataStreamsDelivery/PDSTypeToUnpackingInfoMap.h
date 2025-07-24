@@ -32,14 +32,14 @@
 
 // forward declarations
 
-class PDSTypeToUnpackingInfoMap : public STL_MAP(TypeTag, PDSTypeUnpackingInfo *)
+class PDSTypeToUnpackingInfoMap : public std::map<TypeTag, PDSTypeUnpackingInfo *>
 {
    public:
    ~PDSTypeToUnpackingInfoMap() {
       iterator itEnd = end();
       for( iterator itEntry = begin(); itEntry != itEnd;
 	        ++itEntry ) {
-	        	//cout <<"deleting packerInfo"<<(*itEntry).second<<endl;
+	        	//cout <<"deleting packerInfo"<<(*itEntry).second<<std::endl;
 	      delete (*itEntry).second;
       }
    }

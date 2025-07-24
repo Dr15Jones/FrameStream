@@ -36,8 +36,7 @@
 #include <string>
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
-#include "STLUtility/fwd_multimap.h"
+#include <map>
 
 class DLSharedObject;
 class DLMultiFactoryChooserBase;
@@ -49,14 +48,14 @@ class DLSharedObjectHandler
       // constants, enums and typedefs
 
       // Constructors and destructor
-      DLSharedObjectHandler( const string& environmentVar );
+      DLSharedObjectHandler( const std::string& environmentVar );
       virtual ~DLSharedObjectHandler();
 
       // member functions
-      DABoolean load( const string& iName, 
-		      const string& iPatternString,
+      DABoolean load( const std::string& iName, 
+		      const std::string& iPatternString,
 		      DLMultiFactoryChooserBase& iMultiFactoryChooser,
-	              string& ioLoadedAsName,
+	              std::string& ioLoadedAsName,
 #if defined(D_AIX) /* -------------AIX ---------------------------- */
 		      const int = 0 );
 #elif defined(SUNCC) /* --------- Solaris ------------------------ */
@@ -69,19 +68,19 @@ const int = NSLINKMODULE_OPTION_BINDNOW );
 #else /* ----------- the default for everybody else --------------- */
 		      const int = RTLD_NOW );
 #endif /* --------------------------------------------------------- */
-      DABoolean unload( const string& iName );
+      DABoolean unload( const std::string& iName );
       DABoolean unloadAll( void );
 
       // const member functions
-      string listAvailable( const string& iPatternString ) const;
-      string listLoaded() const;
+      std::string listAvailable( const std::string& iPatternString ) const;
+      std::string listLoaded() const;
 
-      const DLSharedObject* fetch( const string& iName ) const;
-      string fullName( const string& iName ) const;
-      string shortName( const string& iName ) const;
+      const DLSharedObject* fetch( const std::string& iName ) const;
+      std::string fullName( const std::string& iName ) const;
+      std::string shortName( const std::string& iName ) const;
 
-      DABoolean getSymbol( const string& objectName, 
-			   const string& symbolName, 
+      DABoolean getSymbol( const std::string& objectName, 
+			   const std::string& symbolName, 
 			   const DABoolean& verbose,
 			   void*& symbol ) const;
 			   
@@ -102,18 +101,18 @@ const int = NSLINKMODULE_OPTION_BINDNOW );
       // private member function
 
       // private const member functions
-      DABoolean findAvailable( const string& iPatternString ) const;
-      string extendedName( const string& iName ) const;
+      DABoolean findAvailable( const std::string& iPatternString ) const;
+      std::string extendedName( const std::string& iName ) const;
 
       // data members
-      const string m_environmentVar;
-      STL_MAP( string, DLSharedObject* )& m_loaded;
+      const std::string m_environmentVar;
+      std::map< std::string, DLSharedObject* >& m_loaded;
 
       // here we have two ways to store full path+names:
       // 1.) key = procname, values = different paths for it
       // 2.) key = path,     values = different procnames
-      STL_MULTIMAP( string, string )& m_available;
-      STL_MULTIMAP( string, string )& m_availablePaths;
+      std::multimap< std::string, std::string >& m_available;
+      std::multimap< std::string, std::string >& m_availablePaths;
 
       // static data members
 

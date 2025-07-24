@@ -30,7 +30,7 @@
 
 // user include files
 #include "JobControl/FilterBase.h"
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 // forward declarations
 
@@ -44,7 +44,7 @@ class FilterComposite : public FilterBase
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      FilterComposite(const string& iName);
+      FilterComposite(const std::string& iName);
       //virtual ~FilterComposite();
 
       // ---------- member functions ---------------------------
@@ -59,10 +59,10 @@ class FilterComposite : public FilterBase
 
    protected:
       // ---------- protected member functions -----------------
-      STL_VECTOR(Holder<FilterBase> )& filters() { return m_filters;}
+      std::vector<Holder<FilterBase> >& filters() { return m_filters;}
 
       // ---------- protected const member functions -----------
-      const STL_VECTOR(Holder<FilterBase> )& filters() const { return m_filters;}
+      const std::vector<Holder<FilterBase> >& filters() const { return m_filters;}
 
    private:
       // ---------- Constructors and destructor ----------------
@@ -76,7 +76,7 @@ class FilterComposite : public FilterBase
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      STL_VECTOR(Holder<FilterBase> ) m_filters;
+      std::vector<Holder<FilterBase> > m_filters;
 
       // ---------- static data members ------------------------
 

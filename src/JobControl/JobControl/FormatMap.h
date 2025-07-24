@@ -46,7 +46,7 @@
 #include "CommandPattern/Module.h"
 
 // forward declarations
-#include "C++Std/fwd_string.h"
+#include <string>
 
 template< class T >
 class FormatMap : public Loader< T >, public Module
@@ -57,7 +57,7 @@ class FormatMap : public Loader< T >, public Module
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      FormatMap( const string& moduleName, const string& environment )
+      FormatMap( const std::string& moduleName, const std::string& environment )
 	    : Loader< T >( environment ),
 	      Module( moduleName, moduleName ) {}
       virtual ~FormatMap() {}
@@ -71,7 +71,7 @@ class FormatMap : public Loader< T >, public Module
       // ---------- static member functions --------------------
       // utility function to find name extensions
       static 
-      string& findExtension( const string& iName, string& iExtension );
+      std::string& findExtension( const std::string& iName, std::string& iExtension );
 
    protected:
       // ---------- protected member functions -----------------
@@ -87,9 +87,9 @@ class FormatMap : public Loader< T >, public Module
 
       // ---------- private member functions -------------------
       // bind extensions to formats
-      virtual DABoolean bind( const string& iFormatName,
-			      const string& iExtension ) = 0;
-      virtual DABoolean unbind( const string& iExtension ) = 0;
+      virtual DABoolean bind( const std::string& iFormatName,
+			      const std::string& iExtension ) = 0;
+      virtual DABoolean unbind( const std::string& iExtension ) = 0;
       virtual DABoolean unbindAll() = 0;
 
       // ---------- private const member functions -------------
@@ -103,27 +103,27 @@ class FormatMap : public Loader< T >, public Module
 // inline function definitions
 template< class T >
 inline
-string&
-FormatMap< T >::findExtension( const string& iName, string& iExtension )
+std::string&
+FormatMap< T >::findExtension( const std::string& iName, std::string& iExtension )
 {
    // figure out extension
-   string::size_type i = iName.find_last_of( '/' );
-   string basename( iName.substr( i+1, string::npos ) );
-   string::size_type j = basename.find_last_of( '.' );
-   //cout << "first . found or not; j = " << j << endl;
-   if( j != string::npos ) {
-      iExtension = basename.substr( j, string::npos );
+   std::string::size_type i = iName.find_last_of( '/' );
+   std::string basename( iName.substr( i+1, std::string::npos ) );
+   std::string::size_type j = basename.find_last_of( '.' );
+   //cout << "first . found or not; j = " << j << std::endl;
+   if( j != std::string::npos ) {
+      iExtension = basename.substr( j, std::string::npos );
       // if extension is .gz, need to look one '.' further back
       if( iExtension == ".gz" ) {
-         string::size_type k = basename.rfind( '.', j-1 );
-         if( k == j || k == string::npos ) {
-            ; //cout << "no other '.', k=" << k << ", j" << endl;
+         std::string::size_type k = basename.rfind( '.', j-1 );
+         if( k == j || k == std::string::npos ) {
+            ; //cout << "no other '.', k=" << k << ", j" << std::endl;
          }
          else {
-            iExtension = basename.substr( k, string::npos );
+            iExtension = basename.substr( k, std::string::npos );
          }
       }
-      //cout << "extension=" << extension << endl;
+      //cout << "extension=" << extension << std::endl;
    }
 
    return iExtension;

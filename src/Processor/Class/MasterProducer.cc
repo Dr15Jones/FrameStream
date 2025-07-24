@@ -18,14 +18,8 @@
 
 // system include files
 #include <stdlib.h> // for exit
-#include <assert.h>
-#if defined(AMBIGUOUS_STRING_FUNCTIONS_BUG)
+#include <cassert>
 #include <string>
-#endif
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <vector>
-#include <map>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Experiment/report.h"
@@ -57,12 +51,6 @@ MasterProducer::MasterProducer( FrameDeliverer& iFrameDeliverer )
      m_command( *new ProducerCommand( "prod", this ) ),
      m_frameDeliverer( iFrameDeliverer )
 {
-   if( 0 == &m_command ) {
-      report( EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 // MasterProducer::MasterProducer( const MasterProducer& )
@@ -183,7 +171,7 @@ MasterProducer::registerProviders( DABoolean iForceReload )
 	    //  << "Force-reload: Error removing Producer " 
 	    //  << producer->name() 
 	    //  << " from FrameDeliverer" 
-	    //  << endl;
+	    //  << std::endl;
 	    //}
 	 }
 
@@ -197,7 +185,7 @@ MasterProducer::registerProviders( DABoolean iForceReload )
 	       << "Error adding Producer " 
 	       << producer->name() 
 	       << " to FrameDeliverer" 
-	       << endl;
+	       << std::endl;
 	 }
       }
    }
@@ -205,7 +193,7 @@ MasterProducer::registerProviders( DABoolean iForceReload )
 
 // ------------- overridden MultiLoader< Producer > method
 void
-MasterProducer::initialize( const string& iName, Producer& iProducer )
+MasterProducer::initialize( const std::string& iName, Producer& iProducer )
 {
    // call globally visible symbol to make debugging easier
    prodsel();
@@ -216,7 +204,7 @@ MasterProducer::initialize( const string& iName, Producer& iProducer )
 
 // ------------- overridden MultiLoader< Producer > method
 void
-MasterProducer::initializeTag( const string& iTag, Producer& iProducer )
+MasterProducer::initializeTag( const std::string& iTag, Producer& iProducer )
 {
    // call globally visible symbol to make debugging easier
    prodsel();
@@ -227,7 +215,7 @@ MasterProducer::initializeTag( const string& iTag, Producer& iProducer )
 
 // ------------- overridden MultiLoader< Producer > method
 void
-MasterProducer::finalize( const string& iName,  Producer& iProducer )
+MasterProducer::finalize( const std::string& iName,  Producer& iProducer )
 {
    // unregister Producer with FrameDeliverer
    FrameDeliverer::RemoveProviderStatus removeProviderStatus;
@@ -238,7 +226,7 @@ MasterProducer::finalize( const string& iName,  Producer& iProducer )
    {
       report( DEBUG, kFacilityString )
 	 << "Removing Processor/Provider " << iName
-	 << " from FrameDeliverer failed; it had not been registered yet" << endl;
+	 << " from FrameDeliverer failed; it had not been registered yet" << std::endl;
    }
    
    // call terminate before lifetime ends
@@ -254,19 +242,19 @@ MasterProducer::finalize( const string& iName,  Producer& iProducer )
 // const member functions
 //
 // ------------- overridden MultiLoader< Producer > method
-string
-MasterProducer::makeErrorMesg( const string& iName ) const
+std::string
+MasterProducer::makeErrorMesg( const std::string& iName ) const
 {
-   string returnValue = string( "Cannot make producer; are you sure " )
-      + iName + string( " is a producer?" );
+   std::string returnValue = std::string( "Cannot make producer; are you sure " )
+      + iName + std::string( " is a producer?" );
    return returnValue;
 }
 
-string
-MasterProducer::loadingAsSuperClassMesg( const string& iName ) const
+std::string
+MasterProducer::loadingAsSuperClassMesg( const std::string& iName ) const
 {
-   string returnValue = string( "You're loading " ) 
-      + iName + string( " as a Producer; make sure this is what you want!" );
+   std::string returnValue = std::string( "You're loading " ) 
+      + iName + std::string( " as a Producer; make sure this is what you want!" );
    return returnValue;
 }
 

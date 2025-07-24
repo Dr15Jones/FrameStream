@@ -31,21 +31,15 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Utility/Utility_report.h"
 
 // STL include files
-#if defined(OLD_CXX_STRING_CLASS_BUG)
-#include "C++Std/fwd_string.h"
-#include <String.h>
-#else
 #include <string>
-#endif /* OLD_CXX_STRING_CLASS_BUG */
+#include <iostream>
 
+using namespace std;
 //
 // globals
 //
@@ -62,13 +56,13 @@ ostream& report(Severity severity)
 ostream& report(Severity severity,
 		const char* facility)
 {
-   report( severity , string( facility ) ) ;
+   return report( severity , std::string( facility ) ) ;
 }
 
 ostream& report(Severity severity,
-		const string& facility)
+		const std::string& facility)
 {
-   static string oldFacility( "" ) ;
+   static std::string oldFacility( "" ) ;
    
    if ( facility != oldFacility ) {
       report( severity ) << facility

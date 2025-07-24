@@ -72,9 +72,9 @@ class SSSlotted
 
       //called by SSSignalBase
       void disconnect(SSSignalBase* iSignal) {
-	 list<SSSignalBase*>::iterator itSignal = m_signals.begin();
+	 std::list<SSSignalBase*>::iterator itSignal = m_signals.begin();
 	 while(itSignal != m_signals.end() ) {
-	    list<SSSignalBase*>::iterator itTemp = itSignal;
+	    std::list<SSSignalBase*>::iterator itTemp = itSignal;
 	    ++itSignal;
 	    if( (*itTemp) == iSignal) {
 	       m_signals.erase(itTemp);
@@ -85,7 +85,7 @@ class SSSlotted
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      list<SSSignalBase*> m_signals;
+      std::list<SSSignalBase*> m_signals;
 
       // ---------- static data members ------------------------
 

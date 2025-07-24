@@ -97,8 +97,8 @@ template< class T>
 SMStorageHelper<T>::~SMStorageHelper()
 {
    //need to delete the contents
-   STL_VECTOR(void*)::iterator itEnd = m_deliverers.end();
-   for( STL_VECTOR(void*)::iterator itDel = m_deliverers.begin();
+   std::vector<void*>::iterator itEnd = m_deliverers.end();
+   for( std::vector<void*>::iterator itDel = m_deliverers.begin();
 	itDel != itEnd;
 	++itDel ) {
       void* temp = *itDel;

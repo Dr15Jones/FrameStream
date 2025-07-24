@@ -49,13 +49,13 @@
 //
 static const char* const kFacilityString = "JobControl.ParameterCommand";
  
-static const string helpMessage = 
-string( "// Description: ParameterCommand                             \n" )+
-string( "//                                                           \n" )+
-string( "//  param <Module> <parametername>                           \n" )+
-string( "//  param <Module> <parametername> [<value> ...]             \n" )+
-string( "//  param <Module> <menuname> <parametername> [<value> ...]  \n" )+
-string( "                                                             \n" );
+static const std::string helpMessage = 
+std::string( "// Description: ParameterCommand                             \n" )+
+std::string( "//                                                           \n" )+
+std::string( "//  param <Module> <parametername>                           \n" )+
+std::string( "//  param <Module> <parametername> [<value> ...]             \n" )+
+std::string( "//  param <Module> <menuname> <parametername> [<value> ...]  \n" )+
+std::string( "                                                             \n" );
 
 //
 // static data member definitions
@@ -92,7 +92,7 @@ int
 ParameterCommand::helpHandler()
 {
    // print help from ModuleCommand.h header
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }

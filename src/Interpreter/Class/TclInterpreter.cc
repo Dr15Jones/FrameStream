@@ -20,8 +20,8 @@
 // system include files
 #include <stdlib.h>
 #include <assert.h>
-#include "C++Std/iostream.h"
-#include "C++Std/fstream.h"
+#include <iostream>
+#include <fstream>
 
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <string>
@@ -63,7 +63,7 @@ Tcl_AppInit( Tcl_Interp* interp )
    if( TCL_ERROR == ( status = Tcl_Init(interp) ) ) 
    {
       report( SYSTEM, kFacilityString )
-	 << "unsuccessful Tcl initialization" << endl;
+	 << "unsuccessful Tcl initialization" << std::endl;
       return status;
    }
 
@@ -86,12 +86,12 @@ const char* const TclInterpreter::s_sourceCommandString       = "tcl_source";
 const char* const TclInterpreter::s_fileCommandString         = "tcl_file";
 const char* const TclInterpreter::s_procCommandString         = "tcl_proc";
 
-static string s_announcement =
-string( "//  For a list of available commands, type \"help\".              \n" )+
-string( "//                                                                \n" )+
-string( "//  Since the command interpreter is based on a Tcl interpreter,  \n" )+
-string( "//  all Tcl commands are available.                               \n" )+
-string( "//  For info on tcl: \"http://www.scriptics.com/resource/doc\"    \n" );
+static std::string s_announcement =
+std::string( "//  For a list of available commands, type \"help\".              \n" )+
+std::string( "//                                                                \n" )+
+std::string( "//  Since the command interpreter is based on a Tcl interpreter,  \n" )+
+std::string( "//  all Tcl commands are available.                               \n" )+
+std::string( "//  For info on tcl: \"http://www.scriptics.com/resource/doc\"    \n" );
 
 
 //
@@ -99,7 +99,7 @@ string( "//  For info on tcl: \"http://www.scriptics.com/resource/doc\"    \n" )
 //
 TclInterpreter::TclInterpreter()
    : m_tclInterpreter( Tcl_CreateInterp() ),
-     m_tclCommandNames( *new STL_VECTOR( CommandName ) ),
+     m_tclCommandNames( *new std::vector< CommandName > ),
      m_historyFile( "" ),
      m_historyLength( 200 ),
      m_sizeOfStackForExit(0),
@@ -109,7 +109,7 @@ TclInterpreter::TclInterpreter()
 
    // print out announcement
    report( SYSTEM, kFacilityString )
-      << "\n" << s_announcement << endl;
+      << "\n" << s_announcement << std::endl;
 
    // ---------- initialize gnu readline -----------------
    Readline::init();
@@ -126,7 +126,7 @@ TclInterpreter::TclInterpreter()
 
    while( commands.hasMoreElements() ) {
 
-      string command = commands.nextElement();
+      std::string command = commands.nextElement();
 
       // hold onto for later deregistration
       m_tclCommandNames.push_back( command );
@@ -146,7 +146,7 @@ TclInterpreter::TclInterpreter()
       << "//  source --> tcl_source\n"
       << "//  proc   --> tcl_proc\n"
       << "//  file   --> tcl_file\n"
-      << endl;
+      << std::endl;
 
    //Tcl_GlobalEval( "rename source tcl_source" );
    Tcl_CreateCommand( m_tclInterpreter, 
@@ -156,11 +156,11 @@ TclInterpreter::TclInterpreter()
 		      (Tcl_CmdDeleteProc*) NULL );  
    Readline::registerCommand( s_sourceCommandString );
    
-   string procCommand = string( "rename proc ") + s_procCommandString;
+   std::string procCommand = std::string( "rename proc ") + s_procCommandString;
    Tcl_GlobalEval( m_tclInterpreter, (char*)procCommand.c_str() );
    Readline::registerCommand( (char*)s_procCommandString );
    
-   string fileCommand = string( "rename file ") + s_fileCommandString;
+   std::string fileCommand = std::string( "rename file ") + s_fileCommandString;
    Tcl_GlobalEval( m_tclInterpreter, (char*)fileCommand.c_str() );
    Readline::registerCommand( (char*)s_fileCommandString );
 
@@ -286,7 +286,7 @@ TclInterpreter::loop( )
    --m_sizeOfStackForExit;
    
    
-   string moduleCommandPrompt = commandPrompt();
+   std::string moduleCommandPrompt = commandPrompt();
 
    Tcl_DString presentCommand;
    Tcl_DStringInit( &presentCommand );
@@ -297,7 +297,7 @@ TclInterpreter::loop( )
    {
       DABoolean complete = false;
       while( ! complete ) {
-	 const string kIncompleteCommandPrompt =  moduleCommandPrompt.substr(0, moduleCommandPrompt.size() -2) + "...> ";
+	 const std::string kIncompleteCommandPrompt =  moduleCommandPrompt.substr(0, moduleCommandPrompt.size() -2) + "...> ";
 
          complete = true;
          // A static variable for holding the line.
@@ -323,7 +323,7 @@ TclInterpreter::loop( )
 	    if( 0 != expansion && expansion != line_read ) {
 	       Readline::deleteLine( line_read );
 	       line_read = expansion;
-	       cout << line_read << endl;  // print expanded line 
+	       std::cout << line_read << std::endl;  // print expanded line 
 	    }
 	    
 	    // If the line has any text in it, save it on the history.
@@ -337,7 +337,7 @@ TclInterpreter::loop( )
 	    setCommandPrompt( kIncompleteCommandPrompt.c_str() );
 	 } else {
 	    //just incase the command we ran changed the prompt
-	    moduleCommandPrompt = string(commandPrompt());
+	    moduleCommandPrompt = std::string(commandPrompt());
 	 }
          // clean up
          Readline::deleteLine( line_read );
@@ -350,12 +350,12 @@ TclInterpreter::loop( )
       if( TCL_ERROR == result ) {
          if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
    	    report( ::SYSTEM, kFacilityString )
-   	       << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
+   	       << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << std::endl;
          }
       }
       else {
 	if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
-	  cout << Tcl_GetStringResult(m_tclInterpreter) << endl;
+	  std::cout << Tcl_GetStringResult(m_tclInterpreter) << std::endl;
 	}
       }
    }
@@ -444,13 +444,13 @@ TclInterpreter::deleteCommand( const char* command )
 int
 TclInterpreter::runCommandFile( const char* filename )
 {
-   string command = s_sourceCommandString + string( " " ) + string( filename );
+   std::string command = s_sourceCommandString + std::string( " " ) + std::string( filename );
    int result = Tcl_Eval( m_tclInterpreter, 
 			  (char*)command.c_str() );
    if( TCL_ERROR == result ) {
       if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
 	 report( ::SYSTEM, kFacilityString )
-	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
+	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << std::endl;
       }
    }
 
@@ -466,7 +466,7 @@ TclInterpreter::runCommand( char* command )
    if( TCL_ERROR == result ) {
       if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
 	 report( ::SYSTEM, kFacilityString )
-	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
+	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << std::endl;
       }
    }
 
@@ -477,10 +477,10 @@ int
 TclInterpreter::runCommand( int argc, char* argv[] )
 {
    int index=0;
-   string command;
+   std::string command;
    while( index < argc )
    {
-      command += string(" ") + argv[index];
+      command += std::string(" ") + argv[index];
       ++index;
    }
 
@@ -497,7 +497,7 @@ TclInterpreter::runCommand( int argc, char* argv[] )
    if( TCL_ERROR == result ) {
       if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter) ) ) {
 	 report( ::SYSTEM, kFacilityString )
-	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << endl;
+	    << "Tcl_Eval error: " << Tcl_GetStringResult(m_tclInterpreter) << std::endl;
       }
    }
 
@@ -552,19 +552,19 @@ void
 TclInterpreter::assembleHistoryFile()
 {
    // have to assemble history file
-   if( m_historyFile == string( "" ) )
+   if( m_historyFile == std::string( "" ) )
    {
       if( 0 == getenv( "HOME" ) )
       {   
 	 report( SYSTEM, kFacilityString )
 	    << "HOME environment variable not valid;\n"
 	    << "will save history in current directory!"
-	    << endl;
-	 m_historyFile = string( ".suez_history" );
+	    << std::endl;
+	 m_historyFile = std::string( ".suez_history" );
       }
       else
       {
-	 m_historyFile = getenv( "HOME" ) + string( "/.suez_history" );
+	 m_historyFile = getenv( "HOME" ) + std::string( "/.suez_history" );
       }
    }
 }
@@ -576,7 +576,7 @@ TclInterpreter::setHistoryLength( Count iLength )
 }
 
 void 
-TclInterpreter::setHistoryFile( const string& iFile )
+TclInterpreter::setHistoryFile( const std::string& iFile )
 {
    m_historyFile = iFile;
 }
@@ -588,7 +588,7 @@ TclInterpreter::printHistoryInfo() const
       << "History Status:\n"
       << "  File  : " << m_historyFile << "\n"
       << "  Length: " << m_historyLength 
-      << endl;
+      << std::endl;
 }
 
 void
@@ -607,12 +607,12 @@ TclInterpreter::tclInterpreter()
 // const member functions
 //
 Interpreter::StatusCode
-TclInterpreter::parseArgs( const string, int, char*[] ) const
+TclInterpreter::parseArgs( const std::string, int, char*[] ) const
 //                         const string formalCmd, 
 //			   int argc, char *argv[] ) const
 {
    report( ::SYSTEM, kFacilityString )
-      << "parseArgs: not implemented yet!" << endl;
+      << "parseArgs: not implemented yet!" << std::endl;
 
    return Interpreter::OK;
 }                 
@@ -638,8 +638,8 @@ TclInterpreter::commandHandler( ClientData clientData,
 }
 
 static 
-istream& 
-eatwhite( istream& is )
+std::istream& 
+eatwhite( std::istream& is )
 {
    // kill white space until hit actual command
    char c;
@@ -676,10 +676,10 @@ TclInterpreter::sourceCommand( const char* iFileName)
 
 #else
    // new way
-   ifstream ifs( iFileName );
+   std::ifstream ifs( iFileName );
    if( !ifs ) {
       report( ::SYSTEM, kFacilityString )
-	 << "Error opening file " << iFileName << endl;
+	 << "Error opening file " << iFileName << std::endl;
       return TCL_ERROR;
    }
 
@@ -687,10 +687,10 @@ TclInterpreter::sourceCommand( const char* iFileName)
    //The command prompt will include the module we are in
    // and the file we are reading, along with whether or not
    // this command is complete
-   string moduleCommandPrompt = commandPrompt();
-   const string kBaseName = FileNameUtils::basename(iFileName);
-   string prompt = moduleCommandPrompt.substr(0, moduleCommandPrompt.size() -2) + "." + kBaseName +"> ";
-   string incompletePrompt = prompt.substr(0,prompt.size()-2) +"...> ";
+   std::string moduleCommandPrompt = commandPrompt();
+   const std::string kBaseName = FileNameUtils::basename(iFileName);
+   std::string prompt = moduleCommandPrompt.substr(0, moduleCommandPrompt.size() -2) + "." + kBaseName +"> ";
+   std::string incompletePrompt = prompt.substr(0,prompt.size()-2) +"...> ";
    int result = TCL_OK;
 
    Tcl_DString presentCommand;
@@ -717,7 +717,7 @@ TclInterpreter::sourceCommand( const char* iFileName)
    //now set new value
    Tcl_EvalObjv(m_tclInterpreter, 3, commandArray,TCL_EVAL_GLOBAL);
 
-   const string* pPrompt = &prompt;
+   const std::string* pPrompt = &prompt;
 #if defined(NO_GETLINE_ISTREAM_STRING_BUG)
    const int kLineLength = 500;
    char line[ kLineLength ];
@@ -725,16 +725,16 @@ TclInterpreter::sourceCommand( const char* iFileName)
    {
       //don't print echo lines
       if( strncmp( line, "echo",4) != 0 ) {
-	 cout << *pPrompt << line <<endl;
+	 std::cout << *pPrompt << line <<std::endl;
       }
       result = processCommandLine( line, presentCommand );
 #else
-   string line;
+   std::string line;
    while( getline( eatwhite( ifs ), line ) )
    {
       //don't print echo lines
       if( strncmp( line.c_str(), "echo",4) != 0 ) {
-	 cout << *pPrompt << line <<endl;
+	 std::cout << *pPrompt << line <<std::endl;
       }
       result = processCommandLine( line.c_str(), presentCommand );
 #endif
@@ -749,7 +749,7 @@ TclInterpreter::sourceCommand( const char* iFileName)
 	 pPrompt = &prompt;
 
 	 if( 0 != strlen( Tcl_GetStringResult(m_tclInterpreter)) ) {
-	    cout << Tcl_GetStringResult(m_tclInterpreter) << endl;
+	    std::cout << Tcl_GetStringResult(m_tclInterpreter) << std::endl;
 	 }
       } else {
 	 //the command prompt can not change while the command is
@@ -775,7 +775,7 @@ TclInterpreter::sourceCommandHandler( ClientData clientData,
 {
    if( argc < 2 ) {
       report( ::SYSTEM, kFacilityString )
-	 << "no arguments for " << argv[0] << " command" << endl;
+	 << "no arguments for " << argv[0] << " command" << std::endl;
       return TCL_ERROR;
    }
 

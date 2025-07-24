@@ -26,7 +26,7 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 
 // user include files
 #if !defined(FILENAME_ONLY) /* relative path includes */
@@ -75,14 +75,14 @@ MyProcessor::~MyProcessor()
 void
 MyProcessor::event( Frame& iFrame )
 {
-   cout <<"MyProcessor.Event:"<<m_data<<endl;
+   cout <<"MyProcessor.Event:"<<m_data<<std::endl;
    return;
 }
 
 void
 MyProcessor::beginRun( Frame& iFrame )
 {
-   cout <<"MyProcessor.BeginRun"<<endl;
+   cout <<"MyProcessor.BeginRun"<<std::endl;
    ++m_data;
    return;
 }

@@ -50,9 +50,9 @@ class Switch
       OnOff setting() const;
 
       // ---------- static member functions --------------------
-      static string toString( OnOff iSetting );
+      static std::string toString( OnOff iSetting );
       static DABoolean toBoolean( OnOff iSetting );
-      static OnOff toSwitch( const string& iSetting );
+      static OnOff toSwitch( const std::string& iSetting );
 
    protected:
       // ---------- protected member functions -----------------

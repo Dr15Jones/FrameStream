@@ -38,7 +38,7 @@ class DummyNtuple : public HINtuple
       // ---------- Constructors and destructor ----------------
       DummyNtuple(
 		   unsigned int  iId,
-		   const string& iTitle,
+		   const std::string& iTitle,
 		   unsigned int  iNumberOfVariables,
 		   unsigned int  iChunkSize,
 		   const char* const* iLabels ) ;
@@ -53,8 +53,8 @@ class DummyNtuple : public HINtuple
 
    protected:
       // ---------- protected member functions -----------------
-      virtual void book ( const string& iTitle,
-			  const string& iTopDir,
+      virtual void book ( const std::string& iTitle,
+			  const std::string& iTopDir,
 			  unsigned int  iNumberOfVariables,
 			  unsigned int  iChunkSize,
 			  const char* const* iLabels ) ;

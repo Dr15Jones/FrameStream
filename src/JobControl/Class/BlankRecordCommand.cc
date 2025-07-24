@@ -90,65 +90,65 @@
 //
 // constants, enums and typedefs
 //
-const string helpMessage = 
-string( " Description: EmptySourceCommand                                \n" )+
-string( "                                                                \n" )+
-string( " Valid subcommands are:                                         \n" )+
-string( "     (<src>=sourcename, <strm>=stream, <rn#>=run#, <ev#>=event#,\n" )+
-string( "     [ -time # ] optional parameter to specify time, default 0).\n" )+
-string( "                                                                \n" )+
-string( "  emptysource help                    see this help page        \n" )+
-string( "                                                                \n" )+
-string( "  emptysource defaultTime <src> <strm1> [<strm2>..]             \n" )+
-string( "  emptysource def         <src> <strm1> [<strm2>..]             \n" )+
-string( "    define a source with name <src> with Records                \n" )+
-string( "    that occur at (rn#, ev#) =(0,1).                            \n" )+
-string( "    You need to specify source name and at least one stream.    \n" )+
-string( "                                                                \n" )+
-string( "  emptysource oneTime <src> <rn#> <ev#> [ -time # ] <strm1> [<strm2>..]\n" )+
-string( "  emptysource one     <src> <rn#> <ev#> [ -time # ] <strm1> [<strm2>..]\n" )+
-string( "    define a source with name <src> with Records                \n" )+
-string( "    that occur at (rn#, ev#)                                    \n" )+
-string( "    You need to specify source name, run- and event- numbers,   \n ")+
-string( "    optional time value and at least one stream.                \n" )+
-string( "                                                                \n" )+
-string( "  emptysource manyTime <src> run <strt> <#stps> <strm1> [<strm2>..]\n")+
-string( "  emptysource many     <src> run <strt> <#stps> <strm1> [<strm2>..]\n")+
-string( "    define a source with name <src> with Records that occur     \n" )+
-string( "    on beginruns starting with run number <strt> and then       \n" )+
-string( "    stopping <#stps> number of times                            \n" )+
-string( "    You need to specify source name, start run #, # stops and at\n" )+
-string( "    least one stream.                                           \n" )+
-string( "                                                                \n" )+
-string( "  emptysource manyTime <src> event <strt> <#stps> <strm1> [<strm2>..]\n")+
-string( "  emptysource many     <src> event <strt> <#stps> <strm1> [<strm2>..]\n")+
-string( "    define a source with name <src> with Records that occur     \n" )+
-string( "    on events with run number <strt> with the first record      \n" )+
-string( "    occuring at run#=<strt> event#=1 and the last Record at     \n" )+
-string( "    run#=<strt> event#=<#stps>.                                 \n" )+
-string( "    You need to specify source name, start run #, # stops and at\n" )+
-string( "    least one stream.                                           \n" )+
-string( "                                                                \n" )+
-string( "  ----------- Command Overview ----------------                 \n" )+
-string( "  This command allows you to create a source that produces      \n" )+
-string( "  empty Records at certain times given by (run, event).         \n" )+
-string( "  The source created can produce any Records specified,         \n" )+
-string( "  even non-standard Records. Different subcommands are          \n" )+
-string( "  used to specify the 'time' associated with the Records.       \n" )+
-string( "                                                                \n" )+
-string( "  You can also change the name you give to your source          \n" )+
-string( "  via the \"source\" command.  Please see the help page         \n" )+
-string( "  for the \"source\" command for details.                       \n" )+
-string( "                                                                \n" )+
-string( "  Example:                                                      \n" )+
-string( "  i.)  suez> emptysource def geom basegeometry dralignment      \n" )+
-string( "    creates a source named 'geom' that produces a BaseGeom      \n" )+
-string( "    and DRAlignment Record at the earliest possible time.       \n" )+
-string( "                                                                \n" )+
-string( "  ii.) suez> emptysource one DRAligned 12345 0 dralignment      \n" )+
-string( "    creates a source named 'DRAligned' that produces a          \n" )+
-string( "    DRAlignment Record at the time associated with the          \n" )+
-string( "    BeginRun Record for run# 12345                              \n" );
+const std::string helpMessage = 
+std::string( " Description: EmptySourceCommand                                \n" )+
+std::string( "                                                                \n" )+
+std::string( " Valid subcommands are:                                         \n" )+
+std::string( "     (<src>=sourcename, <strm>=stream, <rn#>=run#, <ev#>=event#,\n" )+
+std::string( "     [ -time # ] optional parameter to specify time, default 0).\n" )+
+std::string( "                                                                \n" )+
+std::string( "  emptysource help                    see this help page        \n" )+
+std::string( "                                                                \n" )+
+std::string( "  emptysource defaultTime <src> <strm1> [<strm2>..]             \n" )+
+std::string( "  emptysource def         <src> <strm1> [<strm2>..]             \n" )+
+std::string( "    define a source with name <src> with Records                \n" )+
+std::string( "    that occur at (rn#, ev#) =(0,1).                            \n" )+
+std::string( "    You need to specify source name and at least one stream.    \n" )+
+std::string( "                                                                \n" )+
+std::string( "  emptysource oneTime <src> <rn#> <ev#> [ -time # ] <strm1> [<strm2>..]\n" )+
+std::string( "  emptysource one     <src> <rn#> <ev#> [ -time # ] <strm1> [<strm2>..]\n" )+
+std::string( "    define a source with name <src> with Records                \n" )+
+std::string( "    that occur at (rn#, ev#)                                    \n" )+
+std::string( "    You need to specify source name, run- and event- numbers,   \n ")+
+std::string( "    optional time value and at least one stream.                \n" )+
+std::string( "                                                                \n" )+
+std::string( "  emptysource manyTime <src> run <strt> <#stps> <strm1> [<strm2>..]\n")+
+std::string( "  emptysource many     <src> run <strt> <#stps> <strm1> [<strm2>..]\n")+
+std::string( "    define a source with name <src> with Records that occur     \n" )+
+std::string( "    on beginruns starting with run number <strt> and then       \n" )+
+std::string( "    stopping <#stps> number of times                            \n" )+
+std::string( "    You need to specify source name, start run #, # stops and at\n" )+
+std::string( "    least one stream.                                           \n" )+
+std::string( "                                                                \n" )+
+std::string( "  emptysource manyTime <src> event <strt> <#stps> <strm1> [<strm2>..]\n")+
+std::string( "  emptysource many     <src> event <strt> <#stps> <strm1> [<strm2>..]\n")+
+std::string( "    define a source with name <src> with Records that occur     \n" )+
+std::string( "    on events with run number <strt> with the first record      \n" )+
+std::string( "    occuring at run#=<strt> event#=1 and the last Record at     \n" )+
+std::string( "    run#=<strt> event#=<#stps>.                                 \n" )+
+std::string( "    You need to specify source name, start run #, # stops and at\n" )+
+std::string( "    least one stream.                                           \n" )+
+std::string( "                                                                \n" )+
+std::string( "  ----------- Command Overview ----------------                 \n" )+
+std::string( "  This command allows you to create a source that produces      \n" )+
+std::string( "  empty Records at certain times given by (run, event).         \n" )+
+std::string( "  The source created can produce any Records specified,         \n" )+
+std::string( "  even non-standard Records. Different subcommands are          \n" )+
+std::string( "  used to specify the 'time' associated with the Records.       \n" )+
+std::string( "                                                                \n" )+
+std::string( "  You can also change the name you give to your source          \n" )+
+std::string( "  via the \"source\" command.  Please see the help page         \n" )+
+std::string( "  for the \"source\" command for details.                       \n" )+
+std::string( "                                                                \n" )+
+std::string( "  Example:                                                      \n" )+
+std::string( "  i.)  suez> emptysource def geom basegeometry dralignment      \n" )+
+std::string( "    creates a source named 'geom' that produces a BaseGeom      \n" )+
+std::string( "    and DRAlignment Record at the earliest possible time.       \n" )+
+std::string( "                                                                \n" )+
+std::string( "  ii.) suez> emptysource one DRAligned 12345 0 dralignment      \n" )+
+std::string( "    creates a source named 'DRAligned' that produces a          \n" )+
+std::string( "    DRAlignment Record at the time associated with the          \n" )+
+std::string( "    BeginRun Record for run# 12345                              \n" );
 
 static const char* const kFacilityString = "JobControl.BlankRecordCommand" ;
 
@@ -205,13 +205,13 @@ BlankRecordCommand::execute( int argc, char* argv[] )
       } else if( 0 == strcmp( argv[1], "many" ) ) {
 	 result = manyTimeSourceHandler();
       } else {
-	 report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+	 report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
 	 result = COMMAND_ERROR;
       }
    } 
    else {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -224,7 +224,7 @@ int
 BlankRecordCommand::helpHandler()
 {
    // print help from ModuleCommand.h header
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 
@@ -234,7 +234,7 @@ int
 BlankRecordCommand::defaultTimeSourceHandler()
 {
    int result = COMMAND_ERROR;
-   string resultString; // name of resulting source token
+   std::string resultString; // name of resulting source token
 
    BlankRecordModule* blankRecordModule = (BlankRecordModule*)target();
 
@@ -242,13 +242,13 @@ BlankRecordCommand::defaultTimeSourceHandler()
    // eg. "emptysource defaultTime <sourcename> <stream1> [<stream2> etc.]"
    if ( m_argc < 4 ) // wrong number of arguments
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    } 
    else
    {
       // first the sourceName
-      string sourceName( getArgument( 2 ) );
+      std::string sourceName( getArgument( 2 ) );
 
       //get the read streams
       StreamSet readStreams;
@@ -258,11 +258,11 @@ BlankRecordCommand::defaultTimeSourceHandler()
       BlankRecordStopsBase* pStops = new BlankRecordOneStop;
 
       if( 0 == pStops ){
-	 report( EMERGENCY, kFacilityString) << "out of memory" << endl;
+	 report( EMERGENCY, kFacilityString) << "out of memory" << std::endl;
 	 result = COMMAND_ERROR;
       } else {
 	 // finally add source to system
-	 string ioToken;
+	 std::string ioToken;
 	 blankRecordModule->addSource( sourceName, 
 				       readStreams,
 				       pStops,
@@ -281,7 +281,7 @@ int
 BlankRecordCommand::oneTimeSourceHandler()
 {
    int result = COMMAND_ERROR;
-   string resultString;
+   std::string resultString;
 
    BlankRecordModule* blankRecordModule = (BlankRecordModule*)target();
 
@@ -289,20 +289,20 @@ BlankRecordCommand::oneTimeSourceHandler()
    // eg. "emptysource oneTime <sourcename> <rn#> <ev#> <optional -time #> <stream1> [<stream2> etc.]"
    if ( m_argc < 6 ) // wrong number of arguments
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    } else {
       // first the sourceName
-      string sourceName( getArgument( 2 ) );
+      std::string sourceName( getArgument( 2 ) );
       
       // Determine optional time parameter
-      string timeSet( getArgument(5) );
+      std::string timeSet( getArgument(5) );
       short int numArgToReadStreams=5;
       DABoolean readTime=false;
       if(timeSet=="-time") {
         // with time set we expect 8 or more arguments
         if( m_argc < 8 ) {
-          report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+          report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
           result = COMMAND_ERROR;
           setResult( resultString );
           return result;
@@ -320,9 +320,9 @@ BlankRecordCommand::oneTimeSourceHandler()
 					  << getArgument(4)<<" ";
          if(readTime) {
            report( SYSTEM, kFacilityString) 
-             << getArgument(5) <<" "<< getArgument(6) << endl;
+             << getArgument(5) <<" "<< getArgument(6) << std::endl;
          } else {
-           report( SYSTEM, kFacilityString) << endl;
+           report( SYSTEM, kFacilityString) << std::endl;
          }
 	 result = COMMAND_ERROR;
       } else {
@@ -334,11 +334,11 @@ BlankRecordCommand::oneTimeSourceHandler()
 	 BlankRecordStopsBase* pStops = new BlankRecordOneStop( syncValue );
 	 
 	 if( 0 == pStops ){
-	    report( EMERGENCY, kFacilityString) << "out of memory" << endl;
+	    report( EMERGENCY, kFacilityString) << "out of memory" << std::endl;
 	    result = COMMAND_ERROR;
 	 } else {
 	    // finally add source to system
-	    string ioToken;
+	    std::string ioToken;
 	    blankRecordModule->addSource( sourceName, 
 					  readStreams,
 					  pStops,
@@ -360,7 +360,7 @@ int
 BlankRecordCommand::manyTimeSourceHandler()
 {
    int result = COMMAND_ERROR;
-   string resultString;
+   std::string resultString;
 
    BlankRecordModule* blankRecordModule = (BlankRecordModule*)target();
 
@@ -368,11 +368,11 @@ BlankRecordCommand::manyTimeSourceHandler()
    // eg. "emptysource oneTime <sourcename> <rn#> <ev#> <stream1> [<stream2> etc.]"
    if ( m_argc < 7 ) // wrong number of arguments
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    } else {
       // first the sourceName
-      string sourceName( getArgument( 2 ) );
+      std::string sourceName( getArgument( 2 ) );
       
       DABoolean stopOnRuns = false;
       //Are we stopping on runs or events?
@@ -382,7 +382,7 @@ BlankRecordCommand::manyTimeSourceHandler()
       } else if( 0 != strncmp( getArgument(3 ), "ev", 2 ) ) {
 	 //improper agrument
 	 report( SYSTEM, kFacilityString ) 
-	    << "second argument must be 'runs' or 'events' not "<< getArgument(3) << endl;
+	    << "second argument must be 'runs' or 'events' not "<< getArgument(3) << std::endl;
 	 result = COMMAND_ERROR;
 	 return result;
       }
@@ -392,13 +392,13 @@ BlankRecordCommand::manyTimeSourceHandler()
       if( ! parseLong( start, 4 ) ) {
 	 report( SYSTEM, kFacilityString) 
 	    <<" start value not a number "<<
-	    getArgument( 4 ) << endl;
+	    getArgument( 4 ) << std::endl;
 	 return COMMAND_ERROR;
       }
 
       if( start < 0 ) {
 	 report( SYSTEM, kFacilityString ) 
-	    <<" start value less than 0: " << getArgument( 4 ) << endl;
+	    <<" start value less than 0: " << getArgument( 4 ) << std::endl;
 	 return COMMAND_ERROR;
       }
 
@@ -407,13 +407,13 @@ BlankRecordCommand::manyTimeSourceHandler()
       if( ! parseLong( nStops, 5 ) ) {
 	 report( SYSTEM, kFacilityString) 
 	    <<" number of stops value not a number "<<
-	    getArgument( 5 ) << endl;
+	    getArgument( 5 ) << std::endl;
 	 return COMMAND_ERROR;
       }
 
       if( start < 0 ) {
 	 report( SYSTEM, kFacilityString ) 
-	    <<" number of stops value <=0: " << getArgument( 5 ) << endl;
+	    <<" number of stops value <=0: " << getArgument( 5 ) << std::endl;
 	 return COMMAND_ERROR;
       }
 
@@ -430,11 +430,11 @@ BlankRecordCommand::manyTimeSourceHandler()
       }
 	 
       if( 0 == pStops ){
-	 report( EMERGENCY, kFacilityString) << "out of memory" << endl;
+	 report( EMERGENCY, kFacilityString) << "out of memory" << std::endl;
 	 result = COMMAND_ERROR;
       } else {
 	 // finally add source to system
-	 string ioToken;
+	 std::string ioToken;
 	 blankRecordModule->addSource( sourceName, 
 				       readStreams,
 				       pStops,
@@ -466,7 +466,7 @@ BlankRecordCommand::parseStreams( StreamSet& readStreams, int index ) const
       if( true != newStreamType.isStandard() ) 
       {
 	 report( WARNING, kFacilityString )
-	    << "Using non-standard Stream type!" << arg << "." << endl;
+	    << "Using non-standard Stream type!" << arg << "." << std::endl;
       }
       readStreams.add( newStreamType );
    }
@@ -486,40 +486,33 @@ BlankRecordCommand::parseSyncValue( SyncValue& oSyncValue,
 
    arg = getArgument( iIndex );
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-   istrstream ist( arg, strlen(arg));
-#else
-   istringstream ist( string(arg, strlen(arg)));
-#endif
+   std::istringstream ist( std::string(arg, strlen(arg)));
+
    if( ist >> runNumber ){
       //able to get a number
       if( 0 > runNumber ){
 	 report( WARNING, kFacilityString )
-	    << "negative run# " << runNumber << "." << endl;
+	    << "negative run# " << runNumber << "." << std::endl;
 	 return false;
       }
    } else {
       report( WARNING, kFacilityString )
-	 << "run # is not a number:" << arg << "." << endl;
+	 << "run # is not a number:" << arg << "." << std::endl;
       return false;
    }
 
    arg = getArgument( iIndex+1 );
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-   istrstream ist2( arg, strlen(arg));
-#else
-   istringstream ist2( string(arg, strlen(arg)));
-#endif
+   std::istringstream ist2( std::string(arg, strlen(arg)));
    if( ist2 >> eventNumber ){
       //able to get a number
       if( 0 > eventNumber ){
 	 report( WARNING, kFacilityString )
-	    << "negative event# " << eventNumber << "." << endl;
+	    << "negative event# " << eventNumber << "." << std::endl;
 	 return false;
       }
    } else {
       report( WARNING, kFacilityString )
-	 << "event# is not a number:" << arg << "." << endl;
+	 << "event# is not a number:" << arg << "." << std::endl;
       return false;
    }
 
@@ -529,13 +522,9 @@ BlankRecordCommand::parseSyncValue( SyncValue& oSyncValue,
    // we increment iIndex by 3 not by 2 (one for -time).
    if(readTime) {
      arg = getArgument( iIndex+3 );
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-     istrstream ist3( arg, strlen(arg));
-     string dummy=ist3.rdbuf()->str();
-#else
-     istringstream ist3( string(arg, strlen(arg)));
-     string dummy=ist3.str();
-#endif
+     std::istringstream ist3( std::string(arg, strlen(arg)));
+     std::string dummy=ist3.str();
+
      // On Linux _it is able_ to read -10 as UInt64 and result
      // will be converted to large number. On Solaris/OSF it's
      // impossible. So we need to make additional check for "-"
@@ -543,16 +532,16 @@ BlankRecordCommand::parseSyncValue( SyncValue& oSyncValue,
      int iSearch = dummy.find("-"); // search for negative numbers
      if( ist3 >> timeStamp ){
         //able to get a number
-        if( iSearch != string::npos || 0 > timeStamp ){
+        if( iSearch != std::string::npos || 0 > timeStamp ){
 	   report( WARNING, kFacilityString )
 	   << "time is not a number or you provided negative value: " 
-	   << arg << endl;
+	   << arg << std::endl;
 	   return false;
         }
      } else {
         report( WARNING, kFacilityString )
 	   << "time is not a number or you provided negative value: " 
-	   << arg << endl;
+	   << arg << std::endl;
 	   return false;
      }
    
@@ -560,7 +549,7 @@ BlankRecordCommand::parseSyncValue( SyncValue& oSyncValue,
 
    report( DEBUG, kFacilityString )
       << "syncValue(run,evt,time) = "
-      << "( "<<runNumber<<", "<<eventNumber<<", "<<timeStamp<<" )"<<endl;
+      << "( "<<runNumber<<", "<<eventNumber<<", "<<timeStamp<<" )"<<std::endl;
    oSyncValue = SyncValue( (unsigned long) runNumber,
 			   (unsigned long) eventNumber, 
 			   (UInt64) timeStamp );
@@ -575,11 +564,7 @@ BlankRecordCommand::parseLong( long& oValue, int iIndex ) const
 
    const char* arg = getArgument( iIndex );
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-   istrstream ist( arg, strlen(arg));
-#else
-   istringstream ist( string(arg, strlen(arg)));
-#endif
+   std::istringstream ist( std::string(arg, strlen(arg)));
    if( ! (ist >> oValue) ){
       return false;
    }

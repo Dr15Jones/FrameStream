@@ -191,7 +191,7 @@
 
 // STL include
 #if defined(OLD_CXX_STRING_CLASS_BUG)
-#include "C++Std/fwd_string.h"
+#include <string>
 #include <String.h>
 #else
 #include <string>
@@ -199,17 +199,17 @@
 #include <vector>
 
 // forward declarations
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <vector>
+#include <map>
 class Record ;
 class SyncValue ;
 class RecordProvider;
 
 #if !defined(_proxyprovider_proxies_)
-typedef STL_VECTOR( KeyedProxy ) KeyedProxyVector;
-#  define _proxyprovider_proxies_ STL_MAP( Stream::Type , KeyedProxyVector )
-//#  define _proxyprovider_proxies_ STL_MAP( Stream::Type , STL_VECTOR( KeyedProxy )  )
-#  define _proxyprovider_expired_ STL_MAP( Stream::Type , DABoolean )
+typedef std::vector< KeyedProxy > KeyedProxyVector;
+#  define _proxyprovider_proxies_ std::map< Stream::Type , KeyedProxyVector >
+//#  define _proxyprovider_proxies_ std::map< Stream::Type , std::vector< KeyedProxy >  >
+#  define _proxyprovider_expired_ std::map< Stream::Type , DABoolean >
 #endif /* _proxyprovider_proxies_ */
 
 class ProxyProvider
@@ -219,9 +219,9 @@ class ProxyProvider
 
    public:
       // constants, enums and typedefs
-      typedef string Identifier ;
+      typedef std::string Identifier ;
       
-      typedef STL_VECTOR( KeyedProxy ) KeyedProxies ;
+      typedef std::vector< KeyedProxy > KeyedProxies ;
 
       enum { kDefaultNumberOfStreams = 1 ,
 	     kDefaultNumberOfProxies = 4

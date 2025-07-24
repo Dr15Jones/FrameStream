@@ -70,8 +70,8 @@ class InteractiveSourceController : public DataSourceController
       // const member functions
       virtual DABoolean canRandomAccess( void ) const;
 
-      virtual string dataSourceID( void ) const;
-      virtual string parameters( void ) const;
+      virtual std::string dataSourceID( void ) const;
+      virtual std::string parameters( void ) const;
       // static member functions
 
    protected:

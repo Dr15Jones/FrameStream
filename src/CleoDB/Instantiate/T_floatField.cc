@@ -80,7 +80,7 @@ void extract( const Record& ,
    report( WARNING ,
 	   "CleoDB.floatField" )
 	      << "extract of FAItem< float > requires label!"
-	      << endl ;
+	      << std::endl ;
 }
 #endif /* NO_IMPLICIT_RESOLUTION_FOR_GLOBAL_TEMPLATE_FUNCTION_BUG */
 

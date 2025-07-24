@@ -74,7 +74,7 @@ static const char* const kTagString = "$Name:  $";
 PDSSinkFormat::PDSSinkFormat()
 {
    // add extensions that this format recognizes
-   addExtension( string( ".pds" ) );
+   addExtension( std::string( ".pds" ) );
 }
 
 // PDSSinkFormat::PDSSinkFormat( const PDSSinkFormat& rhs )
@@ -105,14 +105,14 @@ PDSSinkFormat::~PDSSinkFormat()
 // member functions
 //
 DataSinkBinder* 
-PDSSinkFormat::createBinder( const string& iName,
+PDSSinkFormat::createBinder( const std::string& iName,
 			     const Stream::Set& iBindStreams )
 {
    return new PDSSinkBinder( iName.c_str(), iBindStreams );
 }
 
 DataSinkBinder* 
-PDSSinkFormat::createBinder( const string& iName,
+PDSSinkFormat::createBinder( const std::string& iName,
 			     const Stream::Set& iBindStreams,
 			     const StreamToDataStringTagsToStoreMap& iStreamTagsMap )
 {

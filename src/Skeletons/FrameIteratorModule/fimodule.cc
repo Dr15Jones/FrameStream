@@ -108,7 +108,7 @@ Modname::iterate( const FIFrameIterator& iBegin,
 			    const FIFrameIterator& iEnd )
 {
    report( INFO, kFacilityString )
-      << "starting iteration " << endl;
+      << "starting iteration " << std::endl;
    
 //Below is an example of an iteration loop.  We loop over the data 4
 //  times and for each iteration we set the run number to be the same as
@@ -121,7 +121,7 @@ Modname::iterate( const FIFrameIterator& iBegin,
 	++timesIterated ) {
 
       report( INFO, kFacilityString )
-	 << "start iteration" << timesIterated << endl;
+	 << "start iteration" << timesIterated << std::endl;
 
       //Now reset the value we want to use in this iteration
       DBRunHeader header( timesIterated );
@@ -137,7 +137,7 @@ Modname::iterate( const FIFrameIterator& iBegin,
 	 extract( itFrame->record( Stream::kBeginRun ), spRunHeader );
 	 
 	 report( INFO, kFacilityString ) 
-	    <<" RunHeader " << spRunHeader->number() << endl;
+	    <<" RunHeader " << spRunHeader->number() << std::endl;
       }
    }
 #endif

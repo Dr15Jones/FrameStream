@@ -78,17 +78,17 @@ class FileNameUtils
       // given a path+filename, e.g. "/home/mkl/work/cleo3/filename.txt"
 
       // returns "/home/mkl/work/cleo3/"
-      static string path( const string& sourceName );
+      static std::string path( const std::string& sourceName );
       
       // returns "filename.txt"
-      static string filename( const string& sourceName );
+      static std::string filename( const std::string& sourceName );
       
       // returns "filename"
-      static string basename( const string& sourceName, 
+      static std::string basename( const std::string& sourceName, 
 			      const char whichChar = '.' );
       
       // returns "txt"
-      static string extension( const string& sourceName, 
+      static std::string extension( const std::string& sourceName, 
 			       const char whichChar = '.' );
 
    protected:

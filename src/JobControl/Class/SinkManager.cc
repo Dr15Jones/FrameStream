@@ -87,12 +87,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <assert.h>
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <vector>
-#include <map>
-#include <set>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
+#include <cassert>
 
 // user include files
 #include "Experiment/report.h"
@@ -103,12 +98,7 @@
 
 // STL classes
 #include <vector>
-#if defined(MULTIMAP_IS_SEPARATE_FILE_BUG)
-#  include <map>
-#  include <multimap.h>
-#else
-#  include <map>
-#endif
+#include <map>
 #include <set>         
 
 //
@@ -132,17 +122,6 @@ SinkManager::SinkManager( )
      m_sinkMap( *new SinkMap ),
      m_sinkInUseMap( *new SinkInUseMap )
 {
-   if(    0 == &m_sinkMap
-       || 0 == &m_sinkInUseMap
-      )
-   {
-      report( EMERGENCY ,
-              kFacilityString )
-                 << "Unable to allocate memory"
-                 << endl ;
-      assert(false);
-      ::exit( 1 );
-   }
 }
 
 // SinkManager::SinkManager( const SinkManager& )
@@ -178,7 +157,7 @@ SinkManager::addSink( DataSinkBinder* iBinder )
    if( 0 == iBinder )
    {
       report( ERROR, kFacilityString )
-	 << "pBinder == 0" << endl;
+	 << "pBinder == 0" << std::endl;
       return( status = false );
    }
 
@@ -191,7 +170,7 @@ SinkManager::addSink( DataSinkBinder* iBinder )
    if( m_sinkMap.end() != sinkIter )
    {
       report( ERROR, kFacilityString ) 
-	 << "A Sink with that name already exists!" << endl;
+	 << "A Sink with that name already exists!" << std::endl;
       return( status = false );
    }
    // 2.) or in InUseMap
@@ -199,7 +178,7 @@ SinkManager::addSink( DataSinkBinder* iBinder )
    if( m_sinkInUseMap.end() != sinkInUseIter )
    {
       report( ERROR, kFacilityString ) 
-	 << "A Sink with that name already exists!" << endl;
+	 << "A Sink with that name already exists!" << std::endl;
       return( status = false );
    }
 
@@ -258,12 +237,12 @@ SinkManager::removeSink( const SinkName& iName )
          delete (*sinkIter).second;
          m_sinkMap.erase( sinkIter );
          
-         cout << "Removed sink \"" 
-            << iName << "\"." << endl;
+         std::cout << "Removed sink \"" 
+            << iName << "\"." << std::endl;
          success = true;
       } else {
          report(SYSTEM,kFacilityString)<<"Sink "<<iName<<" is being used so can not be removed.\n"
-         " First remove any path that contains "<<iName<<endl;
+         " First remove any path that contains "<<iName<<std::endl;
          return false;
       }
    }
@@ -283,7 +262,7 @@ SinkManager::removeSink( const SinkName& iName )
          success = true;
       } else {
          report(SYSTEM,kFacilityString)<<"Sink "<<iName<<" is being used so can not be removed.\n"
-         " First remove any path that contains "<<iName<<endl;
+         " First remove any path that contains "<<iName<<std::endl;
          return false;
       }
    }
@@ -293,7 +272,7 @@ SinkManager::removeSink( const SinkName& iName )
        && !sinkInUseMap )
    {
       report( WARNING, kFacilityString ) 
-	 << "Can't remove unknown sink \"" << iName << "\"." << endl;
+	 << "Can't remove unknown sink \"" << iName << "\"." << std::endl;
       success = false;
    }
 
@@ -310,15 +289,15 @@ SinkManager::removeSinkInUse( const SinkName& iName )
    if( m_sinkInUseMap.end() == sinkInUseIter  ) 
    {
       report( WARNING, kFacilityString ) 
-	 << "Can't remove sink-in-use \"" << iName << "\"." << endl;
+	 << "Can't remove sink-in-use \"" << iName << "\"." << std::endl;
 
       success = false;
    }
    else
    {
  
-      cout 
-	 << "Taken sink \"" << iName << "\" out of use." << endl;
+      std::cout 
+	 << "Taken sink \"" << iName << "\" out of use." << std::endl;
       
       // delete object and remove entry in map
       removingSinkInUse.emit(iName);
@@ -373,7 +352,7 @@ SinkManager::bindStreamsToSink( const SinkName& iName,
    if( m_sinkInUseMap.end() != nameInUseIter )
    {
       report( ERROR, kFacilityString ) 
-	 << "Already have written to sink; need to remove the sink and reload." << endl;
+	 << "Already have written to sink; need to remove the sink and reload." << std::endl;
       return( status = false );
    }
    // name not in use
@@ -422,10 +401,10 @@ SinkManager::binderFor( const SinkName& iName ) const
    return 0;
 }
 
-STL_VECTOR(string)
+std::vector<std::string>
 SinkManager::unusedSinks() const
 {
-   STL_VECTOR(string) returnValue;
+   std::vector<std::string> returnValue;
    
    SinkMap::const_iterator lastName( m_sinkMap.end() );
    for( SinkMap::const_iterator nameIter = m_sinkMap.begin();
@@ -472,12 +451,12 @@ SinkManager::isUnused(const SinkName& iName ) const
    return m_sinkMap.end() != m_sinkMap.find( iName );
 }
 
-string
+std::string
 SinkManager::list( const SinkName& iName ) const
 {
-   string resultString;
-   //resultString += string( "Listing sink \"" );
-   resultString += iName + string( "\":\n" );
+   std::string resultString;
+   //resultString += std::string( "Listing sink \"" );
+   resultString += iName + std::string( "\":\n" );
 
    resultString += listSink( iName );
    resultString += listSinkInUse( iName );
@@ -485,18 +464,18 @@ SinkManager::list( const SinkName& iName ) const
    return resultString;
 }
 
-string
+std::string
 SinkManager::listAllSinks() const
 {
-   string resultString;
+   std::string resultString;
    
    if( true == m_sinkMap.empty() && true == m_sinkInUseMap.empty() )
    {
-      resultString += string( "\n" );
+      resultString += std::string( "\n" );
    }
    else
    {
-      //resultString += string( "\nListing all Sinks:\n" );
+      //resultString += std::string( "\nListing all Sinks:\n" );
       
       SinkMap::const_iterator lastName( m_sinkMap.end() );
       for( SinkMap::const_iterator nameIter = m_sinkMap.begin();
@@ -519,67 +498,67 @@ SinkManager::listAllSinks() const
    return resultString;
 }
 
-string
+std::string
 SinkManager::listSink( const SinkName& iName ) const
 {
-   string resultString;
+   std::string resultString;
 
    SinkMap::iterator sink = m_sinkMap.find( iName );
    if( m_sinkMap.end() == sink )
    {
-      resultString += string( "\n" );
+      resultString += std::string( "\n" );
    }
    else
    {
       const DataSinkBinder* binder = (*sink).second;
       
-      resultString += string( "  " ) + iName;
+      resultString += std::string( "  " ) + iName;
 
-      resultString += string( "   streams: " );
+      resultString += std::string( "   streams: " );
       const StreamSet& streams = binder->boundStreams();
       if( true == streams.empty() ) 
       {
-	 resultString += string( " will default to active streams" );
+	 resultString += std::string( " will default to active streams" );
       }
       StreamSet::const_iterator endStream = streams.end();
       for( StreamSet::const_iterator j = streams.begin();
 	   j != endStream;
 	   ++j )
       {
-	 resultString += string( " " ) + (*j).value();
+	 resultString += std::string( " " ) + (*j).value();
       }
-      resultString += string( "\n" );
+      resultString += std::string( "\n" );
    }
    
    return resultString;
 }
 
-string
+std::string
 SinkManager::listSinkInUse( const SinkName& iName ) const
 {
-   string resultString;
+   std::string resultString;
 
    SinkInUseMap::iterator sinkInUse = m_sinkInUseMap.find( iName );
    if( m_sinkInUseMap.end() == sinkInUse )
    {
-      resultString += string( "\n" );
+      resultString += std::string( "\n" );
    }
    else
    {
       const DataSinkBinder* binder = (*sinkInUse).second;
       
-      resultString += string( " * " ) + iName;
+      resultString += std::string( " * " ) + iName;
 
-      resultString += string( "    streams: " );
+      resultString += std::string( "    streams: " );
       const StreamSet& streams = binder->boundStreams();
       StreamSet::const_iterator endStream = streams.end();
       for( StreamSet::const_iterator j = streams.begin();
 	   j != endStream;
 	   ++j )
       {
-	 resultString += string( " " ) + (*j).value();
+	 resultString += std::string( " " ) + (*j).value();
       }
-      resultString += string( "\n" );
+      resultString += std::string( "\n" );
    }
 
    return resultString;
@@ -644,7 +623,7 @@ SinkManager::checkIfStreamsOfSinkAreActive(
 	 report( ERROR, kFacilityString ) 
 	    << "Stream \"" << (*streamIt).value() 
 	    << "\" cannot be written\n"
-	    << "      since only active streams can be written!" << endl;
+	    << "      since only active streams can be written!" << std::endl;
 	 status = false;
 	 break;
       }

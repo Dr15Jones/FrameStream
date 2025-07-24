@@ -24,11 +24,11 @@
 
 // forward declarations
 class ModuleCommand;
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 #if !defined(_compmodule_container_)
-#define _compmodule_container_ STL_VECTOR( CompositeModule::ModuleInfo ) 
+#define _compmodule_container_ std::vector< CompositeModule::ModuleInfo > 
 #endif
-#include "C++Std/fwd_ostream.h"
+#include <iosfwd>
 
 
 class CompositeModule : public Module
@@ -63,7 +63,7 @@ class CompositeModule : public Module
       // const member functions
 
       // interface conforming to CompositePattern
-      virtual string listModules() const;
+      virtual std::string listModules() const;
       virtual DABoolean containsModule( const Module::Name& name ) const;
       virtual const Module* fetchModule( const Module::Name& name ) const;
       const _compmodule_container_& modules( void ) const;

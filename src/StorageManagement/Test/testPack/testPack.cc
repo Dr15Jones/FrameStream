@@ -56,8 +56,8 @@
 
 #include "Experiment/Experiment.h"
 
-#include "C++Std/iostream.h"
-#include "C++Std/iomanip.h"
+#include <iostream>
+#include <iomanip>
 #include <vector>
 #include <math.h>
 
@@ -111,11 +111,11 @@ class PrecisionCompare : public Compare<T>
 
 	 // out-of-bounds case
 	 if( iTrue > m_max ) {
-	    cout << "*** true > max -- out of range" << endl;
+	    cout << "*** true > max -- out of range" << std::endl;
 	    return (iStored >= m_max );
 	 }
 	 if( iTrue < m_min ) {
-	    cout << "*** true < min -- out of range" << endl;
+	    cout << "*** true < min -- out of range" << std::endl;
 	    return (iStored-m_precision <= m_min );
 	 }
 
@@ -146,17 +146,17 @@ class PrecisionTrueZeroCompare : public Compare<T>
 	 }
 
 	 if( iTrue != iTrue ) {
-	    cout <<"*** stored NaN" << endl;
+	    cout <<"*** stored NaN" << std::endl;
 	    return ( iStored >= m_max || iStored <= m_min );
 	 }
 
 	 // out-of-bounds case
 	 if( iTrue > m_max ) {
-	    cout << "*** true > max -- out of range" << endl;
+	    cout << "*** true > max -- out of range" << std::endl;
 	    return (iStored >= m_max );
 	 }
 	 if( iTrue < m_min ) {
-	    cout << "*** true < min -- out of range" << endl;
+	    cout << "*** true < min -- out of range" << std::endl;
 	    return (iStored-m_precision <= m_min );
 	 }
 
@@ -188,16 +188,16 @@ class FractionCompare : public Compare<T>
 	 
 	 // out-of-bounds case
 	 if( iTrue != iTrue ) {
-	    cout <<"*** stored NaN" << endl;
+	    cout <<"*** stored NaN" << std::endl;
 	    return ( iStored >= m_max || iStored <= m_min );
 	 }
 
 	 if( iTrue > m_max ) {
-	    cout << "*** true > max -- out of range" << endl;
+	    cout << "*** true > max -- out of range" << std::endl;
 	    return (iStored >= m_max );
 	 }
 	 if( iTrue < -1.0*m_max ) {
-	    cout << "*** true < -max -- out of range" << endl;
+	    cout << "*** true < -max -- out of range" << std::endl;
 	    return (iStored <= -1.0*m_max );
 	 }
 
@@ -427,11 +427,11 @@ check_stored_value( const T* iDummy,
       
       if( static_cast<Compare<T>* const >(iPackStuff.m_comparer)->areEqual( 
 	 value, temp ) ) {
-	 cout <<"value unpacked "<< temp << endl;
+	 cout <<"value unpacked "<< temp << std::endl;
       } else {
          if( !(value != value) ) { // not NaN
 	 cout <<"ERROR: original value:" << value <<
-	    " unpacked " << temp << endl;
+	    " unpacked " << temp << std::endl;
 	 }
       }
    }
@@ -486,7 +486,7 @@ int main()
 					4, 
 					0.00025),
 		   4 );
-   cout << "number of bits " << packing.back().m_packer->numberOfBits() << endl;
+   cout << "number of bits " << packing.back().m_packer->numberOfBits() << std::endl;
 
    fill_pack_list( packing,
 		   kFractDoubleValues,
@@ -496,7 +496,7 @@ int main()
 					4, 
 					0.00025),
 		   4 );
-   cout << "number of bits " << packing.back().m_packer->numberOfBits() << endl;
+   cout << "number of bits " << packing.back().m_packer->numberOfBits() << std::endl;
 
    //testing packing of no-exponential-bits
    const double kFractNoExpoBitValues[] = { 0.000511 };
@@ -508,7 +508,7 @@ int main()
 					0.00052, 
 					1.E-6),
 		   4 );
-   cout << "number of bits " << packing.back().m_packer->numberOfBits() << endl;
+   cout << "number of bits " << packing.back().m_packer->numberOfBits() << std::endl;
 
    fill_pack_list( packing,
 		   kFractNoExpoBitValues,
@@ -518,7 +518,7 @@ int main()
 					0.00052, 
 					1.E-6),
 		   4 );
-   cout << "number of bits " << packing.back().m_packer->numberOfBits() << endl;
+   cout << "number of bits " << packing.back().m_packer->numberOfBits() << std::endl;
 
    //do fixed packed unsigned ints
    const unsigned int kFixUIntValues[] = { 0, 80, 23, 
@@ -535,7 +535,7 @@ int main()
 
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
 
    //do fixed packed signed ints
@@ -553,7 +553,7 @@ int main()
 
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
 
    //do fixed packed unsigned ints with size right at a bit boundary
@@ -569,7 +569,7 @@ int main()
    
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 	
    //do fixed packed unsigned int with size of 1
    const unsigned int kFixBoolValues[] = { 0, 1 };
@@ -584,7 +584,7 @@ int main()
    
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 	
    //do fixed floats
    const float kFixFloatValues[] = { 0.24, 100.0, 
@@ -603,7 +603,7 @@ int main()
 		   4 );
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
    //do floats using fixed with perfect 0
    fill_pack_list( packing,
@@ -616,7 +616,7 @@ int main()
 		   4 );
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
    //do floats using fixed with perfect 0
    const float kFixFloatValues2[] = { 0.003, -0.003, 
@@ -635,7 +635,7 @@ int main()
 		   4 );
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
    //do non-packed floats
    const float kNoPackFloatValues[] = { 1, -1, 
@@ -651,7 +651,7 @@ int main()
 		   4 );
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
 
    //do non-packed ints
@@ -668,7 +668,7 @@ int main()
 
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
    //do non-packed shorts
    const short kNonPackShortValues[] = { 1, -1, 
@@ -684,7 +684,7 @@ int main()
 
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
 
    //do non-packed chars
@@ -701,7 +701,7 @@ int main()
 
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
 
    //do container size 
@@ -718,7 +718,7 @@ int main()
 
    cout << "number of bits " 
 	<< packing.back().m_packer->numberOfBits() 
-	<< endl;
+	<< std::endl;
 
 
    //Now compress this info into our buffer
@@ -769,7 +769,7 @@ int main()
 
       if( startBit >= 32 ) {
 	 startBit -= 32;
-	 cout << "storing " << hex << startWord << dec << endl;
+	 cout << "storing " << hex << startWord << dec << std::endl;
 	 buffer.push_back( startWord );
 	 startWord = overflowWord;
 	 overflowWord = 0;
@@ -777,10 +777,10 @@ int main()
 
    }
    if( startBit != 0) {
-      cout << "storing " << hex << startWord << dec << endl;
+      cout << "storing " << hex << startWord << dec << std::endl;
       buffer.push_back( startWord );
    }
-   cout <<"buffer size " << buffer.size() << endl;
+   cout <<"buffer size " << buffer.size() << std::endl;
 
 
    //Now unpack and compare to original value

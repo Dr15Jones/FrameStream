@@ -88,7 +88,7 @@ class Menu : public Command, public Module
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      string m_parentPrompt;
+      std::string m_parentPrompt;
 
       // ---------- static data members ------------------------
 

@@ -59,11 +59,11 @@
 //
 // constants, enums and typedefs
 //
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kDLFactoryManagerFacilityString = "DynamicLoader.DLFactoryManager" ;
+static const char* const kDLFactoryManagerFacilityString = "DynamicLoader.DLFactoryManager" ;
 
 /*
 
-// ---- cvs-based strings (Id and Tag with which file was checked out)
+// ---- cvs-based std::strings (Id and Tag with which file was checked out)
 static const char* const kIdString  = "$Id: DLFactoryManager.cc,v 1.3 2003/08/14 16:29:59 cdj Exp $";
 static const char* const kTagString = "$Name:  $";
 */
@@ -101,14 +101,14 @@ static const char* const kTagString = "$Name:  $";
 //
 //   return *this;
 // }
-typedef STL_MAP(string, DLFactoryBase*) FactoryMap;
+typedef std::map<std::string, DLFactoryBase*> FactoryMap;
 
 //
 // member functions
 //
 template <class T>
 DABoolean
-DLFactoryManager<T>::add( const string& iName, DLFactoryBase* iFactory )
+DLFactoryManager<T>::add( const std::string& iName, DLFactoryBase* iFactory )
 {
    m_factoryMap.insert( make_pair( iName, iFactory ) );
    return true;
@@ -116,7 +116,7 @@ DLFactoryManager<T>::add( const string& iName, DLFactoryBase* iFactory )
 
 template <class T>
 DABoolean
-DLFactoryManager<T>::remove( const string& iName )
+DLFactoryManager<T>::remove( const std::string& iName )
 {
    DABoolean returnValue = false;
    FactoryMap::iterator itFound = 
@@ -154,9 +154,9 @@ DLFactoryManager<T>::removeAll()
 
 template <class T>
 DLFactoryBase*
-DLFactoryManager<T>::fetch( const string& iName,
+DLFactoryManager<T>::fetch( const std::string& iName,
 			    DLMultiFactoryChooserBase& iChooser,
-			    string& oShortName )
+			    std::string& oShortName )
 {
    DLFactoryBase* returnValue = 0;
 
@@ -170,10 +170,10 @@ DLFactoryManager<T>::fetch( const string& iName,
    }
 
    //Try to dynamically load a factory
-    if( true == m_soh.load( iName, string(""), iChooser, oShortName ) ) {
+    if( true == m_soh.load( iName, std::string(""), iChooser, oShortName ) ) {
       //search for the proper symbol
 
-      // string consists of factorySymbols separated by ":"
+      // std::string consists of factorySymbols separated by ":"
       StringTokenizer symbols( T::factorySymbol(), ':' );
       DABoolean loadingWithSecondaryFactory = false;
       while( symbols.hasMoreElements() ) 
@@ -183,9 +183,9 @@ DLFactoryManager<T>::fetch( const string& iName,
 	 {
 	    report( WARNING, kDLFactoryManagerFacilityString )
 	       << loadingAsSuperClassMesg( iName )
-	       << endl;
+	       << std::endl;
 	 }
-	 string factorySymbolString( symbols.nextElement() );
+	 std::string factorySymbolString( symbols.nextElement() );
 	 void* symbol = 0;
 	 DABoolean status = m_soh.getSymbol( oShortName, 
 					     factorySymbolString,
@@ -214,7 +214,7 @@ DLFactoryManager<T>::fetch( const string& iName,
       {
 	 report( ERROR, kDLFactoryManagerFacilityString )
 	    << symbolErrorMesg( iName )
-	    << endl;
+	    << std::endl;
 	 
 	 // might as well unload object
 	 m_soh.unload( oShortName );
@@ -232,11 +232,11 @@ DLFactoryManager<T>::fetch( const string& iName,
 // const member functions
 //
 template <class T>
-string
-DLFactoryManager<T>::listAvailable(const string& iPattern ) const
+std::string
+DLFactoryManager<T>::listAvailable(const std::string& iPattern ) const
 {
-   const string kMemory( "memory/");
-   string returnValue = kMemory;
+   const std::string kMemory( "memory/");
+   std::string returnValue = kMemory;
 
    FactoryMap::const_iterator itEnd = m_factoryMap.end();
    for( FactoryMap::const_iterator itFactory = m_factoryMap.begin();
@@ -244,11 +244,11 @@ DLFactoryManager<T>::listAvailable(const string& iPattern ) const
 	++itFactory) {
  
       if( 0 == m_soh.fetch( (*itFactory).first ) ) {
-	 returnValue += string( " " ) + (*itFactory).first + string( "\n" );
+	 returnValue += std::string( " " ) + (*itFactory).first + std::string( "\n" );
       }
    }
    if( returnValue.size() == kMemory.size() ) {
-      returnValue += string("\n");
+      returnValue += std::string("\n");
    }
 
    returnValue += m_soh.listAvailable( iPattern );
@@ -257,55 +257,55 @@ DLFactoryManager<T>::listAvailable(const string& iPattern ) const
 }
 
 template <class T>
-string
+std::string
 DLFactoryManager<T>::listLoaded() const
 {
-   string returnValue;
+   std::string returnValue;
    
    FactoryMap::const_iterator itEnd = m_factoryMap.end();
    for( FactoryMap::const_iterator itFactory = m_factoryMap.begin();
 	itFactory != itEnd;
 	++itFactory) {
  
-      returnValue += string( " " ) + (*itFactory).first + string( " :  " )
-	 + fullName( (*itFactory).first ) + string( "\n" );
+      returnValue += std::string( " " ) + (*itFactory).first + std::string( " :  " )
+	 + fullName( (*itFactory).first ) + std::string( "\n" );
    }
    return returnValue;
 }
 
 template< class T>
 DABoolean
-DLFactoryManager<T>::isLoaded(const string& iName ) const
+DLFactoryManager<T>::isLoaded(const std::string& iName ) const
 {
    return (m_factoryMap.end() != m_factoryMap.find(iName) );
 }
 
 template< class T >
-string 
-DLFactoryManager<T>::fullName( const string& iName ) const
+std::string 
+DLFactoryManager<T>::fullName( const std::string& iName ) const
 {
-   string returnValue = m_soh.fullName( iName );
-   if( returnValue == string( "" ) ) {
-      returnValue = string( "memory" );
+   std::string returnValue = m_soh.fullName( iName );
+   if( returnValue == std::string( "" ) ) {
+      returnValue = std::string( "memory" );
    }
    
    return returnValue;
 }
 
 template< class T >
-string
-DLFactoryManager< T >::loadingAsSuperClassMesg( const string& iName ) const
+std::string
+DLFactoryManager< T >::loadingAsSuperClassMesg( const std::string& iName ) const
 {
-   string returnValue = string( "Loading " ) 
-      + iName + string( " as a superclass" );
+   std::string returnValue = std::string( "Loading " ) 
+      + iName + std::string( " as a superclass" );
    return returnValue;
 }
 
 template< class T >
-string
-DLFactoryManager< T >::symbolErrorMesg( const string& iName ) const
+std::string
+DLFactoryManager< T >::symbolErrorMesg( const std::string& iName ) const
 {
-   string returnValue = string( "Can't find symbol for " ) + iName;
+   std::string returnValue = std::string( "Can't find symbol for " ) + iName;
    return returnValue;
 }
 

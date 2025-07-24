@@ -33,7 +33,7 @@ const char* const kDAExceptionStackNameEntryFacilityString = "DAExceptionStackNa
 class DAExceptionStackNameEntry
 {
   public:
-     DAExceptionStackNameEntry(const string& name);
+     DAExceptionStackNameEntry(const std::string& name);
      ~DAExceptionStackNameEntry();
 
    private:

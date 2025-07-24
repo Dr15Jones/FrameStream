@@ -54,7 +54,7 @@ class DHNoRecordException : public DAExceptionBase
       // ---------- Constructors and destructor ----------------
       DHNoRecordException(const Stream::Type& iStream )
 	 : m_stream( iStream )  {
-	    m_message = string("No ") +
+	    m_message = std::string("No ") +
 	       m_stream.value() +
 	       " Record found in the Frame";
       }
@@ -89,7 +89,7 @@ class DHNoRecordException : public DAExceptionBase
 
       // ---------- data members -------------------------------
       Stream::Type m_stream;
-      string m_message;
+      std::string m_message;
 
       // ---------- static data members ------------------------
 

@@ -34,7 +34,7 @@
 
 #include "DataStorage/FrameStorer.h"
 
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 #include "JobControl/FilterBase.h"
 
@@ -77,21 +77,21 @@ class ProcessingPaths : public SSSlotted
       DABoolean remove(JobControlNS::FilterBase* );
       
       ///assumes all Paths are specified in the list
-      void reorder(const STL_VECTOR(JobControlNS::Path*)& iOrder);
+      void reorder(const std::vector<JobControlNS::Path*>& iOrder);
       
       //slots
-      void addSink(const string&);
-      void removeSink(const string&);
+      void addSink(const std::string&);
+      void removeSink(const std::string&);
 
-      void addProcessor(const string&);
-      void removeProcessor(const string&);
+      void addProcessor(const std::string&);
+      void removeProcessor(const std::string&);
 
-      void processorNotBeingUsed(const string&, DABoolean&);
+      void processorNotBeingUsed(const std::string&, DABoolean&);
       
       // ---------- const member functions ---------------------
-      const STL_VECTOR(JobControlNS::Path*)& paths() const { return m_paths; }
-      const STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterBase> )& filters() const {return m_definedFilters;}
-      const STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterProc> )& filterProcs() const {return m_filterProcs;}
+      const std::vector<JobControlNS::Path*>& paths() const { return m_paths; }
+      const std::vector<JobControlNS::Holder<JobControlNS::FilterBase> >& filters() const {return m_definedFilters;}
+      const std::vector<JobControlNS::Holder<JobControlNS::FilterProc> >& filterProcs() const {return m_filterProcs;}
 
       // ---------- static member functions --------------------
 
@@ -115,11 +115,11 @@ class ProcessingPaths : public SSSlotted
       SinkManager* m_sinkManager;
       MasterProcessor* m_masterProcessor;
 
-      STL_VECTOR(JobControlNS::Path*) m_paths;
+      std::vector<JobControlNS::Path*> m_paths;
 
-      STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterBase> ) m_definedFilters;
+      std::vector<JobControlNS::Holder<JobControlNS::FilterBase> > m_definedFilters;
       
-      STL_VECTOR(JobControlNS::Holder<JobControlNS::FilterProc> ) m_filterProcs;
+      std::vector<JobControlNS::Holder<JobControlNS::FilterProc> > m_filterProcs;
       
       JobControlNS::FilterAnd* m_defaultFilter;
       

@@ -106,8 +106,8 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include "C++Std/iostream.h"
-#include "C++Std/iomanip.h"
+#include <iostream>
+#include <iomanip>
 #include <assert.h>
 #include <stdlib.h>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
@@ -164,17 +164,6 @@ Module::Module( const Module::Name& iName, const Module::Name& iDescription )
      m_historyCommand( "history", this ),
      m_runCommandFileCommand( "run_file", this )
 {
-   // check for out-of-memory
-   if(    0 == &m_commands 
-      )
-   {
-      report( EMERGENCY ,
-              kFacilityString )
-                 << "Unable to allocate memory"
-                 << endl ;
-      assert(false);
-      ::exit( 1 );
-   }
 }
 
 
@@ -242,7 +231,7 @@ Module::quit()
 void
 Module::help()
 {
-   ostream& os = report( SYSTEM, "Suez" );
+  std::ostream& os = report( SYSTEM, "Suez" );
 
    os << "The following commands are available:\n";
 
@@ -267,11 +256,11 @@ Module::help()
    {
       if( 1 == (i % nOfColumns) ) os << "  ";
       // os.setf( ios::left, ios::adjustfield );
-      os << setiosflags( ios::left )
-	   << setw( largestSize ) << (*comIter).first << "\t";
+      os << std::setiosflags( std::ios::left )
+	   << std::setw( largestSize ) << (*comIter).first << "\t";
       if( 0 == (i % nOfColumns) ) os << "\n";
    }
-   os << "\nType \"<command> help\" to get specific help." << endl;
+   os << "\nType \"<command> help\" to get specific help." << std::endl;
 }
 
 void
@@ -341,18 +330,18 @@ Module::terminate( void )
 void
 Module::bindCommand( Command* iCommand )
 { 
-//   pair< Commands::iterator, DABoolean > result = 
-   pair< Commands::iterator, DABoolean > result = 
+//   std::pair< Commands::iterator, DABoolean > result = 
+   std::pair< Commands::iterator, DABoolean > result = 
       commands().insert( Commands::value_type( iCommand->name(), 
 					       iCommand ) );
    if( false == result.second ) {
       report( ERROR, kFacilityString )
-	 << "cannot insert command " << iCommand->name() << endl;
+	 << "cannot insert command " << iCommand->name() << std::endl;
    }
    else {
       report( SYSTEM, "Module" )
 	 << "added command \"" << iCommand->name() << "\" from " << name() 
-	 << endl;
+	 << std::endl;
    }
 }
 
@@ -360,17 +349,17 @@ void
 Module::bindInternalCommand( Command* iCommand )
 { 
    assert( 0 != iCommand );
-   pair< Commands::iterator, DABoolean > result = 
+   std::pair< Commands::iterator, DABoolean > result = 
       internalCommands().insert( Commands::value_type( iCommand->name(), 
 						       iCommand ) );
    if( false == result.second ) {
       report( ERROR, kFacilityString )
-	 << "cannot insert command " << iCommand->name() << endl;
+	 << "cannot insert command " << iCommand->name() << std::endl;
    }
    //else {
    //  report( SYSTEM, kFacilityString )
    // << "added command \"" << iCommand->name() << "\" from " << name() 
-   // << endl;
+   // << std::endl;
    //}
 }
 
@@ -381,7 +370,7 @@ Module::unbindInternalCommand( Command* iCommand )
    Commands::size_type result = internalCommands().erase( iCommand->name() );
    if( 0 == result ) {
       report( ERROR, kFacilityString )
-	 << "cannot erase command " << iCommand->name() << endl;
+	 << "cannot erase command " << iCommand->name() << std::endl;
    }
 }
 
@@ -390,7 +379,7 @@ void
 Module::addModule( Module* iModule, DABoolean iOwnMemory )
 { 
    report( ERROR, kFacilityString )
-      << "I am a module; can't add other modules" << endl;
+      << "I am a module; can't add other modules" << std::endl;
 }
 
 DABoolean 
@@ -398,7 +387,7 @@ Module::removeModule( const Module::Name& iName )
 {  
    DABoolean returnValue = false;
    report( ERROR, kFacilityString )
-      << "I am a module; can't add other modules" << endl;
+      << "I am a module; can't add other modules" << std::endl;
    return returnValue;
 }
 
@@ -407,7 +396,7 @@ Module::clearModules()
 {  
    DABoolean returnValue = true;
    report( ERROR, kFacilityString )
-      << "I am a module; can't add other modules" << endl;
+      << "I am a module; can't add other modules" << std::endl;
    return returnValue;
 }
 
@@ -437,18 +426,18 @@ Module::fetchModule( const Module::Name& iName )
 {
    Module* returnValue = 0;
    report( ERROR, kFacilityString )
-      << "I am a module; can't contain other modules" << endl;
+      << "I am a module; can't contain other modules" << std::endl;
    return returnValue;
 }
 
 // interface conforming to CompositePattern
-string
+std::string
 Module::listModules() const
 {
-   string resultString( "\n" );
+   std::string resultString( "\n" );
    report( EMERGENCY, kFacilityString )
       << "I am a module; can't contain other modules" 
-      << endl;
+      << std::endl;
    assert( false );
    ::exit( 1 );
    return resultString;
@@ -459,7 +448,7 @@ Module::containsModule( const Module::Name& iName ) const
 {
    DABoolean returnValue = false;
    report( ERROR, kFacilityString )
-      << "I am a module; can't contain other modules" << endl;
+      << "I am a module; can't contain other modules" << std::endl;
    return returnValue;
 }
 
@@ -468,14 +457,14 @@ Module::fetchModule( const Module::Name& iName ) const
 {
    const Module* returnValue = 0;
    report( ERROR, kFacilityString )
-      << "I am a module; can't contain other modules" << endl;
+      << "I am a module; can't contain other modules" << std::endl;
    return returnValue;
 }
 
 //
 // static member functions
 //
-string
+std::string
 Module::factorySymbol()
 {
    return "makeModule"; 

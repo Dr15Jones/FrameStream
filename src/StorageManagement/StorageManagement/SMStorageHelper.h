@@ -43,7 +43,7 @@
 // user include files
 #include "StorageManagement/SMStorageHelperRegisterBase.h"
 #include "StorageManagement/sm_macros.h"
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 #include "StorageManagement/SMSourceStream.h"
 // forward declarations
 
@@ -125,7 +125,7 @@ class SMStorageHelper : public SMStorageHelperRegisterBase
       //  EACH instatiation of SMStorageHelper
       // This should be safe since only add to this vector from
       //  registerDeliverVersion()
-      STL_VECTOR( void* ) m_deliverers;
+      std::vector< void* > m_deliverers;
 
       // ---------- static data members ------------------------
 

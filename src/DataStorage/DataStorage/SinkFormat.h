@@ -44,10 +44,10 @@
 
 // forward declarations
 class DataSinkBinder;
-#include "STLUtility/fwd_set.h"
+#include <set>
 #include <set>
 #if !defined(_sinkformat_extensions_)
-#define _sinkformat_extensions_ STL_SET( string )
+#define _sinkformat_extensions_ std::set< std::string >
 #endif
 
 class SinkFormat
@@ -64,11 +64,11 @@ class SinkFormat
 
       // ---------- member functions ---------------------------
       virtual DataSinkBinder* 
-      createBinder( const string& iName,
+      createBinder( const std::string& iName,
 		    const Stream::Set& iBindStreams ) = 0;
 
       virtual DataSinkBinder*
-      createBinder( const string& iName,
+      createBinder( const std::string& iName,
 		    const Stream::Set& iBindStreams,
                     const StreamToDataStringTagsToStoreMap& iStreamTagsMap);
                     
@@ -78,11 +78,11 @@ class SinkFormat
       virtual DABoolean canSpecifyDataToStore() const ;
       
       // ---------- static member functions --------------------
-      static string factorySymbol();
+      static std::string factorySymbol();
 
    protected:
       // ---------- protected member functions -----------------
-      void addExtension( const string& iExtension );
+      void addExtension( const std::string& iExtension );
 
       // ---------- protected const member functions -----------
 

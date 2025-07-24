@@ -21,10 +21,6 @@
 // system include files
 #include <stdlib.h> // for exit
 #include <assert.h>
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <vector>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Experiment/report.h"
@@ -36,7 +32,7 @@
 //
 // constants, enums and typedefs
 //
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const 
+static const char* const 
 kOrderedMapFacilityString = "CommandPattern.OrderedMap";
 
 //
@@ -50,14 +46,6 @@ template< class Key, class Item >
 OrderedMap< Key, Item >::OrderedMap() 
    : m_items( *new _OrderedMap_items_ )
 {
-   if( 0 == &m_items )
-   {
-      report( EMERGENCY, kOrderedMapFacilityString )
-	 << "Unable to allocate memory"
-	 << endl ;
-      assert(false);
-      ::exit( 1 );
-   }
 }
 
 // OrderedMap::OrderedMap( const OrderedMap& )
@@ -174,10 +162,10 @@ OrderedMap< Key, Item >::find( const Key& iKey ) const
 }
 
 template< class Key, class Item >
-string
+std::string
 OrderedMap< Key, Item >::list() const
 {
-   string returnValue;
+   std::string returnValue;
 
    const_iterator end( m_items.end() );
    for( const_iterator iter = m_items.begin();
@@ -185,7 +173,7 @@ OrderedMap< Key, Item >::list() const
         ++iter )
    {
       // assemble return string
-      returnValue += string( " " ) + (*iter).first + string( "\n" );
+      returnValue += std::string( " " ) + (*iter).first + std::string( "\n" );
    }
 
    return returnValue;

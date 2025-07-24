@@ -63,7 +63,7 @@ DBOneWriter< YourItemHere >::storeContents( const YourItemHere& iItem,
 
 #ifdef CLEO_DEBUG   
    report( DEBUG, kFacilityString )
-      << "DBOneWriter< YourItemHere >::storeContents()" << endl;
+      << "DBOneWriter< YourItemHere >::storeContents()" << std::endl;
 #endif   
 
    // get ahold of proper handle for stream
@@ -88,13 +88,13 @@ DBOneWriter< YourItemHere >::storeContents( const YourItemHere& iItem,
    return storeStatus;
 }
 
-const string&
+const std::string&
 DBOneWriter< YourItemHere >::storageName() const
 {
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Please fill in the storage category name:
 // (e.g. Tracking, Showering, Misc, etc.)
-   static string returnValue( "Misc" );
+   static std::string returnValue( "Misc" );
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    return returnValue;
 }

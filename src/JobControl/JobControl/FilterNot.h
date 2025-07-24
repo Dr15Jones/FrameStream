@@ -42,7 +42,7 @@ class FilterNot : public FilterBase
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      FilterNot(const string& iName, FilterBase* );
+      FilterNot(const std::string& iName, FilterBase* );
       //virtual ~FilterNot();
 
       // ---------- member functions ---------------------------
@@ -54,7 +54,7 @@ class FilterNot : public FilterBase
 
       virtual DABoolean contains(const FilterBase*) const;
       
-      virtual string description() const ;
+      virtual std::string description() const ;
       // ---------- static member functions --------------------
 
    protected:

@@ -47,12 +47,12 @@ class PDSSourceFormat : public SourceFormat
       virtual ~PDSSourceFormat();
 
       // ---------- member functions ---------------------------
-      virtual BinderBase* createBinder( const string& iName,
+      virtual BinderBase* createBinder( const std::string& iName,
                                         const Stream::Set& iBindStreams );
 
       // ---------- const member functions --------------------
       //determine the streams by looking at the file
-      virtual const Stream::Set& defaultStreams( const string& iName);
+      virtual const Stream::Set& defaultStreams( const std::string& iName);
 
       // ---------- static member functions --------------------
 

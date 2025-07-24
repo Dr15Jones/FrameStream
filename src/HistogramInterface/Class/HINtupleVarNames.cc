@@ -58,7 +58,7 @@ HINtupleVarNames::HINtupleVarNames( unsigned int iNumberOfVariables ) :
    m_varNames = new char*[ m_nVars ];
 
    if( 0 == m_varNames ){
-      report( ERROR, kFacilityString ) << "Unable to allocate memory" << endl;
+      report( ERROR, kFacilityString ) << "Unable to allocate memory" << std::endl;
       assert(false);
       exit(-1);
    }
@@ -114,7 +114,7 @@ HINtupleVarNames::addVar( unsigned int iIndex, const char* iName )
       report( ERROR, kFacilityString ) 
 	 <<"addVar( "<<iIndex<<" , " << iName << "):\n"
 	 <<"index is larger than or equal to number of Variables="
-	 << m_nVars <<endl;
+	 << m_nVars <<std::endl;
       exit( -1 );
    }
 
@@ -123,7 +123,7 @@ HINtupleVarNames::addVar( unsigned int iIndex, const char* iName )
       report( ERROR, kFacilityString ) 
 	 <<"addVar( "<<iIndex<<" , " << iName << "):\n"
 	 <<"index has already been assigned during call to "
-	 <<"addVar( "<<iIndex<<" , " << m_varNames[ iIndex ]<< ")" << endl;
+	 <<"addVar( "<<iIndex<<" , " << m_varNames[ iIndex ]<< ")" << std::endl;
 
       exit( -1 );
    }
@@ -138,7 +138,7 @@ HINtupleVarNames::addVar( unsigned int iIndex, const char* iName )
 	       <<"addVar( "<<iIndex<<" , " << iName << "):\n"
 	       <<"name has already been assigned during call to "
 	       <<"addVar( "<<pIndex - m_varNames <<" , " << iName << ")" 
-	       << endl;
+	       << std::endl;
 	    exit( -1 );
 	 }
       }
@@ -149,7 +149,7 @@ HINtupleVarNames::addVar( unsigned int iIndex, const char* iName )
    *pName = new char[ strlen( iName ) + 1];
 
    if( 0 == *pName ){
-      report( ERROR, kFacilityString ) << "Out of memory" << endl;
+      report( ERROR, kFacilityString ) << "Out of memory" << std::endl;
       assert(false);
       exit( -1 );
    }
@@ -170,7 +170,7 @@ HINtupleVarNames::names() const
       if( 0 == *pIndex ) { 
 	 report(ERROR, kFacilityString)
 	    <<" NTuple has missing variable name for index: " 
-	    << pIndex - m_varNames << endl;
+	    << pIndex - m_varNames << std::endl;
 	 exit( -1 );
       }
    }

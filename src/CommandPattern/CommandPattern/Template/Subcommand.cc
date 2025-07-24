@@ -66,7 +66,7 @@ static const char* const kTagString = "$Name:  $";
 //
 /*
 template< class T >
-Subcommand<T>::Subcommand( const string& iName,
+Subcommand<T>::Subcommand( const std::string& iName,
 			   Count iMinArgs,
 			   Count iMaxArgs,
 			   SubcommandFunction& iFunction )

@@ -31,7 +31,7 @@
 // user include files
 #include "CommandPattern/Keyword/Base.h"
 
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 // forward declaration
 
 namespace CommandPattern
@@ -46,7 +46,7 @@ class NumArgComposite : public Base
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      NumArgComposite(const string& iName);
+      NumArgComposite(const std::string& iName);
       virtual ~NumArgComposite();
 
       // ---------- member functions ---------------------------
@@ -86,7 +86,7 @@ class NumArgComposite : public Base
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      STL_VECTOR(Base*) m_keywords;
+      std::vector<Base*> m_keywords;
 
       unsigned int m_minArgs;
       unsigned int m_maxArgs;

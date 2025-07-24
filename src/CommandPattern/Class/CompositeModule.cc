@@ -18,7 +18,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <assert.h>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <vector>
@@ -57,18 +57,6 @@ CompositeModule::CompositeModule( const Module::Name& iName,
    : Module( iName, iDescription ),
      m_modules( *new Modules )
 {
-   // --------- check for out-of-memory errors -----------------
-   if(    0 == &m_modules 
-      )
-   {
-      report( EMERGENCY ,
-              kFacilityString )
-                 << "Unable to allocate memory"
-                 << endl ;
-      assert(false);
-      ::exit( 1 );
-   }
-
 }
 
 // CompositeModule::CompositeModule( const CompositeModule& )
@@ -106,7 +94,7 @@ CompositeModule::addModule( Module* iModule, DABoolean iOwnMemory )
    // and bind commands
    if( true == iModule->commands().empty() ) {
       report( WARNING, kFacilityString )
-	 << "no command(s) for module " << iModule->name() << endl;
+	 << "no command(s) for module " << iModule->name() << std::endl;
    }
    Module::Commands::const_iterator itEnd = iModule->commands().end();
    for( Module::Commands::const_iterator it = iModule->commands().begin();
@@ -187,7 +175,7 @@ CompositeModule::clearModules()
 
       if( true == info.m_ownMemory ) {
 	 report( DEBUG, kFacilityString )
-	    << "explicitly deleting module " << info.m_module->name() << endl;
+	    << "explicitly deleting module " << info.m_module->name() << std::endl;
 	 delete info.m_module;
       }
    }
@@ -239,21 +227,21 @@ CompositeModule::fetchModule( const Module::Name& iName ) const
    return returnValue;
 }
 
-string
+std::string
 CompositeModule::listModules() const
 {
-   string resultString;
+  std::string resultString;
 
    resultString += name() 
-      + string( " contains: ('static' means you cannot remove)\n" );
+      +std::string( " contains: ('static' means you cannot remove)\n" );
    for( Modules::const_iterator modIter = m_modules.begin();
         modIter != m_modules.end();
         ++modIter )
    {
       const ModuleInfo& info = *modIter;
       const char* const ownMemoryString = ( info.m_ownMemory ) ? "static" : "";
-      resultString += info.m_module->name() + string( " " )
-	 + ownMemoryString + string( "\n" );
+      resultString += info.m_module->name() +std::string( " " )
+	 + ownMemoryString +std::string( "\n" );
    }
 
    return resultString;
@@ -303,7 +291,7 @@ CompositeModule::modules() const
 // unload static modules AFTER dynamic modules
 //
 // Revision 1.6  1999/02/22 23:40:38  mkl
-// setResult( string ) insteadof report in Commands; added NamingService and DefaultModule; fixed bug in stream command
+// setResult(std::string ) insteadof report in Commands; added NamingService and DefaultModule; fixed bug in stream command
 //
 // Revision 1.5  1999/01/22 04:33:43  mkl
 // better printout for 'module ls'
@@ -315,7 +303,7 @@ CompositeModule::modules() const
 // minor cleanup
 //
 // Revision 1.2  1998/11/09 21:24:31  mkl
-// loadable classes know their own factorySymbol string; improved user iface of ModuleCommand
+// loadable classes know their own factorySymbolstd::string; improved user iface of ModuleCommand
 //
 // Revision 1.1  1998/11/09 19:30:55  mkl
 // revamped Module/Command system to allow uniform loading of source/sink-formats, modules, processors/producers

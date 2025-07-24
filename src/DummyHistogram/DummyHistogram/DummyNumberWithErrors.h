@@ -43,7 +43,7 @@ class DummyNumberWithErrors : public HINumberWithErrors
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      DummyNumberWithErrors( const string& iName,
+      DummyNumberWithErrors( const std::string& iName,
 			     float         iValue,
 			     float         iPositiveError,
 			     float         iNegativeError );

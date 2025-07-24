@@ -75,7 +75,7 @@ static const char* const kTagString = "$Name:  $";
 DBEventHeaderProd::DBEventHeaderProd( void )               // anal1
    : Producer( "DBEventHeaderProd" )
 {
-   report( DEBUG, kFacilityString ) << "here in ctor()" << endl;
+   report( DEBUG, kFacilityString ) << "here in ctor()" << std::endl;
 
    // ----- register proxy factories ------------------
    // (Please see the "ProxyExample" library for examples!)
@@ -108,7 +108,7 @@ template class ProxyFactory< DBEventHeaderProxy >;
 
 DBEventHeaderProd::~DBEventHeaderProd()                    // anal5
 {
-   report( DEBUG, kFacilityString ) << "here in dtor()" << endl;
+   report( DEBUG, kFacilityString ) << "here in dtor()" << std::endl;
  
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
@@ -137,7 +137,7 @@ DBEventHeaderProd::~DBEventHeaderProd()                    // anal5
 void
 DBEventHeaderProd::init( void )          // anal1 "Interactive"
 {
-   report( DEBUG, kFacilityString ) << "here in init()" << endl;
+   report( DEBUG, kFacilityString ) << "here in init()" << std::endl;
 
    // do any initialization here based on Parameter Input by User
    // (e.g. run expensive algorithms that are based on parameters
@@ -149,7 +149,7 @@ DBEventHeaderProd::init( void )          // anal1 "Interactive"
 void
 DBEventHeaderProd::terminate( void )     // anal5 "Interactive"
 {
-   report( DEBUG, kFacilityString ) << "here in terminate()" << endl;
+   report( DEBUG, kFacilityString ) << "here in terminate()" << std::endl;
 
    // do anything here BEFORE New Parameter Change
    // (e.g. write out result based on parameters from user-input)
@@ -160,7 +160,7 @@ DBEventHeaderProd::terminate( void )     // anal5 "Interactive"
 void
 DBEventHeaderProd::hist_book( TBHistoManager& )
 {
-   report( DEBUG, kFacilityString ) << "here in hist_book()" << endl;
+   report( DEBUG, kFacilityString ) << "here in hist_book()" << std::endl;
 
    // book your histograms here
 

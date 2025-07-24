@@ -151,25 +151,20 @@
 #include "Utility/UTIdentifier.h"
 
 // STL classes
-#if defined(OLD_CXX_STRING_CLASS_BUG)
-#include <C++Std/fwd_string.h>
-#include <String.h>
-#else
 #include <string>
-#endif /* OLD_CXX_STRING_CLASS_BUG */
 
 // forward declarations
-#include "C++Std/fwd_ostream.h"
-#include "STLUtility/fwd_vector.h"
+#include <iosfwd>
+#include <vector>
 class Stream ;
 
 #if !defined(_streamtype_priorities_)
-#define _streamtype_priorities_ STL_VECTOR( StreamType::Priority )
-#define _streamtype_arestandard_ STL_VECTOR( DABoolean )
+#define _streamtype_priorities_ std::vector< StreamType::Priority >
+#define _streamtype_arestandard_ std::vector< DABoolean >
 #endif /* _streamtype_priorities_ */
 
 
-class StreamType : public UTIdentifier< string, Stream >
+class StreamType : public UTIdentifier< std::string, Stream >
 {
       // friend classses and functions
 
@@ -180,8 +175,8 @@ class StreamType : public UTIdentifier< string, Stream >
 
       // Constructors and destructor
       StreamType( void );
-      StreamType( const string& iString );
-      StreamType( const string& iString, 
+      StreamType( const std::string& iString );
+      StreamType( const std::string& iString, 
 		  Priority iPriority,
 		  DABoolean iIsStandard=false);
       virtual ~StreamType();
@@ -225,8 +220,8 @@ class StreamType : public UTIdentifier< string, Stream >
 
 // inline function definitions
 
-ostream& operator<<( ostream& iOStream, const StreamType& iStreamType );
-istream& operator>>( istream& iIStream, StreamType& iStreamType ) ;
+std::ostream& operator<<(std::ostream& iOStream, const StreamType& iStreamType );
+std::istream& operator>>( std::istream& iIStream, StreamType& iStreamType ) ;
       
 // needed so forward decleration in Stream.h can be done
 
@@ -240,7 +235,7 @@ istream& operator>>( istream& iIStream, StreamType& iStreamType ) ;
 namespace std {
 #endif
 template<>
-struct less< StreamType> : public UTIdentifierLess< string, Stream >
+struct less< StreamType> : public UTIdentifierLess< std::string, Stream >
 {
 };
 #if !defined( NO_STD_NAMESPACE_BUG)

@@ -78,13 +78,6 @@ template< class T >
 NamingService< T >::NamingService()
    : m_name2Object( *new _naming_service_namemap_ )
 {
-   if( 0 == &m_name2Object )
-   {
-      report( EMERGENCY, kNamingServiceFacilityString )
-	 << "out of memory" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 // template< class T >
@@ -121,7 +114,7 @@ NamingService< T >::~NamingService()
 //
 template< class T >
 DABoolean 
-NamingService< T >::registerObject( const string& iName,
+NamingService< T >::registerObject( const std::string& iName,
 				    T* iObject )
 {
    DABoolean returnValue = true;
@@ -135,7 +128,7 @@ NamingService< T >::registerObject( const string& iName,
    {
       report( INFO, kNamingServiceFacilityString )
 	 << "Object with name " << iName << " has already been entered" 
-	 << endl;
+	 << std::endl;
       returnValue = true;
    }
 
@@ -144,7 +137,7 @@ NamingService< T >::registerObject( const string& iName,
 
 template< class T >
 DABoolean 
-NamingService< T >::deregisterObject( const string& iName )
+NamingService< T >::deregisterObject( const std::string& iName )
 {
    DABoolean returnValue = true;
 
@@ -153,7 +146,7 @@ NamingService< T >::deregisterObject( const string& iName )
    {
       report( ERROR, kNamingServiceFacilityString )
 	 << "No such Object with name " << iName
-	 << endl;
+	 << std::endl;
       returnValue = false;
    }
    else
@@ -169,7 +162,7 @@ NamingService< T >::deregisterObject( const string& iName )
 //
 template< class T >
 T*
-NamingService< T >::resolve( const string& iName )
+NamingService< T >::resolve( const std::string& iName )
 {
    T* returnValue = 0;
 
@@ -182,7 +175,7 @@ NamingService< T >::resolve( const string& iName )
    {
       report( ERROR, kNamingServiceFacilityString )
 	 << "Cannot find Object with name " << iName
-	 << endl;
+	 << std::endl;
    }
 
    return returnValue;

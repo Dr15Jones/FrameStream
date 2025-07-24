@@ -45,7 +45,7 @@ class OneArgNoReturn : public Base
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      OneArgNoReturn( const string& iName,
+      OneArgNoReturn( const std::string& iName,
 			      T* iTarget,
 			      void (T::* iMethod)(ArgT),
                               const ParserT& iParser = ParserT(),

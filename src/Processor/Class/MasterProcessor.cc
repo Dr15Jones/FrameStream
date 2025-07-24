@@ -20,14 +20,7 @@
 
 // system include files
 #include <stdlib.h> // for exit
-#include <assert.h>
-#if defined(AMBIGUOUS_STRING_FUNCTIONS_BUG)
-#include <string>
-#endif
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <vector>
-#include <map>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
+#include <cassert>
 
 // user include files
 #include "Experiment/report.h"
@@ -47,12 +40,7 @@
 
 // STL classes
 #include <vector>
-#if defined(MULTIMAP_IS_SEPARATE_FILE_BUG)
-#  include <map>
-#  include <multimap.h>
-#else
-#  include <map>
-#endif                                                                        
+#include <map>
 //
 // constants, enums and typedefs
 //
@@ -73,12 +61,6 @@ MasterProcessor::MasterProcessor( FrameDeliverer& iFrameDeliverer )
      m_command( *new ProcessorCommand( "proc", this ) ),
      m_frameDeliverer( iFrameDeliverer )
 {
-   if( 0 == &m_command ) {
-      report( EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 // MasterProcessor::MasterProcessor( const MasterProcessor& )
@@ -205,7 +187,7 @@ MasterProcessor::registerProviders( DABoolean iForceReload )
 	    // << "Force-reload: Error removing Processor " 
 	    // << processor->name() 
 	    // << " from FrameDeliverer" 
-	    // << endl;
+	    // << std::endl;
 	    //}
 	 }
 
@@ -219,7 +201,7 @@ MasterProcessor::registerProviders( DABoolean iForceReload )
 	       << "Error adding Processor " 
 	       << processor->name() 
 	       << " to FrameDeliverer" 
-	       << endl;
+	       << std::endl;
 	 }
       }
    }
@@ -259,19 +241,19 @@ MasterProcessor::executeActions( const Stream::Type& streamType,
       if( ActionBase::kFailed == returnValue )
       {
 	 report( DEBUG, kFacilityString ) 
-	    << "ActionBase::kFailed" << endl;
+	    << "ActionBase::kFailed" << std::endl;
 	 break;
       }
       if( ActionBase::kError == returnValue )
       {
 	 report( DEBUG, kFacilityString ) 
-	    << "ActionBase::kError" << endl;
+	    << "ActionBase::kError" << std::endl;
 	 break;
       }
       if( ActionBase::kStopProcessLoop == returnValue )
       {
 	 report( DEBUG, kFacilityString ) 
-	    << "ActionBase::kStopProcessLoop" << endl;
+	    << "ActionBase::kStopProcessLoop" << std::endl;
 	 break;
       }
    }
@@ -288,7 +270,7 @@ MasterProcessor::executeActions( const Stream::Type& streamType,
  
 // ------------- overridden MultiLoader< Processor > method
 void
-MasterProcessor::initialize( const string& iName, Processor& iProcessor )
+MasterProcessor::initialize( const std::string& iName, Processor& iProcessor )
 {
    // call globally visible symbol to make debugging easier
    procsel();
@@ -299,7 +281,7 @@ MasterProcessor::initialize( const string& iName, Processor& iProcessor )
 
 // ------------- overridden MultiLoader< Producer > method
 void
-MasterProcessor::initializeTag( const string& iTag, Processor& iProcessor )
+MasterProcessor::initializeTag( const std::string& iTag, Processor& iProcessor )
 {
    // call globally visible symbol to make debugging easier
    procsel();
@@ -312,7 +294,7 @@ MasterProcessor::initializeTag( const string& iTag, Processor& iProcessor )
             
 // ------------- overridden MultiLoader< Processor > method
 void
-MasterProcessor::finalize( const string& iName, Processor& iProcessor )
+MasterProcessor::finalize( const std::string& iName, Processor& iProcessor )
 {
    // unregister Processor with FrameDeliverer
    FrameDeliverer::RemoveProviderStatus removeProviderStatus;
@@ -323,7 +305,7 @@ MasterProcessor::finalize( const string& iName, Processor& iProcessor )
    {
       report( DEBUG, kFacilityString )
 	 << "Removing Processor/Provider " << iName
-	 << " from FrameDeliverer failed; it had not been registered yet" << endl;
+	 << " from FrameDeliverer failed; it had not been registered yet" << std::endl;
    }
    
    // call terminate before lifetime ends
@@ -337,12 +319,12 @@ MasterProcessor::finalize( const string& iName, Processor& iProcessor )
 }
 
 DABoolean 
-MasterProcessor::canUnload(const string& iName, Processor&)
+MasterProcessor::canUnload(const std::string& iName, Processor&)
 {
    DABoolean returnValue = true;
    requestToRemoveProcessor.emit(iName,returnValue);
    if(!returnValue) {
-      report(SYSTEM,kFacilityString) <<"Processor "<<iName<<" is being used so can not be removed at this time.\n  First remove any path or filter that contains "<<iName<<endl;
+      report(SYSTEM,kFacilityString) <<"Processor "<<iName<<" is being used so can not be removed at this time.\n  First remove any path or filter that contains "<<iName<<std::endl;
    }
    return returnValue;
 }
@@ -384,10 +366,10 @@ MasterProcessor::streamsToBeActivated() const
    return streams;
 }
 
-STL_VECTOR(string)
+std::vector<std::string>
 MasterProcessor::loadedNames() const
 {
-   STL_VECTOR(string) returnValue;
+   std::vector<std::string> returnValue;
    for(_loader_loaded_map_::const_iterator itLoaded = loadedMap().begin();
        itLoaded != loadedMap().end();
        ++itLoaded ) {
@@ -397,11 +379,11 @@ MasterProcessor::loadedNames() const
 }
 
 // ------------- overridden MultiLoader< Processor > method
-string
-MasterProcessor::makeErrorMesg( const string& iName ) const
+std::string
+MasterProcessor::makeErrorMesg( const std::string& iName ) const
 {
-   string returnValue = string( "Cannot make processor; are you sure " )
-      + iName + string( " is a processor?" );
+   std::string returnValue = std::string( "Cannot make processor; are you sure " )
+      + iName + std::string( " is a processor?" );
    return returnValue;
 }
 

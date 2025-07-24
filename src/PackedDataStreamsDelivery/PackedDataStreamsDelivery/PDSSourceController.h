@@ -36,6 +36,7 @@
 
 // system include files
 #include <string>
+#include <fstream>
 
 // user include files
 #include "DataDelivery/DataSourceController.h"
@@ -56,7 +57,7 @@ class PDSSourceController : public DataSourceController
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      PDSSourceController(const string& iFileName,
+      PDSSourceController(const std::string& iFileName,
 			  const Stream::Set& iReadStreams,
 			  PDSProxyDeliverer* iDeliverer = 0 );
       
@@ -76,8 +77,8 @@ class PDSSourceController : public DataSourceController
       // ---------- const member functions ---------------------
       virtual DABoolean canRandomAccess( void ) const;
 
-      virtual string dataSourceID( void ) const;
-      virtual string parameters( void ) const;
+      virtual std::string dataSourceID( void ) const;
+      virtual std::string parameters( void ) const;
 
       // ---------- static member functions --------------------
 
@@ -97,7 +98,7 @@ class PDSSourceController : public DataSourceController
 
       // ---------- private member functions -------------------
       PDSProxyDeliverer& pdsProxyDeliverer();
-      istream& fileStream() { return m_fileHandler.stream(); }
+      std::istream& fileStream() { return m_fileHandler.stream(); }
 
       DataSourceController::SearchStatus movePeekToNextRecord();
       DataSourceController::SearchStatus ignoreRemainderOfUnwantedRecord();
@@ -105,7 +106,7 @@ class PDSSourceController : public DataSourceController
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      string m_fileName ;                 // File name of the input file
+      std::string m_fileName ;                 // File name of the input file
       PDSGunzipIFStreamHolder m_fileHandler;
       Stream::Type m_peekAheadRecordType; // Record type of next record
       SyncValue m_peekAheadSyncValue;     // SyncValue of next record

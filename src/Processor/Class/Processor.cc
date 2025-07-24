@@ -77,15 +77,8 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <assert.h>
-#if defined(AMBIGUOUS_STRING_FUNCTIONS_BUG)
+#include <cassert>
 #include <string>
-#endif                         
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <vector>
-#include <map>
-#include <algorithm>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Processor/Processor.h"
@@ -116,16 +109,6 @@ Processor::Processor( void )
      m_streamActionMap( *new StreamActionMap ),
      m_actionCommand( "action", this )
 {
-   if(    0 == &m_streamActionMap
-      )
-   {
-      report( EMERGENCY ,
-              kFacilityString )
-                 << "Unable to allocate memory"
-                 << endl ;
-      assert(false);
-      ::exit( 1 );
-   }
 }
 
 Processor::Processor( const Name& iName )
@@ -133,16 +116,6 @@ Processor::Processor( const Name& iName )
      m_streamActionMap( *new StreamActionMap ),
      m_actionCommand( "action", this )
 {
-   if(    0 == &m_streamActionMap
-      )
-   {
-      report( EMERGENCY ,
-              kFacilityString )
-                 << "Unable to allocate memory"
-                 << endl ;
-      assert(false);
-      ::exit( 1 );
-   }
 }
 
 // Processor::Processor( const Processor& )
@@ -182,14 +155,14 @@ Processor::bindAction( const Stream::Type& iStream, ActionBase* iAction )
    if( m_streamActionMap.end() == which )
    {
       m_streamActionMap.insert(
-	 pair< const Stream::Type, ActionInfo >( iStream, 
+	 std::pair< const Stream::Type, ActionInfo >( iStream, 
 						 ActionInfo( iAction, true ) ) );
    }
    else
    {
       report( EMERGENCY, kFacilityString ) 
 	 << "Trying to bind to already-bound stream \"" 
-	 << iStream.value() << "\";\n exiting job ..." << endl;
+	 << iStream.value() << "\";\n exiting job ..." << std::endl;
       ::exit( 1 );
    }
 
@@ -232,7 +205,7 @@ Processor::actions( void ) const
 //
 // static member functions
 //
-string
+std::string
 Processor::factorySymbol()
 {
    return "makeProcessor";

@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
 // Package:     <PackedDataStreamsFormat>
-// Module:      PDSPackerTemplate_s_type
+// Module:      smpackertemplate::type_s_type
 // 
 // Description: <one line class summary>
 //
@@ -10,11 +10,11 @@
 //
 // Author:      Chris D Jones
 // Created:     Fri Sep 15 20:02:09 EDT 2000
-// $Id: PDSPackerTemplate_s_type.cc,v 1.1.1.1 2000/09/29 17:46:16 cdj Exp $
+// $Id: smpackertemplate::type_s_type.cc,v 1.1.1.1 2000/09/29 17:46:16 cdj Exp $
 //
 // Revision history
 //
-// $Log: PDSPackerTemplate_s_type.cc,v $
+// $Log: smpackertemplate::type_s_type.cc,v $
 // Revision 1.1.1.1  2000/09/29 17:46:16  cdj
 // imported
 //
@@ -41,19 +41,19 @@
 // constants, enums and typedefs
 //
 
-PDSPacking::Types PDSPackerTemplate<char>::s_type = PDSPacking::kCharType;
-PDSPacking::Types PDSPackerTemplate<short>::s_type = PDSPacking::kShortType;
-PDSPacking::Types PDSPackerTemplate<int>::s_type = PDSPacking::kIntType;
-PDSPacking::Types PDSPackerTemplate<long>::s_type = PDSPacking::kLongType;
+template<> PDSPacking::Types smpackertemplate::type<char>() { return PDSPacking::kCharType;}
+template<> PDSPacking::Types smpackertemplate::type<short>() {return PDSPacking::kShortType; }
+template<> PDSPacking::Types smpackertemplate::type<int>() { return PDSPacking::kIntType; }
+template<> PDSPacking::Types smpackertemplate::type<long>() { return PDSPacking::kLongType; }
 
-PDSPacking::Types PDSPackerTemplate<unsigned char>::s_type = PDSPacking::kUCharType;
-PDSPacking::Types PDSPackerTemplate<unsigned short>::s_type = PDSPacking::kUShortType;
-PDSPacking::Types PDSPackerTemplate<unsigned int>::s_type = PDSPacking::kUIntType;
-PDSPacking::Types PDSPackerTemplate<unsigned long>::s_type = PDSPacking::kULongType;
+template<> PDSPacking::Types smpackertemplate::type<unsigned char>() { return PDSPacking::kUCharType; }
+template<> PDSPacking::Types smpackertemplate::type<unsigned short>() { return PDSPacking::kUShortType; }
+template<> PDSPacking::Types smpackertemplate::type<unsigned int>() { return PDSPacking::kUIntType; }
+template<> PDSPacking::Types smpackertemplate::type<unsigned long>() { return PDSPacking::kULongType; }
 
-PDSPacking::Types PDSPackerTemplate<float>::s_type = PDSPacking::kFloatType;
-PDSPacking::Types PDSPackerTemplate<double>::s_type = PDSPacking::kDoubleType;
-//PDSPacking::Types PDSPackerTemplate<bool>::s_type = PDSPacking::kBoolType;
+template<> PDSPacking::Types smpackertemplate::type<float>() { return PDSPacking::kFloatType; }
+template<> PDSPacking::Types smpackertemplate::type<double>() { return PDSPacking::kDoubleType; }
+//PDSPacking::Types smpackertemplate::type<bool>() { return PDSPacking::kBoolType;
 
 
 

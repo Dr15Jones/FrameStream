@@ -92,7 +92,7 @@
 // constants, enums and typedefs
 //
 
-const string kFacilityString = "DataDelivery.ProxyProvider" ;
+const std::string kFacilityString = "DataDelivery.ProxyProvider" ;
 
 typedef _proxyprovider_proxies_ StreamProxyMap ;
 typedef _proxyprovider_expired_ Expired ;
@@ -109,16 +109,6 @@ ProxyProvider::ProxyProvider( const Identifier& aId ) :
    m_streamProxies( *(new StreamProxyMap ) ) ,
    m_expired( *(new Expired ) )
 {
-   if ( ( 0 == &m_streamProxies ) ||
-	( 0 == &m_expired ) ) {
-      delete &m_streamProxies ;
-      delete &m_expired ;
-      report( EMERGENCY ,
-	      kFacilityString )
-		 << "Unable to allocate memory"
-		 << endl ;
-      exit( 1 ) ;
-   }
 }
 
 // ProxyProvider::ProxyProvider( const ProxyProvider& )
@@ -174,7 +164,7 @@ ProxyProvider::registerStream( const Stream::Type& aStream )
       report( ERROR ,
 	      kFacilityString )
 		 << "\n\tTwo calls to `registerStream' with the same stream!"
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
 #endif

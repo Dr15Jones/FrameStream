@@ -45,7 +45,7 @@ nocap//
 nocapprocname::procname( void )
 nocap   : Processor( "procname" )
 nocap{
-nocap   report( DEBUG, kFacilityString ) << "here in ctor()" << endl;
+nocap   report( DEBUG, kFacilityString ) << "here in ctor()" << std::endl;
 nocap
 nocap// ---- bind a method to a stream -----
 nocap   bind( &procname::event,    Stream::kEvent );
@@ -63,7 +63,7 @@ nocap// }
 nocap
 nocapprocname::~procname()
 nocap{
-nocap   report( DEBUG, kFacilityString ) << "here in dtor()" << endl;
+nocap   report( DEBUG, kFacilityString ) << "here in dtor()" << std::endl;
 nocap
 nocap   // call user routine
 nocap   anal5_();
@@ -90,7 +90,7 @@ nocap// -------------------------- methods bound to streams -------------
 nocapActionBase::ActionResult
 nocapprocname::event( Frame& )
 nocap{
-nocap   report( DEBUG, kFacilityString ) << "here in event()" << endl;
+nocap   report( DEBUG, kFacilityString ) << "here in event()" << std::endl;
 nocap
 nocap   // call user routine
 nocap   anal3_();
@@ -101,7 +101,7 @@ nocap
 nocapActionBase::ActionResult
 nocapprocname::beginRun( Frame& )
 nocap{
-nocap   report( DEBUG, kFacilityString ) << "here in beginRun()" << endl;
+nocap   report( DEBUG, kFacilityString ) << "here in beginRun()" << std::endl;
 nocap
 nocap   // call user routine
 nocap   anal2_();
@@ -113,7 +113,7 @@ nocap
 nocapActionBase::ActionResult
 nocapprocname::endRun( Frame& )
 nocap{
-nocap   report( DEBUG, kFacilityString ) << "here in endRun()" << endl;
+nocap   report( DEBUG, kFacilityString ) << "here in endRun()" << std::endl;
 nocap
 nocap   // call user routine
 nocap   anal4_();
@@ -126,7 +126,7 @@ nocap/*
 nocapActionBase::ActionResult
 nocapprocname::geometry( Frame& )
 nocap{
-nocap   report( DEBUG, kFacilityString ) << "here in geometry()" << endl;
+nocap   report( DEBUG, kFacilityString ) << "here in geometry()" << std::endl;
 nocap
 nocap   return ActionBase::kPassed;
 nocap}
@@ -136,7 +136,7 @@ nocap/*
 nocapActionBase::ActionResult
 nocapprocname::hardware( Frame& )
 nocap{
-nocap   report( DEBUG, kFacilityString ) << "here in hardware()" << endl;
+nocap   report( DEBUG, kFacilityString ) << "here in hardware()" << std::endl;
 nocap
 nocap   return ActionBase::kPassed;
 nocap}
@@ -146,7 +146,7 @@ nocap/*
 nocapActionBase::ActionResult
 nocapprocname::user( Frame& )
 nocap{
-nocap   report( DEBUG, kFacilityString ) << "here in user()" << endl;
+nocap   report( DEBUG, kFacilityString ) << "here in user()" << std::endl;
 nocap
 nocap   return ActionBase::kPassed;
 nocap}

@@ -24,9 +24,9 @@
 #include "DynamicLoader/DLFactoryManager.h"
 
 // forward declarations
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <string>
+#include <vector>
+#include <map>
 
 template< class T >
 class LoaderBase 
@@ -35,40 +35,40 @@ class LoaderBase
 
    public:
       // constants, enums and typedefs
-      typedef STL_MAP( string, T* ) _loader_loaded_map_;
+      typedef std::map< std::string, T* > _loader_loaded_map_;
 
       // Constructors and destructor
-      LoaderBase( const string& environment );
+      LoaderBase( const std::string& environment );
       virtual ~LoaderBase();
 
       // member functions
-      virtual DABoolean alreadyLoaded(const string& iName);
-      DABoolean alreadyLoadedFactory(const string& iName);
+      virtual DABoolean alreadyLoaded(const std::string& iName);
+      DABoolean alreadyLoadedFactory(const std::string& iName);
       
       // static factory
-      DABoolean add( const string& iName, DLFactoryBase* iFactory );
+      DABoolean add( const std::string& iName, DLFactoryBase* iFactory );
 
-      virtual DABoolean load( const string& iName );
-      virtual DABoolean unload( const string& iName );
+      virtual DABoolean load( const std::string& iName );
+      virtual DABoolean unload( const std::string& iName );
       virtual void unloadAll();
 
       ///retrieves already loaded item
-      virtual T* fetch( const string& iName );
+      virtual T* fetch( const std::string& iName );
 
       // const member functions
-      virtual const T* fetch( const string& iName ) const;
+      virtual const T* fetch( const std::string& iName ) const;
 
       // listings
-      virtual string listAvailable() const;
-      virtual string listAvailablePatternString() const { 
-	 return string( "" ); 
+      virtual std::string listAvailable() const;
+      virtual std::string listAvailablePatternString() const { 
+	 return std::string( "" ); 
       }
-      virtual string listLoaded   () const;
-      virtual string shortName(const string& iName) const;
-      virtual string localPath(const string& iName) const;
+      virtual std::string listLoaded   () const;
+      virtual std::string shortName(const std::string& iName) const;
+      virtual std::string localPath(const std::string& iName) const;
 
       // allow child classes to overide this method
-      virtual pair<string,string> disassembleName(const string& iName) const = 0;
+      virtual std::pair<std::string,std::string> disassembleName(const std::string& iName) const = 0;
 
       // static member functions
 
@@ -79,19 +79,19 @@ class LoaderBase
       DLFactoryManagerPtr<T>& factoryManagerPtr() { return m_factoryManagerPtr; }
 
       // give derived class a change to perform specific actions
-      virtual void initialize( const string& iName, T& )  {}
-      virtual void finalize  ( const string& iName, T& )  {}
-      virtual DABoolean canUnload(const string& iName, T&) {return true;}
+      virtual void initialize( const std::string& iName, T& )  {}
+      virtual void finalize  ( const std::string& iName, T& )  {}
+      virtual DABoolean canUnload(const std::string& iName, T&) {return true;}
       
       // protected const member functions
 
       const _loader_loaded_map_& loadedMap() const { return m_loadedMap; }
       const DLFactoryManagerPtr<T>& factoryManagerPtr() const { return m_factoryManagerPtr; }
 
-      string factorySymbol() const ;
+      std::string factorySymbol() const ;
 
       // warning/error messages
-      virtual string makeErrorMesg( const string& iName ) const;
+      virtual std::string makeErrorMesg( const std::string& iName ) const;
 
    private:
       // Constructors and destructor

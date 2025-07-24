@@ -70,7 +70,7 @@ class HIHistProf : public HIHist
       // ---------- Constructors and destructor ----------------
       HIHistProf( 
 		  Count  iId,
-		  const         string& iTitle,
+		  const         std::string& iTitle,
 		  unsigned int  iNChannels,
 		  float         iLowEdgeX,
 		  float         iHighEdgeX,

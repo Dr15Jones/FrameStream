@@ -41,7 +41,7 @@
 //#include <algorithm>
 //#include <utility>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
-//#include "C++Std/iostream.h"
+//#include <iostream>
 
 // user include files
 //#include "Experiment/report.h"
@@ -91,7 +91,7 @@ PDSTypeUnpackingInfo::PDSTypeUnpackingInfo()
 
 PDSTypeUnpackingInfo::~PDSTypeUnpackingInfo()
 {
-   for( STL_VECTOR(PDSPackerBase*)::iterator itPacker = m_packers.begin();
+   for( std::vector<PDSPackerBase*>::iterator itPacker = m_packers.begin();
 	itPacker != m_packers.end();
 	++itPacker ) {
       delete (*itPacker);
@@ -156,7 +156,7 @@ PDSTypeUnpackingInfo::readPackingInfo( const UInt32*& ioHeader,
                                            packer->smPacker() ) );
       /*
       cout <<"  field type: " << m_packers.back()->type() 
-	   <<" strategy: " << m_packers.back()->strategy() << endl;
+	   <<" strategy: " << m_packers.back()->strategy() << std::endl;
 	   */
    }
    //all type info begins on 32bit boundary

@@ -1,3 +1,0 @@
-This file is only here because the SoftrelTools "listtag" script
-has a bug and only looks for the first file in the first directory.
-Alex is supposed to fix this and use c3tag instead.

@@ -39,8 +39,8 @@ class PDSDReadFailedException : public PDSDExceptionBase
    public:
       // ---------- Constructors and destructor ----------------
       PDSDReadFailedException( const char* iHappenedWhile ) :
-	 PDSDExceptionBase( (string("Read failed ") + 
-			     string(iHappenedWhile) ).c_str() ) {}
+	 PDSDExceptionBase( (std::string("Read failed ") + 
+			     std::string(iHappenedWhile) ).c_str() ) {}
 
 };
 

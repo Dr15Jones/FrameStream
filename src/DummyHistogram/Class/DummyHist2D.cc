@@ -71,7 +71,7 @@ static const char* const kTagString = "$Name:  $";
 // constructors and destructor
 //
 DummyHist2D::DummyHist2D( unsigned int  iId,
-			  const string& iTitle,
+			  const std::string& iTitle,
 			  unsigned int  iNChannelsX,
 			  float         iLowEdgeX,
 			  float         iHighEdgeX,

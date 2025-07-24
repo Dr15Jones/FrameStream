@@ -139,9 +139,9 @@ createNoPacker( const SMPackInfo& iPackInfo, double* iData )
 
 static
 PDSPackerBase*
-createNoPacker( const SMPackInfo& iPackInfo, string* iData ) 
+createNoPacker( const SMPackInfo& iPackInfo, std::string* iData ) 
 {
-   //We do not support compression for strings
+   //We do not support compression for std::strings
    return new PDSStringPacker(false);
 }
 
@@ -183,9 +183,9 @@ createFractionalPacker( const SMPackInfo& iPackInfo, T* iData)
 
 static
 PDSPackerBase*
-createPackInfo( const SMPackInfo& iPackInfo, const string* iData ) 
+createPackInfo( const SMPackInfo& iPackInfo, const std::string* iData ) 
 {
-   //We do not support compression for strings
+   //We do not support compression for std::strings
    return new PDSStringPacker(false);
 }
 
@@ -322,7 +322,7 @@ createContainedNoPackPacker( const SMPackInfo& iPackInfo, const SMContentsBase& 
    CREATE_NOPACK_IF_TYPE( float);
    CREATE_NOPACK_IF_TYPE( double);
 
-   CREATE_NOPACK_IF_TYPE( string);
+   CREATE_NOPACK_IF_TYPE( std::string);
 
    assert(false);
    return 0;
@@ -412,7 +412,7 @@ PDSSchemaProbeSinkStream::put( const char * iFieldName, double iData )
    m_packers->push_back(createPackInfo(packInfo(), &iData ) );
 }
 void 
-PDSSchemaProbeSinkStream::put( const char * iFieldName, const string& iData )
+PDSSchemaProbeSinkStream::put( const char * iFieldName, const std::string& iData )
 {
    m_packers->push_back(createPackInfo(packInfo(), &iData ) );
 }

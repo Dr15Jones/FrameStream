@@ -66,12 +66,12 @@ class DataSinkBinder : public DataSinkDescriptor
       DataSinkBinder( const Stream::Set& iBindStreams );
       DataSinkBinder( const Stream::Type& iBindStream =  Stream::kNone ) ;
 
-      DataSinkBinder( const string& iDataSinkID,
-			const string& iParameters,
+      DataSinkBinder( const std::string& iDataSinkID,
+			const std::string& iParameters,
 			const Stream::Set& iBindStreams );
 
-      DataSinkBinder( const string& iDataSinkID,
-			const string& iParameters,
+      DataSinkBinder( const std::string& iDataSinkID,
+			const std::string& iParameters,
 			const Stream::Type& iBindStream );
 
       virtual ~DataSinkBinder();

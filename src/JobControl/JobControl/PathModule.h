@@ -27,7 +27,7 @@
 
 // system include files
 #include <string>
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 // user include files
 #include "CommandPattern/Module.h"
@@ -61,14 +61,14 @@ class PathModule : public Module
       int createPath( int argc, char** argv );
       
       ///Throws CommandPattern::Keyword::UserException if error
-      void removePath(const string& iName);
+      void removePath(const std::string& iName);
       ///Throws CommandPattern::Keyword::UserException if error
-      void removeFilter( const string& iName);
+      void removeFilter( const std::string& iName);
 
-      void reorder(const STL_VECTOR(string)& iNames);
+      void reorder(const std::vector<std::string>& iNames);
       // ---------- const member functions ---------------------
-      string listPaths() ;
-      string listFilters();
+      std::string listPaths() ;
+      std::string listFilters();
 
       // ---------- static member functions --------------------
 
@@ -86,7 +86,7 @@ class PathModule : public Module
 
       // ---------- private member functions -------------------
       JobControlNS::Holder<JobControlNS::FilterBase> implementCreateFilter(
-	 const string& iName,
+	 const std::string& iName,
 	 int argc, 
 	 char** argv);
 

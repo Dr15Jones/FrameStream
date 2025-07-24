@@ -1,4 +1,4 @@
-#include "C++Std/iostream.h"
+#include <iostream>
 
 #include <string>
 
@@ -7,26 +7,26 @@
 
 int main()
 {
-   cout << "Please input path+name (e.g. \"/home/mkl/file.txt\")" << endl;
+   cout << "Please input path+name (e.g. \"/home/mkl/file.txt\")" << std::endl;
 
-   string fullThing;
+   std::string fullThing;
    cin >> fullThing;
 
    // path
-   string path = StringUtil::path( fullThing );
-   cout << "Path = " << path << endl;
+   std::string path = StringUtil::path( fullThing );
+   cout << "Path = " << path << std::endl;
 
    // filename
-   string filename = StringUtil::filename( fullThing );
-   cout << "Filename = " << filename << endl;
+   std::string filename = StringUtil::filename( fullThing );
+   cout << "Filename = " << filename << std::endl;
 
    // basename
-   string basename = StringUtil::basename( fullThing );
-   cout << "Basename = " << basename << endl;
+   std::string basename = StringUtil::basename( fullThing );
+   cout << "Basename = " << basename << std::endl;
 
    // extension
-   string extension = StringUtil::extension( fullThing );
-   cout << "Extension = " << extension << endl;
+   std::string extension = StringUtil::extension( fullThing );
+   cout << "Extension = " << extension << std::endl;
    
    return 0;
 }
@@ -47,36 +47,36 @@ typedef void                     _for_each_function_type ;
    // path
    vector<char> path;
    path = StringUtil::path( fullThing, path );
-   cout << "Path = " << StringUtil::vecToString( path, output ) << endl;
+   cout << "Path = " << StringUtil::vecToString( path, output ) << std::endl;
 
-   string spath;
+   std::string spath;
    spath = StringUtil::path( fullThing, spath );
-   cout << "SPath = " << spath << endl;
+   cout << "SPath = " << spath << std::endl;
 
    // filename
    vector<char> filename;
    filename = StringUtil::filename( fullThing, filename );
-   cout << "Filename = " << StringUtil::vecToString( filename, output ) << endl;
+   cout << "Filename = " << StringUtil::vecToString( filename, output ) << std::endl;
 
-   string sfilename;
+   std::string sfilename;
    sfilename = StringUtil::filename( fullThing, sfilename );
-   cout << "SFilename = " << sfilename << endl;
+   cout << "SFilename = " << sfilename << std::endl;
 
    // basename
    vector<char> basename;
    basename = StringUtil::basename( fullThing, basename );
-   cout << "Basename = " << StringUtil::vecToString( basename, output ) << endl;
+   cout << "Basename = " << StringUtil::vecToString( basename, output ) << std::endl;
 
-   string sbasename;
+   std::string sbasename;
    sbasename = StringUtil::basename( fullThing, sbasename );
-   cout << "SBasename = " << sbasename << endl;
+   cout << "SBasename = " << sbasename << std::endl;
 
    // extension
    vector<char> extension;
    extension = StringUtil::extension( fullThing, extension );
-   cout << "Extension = " << StringUtil::vecToString( extension, output ) << endl;
+   cout << "Extension = " << StringUtil::vecToString( extension, output ) << std::endl;
    
-   string sextension;
+   std::string sextension;
    sextension = StringUtil::extension( fullThing, sextension );
-   cout << "SExtension = " << sextension << endl;
+   cout << "SExtension = " << sextension << std::endl;
 #endif

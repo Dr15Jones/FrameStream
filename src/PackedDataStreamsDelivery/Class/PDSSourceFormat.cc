@@ -46,7 +46,7 @@
 //#include <algorithm>
 //#include <utility>
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
-#include "C++Std/fstream.h"
+#include <fstream>
 
 // user include files
 #include "Experiment/report.h"
@@ -54,8 +54,7 @@
 #include "PackedDataStreamsDelivery/PDSSourceBinder.h"
 #include "PackedDataStreamsDelivery/PDSProxyDeliverer.h"
 #include "PackedDataStreamsDelivery/PDSDExceptionBase.h"
-#include "PackedDataStreamsDelivery/PDSGunzipIFStreamHolder.h"
-#include "JobControl/Binder.h"
+#include "DataDelivery/Binder.h"
 
 // STL classes
 // You may have to uncomment some of these or other stl headers
@@ -119,7 +118,7 @@ PDSSourceFormat::~PDSSourceFormat()
 // member functions
 //
 BinderBase*
-PDSSourceFormat::createBinder( const string& iName, 
+PDSSourceFormat::createBinder( const std::string& iName, 
 			       const Stream::Set& iBindStreams ) 
 {
    BinderBase* returnValue 
@@ -135,20 +134,20 @@ PDSSourceFormat::createBinder( const string& iName,
 // const member functions
 //
 const Stream::Set&
-PDSSourceFormat::defaultStreams( const string& iName )
+PDSSourceFormat::defaultStreams( const std::string& iName )
 {
    static Stream::Set s_set;
    s_set.erase(s_set.begin(), s_set.end());
    try {
-      PDSGunzipIFStreamHolder holder(iName.c_str() );
-      if( !holder.errorOccurred() ) {
-	 PDSProxyDeliverer reader( holder.stream() );
+      std::ifstream f(iName.c_str());
+      if( not f) {
+	 PDSProxyDeliverer reader( f );
 	 s_set = reader.supplies();
       } else {
-	 report(SYSTEM, kFacilityString) <<"Error openning file: "<<iName<<endl;
+	 report(SYSTEM, kFacilityString) <<"Error openning file: "<<iName<<std::endl;
       }
    } catch( const PDSDExceptionBase& iException) {
-      report(SYSTEM, kFacilityString) <<"Error while reading file: "<<iName<<"\n"<<iException.what() <<endl;
+      report(SYSTEM, kFacilityString) <<"Error while reading file: "<<iName<<"\n"<<iException.what() <<std::endl;
    }
    return s_set;
 };

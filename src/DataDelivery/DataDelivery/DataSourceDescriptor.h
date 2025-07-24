@@ -46,7 +46,7 @@
 #include "DataHandler/Stream.h"
 
 #if defined(OLD_CXX_STRING_CLASS_BUG)
-#include "C++Std/fwd_string.h"
+#include <string>
 #include <String.h>
 #else
 #include <string>
@@ -63,12 +63,12 @@ class DataSourceDescriptor
       // constants, enums and typedefs
 
       // Constructors and destructor
-      DataSourceDescriptor( const string& iDataSourceID = string(""),
-			    const string& iParameters = string(""),
+      DataSourceDescriptor( const std::string& iDataSourceID = std::string(""),
+			    const std::string& iParameters = std::string(""),
 			    const Stream::Type& iBindStream= Stream::kNone);
 
-      DataSourceDescriptor( const string& iDataSourceID,
-			    const string& iParameters,
+      DataSourceDescriptor( const std::string& iDataSourceID,
+			    const std::string& iParameters,
 			    const Stream::Set& iBindStreams );
 
       DataSourceDescriptor( const DataSourceController& iController );
@@ -85,14 +85,14 @@ class DataSourceDescriptor
       void bindStreams( const Stream::Set& iBindStreams );
       void clearStreams( void );
 
-      void setDataSourceID( string iDataSourceID );
-      void setParameters( string iParameters ) ;
+      void setDataSourceID( std::string iDataSourceID );
+      void setParameters( std::string iParameters ) ;
 
       // const member functions
       const Stream::Set& boundStreams( void ) const;
 
-      const string& dataSourceID( void ) const;
-      const string& parameters( void ) const;
+      const std::string& dataSourceID( void ) const;
+      const std::string& parameters( void ) const;
 
       DABoolean operator==( const DataSourceController& iController ) const;
       DABoolean operator==( const DataSourceDescriptor& iDescriptor ) const;
@@ -118,8 +118,8 @@ class DataSourceDescriptor
 
       // static data members
       Stream::Set& m_boundStreamList;
-      string m_dataSourceID;
-      string m_parameters;
+      std::string m_dataSourceID;
+      std::string m_parameters;
 };
 
 // inline function definitions

@@ -37,8 +37,8 @@
 #include "DataHandler/Stream.h"
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
-#include "STLUtility/fwd_set.h"
+#include <map>
+#include <set>
 
 
 class DataStringTagsToStore { // introduce utility class to 
@@ -46,17 +46,17 @@ class DataStringTagsToStore { // introduce utility class to
       // ease map-of-set instantiation
       class DatumStringTags {
 	 public:
-	    DatumStringTags( string iType, 
-		              string iUsage, 
-		              string iProduction) :
+	    DatumStringTags( std::string iType, 
+		              std::string iUsage, 
+		              std::string iProduction) :
 	       m_type(iType),
 	       m_usage(iUsage),
 	       m_production(iProduction ) {}
-	    const string& type() const {
+	    const std::string& type() const {
 	       return m_type; }
-	    const string& usage() const {
+	    const std::string& usage() const {
 	       return m_usage; }
-	    const string& production() const {
+	    const std::string& production() const {
 	       return m_production; }
 	    DABoolean operator<( const DatumStringTags& iRHS ) const {
 	       if( m_type != iRHS.m_type ) {
@@ -68,13 +68,13 @@ class DataStringTagsToStore { // introduce utility class to
 	    }
 
 	 private:
-	    string m_type;
-	    string m_usage;
-	    string m_production;
+	    std::string m_type;
+	    std::string m_usage;
+	    std::string m_production;
       };
 
    public:
-      typedef STL_SET( DatumStringTags ) Tags;
+      typedef std::set< DatumStringTags > Tags;
       typedef Tags::const_iterator const_iterator;
       typedef Tags::iterator iterator;
       DataStringTagsToStore( const Tags& iTags, DABoolean iStoreThese = true ):

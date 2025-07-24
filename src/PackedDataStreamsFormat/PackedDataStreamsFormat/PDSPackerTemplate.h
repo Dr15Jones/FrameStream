@@ -35,7 +35,10 @@
 #include "PackedDataStreamsFormat/PDSPackerBase.h"
 
 // forward declarations
-
+namespace smpackertemplate {
+   template <typename T>
+   PDSPacking::Types type();
+}
 template <class T>
 class PDSPackerTemplate : public PDSPackerBase
 {
@@ -54,7 +57,7 @@ class PDSPackerTemplate : public PDSPackerBase
       SMPackerBase* smPacker() { return &(packer()); }
       // ---------- const member functions ---------------------
       PDSPacking::Types type() const {
-	 return s_type;
+         return smpackertemplate::type<T>();
       }
 
       // ---------- static member functions --------------------
@@ -78,7 +81,6 @@ class PDSPackerTemplate : public PDSPackerBase
       // ---------- data members -------------------------------
 
       // ---------- static data members ------------------------
-      static PDSPacking::Types s_type;
 
 };
 

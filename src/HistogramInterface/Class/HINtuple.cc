@@ -78,7 +78,7 @@ static const char* const kTagString = "$Name:  $";
 // constructors and destructor
 //
 HINtuple::HINtuple( Count         iId,
-		    const string& iTitle,
+		    const std::string& iTitle,
 		    unsigned int  iNumberOfVariables,
 		    unsigned int  iChunkSize,
 		    const char* const* iLabels ) :
@@ -141,7 +141,7 @@ HINtuple::id ( void ) const
   return ( m_id ) ;
 }
 
-const string& 
+const std::string& 
 HINtuple::title ( void ) const
 {
   return ( m_title ) ;

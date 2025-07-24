@@ -30,7 +30,7 @@
 //#include <map>
 //#include <algorithm>
 //#include <utility>
-#include "C++Std/iostream.h"
+#include <iostream>
 
 // user include files
 //#include "Experiment/report.h"
@@ -42,16 +42,16 @@ class Bar : public SSSlotted
 {
    public:
       
-      void callThis() {cout <<"called"<<endl;}
+      void callThis() {cout <<"called"<<std::endl;}
       
-      void callThisArg(int iValue) { cout <<"called with "<<iValue <<endl;}
+      void callThisArg(int iValue) { cout <<"called with "<<iValue <<std::endl;}
       
       void callFloatArg(float iValue) {
-	 cout <<"called with float "<<iValue <<endl; }
+	 cout <<"called with float "<<iValue <<std::endl; }
  
 #if defined(TEST_BAD_ARGUMENT_TYPE)
       void callBad(const Bar& ) {
-	 cout <<"called bad"<<endl;
+	 cout <<"called bad"<<std::endl;
       }
 #endif
 };
@@ -71,17 +71,17 @@ main()
    
    foo.mySignal.attach(&bar, &Bar::callThis );
    foo.mySignal.emit();
-   cout <<"-----------"<<endl;
+   cout <<"-----------"<<std::endl;
    {
       //test use of temporary slotted
       Bar bar2;
       foo.mySignal.attach(&bar2, &Bar::callThis );
       
       foo.mySignal.emit();
-      cout <<"-----------"<<endl;
+      cout <<"-----------"<<std::endl;
    }
    foo.mySignal.emit();
-   cout <<"-----------"<<endl;
+   cout <<"-----------"<<std::endl;
 
    {
       //test use of temporary signal
@@ -89,16 +89,16 @@ main()
       
       foo2.mySignal.attach(&bar, &Bar::callThis );
       foo2.mySignal.emit();
-      cout <<"-----------"<<endl;
+      cout <<"-----------"<<std::endl;
    }
 
    //test signals with arguments
    foo.myArgSignal.attach(&bar, &Bar::callThisArg);
    foo.myArgSignal.attach(&bar, &Bar::callFloatArg);
    foo.myArgSignal.emit(1);
-   cout <<"-----------"<<endl;
+   cout <<"-----------"<<std::endl;
    foo.myArgSignal.emit(2);
-   cout <<"-----------"<<endl;
+   cout <<"-----------"<<std::endl;
 
 #if defined(TEST_BAD_ARGUMENT_TYPE)
    foo.myArgSignal.attach(&bar, &Bar::callBad);

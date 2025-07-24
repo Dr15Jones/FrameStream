@@ -31,18 +31,18 @@ template class allocator< rb_tree< int , int , ident< int , int > , less< int > 
 
 template class rb_tree_const_iterator< int , int , ident< int , int > , less< int > > ;
 template void distance( rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , unsigned long& ) ;
-template class pair< rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , bool > ;
-template class pair< rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , rb_tree< int , int , ident< int , int > , less< int > > > ;
-template class pair< rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , rb_tree< int , int , ident< int , int > , less< int > >::const_iterator > ;
+template class std::pair< rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , bool > ;
+template class std::pair< rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , rb_tree< int , int , ident< int , int > , less< int > > > ;
+template class std::pair< rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , rb_tree< int , int , ident< int , int > , less< int > >::const_iterator > ;
 template class reverse_bidirectional_iterator< rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , int , const int& , long > ;
 template bidirectional_iterator_tag iterator_category( rb_tree< int , int , ident< int , int > , less< int > >::const_iterator ) ;
 template void __distance( rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , rb_tree< int , int , ident< int , int > , less< int > >::const_iterator , unsigned long& , bidirectional_iterator_tag ) ;
 
 template class rb_tree_iterator< int , int , ident< int , int > , less< int > > ;
 template void distance( rb_tree< int , int , ident< int , int > , less< int > >::iterator , rb_tree< int , int , ident< int , int > , less< int > >::iterator , unsigned long& ) ;
-template class pair< rb_tree< int , int , ident< int , int > , less< int > >::iterator , bool > ;
-template class pair< rb_tree< int , int , ident< int , int > , less< int > >::iterator , rb_tree< int , int , ident< int , int > , less< int > > > ;
-template class pair< rb_tree< int , int , ident< int , int > , less< int > >::iterator , rb_tree< int , int , ident< int , int > , less< int > >::iterator > ;
+template class std::pair< rb_tree< int , int , ident< int , int > , less< int > >::iterator , bool > ;
+template class std::pair< rb_tree< int , int , ident< int , int > , less< int > >::iterator , rb_tree< int , int , ident< int , int > , less< int > > > ;
+template class std::pair< rb_tree< int , int , ident< int , int > , less< int > >::iterator , rb_tree< int , int , ident< int , int > , less< int > >::iterator > ;
 template class reverse_bidirectional_iterator< rb_tree< int , int , ident< int , int > , less< int > >::iterator , int , int& , long > ;
 template bidirectional_iterator_tag iterator_category( rb_tree< int , int , ident< int , int > , less< int > >::iterator ) ;
 template void __distance( rb_tree< int , int , ident< int , int > , less< int > >::iterator , rb_tree< int , int , ident< int , int > , less< int > >::iterator , unsigned long& , bidirectional_iterator_tag ) ;

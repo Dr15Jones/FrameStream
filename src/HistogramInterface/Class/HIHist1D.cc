@@ -75,7 +75,7 @@ static const char* const kTagString = "$Name:  $";
 //
 HIHist1D::HIHist1D( 
    Count         iId,
-   const string& iTitle,
+   const std::string& iTitle,
    unsigned int  iNChannels,
    float         iLowEdge,
    float         iHighEdge,

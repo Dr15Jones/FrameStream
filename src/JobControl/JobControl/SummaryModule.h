@@ -35,7 +35,7 @@
 
 // system include files
 #include <map>
-#include "STLUtility/fwd_map.h"
+#include <map>
 
 // user include files
 #include "CommandPattern/Module.h"
@@ -44,7 +44,7 @@
 
 // forward declarations
 #if !defined( _summarymodule_counter_ )
-#define _summarymodule_counter_ STL_MAP( Stream::Type, Count )
+#define _summarymodule_counter_ std::map< Stream::Type, Count >
 #endif
 
 class SummaryModule : public Module
@@ -63,7 +63,7 @@ class SummaryModule : public Module
       Count& operator[]( const Stream::Type& iStreamType );
 
       // ---------- const member functions ---------------------
-      string list();
+      std::string list();
 
       // ---------- static member functions --------------------
 

@@ -73,7 +73,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kInsertFacilityString 
+static const char* const kInsertFacilityString 
 = "FrameAccess.insert" ;
 
 template < class DataType > 
@@ -90,7 +90,7 @@ DABoolean insert( Frame& aFrame ,
 //   // construct key
 
    // insert proxy (with value) into record with key
-   if( string( aUseLabel) == string( "" ) ) {
+   if( std::string( aUseLabel) == std::string( "" ) ) {
       returnValue = RecordMethods< DataType >::insertProxy( 
 	 aFrame.record( aFrame.stopStream() ), 
 	 new ValueProxy< DataType >( aValue ),
@@ -106,7 +106,7 @@ DABoolean insert( Frame& aFrame ,
    if( false == returnValue )
    {
       report( ERROR, kInsertFacilityString )
-	 << "couldn't insert transient proxy" << endl;
+	 << "couldn't insert transient proxy" << std::endl;
    }
    
    return returnValue;

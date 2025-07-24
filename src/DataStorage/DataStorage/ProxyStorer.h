@@ -85,7 +85,7 @@ class ProxyStorer
 
    public:
       // constants, enums and typedefs
-      typedef string Identifier;
+      typedef std::string Identifier;
       enum StoreStatus { kStoreNoError=0,
 			 kStoreProblemWithSink,
 			 kStoreUnknownError
@@ -96,8 +96,8 @@ class ProxyStorer
       virtual ~ProxyStorer();
 
       // member functions
-      void setDataSinkId(const string& sId);
-      void setParamId(const string& sParam);
+      void setDataSinkId(const std::string& sId);
+      void setParamId(const std::string& sParam);
 
       // const member functions
       const Identifier& identifier() const;

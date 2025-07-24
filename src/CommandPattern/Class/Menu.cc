@@ -62,15 +62,15 @@
 
 static const char* const kFacilityString = "CommandPattern.Menu" ;
 
-static const string helpMessage = 
-string( "                                                            \n" )+
-string( "// Description: Menu                                        \n" )+
-string( "                                                            \n" )+
-string( "    <menu> help                   prints this help          \n" )+
-string( "    <menu>                        enters menu               \n" )+
-string( "    <menu> ls                     list parameters in menu   \n" )+
-string( "    <menu> <parm> [<value> ...]   access parms w/o entering \n" )+
-string( "                                                            \n" );
+static const std::string helpMessage = 
+std::string( "                                                            \n" )+
+std::string( "// Description: Menu                                        \n" )+
+std::string( "                                                            \n" )+
+std::string( "    <menu> help                   prints this help          \n" )+
+std::string( "    <menu>                        enters menu               \n" )+
+std::string( "    <menu> ls                     list parameters in menu   \n" )+
+std::string( "    <menu> <parm> [<value> ...]   access parms w/o entering \n" )+
+std::string( "                                                            \n" );
 
 //
 // static data member definitions
@@ -140,7 +140,7 @@ Menu::execute( int argc, char* argv[] )
    }
    else // number of arguments
    {
-      report( ERROR, kFacilityString ) << "wrong # args" << endl;
+      report( ERROR, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -152,7 +152,7 @@ int
 Menu::helpHandler()
 {
    // print help from header
-   report( INFO, kFacilityString ) << "\n" << helpMessage << endl;
+   report( INFO, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }

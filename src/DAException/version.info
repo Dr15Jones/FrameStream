@@ -67,7 +67,7 @@ Date   : Thu Aug 21 13:13:53 2003
 User   : vk
 Old Tag: v01_03_02
 New Tag: v01_03_03
-Message: Add instantiation of STL_VECTOR(T) with T=DataKey
+Message: Add instantiation of std::vector<T> with T=DataKey
 
 Module : DAException
 Date   : Thu Sep 11 15:05:03 2003

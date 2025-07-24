@@ -34,6 +34,7 @@
 // STL classes
 #include <string>
 
+using namespace std;
 //
 // constants, enums and typedefs
 //
@@ -48,47 +49,47 @@ static const char* const kFacilityString = "Utility.FileNameUtils";
 //
 
 string
-FileNameUtils::path( const string& sourceName )
+FileNameUtils::path( const std::string& sourceName )
 {
-   string::size_type lastSlash = sourceName.find_last_of( "/" );
+   std::string::size_type lastSlash = sourceName.find_last_of( "/" );
    // includes trailing '/'
-   string newString = sourceName.substr( 0, lastSlash+1 ); 
+   std::string newString = sourceName.substr( 0, lastSlash+1 ); 
 
    return newString;
 } 
 
 string
-FileNameUtils::filename( const string& sourceName )
+FileNameUtils::filename( const std::string& sourceName )
 {
-   string::size_type lastSlash = sourceName.find_last_of( "/" );
-   string newString = sourceName.substr( lastSlash+1, string::npos );
+   std::string::size_type lastSlash = sourceName.find_last_of( "/" );
+   std::string newString = sourceName.substr( lastSlash+1, std::string::npos );
 
    return newString;
 } 
 
 string
-FileNameUtils::basename( const string& sourceName, 
+FileNameUtils::basename( const std::string& sourceName, 
 		      const char whichChar )
 {
    // find filename for vecName
-   string filenameString = filename( sourceName );
+   std::string filenameString = filename( sourceName );
 
-   string::size_type lastWhichChar = filenameString.find_last_of( whichChar );
-   string newString = filenameString.substr( 0, lastWhichChar );
+   std::string::size_type lastWhichChar = filenameString.find_last_of( whichChar );
+   std::string newString = filenameString.substr( 0, lastWhichChar );
 
    return newString;
 } 
 
 string
-FileNameUtils::extension( const string& sourceName, const char whichChar )
+FileNameUtils::extension( const std::string& sourceName, const char whichChar )
 {
    // find filename for vecName
-   string filenameString = filename( sourceName );
+   std::string filenameString = filename( sourceName );
 
    // includes "whichChar"
-   string::size_type lastWhichChar = filenameString.find_last_of( whichChar );
-   if( string::npos == lastWhichChar ) return string( "" );
-   string newString = filenameString.substr( lastWhichChar, string::npos );
+   std::string::size_type lastWhichChar = filenameString.find_last_of( whichChar );
+   if( std::string::npos == lastWhichChar ) return std::string( "" );
+   std::string newString = filenameString.substr( lastWhichChar, std::string::npos );
 
    return newString;
 }

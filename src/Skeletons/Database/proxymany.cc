@@ -65,7 +65,7 @@ DBMany< YourItemHere >::fillContents( FAPtrTable< YourItemHere >& aTable )
 
 #ifdef CLEO_DEBUG
    report( DEBUG, kFacilityString )
-      << "DBMany< YourItemHere >::fillContents()" << endl;
+      << "DBMany< YourItemHere >::fillContents()" << std::endl;
 #endif
 
    // get ahold of proper handle for stream
@@ -100,7 +100,7 @@ DBMany< YourItemHere >::fillContents( FAPtrTable< YourItemHere >& aTable )
 	 {
 	    report( EMERGENCY, kFacilityString )
 	       << "out of memory"
-	       << endl;
+	       << std::endl;
 	    assert( false );
 	    exit( 1 );
 	 }	
@@ -116,7 +116,7 @@ DBMany< YourItemHere >::fillContents( FAPtrTable< YourItemHere >& aTable )
    {
 #ifdef CLEO_DEBUG
       report( DEBUG, kFacilityString )
-	 << "no YourItemHeres available" << endl;
+	 << "no YourItemHeres available" << std::endl;
 #endif CLEO_DEBUG
       returnValue = false;
    }

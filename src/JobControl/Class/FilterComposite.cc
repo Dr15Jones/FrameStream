@@ -55,7 +55,7 @@ namespace JobControlNS {
 //
 // constructors and destructor
 //
-FilterComposite::FilterComposite(const string& iName):
+FilterComposite::FilterComposite(const std::string& iName):
    FilterBase(iName)
 {
    //start by making the vector smaller than its default
@@ -98,7 +98,7 @@ FilterComposite::add(FilterBase* iFilter )
 void
 FilterComposite::reset() {
    FilterBase::reset();
-   for( STL_VECTOR(Holder<FilterBase> )::iterator itFilter = m_filters.begin();
+   for( std::vector<Holder<FilterBase> >::iterator itFilter = m_filters.begin();
 	itFilter != m_filters.end();
 	++itFilter ) {
       (*itFilter)->reset();
@@ -111,7 +111,7 @@ StreamSet
 FilterComposite::streams() const 
 {
    StreamSet returnValue;
-   for( STL_VECTOR(Holder<FilterBase> )::const_iterator itFilter = m_filters.begin();
+   for( std::vector<Holder<FilterBase> >::const_iterator itFilter = m_filters.begin();
 	itFilter != m_filters.end();
 	++itFilter ) {
       returnValue.add( (*itFilter)->streams() );
@@ -126,7 +126,7 @@ FilterComposite::contains(const FilterBase* iFilter) const
    if (this == iFilter) {
       return true;
    }
-   for( STL_VECTOR(Holder<FilterBase> )::const_iterator itFilter = m_filters.begin();
+   for( std::vector<Holder<FilterBase> >::const_iterator itFilter = m_filters.begin();
         itFilter != m_filters.end();
         ++itFilter ) {
       if( (*itFilter)->contains(iFilter) ) {

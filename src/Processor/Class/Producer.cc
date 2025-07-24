@@ -121,12 +121,6 @@ Producer::Producer( const Name& iName, const Name& iModuleDescription )
      m_stream2Factories( *new Stream2Factories ),
      m_productionTag("")
 {
-   if( 0 == &m_stream2Factories ) {
-      report( EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 // Producer::Producer( const Producer& )
@@ -168,7 +162,7 @@ Producer::align( const Stream::Type& aStream ,
 }
 
 void
-Producer::setProductionTag( const string& iProductionTag )
+Producer::setProductionTag( const std::string& iProductionTag )
 {
    if( m_productionTag != iProductionTag ) {
       m_productionTag = iProductionTag;
@@ -206,7 +200,7 @@ Producer::registerProxies( const Stream::Type& iStream,
 			   KeyedProxies& iProxies )
 {
    typedef Stream2Factories::iterator Iterator;
-   pair< Iterator, Iterator > range = m_stream2Factories.equal_range( iStream );
+   std::pair< Iterator, Iterator > range = m_stream2Factories.equal_range( iStream );
    for( Iterator it = range.first; it != range.second; ++it ) {
       
       // only create proxy if "shouldUse"
@@ -228,7 +222,7 @@ Producer::registerProxyFactory( const Stream::Type& iStream ,
 {
    if( 0 == iFactory ) {
       report( EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
+	 << "out of memory" << std::endl;
       assert( false );
       ::exit( 1 );
    }
@@ -288,13 +282,13 @@ Producer::callRegisterProxies( DABoolean forceReload ) const
    return returnValue;
 }
 
-STL_VECTOR( DataKey )
+std::vector< DataKey >
 Producer::proxyKeys( const Stream::Type& iStream ) const
 {
-   STL_VECTOR( DataKey ) dataKeys;
+   std::vector< DataKey > dataKeys;
 
    typedef Stream2Factories::iterator Iterator;
-   pair< Iterator, Iterator > range = m_stream2Factories.equal_range( iStream );
+   std::pair< Iterator, Iterator > range = m_stream2Factories.equal_range( iStream );
    for( Iterator it = range.first; it != range.second; ++it ) {
       dataKeys.push_back( (*it).second.m_key );
    }
@@ -302,16 +296,16 @@ Producer::proxyKeys( const Stream::Type& iStream ) const
    return dataKeys;
 }
 
-string
+std::string
 Producer::defaultProductionTag() const
 {
-   return string("");
+   return std::string("");
 }
 
 //
 // static member functions
 //
-string
+std::string
 Producer::factorySymbol()
 {
    return "makeProducer:makeProcessor";

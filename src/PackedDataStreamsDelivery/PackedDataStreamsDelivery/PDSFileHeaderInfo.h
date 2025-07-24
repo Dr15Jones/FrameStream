@@ -26,7 +26,7 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
@@ -47,15 +47,15 @@ class PDSFileHeaderInfo
       // ---------- constants, enums and typedefs --------------
       enum {kFirstProxyIndex =0 };
       typedef PDSTypeToUnpackingInfoMap TypeToUnpackingInfoMap;
-      typedef STL_MAP(StreamType, STL_VECTOR(DurableDataKey) ) StreamTypesMap;
+      typedef std::map<StreamType, std::vector<DurableDataKey> > StreamTypesMap;
 
       // ---------- Constructors and destructor ----------------
-      PDSFileHeaderInfo(istream& iIStream );
+      PDSFileHeaderInfo(std::istream& iIStream );
       virtual ~PDSFileHeaderInfo();
 
       // ---------- member functions ---------------------------
       PDSIstreamWordReader* wordReader() { return m_wordReader; }
-      void changeFile( istream& iStream);
+      void changeFile( std::istream& iStream);
 
       TypeToUnpackingInfoMap* dropOwnershipOfTypeToUnpackingInfoMap();
 
@@ -72,7 +72,7 @@ class PDSFileHeaderInfo
       const StreamType& recordIndexToStreamType( UInt32 iRecordIndex ) const {
 	 return m_indexToStreamType[iRecordIndex]; }
 
-      const STL_VECTOR(StreamType)& indexToStreamType() const {
+      const std::vector<StreamType>& indexToStreamType() const {
 	 return m_indexToStreamType; }
 
       const StreamTypesMap& streamProxyFactoryInfoMap() const {
@@ -93,19 +93,19 @@ class PDSFileHeaderInfo
       const PDSFileHeaderInfo& operator=( const PDSFileHeaderInfo& ); // stop default
 
       // ---------- private member functions -------------------
-      void readHeader( istream& );
+      void readHeader( std::istream& );
       void readStreams( const UInt32* &iHeader );
 
       void readNameList( const UInt32* & ioHeader, 
-			 STL_VECTOR(string)& oNames );
+			 std::vector<std::string>& oNames );
 
       void readTypeNames(const UInt32*& ioHeader, 
-			 STL_VECTOR(string)& oNames );
+			 std::vector<std::string>& oNames );
 
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      STL_VECTOR(StreamType) m_indexToStreamType;
+      std::vector<StreamType> m_indexToStreamType;
       TypeToUnpackingInfoMap* m_typeToUnpackingInfoMap;
 
       StreamTypesMap m_streamProxyFactoryInfoMap;

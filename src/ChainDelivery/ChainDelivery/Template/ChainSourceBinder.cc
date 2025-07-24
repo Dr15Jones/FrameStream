@@ -69,7 +69,7 @@
 //
 // constants, enums and typedefs
 //
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kChainSourceBinderFacilityString 
+static const char* const kChainSourceBinderFacilityString 
 = "ChainDelivery.ChainSourceBinder" ;
 
 //
@@ -80,37 +80,37 @@ FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kChainSourceBinderFacilityString
 // constructors and destructor
 //
 template< class Binder>
-ChainSourceBinder< Binder >::ChainSourceBinder( const string& iName,
+ChainSourceBinder< Binder >::ChainSourceBinder( const std::string& iName,
 #if defined(TYPEDEFS_IN_TEMPLATES_IN_ARGS_BUG)
 						const _chainsourcebinder_binders_& iBinders ,
 #else
 						const Binders& iBinders,
 #endif /* TYPEDEFS_IN_TEMPLATES_IN_ARGS_BUG */
 						const Stream::Set& iBindStreams):
-   ChainSourceBinderBase( iName, string(""), iBindStreams ),
+   ChainSourceBinderBase( iName,std::string(""), iBindStreams ),
    m_binders( *( new Binders( iBinders ) ) )
 {
    if( 0 == &m_binders ){
       report( EMERGENCY ,
               kChainSourceBinderFacilityString )
                  << "Unable to allocate memory"
-                 << endl ;
+                 << std::endl ;
       assert(false);
       exit( 1);
    }
 }
 
 template< class Binder>
-ChainSourceBinder< Binder >::ChainSourceBinder( const string& iName,
+ChainSourceBinder< Binder >::ChainSourceBinder( const std::string& iName,
 						const Stream::Set& iBindStreams):
-   ChainSourceBinderBase( iName, string(""), iBindStreams ),
+   ChainSourceBinderBase( iName,std::string(""), iBindStreams ),
    m_binders( *( new Binders ) )
 {
    if( 0 == &m_binders ){
       report( EMERGENCY ,
               kChainSourceBinderFacilityString )
                  << "Unable to allocate memory"
-                 << endl ;
+                 << std::endl ;
       assert(false);
       exit( 1);
    }

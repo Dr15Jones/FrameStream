@@ -29,10 +29,10 @@
 #include "Experiment/report.h"
 
 // forward declarations
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
-#include "STLUtility/fwd_list.h"
+#include <string>
+#include <vector>
+#include <map>
+#include <list>
 
 const char* const kDAExceptionStackManagerFacilityString = "DAExceptionStackManager";
 
@@ -43,7 +43,7 @@ class DAExceptionStackManager
       DAExceptionStackManager();
 
       // constants, enums and typedefs
-      typedef STL_VECTOR( T ) StackList;
+      typedef std::vector< T > StackList;
       
       // stack keys (data written/accessing by Sinks/Processors)
       void add(const T& key);

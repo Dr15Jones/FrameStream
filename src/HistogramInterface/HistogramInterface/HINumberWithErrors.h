@@ -44,7 +44,7 @@ class HINumberWithErrors
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      HINumberWithErrors( const string&  iName,
+      HINumberWithErrors( const std::string&  iName,
 			  float         iValue=0,
 			  float         iPositiveError=0,
 			  float         iNegativeError=0 );
@@ -61,7 +61,7 @@ class HINumberWithErrors
       float value() const { return m_value; }
       float positiveError() const { return m_positiveError; }
       float negativeError() const { return m_negativeError; }
-      const string& name() const { return m_name; }
+      const std::string& name() const { return m_name; }
       DABoolean isInitialized() const { return m_isInitialized; }
 
       // ---------- const member functions ---------------------
@@ -83,7 +83,7 @@ class HINumberWithErrors
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      string m_name;
+      std::string m_name;
       float m_value;
       float m_positiveError;
       float m_negativeError;

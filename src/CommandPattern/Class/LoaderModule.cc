@@ -18,13 +18,9 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <assert.h>
 #include <stdlib.h>
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <vector>
-#include <map>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Experiment/report.h"
@@ -53,17 +49,11 @@ static const char* const kFacilityString = "CommandPattern.LoaderModule";
 //}
 LoaderModule::LoaderModule( const Module::Name& iName, 
 			    const Module::Name& iDescription,
-			    const string& iEnvironment )
+			    const std::string& iEnvironment )
    : CompositeModule( iName, iDescription ),
      Loader< Module >( iEnvironment ),
      m_moduleCommand( *new ModuleCommand( "module", this ) )
 {
-   if( 0 == &m_moduleCommand ) {
-      report( EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 // LoaderModule::LoaderModule( const LoaderModule& )
@@ -102,7 +92,7 @@ LoaderModule::clearModules()
 
 // ------------- overridden Loader< T > method
 void
-LoaderModule::initialize( const string& iName, Module& iModule )
+LoaderModule::initialize( const std::string& iName, Module& iModule )
 {
    // call globally visible symbol to make debugging easier
    modsel();
@@ -116,7 +106,7 @@ LoaderModule::initialize( const string& iName, Module& iModule )
 
 // ------------- overridden Loader< T > method
 void
-LoaderModule::finalize( const string& iName, Module& iModule )
+LoaderModule::finalize( const std::string& iName, Module& iModule )
 {
    // "unregister" with CompositeModule
    removeModule( iName );
@@ -152,11 +142,11 @@ LoaderModule::fetch( const Module::Name& iName ) const
 }
 
 // ------------- overridden Loader< T > method
-string
-LoaderModule::makeErrorMesg( const string& iName ) const
+std::string
+LoaderModule::makeErrorMesg( const std::string& iName ) const
 {
-   string returnValue = string( "Cannot make module; are you sure " )
-      + iName + string( " is a Module?" );
+   std::string returnValue = std::string( "Cannot make module; are you sure " )
+      + iName + std::string( " is a Module?" );
    return returnValue;
 }
 
@@ -179,7 +169,7 @@ LoaderModule::makeErrorMesg( const string& iName ) const
 // unload static modules AFTER dynamic modules
 //
 // Revision 1.7  1999/02/22 23:40:41  mkl
-// setResult( string ) insteadof report in Commands; added NamingService and DefaultModule; fixed bug in stream command
+// setResult( std::string ) insteadof report in Commands; added NamingService and DefaultModule; fixed bug in stream command
 //
 // Revision 1.6  1998/11/19 21:42:28  mkl
 // reshuffled dtors to see if it helps Brian
@@ -194,7 +184,7 @@ LoaderModule::makeErrorMesg( const string& iName ) const
 // unify producer/processor/module/source_format/sink_format commands
 //
 // Revision 1.2  1998/11/09 21:24:32  mkl
-// loadable classes know their own factorySymbol string; improved user iface of ModuleCommand
+// loadable classes know their own factorySymbol std::string; improved user iface of ModuleCommand
 //
 // Revision 1.1  1998/11/09 19:31:02  mkl
 // revamped Module/Command system to allow uniform loading of source/sink-formats, modules, processors/producers

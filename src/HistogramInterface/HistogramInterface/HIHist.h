@@ -49,7 +49,7 @@ class HIHist
       // ---------- constants, enums and typedefs --------------
       // ---------- Constructors and destructor ----------------
       HIHist( Count  iId, 
-	      const string& iTitle ) ;
+	      const std::string& iTitle ) ;
       virtual ~HIHist();
       // ---------- member functions ---------------------------
       void setId() ;
@@ -58,7 +58,7 @@ class HIHist
       // ---------- const member functions ---------------------
       // Accessors
       Count id ( void ) const;
-      const string& title ( void ) const; 
+      const std::string& title ( void ) const; 
 
 
       // contents sum not including over/underflows
@@ -88,7 +88,7 @@ class HIHist
 
       // ---------- data members -------------------------------
       Count m_id ;
-      string m_title ;
+      std::string m_title ;
 
       // ---------- static data members ------------------------
 

@@ -69,7 +69,7 @@ static const char* const kTagString = "$Name:  $";
 // constructors and destructor
 //
 HIHistProf::HIHistProf( Count         iId,
-			const         string& iTitle,
+			const         std::string& iTitle,
 			unsigned int  iNChannels,
 			float         iLowEdgeX,
 			float         iHighEdgeX,

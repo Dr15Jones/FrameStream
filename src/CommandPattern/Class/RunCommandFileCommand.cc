@@ -49,9 +49,9 @@
 //
 static const char* const kFacilityString = "CommandPattern.RunCommandFileCommand";
 
-static const string helpMessage = 
-string( " Allows to process commands in file:                       \n" )+
-string( "    <argument>             filename to be processed        \n" );
+static const std::string helpMessage = 
+std::string( " Allows to process commands in file:                       \n" )+
+std::string( "    <argument>             filename to be processed        \n" );
 
 //
 // static data member definitions
@@ -100,7 +100,7 @@ RunCommandFileCommand::helpHandler()
    report( SYSTEM, kFacilityString ) 
       << "\n\nDescription: " << name() << "\n\n"
       << helpMessage << "\n" 
-      << endl;
+      << std::endl;
 
    return COMMAND_OK;
 }
@@ -117,14 +117,14 @@ RunCommandFileCommand::defaultWithArgsHandler( int iArgc, char* iArgv[] )
    if( iArgc > 2 )
    {
       report( SYSTEM, kFacilityString )
-	 << "wrong # of args" << endl;
+	 << "wrong # of args" << std::endl;
       helpHandler();
     
       result = COMMAND_ERROR;
    }
    else
    {
-      string filename( iArgv[1] );
+      std::string filename( iArgv[1] );
       
       // get ahold of Interpreter
       Interpreter* interp = Interpreter::interpreter();

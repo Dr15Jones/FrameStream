@@ -86,7 +86,7 @@
 
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 
 // user include files
 #include "Experiment/types.h"
@@ -96,7 +96,7 @@
 class SyncValue
 {
       // friend classses and functions
-      //friend ostream& operator<< ( ostream& os, const SyncValue& iSyncValue );
+      //friend ostream& operator<< (std::ostream& os, const SyncValue& iSyncValue );
 
    public:
       // constants, enums and typedefs

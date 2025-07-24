@@ -45,10 +45,10 @@ class LoaderMultiFactoryChooser : public DLMultiFactoryChooserBase
 
       // ---------- member functions ---------------------------
       
-      virtual STL_VECTOR(string)::iterator 
-           choose( const string& iShortName,
-		   STL_VECTOR(string)::iterator itBegin,
-		   STL_VECTOR(string)::iterator itEnd ) ;
+      virtual std::vector<std::string>::iterator 
+           choose( const std::string& iShortName,
+		   std::vector<std::string>::iterator itBegin,
+		   std::vector<std::string>::iterator itEnd ) ;
 
       // ---------- const member functions ---------------------
 

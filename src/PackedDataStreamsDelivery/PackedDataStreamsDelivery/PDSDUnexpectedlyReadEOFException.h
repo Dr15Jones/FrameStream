@@ -42,8 +42,8 @@ class PDSDUnexpectedlyReadEOFException : public PDSDExceptionBase
 
       // ---------- Constructors and destructor ----------------
       PDSDUnexpectedlyReadEOFException( const char* iHappenedWhile ) :
-	 PDSDExceptionBase( (string("Read EOF while ") + 
-			     string(iHappenedWhile) ).c_str() ) {}
+	 PDSDExceptionBase( (std::string("Read EOF while ") + 
+			     std::string(iHappenedWhile) ).c_str() ) {}
 };
 
 // inline function definitions

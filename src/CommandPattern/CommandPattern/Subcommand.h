@@ -38,7 +38,7 @@ class Subcommand : public SubcommandBase
       typedef int(T::*SubcommandFunction)();
 
       // ---------- Constructors and destructor ----------------
-      Subcommand( const string& iName,
+      Subcommand( const std::string& iName,
 		  Count iMinArgs,
 		  Count iMaxArgs,
 		  SubcommandFunction iFunction,

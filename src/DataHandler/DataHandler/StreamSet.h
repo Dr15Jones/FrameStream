@@ -66,10 +66,10 @@
 #include <set>
 
 // forward declarations
-#include "STLUtility/fwd_set.h" // for CPP macros
+#include <set> // for CPP macros
 
 #if !defined(_streamset_types_)
-#  define _streamset_types_ STL_SET( Stream::Type )
+#  define _streamset_types_ std::set< Stream::Type >
 #endif /* _streamset_types_ */
 
 

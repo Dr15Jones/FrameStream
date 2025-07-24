@@ -25,12 +25,12 @@
 // system include files
 
 // user include files
-#include "PackedDataStreamsDelivery/PDSUnpackingSourceStreamBase.h"
+#include "PackedDataStreamsDelivery/Sources/PDSUnpackingSourceStreamBase.h"
 
 // forward declarations
 
 template< class TSMPacker >
-class PDSUnpackingSourceStreamTemplate : class PDSUnpackingSourceStreamBase
+class PDSUnpackingSourceStreamTemplate : public PDSUnpackingSourceStreamBase
 {
       // ---------- friend classes and functions ---------------
 
@@ -55,7 +55,7 @@ class PDSUnpackingSourceStreamTemplate : class PDSUnpackingSourceStreamBase
 
       virtual SMSourceStream& operator>>( float  &);
       virtual SMSourceStream& operator>>( double &);
-      virtual SMSourceStream& operator>>( string& );
+      virtual SMSourceStream& operator>>( std::string& );
 
       virtual SMSourceStream& operator>>( const SMMakeContentsBase& );
 

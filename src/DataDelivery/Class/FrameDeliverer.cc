@@ -169,17 +169,9 @@
 // STL classes
 #include <algorithm>
 #include <map>
-#include "STLUtility/fwd_multimap.h" // to define CPP macros
-#if defined(MULTIMAP_IS_SEPARATE_FILE_BUG)
-#  include <multimap.h>
-#endif
+#include <map> // to define CPP macros
 #include <vector>
-#include "STLUtility/fwd_multiset.h" // to define CPP macros
-#if defined(MULTISET_IS_SEPARATE_FILE_BUG)
-#include <multiset.h>
-#else
-#include <set>
-#endif
+#include <set> // to define CPP macros
 
 //
 // constants, enums and typedefs
@@ -189,14 +181,10 @@ typedef _framedeliverer_sourcecontrollers_ DataSourceControllers;
 typedef _framedeliverer_sourcesstatus_ SourcesStatus ;
 typedef _framedeliverer_keyedsourcecontrollers_ StreamPriorities ;
 
-typedef STL_MULTIMAP( SyncValue, FindNextRecordInfo )
+typedef std::multimap< SyncValue, FindNextRecordInfo >
    SyncValuesOfNextRecords ;
-typedef STL_MULTISET_COMP( FindNextRecordInfo , SortFindNextRecordInfo )
+typedef std::multiset< FindNextRecordInfo , SortFindNextRecordInfo >
    NextRecordSet ;
-
-#if defined(FORWARD_DECLARATION_NOT_BOUND_TO_DEFINITION_BUG)
-typedef STL_MULTIMAP( FrameDeliverer::SourceStatus , DataSourceDescriptor ) _tmp_ ;
-#endif /*FORWARD_DECLARATION_NOT_BOUND_TO_DEFINITION_BUG */
 
 //
 // local functions
@@ -329,11 +317,6 @@ FrameDeliverer::FrameDeliverer( void ) :
    m_isSequentiallyAccessing(false),
    m_severalActiveSourcesWithRecordsAtCurrentSyncValue(false)
 {
-   //make sure memory was assigned
-   assert( 0 != &m_dataSourceControllers );
-   assert( 0 != &m_activeSources );
-   assert( 0 != &m_sourcesStatus);
-   assert( 0!= &m_activeSourcesWithRecordsAtCurrentSyncValue );
 }
 
 // FrameDeliverer::FrameDeliverer( const FrameDeliverer& )
@@ -891,7 +874,7 @@ FrameDeliverer::gotoNextStop( void )
 	       m_activeSourcesWithRecordsAtCurrentSyncValue.end());
 	    
 	    m_activeSourcesWithRecordsAtCurrentSyncValue.insert(
-	       pair<const Stream::Type ,
+	       std::pair<const Stream::Type ,
 	       DataSourceController*>(
 		  (*firstRecord).stream,
 		  (*firstRecord).controller));
@@ -957,7 +940,7 @@ FrameDeliverer::gotoNextStop( void )
 		  
 		  //add to list
 		  m_activeSourcesWithRecordsAtCurrentSyncValue.insert(
-		     pair<const Stream::Type ,
+		     std::pair<const Stream::Type ,
 		     DataSourceController*>(nextRecordType,controller));
 		  
 		  advanceToNextSource=true;
@@ -1123,7 +1106,7 @@ FrameDeliverer::gotoNextRecordAtCurrentSyncValue( void )
 	    isDone=true;
 	    //Put it back on the list
 	    m_activeSourcesWithRecordsAtCurrentSyncValue.insert(
-	       pair<const Stream::Type ,
+	       std::pair<const Stream::Type ,
 	       DataSourceController*>(nextRecordType, controller));	    
 	 }
       }
@@ -1283,7 +1266,7 @@ FrameDeliverer::findStopWithMultipleNonSequentialActiveSources( void )
       do{
 	 if( activeStreams.contains( recordType ) ){
 	    //add to our list
-	    streamPriorities.insert( pair<const Stream::Type,
+	    streamPriorities.insert( std::pair<const Stream::Type,
 				     DataSourceController*>(recordType,
 							    controller));
 	    advanceToNextSource=true;

@@ -75,7 +75,7 @@ static const char* const kTagString = "$Name:  $";
 //
 
 HIHist2D::HIHist2D( Count         iId,
-		    const string& iTitle,
+		    const std::string& iTitle,
 		    unsigned int  iNChannelsX,
 		    float         iLowEdgeX,
 		    float         iHighEdgeX,
@@ -186,7 +186,7 @@ float HIHist2D::bitsPerChannel ( void ) const
 }
 
 
-pair<float,float> 
+std::pair<float,float> 
 HIHist2D::channelLoEdge( unsigned int iXChannel ,
 			 unsigned int iYChannel  )  const
 {
@@ -200,10 +200,10 @@ HIHist2D::channelLoEdge( unsigned int iXChannel ,
 		      ( m_highedgeY - m_lowedgeY )/(1.*m_nchannelsY ) ) :
 		    m_lowedgeY ) ;
 
-   return pair<float,float> (x,y) ;
+   return std::pair<float,float> (x,y) ;
 }
 
-pair<float,float> 
+std::pair<float,float> 
 HIHist2D::channelCenter( unsigned int iXChannel ,
 			 unsigned int iYChannel  ) const 
 {
@@ -217,7 +217,7 @@ HIHist2D::channelCenter( unsigned int iXChannel ,
 		      ( m_highedgeY - m_lowedgeY )/(1.*m_nchannelsY ) ) :
 		    m_lowedgeY ) ;
 
-   return pair<float,float> (x,y) ;
+   return std::pair<float,float> (x,y) ;
 }
 
 

@@ -56,7 +56,7 @@ namespace JobControlNS
 //
 // constructors and destructor
 //
-FilterNot::FilterNot(const string& iName, FilterBase* iFilter) :
+FilterNot::FilterNot(const std::string& iName, FilterBase* iFilter) :
    FilterBase(iName),
    m_filter(iFilter)
 {
@@ -119,10 +119,10 @@ FilterNot::implementFilter(Frame& iFrame,
 //
 // const member functions
 //
-string 
+std::string 
 FilterNot::description() const
 {
-   return string("not ")+m_filter->name();
+   return std::string("not ")+m_filter->name();
 }
 
 //

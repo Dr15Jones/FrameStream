@@ -98,7 +98,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kFAPtrTableFacilityString 
+static const char* const kFAPtrTableFacilityString 
 = "DataDelivery.FAPtrTable" ;
 
 //

@@ -36,8 +36,7 @@
 // user include files
 #include "Experiment/report.h"
 #include "CommandPattern/LoaderMultiFactoryChooser.h"
-#include "JobControl/JobControl.h"
-#include "DefaultModule/DefaultModule.h"
+#include "CommandPattern/DefaultModule.h"
 
 // STL classes
 // You may have to uncomment some of these or other stl headers
@@ -97,26 +96,26 @@ static const char* const kTagString = "$Name:  $";
 //
 // member functions
 //
-STL_VECTOR(string)::iterator 
-LoaderMultiFactoryChooser::choose( const string& iShortName,
-				   STL_VECTOR(string)::iterator itBegin,
-				   STL_VECTOR(string)::iterator itEnd ) 
+std::vector<std::string>::iterator 
+LoaderMultiFactoryChooser::choose( const std::string& iShortName,
+				   std::vector<std::string>::iterator itBegin,
+				   std::vector<std::string>::iterator itEnd ) 
 {
-   STL_VECTOR(string)::iterator returnValue = itBegin;
+   std::vector<std::string>::iterator returnValue = itBegin;
    unsigned int howManySuppliers = itEnd - itBegin;
 
-   if( Switch::kOn == JobControl::instance()->defaultModule().usePrompting() 
+   if( Switch::kOn == DefaultModule::instance()->usePrompting() 
        &&  1 < howManySuppliers ) // if more than one path
    {
       // ask user which one
-      ostream& reportStream = report( SYSTEM, kFacilityString );
+     std::ostream& reportStream = report( SYSTEM, kFacilityString );
       
 	reportStream << "\"" << iShortName
 	 << "\" is present in more than one path!\n"
 	 << "Please advise as to which one to use (by number):" 
 	 << "\n";
       Count count = 0;
-      for( STL_VECTOR(string)::iterator itObject = itBegin;
+      for( std::vector<std::string>::iterator itObject = itBegin;
 	   itObject != itEnd;
 	   ++itObject )
       {
@@ -125,18 +124,18 @@ LoaderMultiFactoryChooser::choose( const string& iShortName,
 	    << (*itObject) << iShortName
 	    << "\n";
       }
-      reportStream << endl;
+      reportStream << std::endl;
       
       Count whichOne=1;
       DABoolean validChoice = false;
       do
       {
 	 DABoolean badInput = false;
-	 cin >> whichOne;
-	 if( ios::failbit == cin.fail() ) {
+	 std::cin >> whichOne;
+	 if(std::cin.fail() ) {
 	    badInput = true;
-	    cin.clear(); // reset bad state
-	    cin.ignore( 80, '\n' ); // throw away the input (up to 80chars)
+	    std::cin.clear(); // reset bad state
+	    std::cin.ignore( 80, '\n' ); // throw away the input (up to 80chars)
 	 }
 	 validChoice = 
 	    ( true == badInput 
@@ -144,7 +143,7 @@ LoaderMultiFactoryChooser::choose( const string& iShortName,
 	 if( false == validChoice )
 	 {
 	    report( ERROR, kFacilityString ) 
-	       << "Bad choice. Try again!" << endl;
+	       << "Bad choice. Try again!" << std::endl;
 	 }
       } 
       while( false == validChoice );

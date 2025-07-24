@@ -41,7 +41,7 @@
 #include "StorageManagement/SMSourceStream.h"
 
 // forward declarations
-#include "STLUtility/fwd_map.h"
+#include <map>
 class PDSTypeUnpackingInfo;
 
 class PDSSourceStream : public SMSourceStream
@@ -52,7 +52,7 @@ class PDSSourceStream : public SMSourceStream
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      PDSSourceStream(const STL_MAP(TypeTag, PDSTypeUnpackingInfo* )* iTypeInfo,
+      PDSSourceStream(const std::map<TypeTag, PDSTypeUnpackingInfo* >* iTypeInfo,
 		      UInt32 iIndex ) : 
 	 m_typePackingMap(iTypeInfo),
 	 m_index(iIndex), m_isValid(false), m_buffer(0) {}
@@ -70,7 +70,7 @@ class PDSSourceStream : public SMSourceStream
 
       //needed for chaining files
       void setUnpackingInfoMap( 
-            const STL_MAP(TypeTag, PDSTypeUnpackingInfo*)* iTypeInfo ) {
+            const std::map<TypeTag, PDSTypeUnpackingInfo*>* iTypeInfo ) {
          m_typePackingMap = iTypeInfo ;
       }
       void setIndex( UInt32 iIndex ) { m_index = iIndex; }
@@ -87,7 +87,7 @@ class PDSSourceStream : public SMSourceStream
 
       virtual SMSourceStream& operator>>( float  &);
       virtual SMSourceStream& operator>>( double &);
-      virtual SMSourceStream& operator>>( string& );
+      virtual SMSourceStream& operator>>( std::string& );
 
       virtual SMSourceStream& operator>>( const SMMakeContentsBase& );
 
@@ -134,7 +134,7 @@ class PDSSourceStream : public SMSourceStream
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      const STL_MAP(TypeTag, PDSTypeUnpackingInfo* )* m_typePackingMap;
+      const std::map<TypeTag, PDSTypeUnpackingInfo* >* m_typePackingMap;
       UInt32 m_index;
       DABoolean m_isValid;
       PDSProxyBuffer m_buffer;

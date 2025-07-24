@@ -51,14 +51,14 @@ void anal3( Frame& iFrame )
 
       DataTable pionFitTable( pionFit.size() );
       if( pionFit.fillTable( pionFitTable) ){
-	 cout <<"Number of Pions:"<<pionFitTable.height()<<endl; 
+	 cout <<"Number of Pions:"<<pionFitTable.height()<<std::endl; 
       } else {
 	 //table didn't fill
-	 cout << "PionTable not filled"<<endl;
+	 cout << "PionTable not filled"<<std::endl;
       }
    } else {
       //Event record doesn't have pion fit
-      cout << "Event record doesn't have pion fit"<<endl;
+      cout << "Event record doesn't have pion fit"<<std::endl;
    }
 
 }
@@ -101,20 +101,20 @@ int main(int argc, char *argv[]){
    if( ! FD.addDataSource( karpDataBinder, iError) ){
       switch(iError){
 	 case FrameDeliverer::kInvalidStopsForSource:
-	 cout << "Source can't goto those stops"<<endl;
+	 cout << "Source can't goto those stops"<<std::endl;
 	 break;
 	 case FrameDeliverer::kSourceDidntLikeInfo:
-	 cout << "Couldn't open data source "<<endl;
+	 cout << "Couldn't open data source "<<std::endl;
 	 break;
 	 case FrameDeliverer::kConflictingStopResponsibility:
-	 cout << "Another source already goes to that stop"<<endl;
+	 cout << "Another source already goes to that stop"<<std::endl;
 	 break;
       }
       exit(1);
    }
       
       
-   cout <<"Opened data stream"<<endl;
+   cout <<"Opened data stream"<<std::endl;
    anal1() ;
       
    FD.setActiveStreams( Stream::kBeginRun |
@@ -125,45 +125,45 @@ int main(int argc, char *argv[]){
    //Before running, check to see if we have sources for all the stops we
    //  requested.
    if(FD.needMoreSources()){
-      cout<<"Need more sources"<<endl;
+      cout<<"Need more sources"<<std::endl;
       exit(0);
    }
       
    // request a certain SynchronizationValue (run, event here)
    unsigned long run, evnt;
-   cout << "Input first run, evnt" << endl;
+   cout << "Input first run, evnt" << std::endl;
    cin >> run >> evnt;
    if( ! FD.synchronizeSources( SyncValue( run, evnt ) ) ) {
-      report(EMERGENCY) << "---couldn't synchronize Sources---" << endl;
+      report(EMERGENCY) << "---couldn't synchronize Sources---" << std::endl;
       exit(1);
    }
 
 
-   cout <<"Starting loop"<<endl;
+   cout <<"Starting loop"<<std::endl;
       
    int isDone = 0;
    while(! isDone ){
       Stream::Type currentRecord = FD.nextStop( ) ;
       switch( currentRecord){
 	 case Stream::kNone:
-	    report( EMERGENCY ) <<"---Done---"<<endl;
+	    report( EMERGENCY ) <<"---Done---"<<std::endl;
 	    isDone = 1;
 	    break;
 	 case Stream::kBeginRun:
-	    cout <<"---BeginRun---"<<endl;
+	    cout <<"---BeginRun---"<<std::endl;
             // anal2(FD.currentFrame());
 	    FD.currentFrame();
 	    break;
 	 case Stream::kEvent:
-	    cout <<"---Event---"<<endl;
+	    cout <<"---Event---"<<std::endl;
 	    // anal3(FD.currentFrame()) ;
 	    FD.currentFrame();
 	    break;
 	 case Stream::kEndRun:
-	    cout <<"---EndRun---"<<endl;
+	    cout <<"---EndRun---"<<std::endl;
 	    break;
 	 default:
-	    report( EMERGENCY )<<"Unknown record type:"<<currentRecord<<endl;
+	    report( EMERGENCY )<<"Unknown record type:"<<currentRecord<<std::endl;
 	    isDone = 1;
 	    break;
       }
@@ -184,7 +184,7 @@ int main(int argc, char *argv[]){
 			      iCloseError) ){
       switch(iCloseError){
 	 case FrameDeliverer::kCloseStopsNotValid:
-	 cout << "CloseDataSource: Stop to be deactivated was not active" <<endl;
+	 cout << "CloseDataSource: Stop to be deactivated was not active" <<std::endl;
 	 break;
       }
       exit(1);
@@ -203,17 +203,17 @@ DataSourceManager *dataSourceManager =
 if( !(*dataSourceManager).setRecordsToRetrieve( Stream::kBeginRun |
 						Stream::kEvent |
 						Stream::kEndRun ) ) {
-   cout << "couldn\'t set setRecordsToRetrieve" << endl;
+   cout << "couldn\'t set setRecordsToRetrieve" << std::endl;
 }
 
 // try out synchronization
-cout << "trying out Synchronization feature" << endl;
-cout << "input run/event number (have to be the same for now)" << endl;
+cout << "trying out Synchronization feature" << std::endl;
+cout << "input run/event number (have to be the same for now)" << std::endl;
 int runn, eventn;
 cin >> runn >> eventn;
 
 if( !(*dataSourceManager).synchronizeSource( SyncValue( runn, eventn ) ) ) {
-   cerr << "couldn't synchronize" << endl;
+   cerr << "couldn't synchronize" << std::endl;
    exit(-1);
 }
 
@@ -224,20 +224,20 @@ while(! isDone ){
 					   Stream::kEndRun );
    switch( typeOfNextRecord ) {
       case Stream::kNone:
-      cout <<"---Done---"<<endl;
+      cout <<"---Done---"<<std::endl;
       isDone = 1;
       break;
       case Stream::kBeginRun:
-      cout <<"---BeginRun---"<<endl;
+      cout <<"---BeginRun---"<<std::endl;
       break;
       case Stream::kEvent:
-      cout <<"---Event---"<<endl;
+      cout <<"---Event---"<<std::endl;
       break;
       case Stream::kEndRun:
-      cout <<"---EndRun---"<<endl;
+      cout <<"---EndRun---"<<std::endl;
       break;
       default:
-      cout << "Unknown record type:" << typeOfNextRecord << endl;
+      cout << "Unknown record type:" << typeOfNextRecord << std::endl;
       isDone = 1;
       break;
    }
@@ -257,7 +257,7 @@ while(! isDone ){
 	    cout << comp[j];
 	 }
       }
-      cout << " ]\n" << flush;
+      cout << " ]\n" << std::flush;
       //delete record; // eventually have to do something smarter here
 
 

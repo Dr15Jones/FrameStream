@@ -36,7 +36,7 @@
 // user include files
 #include "CommandPattern/Keyword/Base.h"
 
-#include "STLUtility/fwd_map.h"
+#include <map>
 
 // forward declarations
 
@@ -52,7 +52,7 @@ class Composite : public Base
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      Composite(const string& iName);
+      Composite(const std::string& iName);
       virtual ~Composite();
 
       // ---------- member functions ---------------------------
@@ -93,7 +93,7 @@ class Composite : public Base
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      STL_MAP(string, Base*) m_keywords;
+      std::map<std::string, Base*> m_keywords;
 
       unsigned int m_minArgs;
       unsigned int m_maxArgs;

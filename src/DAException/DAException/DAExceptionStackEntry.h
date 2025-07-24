@@ -27,7 +27,6 @@
 #include "Experiment/Experiment.h"
 #include "Experiment/types.h"
 #include "Experiment/report.h"
-#include "DataHandler/DataKey.h"
 #include "DAException/DAExceptionStack.h"
 
 const char* const kDAExceptionStackEntryFacilityString = "DAExceptionStackEntry";
@@ -36,14 +35,23 @@ class DAExceptionStackEntry
 {
   public:
      enum UseDurable {kUseDurable};
-     DAExceptionStackEntry(const DataKey& key);
-     DAExceptionStackEntry(const DataKey& key, UseDurable);
+
+     template<typename TDataKey>
+     explicit DAExceptionStackEntry(const TDataKey &key) {
+       passToStack(DAExceptionStackDataKey::from(key), false);
+     }
+     template<typename TDataKey>
+     DAExceptionStackEntry(const TDataKey &key, UseDurable) {
+       passToStack(DAExceptionStackDataKey::from(key), true);
+     }
      ~DAExceptionStackEntry();
 
    private:
-      DAExceptionStackEntry(const DAExceptionStackEntry&); // stop default
-      DAExceptionStackEntry& operator= (const DAExceptionStackEntry&); // stop default
-      DAExceptionStack* m_stack;
+     void passToStack(DAExceptionStackDataKey const &, bool);
+     DAExceptionStackEntry(const DAExceptionStackEntry &) = delete; // stop default
+     DAExceptionStackEntry &
+     operator=(const DAExceptionStackEntry &) = delete; // stop default
+     DAExceptionStack *m_stack;
 };
 
 #endif /* DAEXCEPTION_DAEXCEPTIONSTACKENTRY_H */

@@ -73,15 +73,15 @@ static const char* const kTagString = "$Name:  $";
 //
 // static data member definitions
 //
-static const string helpMessage =
-string( " Subcommands are:                                                  \n" )+
-string( "  help                                                             \n" )+
-string( "                                                                   \n" )+
-string( "  continueEventLoop [on/off*]      set flag to continue the event  \n" )+
-string( "                                   loop for Data Access Exceptions \n" )+
-string( "                                                                   \n" )+
-string( "  status                           print out current settings      \n" )+
-string( "                                                                   \n" );
+static const std::string helpMessage =
+std::string( " Subcommands are:                                                  \n" )+
+std::string( "  help                                                             \n" )+
+std::string( "                                                                   \n" )+
+std::string( "  continueEventLoop [on/off*]      set flag to continue the event  \n" )+
+std::string( "                                   loop for Data Access Exceptions \n" )+
+std::string( "                                                                   \n" )+
+std::string( "  status                           print out current settings      \n" )+
+std::string( "                                                                   \n" );
 
 //
 // constructors and destructor
@@ -155,13 +155,13 @@ ExceptionControlCommand::~ExceptionControlCommand()
 //      }
 //      else 
 //      {
-//       report( ERROR, kFacilityString ) << "invalid command arg" << endl;
+//       report( ERROR, kFacilityString ) << "invalid command arg" << std::endl;
 //       helpHandler();
 //       returnValue = COMMAND_ERROR;
 //      }
 //   } 
 //   else {
-//      report( ERROR, kFacilityString ) << "wrong # args" << endl;
+//      report( ERROR, kFacilityString ) << "wrong # args" << std::endl;
 //      helpHandler();
 //      returnValue = COMMAND_ERROR;
 //   }
@@ -176,7 +176,7 @@ ExceptionControlCommand::helpHandler()
    report( SYSTEM, kFacilityString )
       << "\n\nDescription: " << name() << "\n\n"
       << helpMessage
-      << endl;
+      << std::endl;
 
    return COMMAND_OK;
 }
@@ -187,7 +187,7 @@ ExceptionControlCommand::printStatusHandler()
    report( SYSTEM, kFacilityString ) 
       << "continueEventLoop :" << 
       ( target()->continueEventLoopAfterException() ? "on" : "off" )
-      << endl;
+      << std::endl;
 
    return COMMAND_OK;
 }
@@ -200,24 +200,24 @@ ExceptionControlCommand::continueEventLoopHandler()
    assert( m_argc >=2 && m_argc <= 3 );
 
    if( m_argc == 2 ) {
-      string resultString = 
+      std::string resultString = 
 	 ( target()->continueEventLoopAfterException() ? "on" : "off" );
       setResult( resultString );
    }
    else if( m_argc >= 3 ) {
       // second argument is report level
-      string setting( m_argv[2] );
+      std::string setting( m_argv[2] );
       
       // convert to upper case to make comparison trivial
-      string uppercaseSetting( 
+      std::string uppercaseSetting( 
 	 StringUtil::toUppercase( setting ) );
       
-      if( 0 == string( "ON" ).compare( uppercaseSetting ) )
+      if( 0 == std::string( "ON" ).compare( uppercaseSetting ) )
       {
 	 target()->setContinueEventLoopAfterException( true );
 	 setResult( "on" );
       }
-      else if ( 0 == string( "OFF" ).compare( uppercaseSetting ) )
+      else if ( 0 == std::string( "OFF" ).compare( uppercaseSetting ) )
       {
 	 target()->setContinueEventLoopAfterException( false );
 	 setResult( "off" );
@@ -225,7 +225,7 @@ ExceptionControlCommand::continueEventLoopHandler()
       else
       {
 	 report( SYSTEM, kFacilityString )
-	    << "Unknown setting \"" << setting << "\"" << endl;
+	    << "Unknown setting \"" << setting << "\"" << std::endl;
 	 returnValue = Command::COMMAND_ERROR;
       }
    }

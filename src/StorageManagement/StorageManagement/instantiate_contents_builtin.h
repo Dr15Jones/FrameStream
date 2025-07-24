@@ -14,7 +14,7 @@
 
     \code
        //want to be able to store a vector< double >
-       typedef STL_VECTOR(double) _container_type_;
+       typedef std::vector<double> _container_type_;
        #include "StorageManagement/instantiate_contents_builtin.h"
     \endcode
 

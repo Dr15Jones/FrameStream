@@ -202,7 +202,7 @@ procname::procname( void )               // anal1
    : Processor( "procname" )
 example_tuplevector    ,m_example=Inserter(false) //does not delete what is inserted
 {
-   report( DEBUG, kFacilityString ) << "here in ctor()" << endl;
+   report( DEBUG, kFacilityString ) << "here in ctor()" << std::endl;
 
    // ---- bind a method to a stream -----
    // These lines ARE VERY IMPORTANT! If you don't bind the 
@@ -227,7 +227,7 @@ example_tuple_tuplevector                         UsageTag() );
 
 procname::~procname()                    // anal5
 {
-   report( DEBUG, kFacilityString ) << "here in dtor()" << endl;
+   report( DEBUG, kFacilityString ) << "here in dtor()" << std::endl;
  
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
@@ -243,7 +243,7 @@ procname::~procname()                    // anal5
 void
 procname::init( void )          // anal1 "Interactive"
 {
-   report( DEBUG, kFacilityString ) << "here in init()" << endl;
+   report( DEBUG, kFacilityString ) << "here in init()" << std::endl;
 
    // do any initialization here based on Parameter Input by User
    // (e.g. run expensive algorithms that are based on parameters
@@ -255,7 +255,7 @@ procname::init( void )          // anal1 "Interactive"
 void
 procname::terminate( void )     // anal5 "Interactive"
 {
-   report( DEBUG, kFacilityString ) << "here in terminate()" << endl;
+   report( DEBUG, kFacilityString ) << "here in terminate()" << std::endl;
 
    // do anything here BEFORE New Parameter Change
    // (e.g. write out result based on parameters from user-input)
@@ -268,7 +268,7 @@ example_dchain enum {kDMass, kDStarMass, kDMom, kDStarNum};
 void
 procname::hist_book( HIHistoManager& iHistoManager )
 {
-   report( DEBUG, kFacilityString ) << "here in hist_book()" << endl;
+   report( DEBUG, kFacilityString ) << "here in hist_book()" << std::endl;
 
    // book your histograms here
 example_histogram    m_histo1 = iHistoManager.histogram( "Event Number" ,
@@ -288,7 +288,7 @@ example_dchain 					ntupleNames.names());
 ActionBase::ActionResult
 procname::event( Frame& iFrame )          // anal3 equiv.
 {
-   report( DEBUG, kFacilityString ) << "here in event()" << endl;
+   report( DEBUG, kFacilityString ) << "here in event()" << std::endl;
 
 example_tuplevector    //get rid of old stuff in our list
 example_tuplevector    m_example=List.erase(m_example=List.begin(), m_example=List.end());
@@ -309,7 +309,7 @@ example_track       // Print out the track's ID number.
 example_track       report( INFO, kFacilityString )
 example_track          << "track "
 example_track          << (*trackItr).identifier()
-example_track          << endl;
+example_track          << std::endl;
 example_track
 example_track       // Ask for the pion fit and quality information.
 example_track       FAItem< TDKinematicFit > pionFit = (*trackItr).pionFit();
@@ -322,7 +322,7 @@ example_track       if ( (*seedQuality).numberHitsExpected() == 0)
 example_track       {
 example_track          report(WARNING, kFacilityString)
 example_track             <<"Number of Hits expected is zero, skipping this track!" 
-example_track		  << endl;   
+example_track		  << std::endl;   
 example_track          continue;
 example_track       }
 example_track
@@ -352,7 +352,7 @@ example_track       {
 example_track          report( INFO, kFacilityString )
 example_track             << "  momentum: "
 example_track             << (*pionFit).momentum()
-example_track             << endl;
+example_track             << std::endl;
 example_track       }
 example_track    }
 example_shower
@@ -367,11 +367,11 @@ example_shower    {
 example_shower       report( INFO, kFacilityString )
 example_shower          << "shower "
 example_shower          << (*showerItr).identifier()
-example_shower          << endl;
+example_shower          << std::endl;
 example_shower       report( INFO, kFacilityString )
 example_shower          << "  energy: "
 example_shower          << (*showerItr).attributes().energy()
-example_shower          << endl;
+example_shower          << std::endl;
 example_shower    }
 example_pi0_dchain    FATable<NavPi0ToGG> pi0Table;
 example_pi0_dchain    extract(iFrame.record(Stream::kEvent), pi0Table);
@@ -394,7 +394,7 @@ example_pi0          <<", momentum: "<<pi0.momentum()
 example_pi0          <<", mass: "<<pi0.mass()
 example_pi0          <<", made from high energy shower: "<<hiEnergy.identifier()
 example_pi0          <<", made from low energy shower: "<<loEnergy.identifier()
-example_pi0          <<endl;
+example_pi0          <<std::endl;
 example_pi0    }
 example_kshort_dchain    FATable<NavKs> kshortTable;
 example_kshort_dchain    extract(iFrame.record(Stream::kEvent), kshortTable);
@@ -418,7 +418,7 @@ example_kshort          <<", mass: "<<kshort.mass()
 example_kshort          <<", decay distance: "<<kshort.position().distance()
 example_kshort          <<", made from pi+: "<<piPlus.identifier()
 example_kshort          <<" and pi-: "<<piMinus.identifier()
-example_kshort          <<endl;
+example_kshort          <<std::endl;
 example_kshort    }
 example_mc    // ************************
 example_mc    // MC Decay Tree example
@@ -437,7 +437,7 @@ example_mc
 example_mc    // Some things we can do with the decay tree:
 example_mc
 example_mc    // A. Let's see what we got
-example_mc    //  cout << (*m_decayTree) << endl;
+example_mc    //  cout << (*m_decayTree) << std::endl;
 example_mc
 example_mc    // B. Iterate over all particles in the tree and count the number
 example_mc    //    of Klongs
@@ -471,7 +471,7 @@ example_mc          << "Particle: "
 example_mc          << partItr->properties().name()
 example_mc          << " (QQ Id: " << partItr->properties().QQId() << ") "
 example_mc          << "p4 = " << partItr->lorentzMomentum()
-example_mc          << endl;
+example_mc          << std::endl;
 example_mc
 example_mc       // Check if this is a Klong
 example_mc       if ((partProp.QQId() == qqid1) || (partProp.QQId() == qqid2))
@@ -481,7 +481,7 @@ example_mc       }
 example_mc    }
 example_mc 
 example_mc    report( INFO, kFacilityString )
-example_mc       << "Number of KL: " << numKlong << endl;
+example_mc       << "Number of KL: " << numKlong << std::endl;
 example_mc
 example_mc    // C. Look for a B -> X_u l nu decay by iterating over all
 example_mc    //    vertices in the decay tree
@@ -507,7 +507,7 @@ example_mc             if (childProp.neutrino())
 example_mc             {
 example_mc                report( DEBUG, kFacilityString )
 example_mc                  << "Found the signal decay. The neutrino is a "
-example_mc                  << childProp.name() << endl;
+example_mc                  << childProp.name() << std::endl;
 example_mc             }
 example_mc          }
 example_mc          
@@ -583,7 +583,7 @@ example_eventshape    }
 example_eventshape
 example_eventshape    //Initialize Event Shape using the NavTrack Table
 example_eventshape    //We do this by making a list of tracks for EventShape
-example_eventshape    STL_VECTOR( KTKinematicData ) tracksForEventShape;
+example_eventshape    std::vector< KTKinematicData > tracksForEventShape;
 example_eventshape
 example_eventshape    //Loop over the tracks
 example_eventshape    for( FATable< NavTrack >::const_iterator navItrForES = trackTableBegin;
@@ -689,7 +689,7 @@ example_tuplevector    m_example=Inserter.insert( &m_example=List );
 ActionBase::ActionResult
 procname::beginRun( Frame& iFrame )       // anal2 equiv.
 {
-   report( DEBUG, kFacilityString ) << "here in beginRun()" << endl;
+   report( DEBUG, kFacilityString ) << "here in beginRun()" << std::endl;
 
    return ActionBase::kPassed;
 }
@@ -699,7 +699,7 @@ procname::beginRun( Frame& iFrame )       // anal2 equiv.
 ActionBase::ActionResult
 procname::endRun( Frame& iFrame )         // anal4 equiv.
 {
-   report( DEBUG, kFacilityString ) << "here in endRun()" << endl;
+   report( DEBUG, kFacilityString ) << "here in endRun()" << std::endl;
 
    return ActionBase::kPassed;
 }

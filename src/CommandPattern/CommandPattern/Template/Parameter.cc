@@ -41,7 +41,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kParameterFacilityString 
+static const char* const kParameterFacilityString 
 = "CommandPattern.Parameter" ;
 
 //
@@ -59,14 +59,6 @@ Parameter<T>::Parameter( const Command::Name& iName,
      m_value( *new T( defaultValue ) ),
      m_defaultValue( *new T( defaultValue ) )
 {
-   if(    0 == &m_value 
-       || 0 == &m_defaultValue 
-      ) {
-      report( EMERGENCY, kParameterFacilityString )
-	 << "no memory left" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 template< class T >
@@ -76,14 +68,6 @@ Parameter<T>::Parameter( const Command::Name& iName,
      m_value( *new T ),
      m_defaultValue( *new T )
 {
-   if(    0 == &m_value 
-       || 0 == &m_defaultValue 
-      ) {
-      report( EMERGENCY, kParameterFacilityString )
-	 << "no memory left" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 // Parameter::Parameter( const Parameter& )
@@ -133,19 +117,14 @@ Parameter<T>::implementSetHandler()
    
    if ( m_argc < 2 ) {
       report( SYSTEM, kParameterFacilityString )
-	 << "too few arguments" << endl;
+	 << "too few arguments" << std::endl;
       returnValue = Command::COMMAND_ERROR;
    }
    else {
       setValue( m_value );
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-ostrstream str;
-#define GET_STR(_var_) _var_.str()
-#else
-ostringstream str;
+std::ostringstream str;
 #define GET_STR(_var_) _var_.str().c_str()
-#endif
-      str<<m_value<<ends;
+      str<<m_value<<std::ends;
       Interpreter::interpreter()->setResult(GET_STR(str));
    }
 
@@ -160,17 +139,13 @@ Parameter<T>::implementSetDefaultHandler()
    
    if ( m_argc < 2 ) {
       report( SYSTEM, kParameterFacilityString )
-	 << "too few arguments" << endl;
+	 << "too few arguments" << std::endl;
       returnValue = Command::COMMAND_ERROR;
    }
    else {
       m_value = m_defaultValue;
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-ostrstream str;
-#else
-ostringstream str;
-#endif
-      str<<m_value<<ends;
+std::ostringstream str;
+      str<<m_value<<std::ends;
       Interpreter::interpreter()->setResult(GET_STR(str));
    }
 
@@ -183,12 +158,8 @@ Parameter<T>::listHandler()
 {
    Command::Result returnValue = Command::COMMAND_OK;
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-ostrstream str;
-#else
-ostringstream str;
-#endif
-   str<<m_value<<ends;
+std::ostringstream str;
+   str<<m_value<<std::ends;
    Interpreter::interpreter()->setResult(GET_STR(str));
    
    return returnValue;
@@ -202,20 +173,16 @@ Parameter< T >::setValue( T& value )
 
    if( 2 < m_argc ) {
       report( SYSTEM, kParameterFacilityString )
-	 << "will ignore extra arguments!" << endl;
+	 << "will ignore extra arguments!" << std::endl;
    }
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-istrstream str( getArgument( 1 ) );
-#else
-istringstream str( getArgument( 1 ) );
-#endif
+std::istringstream str( getArgument( 1 ) );
 
    str >> value;
    // error handling
-   if( ios::failbit == str.fail() ) {
+   if( str.fail() ) {
       report( SYSTEM, kParameterFacilityString )
-	 << "bad argument; can't interpret" << endl;
+	 << "bad argument; can't interpret" << std::endl;
    }
 }
 

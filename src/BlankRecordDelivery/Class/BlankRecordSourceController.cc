@@ -26,35 +26,19 @@
 
 // system include files
 #include <assert.h>
-#if defined(AMBIGUOUS_STRING_FUNCTIONS_BUG)
 #include <string>
-#endif /* AMBIGUOUS_STRING_FUNCTIONS_BUG */
 
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <vector>
-#if defined(MULTISET_IS_SEPARATE_FILE_BUG)
-#include <multiset.h>
-#else
-#include <set>
-#endif /* MULTISET_IS_SEPARATE_FILE_BUG */
-#include <map>
-#include <string>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 //#include "Experiment/report.h"
 #include "BlankRecordDelivery/BlankRecordSourceController.h"
 #include "BlankRecordDelivery/BlankRecordProxyDeliverer.h"
 #include "BlankRecordDelivery/BlankRecordStopsBase.h"
-#include "STLUtility/fwd_set.h"
+#include <set>
 #include "DataHandler/StreamSet.h"
 #include "DataHandler/StreamPriorityGreater.h"
 // STL classes
-#if defined(MULTISET_IS_SEPARATE_FILE_BUG)
-#include <multiset.h>
-#else
 #include <set>
-#endif /* MULTISET_IS_SEPARATE_FILE_BUG */
 #include <map>
 
 //
@@ -73,26 +57,15 @@ static const char* const kFacilityString = "BlankRecordDelivery.BlankRecordSourc
 //
 
 BlankRecordSourceController::BlankRecordSourceController( 
-         const string& iName, 
+         const std::string& iName, 
 	 const Stream::Set& iStreams, 
 	 BlankRecordStopsBase* iStops ) :
    DataSourceController( (ProxyDeliverer*) 0 ),
    m_name( iName ),
-#if defined(__DECCXX)
-   m_makeRecords( *(new Stream::Set ) ),
-#else 
    m_makeRecords( *(new Stream::Set( iStreams ) ) ),
-#endif
    m_stops( iStops ),
    m_presentRecordSyncValue( SyncValue::kUndefined)
 {
-   assert( &m_makeRecords != 0 );
-
-#if defined(__DECCXX)
-   //NOTE: cxx would ignore this function if I tried to create m_makeRecords
-   //       like m_makeRecords( *(new Stream::Set( iStreams ) ) )
-   m_makeRecords = iStreams;
-#endif
 
    setRecordsToRetrieve( iStreams );
    setIsSequentiallyAccessing( false );
@@ -147,7 +120,7 @@ BlankRecordSourceController::synchronizeSource( const SyncValue& iSyncTo )
 	    
 	    //Find the highest priority Stream we are reading
 #if defined(NO_STL_TEMPLATED_MEMBER_FUNCTIONS_BUG)
-	    STL_MULTISET_COMP(Stream::Type, StreamPriorityGreater ) 
+	    std::multiset<Stream::Type, StreamPriorityGreater > 
 	       orderedStreams;
 	    //fill the stream
 	    Stream::Set::const_iterator itEnd = recordsToRetrieve().end();
@@ -158,7 +131,7 @@ BlankRecordSourceController::synchronizeSource( const SyncValue& iSyncTo )
 	       orderedStreams.insert( *itStream );
 	    }
 #else 
-	    STL_MULTISET_COMP(Stream::Type, StreamPriorityGreater ) 
+	    std::multiset<Stream::Type, StreamPriorityGreater > 
 	       orderedStreams( recordsToRetrieve().begin(),
 			       recordsToRetrieve().end() );
 #endif	  
@@ -191,7 +164,7 @@ BlankRecordSourceController::findNextRecord(SyncValue& oSyncValueOfNextRecord,
       // for the active streams
       
       //organize the streams by priority
-      STL_MULTISET_COMP(Stream::Type, StreamPriorityGreater ) 
+      std::multiset<Stream::Type, StreamPriorityGreater > 
 #if defined(NO_STL_TEMPLATED_MEMBER_FUNCTIONS_BUG)
          prioritizedStreams;
       //fill the stream
@@ -212,7 +185,7 @@ BlankRecordSourceController::findNextRecord(SyncValue& oSyncValueOfNextRecord,
       // priority list.  If so, then need to go to next Sync Value
       if( currentStop() != *(prioritizedStreams.rbegin()) ) {
 	 //get the first element that has the same priority as the currentStop
-	 STL_MULTISET_COMP(Stream::Type, StreamPriorityGreater)::iterator
+	 std::multiset<Stream::Type, StreamPriorityGreater>::iterator
 	    itStream = prioritizedStreams.lower_bound( currentStop() );
 
 	 if( activeStreams().contains( currentStop() ) ){
@@ -246,7 +219,7 @@ BlankRecordSourceController::findNextRecord(SyncValue& oSyncValueOfNextRecord,
    } else {
       //Find the highest priority activeStream
       
-      STL_MULTISET_COMP(Stream::Type, StreamPriorityGreater ) 
+      std::multiset<Stream::Type, StreamPriorityGreater > 
 #if defined(NO_STL_TEMPLATED_MEMBER_FUNCTIONS_BUG)
 	 prioritizedStreams;
       //fill the stream
@@ -340,13 +313,13 @@ BlankRecordSourceController::canRandomAccess( void ) const
    return true;
 }
 
-string 
+std::string 
 BlankRecordSourceController::dataSourceID( void ) const 
 {
    return m_name;
 }
 
-string 
+std::string 
 BlankRecordSourceController::parameters( void ) const
 {
    //Build a string containing all the names of the Streams
@@ -362,9 +335,9 @@ BlankRecordSourceController::createProxyDeliverer( void ) const
 // static member functions
 //
 
-string
+std::string
 BlankRecordSourceController::buildParameters( const Stream::Set& iStreams )
 {
    //I'll figure out how to do this some other time
-   return string();
+   return std::string();
 }

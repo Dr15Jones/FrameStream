@@ -14,7 +14,7 @@
 //
 // $Log: T_DAExceptionStackManager.cc,v $
 // Revision 1.2  2003/08/21 17:13:34  vk
-// Add instantiation of STL_VECTOR(T) with T=DataKey
+// Add instantiation of std::vector<T> with T=DataKey
 //
 // Revision 1.1  2003/04/25 15:20:04  vk
 // Reorginize package, add new stack class
@@ -32,7 +32,6 @@
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
-#include "DataHandler/DurableDataKey.h"
 #include "DAException/DAExceptionStack.h"
 #include "DAException/Template/DAExceptionStackManager.cc"
 
@@ -42,9 +41,5 @@
 #include <map>
 #include <set>
 
-template class DAExceptionStackManager< DataKey >;
+template class DAExceptionStackManager< DAExceptionStackDataKey >;
 template class DAExceptionStackManager< DAExceptionStack::StackPair >;
-
-// typedef vector contents and instantiate vector //
-typedef DataKey _vector_contents_ ;
-#include "STLUtility/instantiate_vector.h"

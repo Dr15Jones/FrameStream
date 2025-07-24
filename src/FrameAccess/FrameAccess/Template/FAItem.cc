@@ -79,7 +79,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kFAItemFacilityString 
+static const char* const kFAItemFacilityString 
 = "FrameAccess.FAItem" ;
 
 //

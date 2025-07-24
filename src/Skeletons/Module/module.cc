@@ -93,7 +93,7 @@ void
 Modname::printNumber( int iNumber ) const
 {
    report( INFO, kFacilityString )
-      << "and the number is: " << iNumber << endl;
+      << "and the number is: " << iNumber << std::endl;
 }
 
 //

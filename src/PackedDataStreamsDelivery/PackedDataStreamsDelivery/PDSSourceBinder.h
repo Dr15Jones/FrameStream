@@ -49,7 +49,7 @@ class PDSSourceBinder : public DataSourceBinder
       typedef PDSProxyDeliverer Deliverer;
       
       // ---------- Constructors and destructor ----------------
-      PDSSourceBinder( const string& iFileName,
+      PDSSourceBinder( const std::string& iFileName,
 		       const Stream::Set& iBindStreams );
       PDSSourceBinder() {}
       PDSSourceBinder( const PDSSourceBinder& ); 
@@ -60,7 +60,7 @@ class PDSSourceBinder : public DataSourceBinder
 
       // ---------- const member functions ---------------------
       virtual DataSourceController* createDataSourceController() const;
-      const string& fileName() const;
+      const std::string& fileName() const;
 
       PDSSourceController* createSourceController(PDSProxyDeliverer* ) const;
       // ---------- static member functions --------------------

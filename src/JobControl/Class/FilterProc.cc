@@ -123,7 +123,7 @@ FilterProc::implementFilter(Frame& iFrame,
 //
 // const member functions
 //
-string 
+std::string 
 FilterProc::description() const
 {
    return name();

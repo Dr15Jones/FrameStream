@@ -40,13 +40,13 @@ class FilterAnd : public FilterComposite
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      FilterAnd(const string& iName) : FilterComposite(iName) {}
+      FilterAnd(const std::string& iName) : FilterComposite(iName) {}
       //virtual ~FilterAnd();
 
       // ---------- member functions ---------------------------
 
       // ---------- const member functions ---------------------
-      virtual string description() const;
+      virtual std::string description() const;
 
       // ---------- static member functions --------------------
 

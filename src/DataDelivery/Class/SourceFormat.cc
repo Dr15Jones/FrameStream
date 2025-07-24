@@ -34,12 +34,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include <assert.h>
-
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <set>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
+#include <cassert>
 
 // user include files
 #include "Experiment/report.h"
@@ -65,12 +60,9 @@ static const char* const kFacilityString = "DataDelivery.SourceFormat" ;
 //
 SourceFormat::SourceFormat( BinderType iType )
    : m_type( iType ),
-     m_extensions( *new _sourceformat_extensions_ ),
+     m_extensions( *new Extensions ),
      m_defaultStreams( *( new Stream::Set ) )
 {
-   assert( 0 != &m_extensions );
-   assert( 0 != &m_defaultStreams );
-
    // set default streams, unless somebody changes it
    Stream::Set streams;
    streams.insert( Stream::kBeginRun );
@@ -109,7 +101,7 @@ SourceFormat::~SourceFormat()
 // member functions
 //
 void
-SourceFormat::addExtension( const string& iExtension ) 
+SourceFormat::addExtension( const std::string& iExtension ) 
 {
    m_extensions.insert( iExtension );
 }   
@@ -123,7 +115,7 @@ SourceFormat::setDefaultStreams( const Stream::Set& iStreamSet )
 //
 // const member functions
 //
-const _sourceformat_extensions_&
+const SourceFormat::Extensions&
 SourceFormat::extensions() const
 {
    return m_extensions;
@@ -136,7 +128,7 @@ SourceFormat::defaultStreams() const
 }
 
 const Stream::Set&
-SourceFormat::defaultStreams( const string& iName)
+SourceFormat::defaultStreams( const std::string& iName)
 {
    return defaultStreams();
 }
@@ -144,7 +136,7 @@ SourceFormat::defaultStreams( const string& iName)
 //
 // static member functions
 //
-string
+std::string
 SourceFormat::factorySymbol()
 {
    return "makeSourceFormat";

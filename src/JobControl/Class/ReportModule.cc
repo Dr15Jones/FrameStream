@@ -55,7 +55,7 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -108,21 +108,10 @@ typedef reportmodule_loggers LoggerMap;
 ReportModule::ReportModule( Severity iReportLevel )
    : Module( "ReportModule", "This is my module" ),
      m_command( "report", this ),
-     m_logger( iReportLevel, cout ),
+     m_logger( iReportLevel, std::cout ),
      m_defaultLogLevel( iReportLevel ),
      m_fileLoggers( *new LoggerMap )
 {
-   // check for out-of-memory
-   if(    0 == &m_fileLoggers 
-      )
-   {
-      report( EMERGENCY, kFacilityString )
-	 << "Unable to allocate memory"
-	 << endl ;
-      assert(false);
-      ::exit( 1 );
-   }
-
    // tie main logger
    MessageLog::Tie( ".", m_logger );
 }
@@ -169,7 +158,7 @@ ReportModule::logger()
 }
 
 DABoolean
-ReportModule::setReportLevel( const string& iSeverityString, 
+ReportModule::setReportLevel( const std::string& iSeverityString, 
 			      FrameLogger* iLogger )
 {
    DABoolean returnValue = false;
@@ -182,10 +171,10 @@ ReportModule::setReportLevel( const string& iSeverityString,
    // 2.) upper/lower case mixed
 
    // convert to upper case to make comparisons trivial and be easy on user
-   string uppercaseSeverityString( 
+   std::string uppercaseSeverityString( 
       StringUtil::toUppercase( iSeverityString ) );
 
-   if( 0 == string( "DEFAULT" ).compare( uppercaseSeverityString ) )
+   if( 0 == std::string( "DEFAULT" ).compare( uppercaseSeverityString ) )
    {
 	 logger->setSeverity( m_defaultLogLevel );
 	 returnValue = true;
@@ -215,15 +204,15 @@ ReportModule::setReportLevel( const string& iSeverityString,
    {
       report( ERROR, kFacilityString )
 	 << "no severity level match for \"" 
-	 << iSeverityString << "\"" << endl;
+	 << iSeverityString << "\"" << std::endl;
    }
 
    return returnValue;
 }
 
 DABoolean
-ReportModule::openFileLogger( const string& iLogfile, 
-			      const string& iSeverityString )
+ReportModule::openFileLogger( const std::string& iLogfile, 
+			      const std::string& iSeverityString )
 {
    DABoolean returnValue = true;
 
@@ -232,17 +221,17 @@ ReportModule::openFileLogger( const string& iLogfile,
    if( m_fileLoggers.end() != findLogger )
    {
       report( INFO, kFacilityString )
-	 << "logger for \"" << iLogfile << "\" already exists" << endl;
+	 << "logger for \"" << iLogfile << "\" already exists" << std::endl;
       return returnValue = false;
    }
 
    // create output stream
-   ofstream* outputStream = new ofstream( iLogfile.c_str() );
+   std::ofstream* outputStream = new std::ofstream( iLogfile.c_str() );
    if( 0 == outputStream )
    {
       report( EMERGENCY, kFacilityString )
 	 << "Unable to allocate memory"
-	 << endl ;
+	 << std::endl ;
       assert(false);
       ::exit( 1 );
    }
@@ -250,7 +239,7 @@ ReportModule::openFileLogger( const string& iLogfile,
    if( !*outputStream ) 
    {
       report( INFO, kFacilityString )
-	 << "can't open file \"" << iLogfile << "\"" << endl;
+	 << "can't open file \"" << iLogfile << "\"" << std::endl;
       delete outputStream;
       return returnValue = false;
    }
@@ -261,13 +250,13 @@ ReportModule::openFileLogger( const string& iLogfile,
    {
       report( EMERGENCY, kFacilityString )
 	 << "Unable to allocate memory"
-	 << endl ;
+	 << std::endl ;
       assert(false);
       ::exit( 1 );
    }
 
    // and reset report level properly
-   if( iSeverityString != string( "" ) )
+   if( iSeverityString != std::string( "" ) )
    {
       returnValue = setReportLevel( iSeverityString, logger );
    }
@@ -290,7 +279,7 @@ ReportModule::openFileLogger( const string& iLogfile,
 }
 
 DABoolean
-ReportModule::closeFileLogger( const string& iLogfile )
+ReportModule::closeFileLogger( const std::string& iLogfile )
 {
    DABoolean returnValue = true;
 
@@ -299,7 +288,7 @@ ReportModule::closeFileLogger( const string& iLogfile )
    if( m_fileLoggers.end() == findLogger )
    {
       report( INFO, kFacilityString )
-	 << "no logger found for " << iLogfile << endl;
+	 << "no logger found for " << iLogfile << std::endl;
       return returnValue = false;
    }
 
@@ -328,8 +317,8 @@ ReportModule::closeAllFileLoggers()
 }
 
 DABoolean
-ReportModule::setReportLevelOnFileLogger( const string& iLogfile,
-					  const string& iReportLevel )
+ReportModule::setReportLevelOnFileLogger( const std::string& iLogfile,
+					  const std::string& iReportLevel )
 {
    DABoolean returnValue = true;
 
@@ -338,7 +327,7 @@ ReportModule::setReportLevelOnFileLogger( const string& iLogfile,
    if( m_fileLoggers.end() == findLogger )
    {
       report( INFO, kFacilityString )
-	 << "no logger found for \"" << iLogfile << "\"" << endl;
+	 << "no logger found for \"" << iLogfile << "\"" << std::endl;
       return returnValue = false;
    }
 
@@ -350,7 +339,7 @@ ReportModule::setReportLevelOnFileLogger( const string& iLogfile,
 }
 
 DABoolean
-ReportModule::turnOffFileLogger( const string& iLogfile )
+ReportModule::turnOffFileLogger( const std::string& iLogfile )
 {
    DABoolean returnValue = true;
 
@@ -359,7 +348,7 @@ ReportModule::turnOffFileLogger( const string& iLogfile )
    if( m_fileLoggers.end() == findLogger )
    {
       report( INFO, kFacilityString )
-	 << "no logger found for \"" << iLogfile << "\"" << endl;
+	 << "no logger found for \"" << iLogfile << "\"" << std::endl;
       return returnValue = false;
    }
 
@@ -373,7 +362,7 @@ ReportModule::turnOffFileLogger( const string& iLogfile )
 }
 
 DABoolean
-ReportModule::turnOnFileLogger( const string& iLogfile )
+ReportModule::turnOnFileLogger( const std::string& iLogfile )
 {
    DABoolean returnValue = true;
 
@@ -382,7 +371,7 @@ ReportModule::turnOnFileLogger( const string& iLogfile )
    if( m_fileLoggers.end() == findLogger )
    {
       report( INFO, kFacilityString )
-	 << "no logger found for \"" << iLogfile << "\"" << endl;
+	 << "no logger found for \"" << iLogfile << "\"" << std::endl;
       return returnValue = false;
    }
 
@@ -403,29 +392,29 @@ ReportModule::logger() const
    return m_logger;
 }
 
-string
+std::string
 ReportModule::printReportLevel() const
 {
    return MessageLog::Logger::SeverityString( m_logger.getSeverity() );
 }
 
-string
+std::string
 ReportModule::printAllReportLevels() const
 {
-   string returnValue;
+   std::string returnValue;
    for( Severity severe = EMERGENCY; severe <= DEBUG; severe=Severity(severe+1) )
    {
-      returnValue += string(
+      returnValue += std::string(
 	 MessageLog::Logger::SeverityString( severe ) )
-	 + string( "\n" );
+	 + std::string( "\n" );
    }
 
    return returnValue;
 }
 
 DABoolean
-ReportModule::printInfoFileLogger( const string& iLogfile, 
-				   ostream& iOs, 
+ReportModule::printInfoFileLogger( const std::string& iLogfile, 
+				  std::ostream& iOs, 
 				   DABoolean iFlush ) const
 {
    DABoolean returnValue = true;
@@ -435,21 +424,21 @@ ReportModule::printInfoFileLogger( const string& iLogfile,
    if( m_fileLoggers.end() == findLogger )
    {
       report( INFO, kFacilityString )
-	 << "no logger found for \"" << iLogfile << "\"" << endl;
+	 << "no logger found for \"" << iLogfile << "\"" << std::endl;
       return returnValue = false;
    }
    
    const char* severityString = MessageLog::Logger::SeverityString( 
       (*findLogger).second.m_logger->getSeverity() 
       );
-   string activeOrNot = ( (*findLogger).second.m_isActive == true ) ? "on":"off";
+   std::string activeOrNot = ( (*findLogger).second.m_isActive == true ) ? "on":"off";
    iOs << "  " << (*findLogger).first 
        << "  " << severityString 
        << "  " << activeOrNot
        << "\n";
    if( true == iFlush ) 
    {
-      iOs << flush;
+      iOs << std::flush;
    }
 
    return returnValue;
@@ -461,11 +450,11 @@ ReportModule::printInfoAllFileLoggers() const
    if( m_fileLoggers.begin() == m_fileLoggers.end() )
    {
       report( INFO, kFacilityString )
-	 << "No File Loggers" << endl;
+	 << "No File Loggers" << std::endl;
       return;
    }
 
-   ostream& os = report( INFO, kFacilityString );
+  std::ostream& os = report( INFO, kFacilityString );
    os << "File Loggers:\n";
    LoggerMap::const_iterator itEnd = m_fileLoggers.end();
    for( LoggerMap::const_iterator it = m_fileLoggers.begin();
@@ -474,7 +463,7 @@ ReportModule::printInfoAllFileLoggers() const
    {
       printInfoFileLogger( (*it).first, os, false );
    }
-   os << endl;
+   os << std::endl;
 }
 
 //

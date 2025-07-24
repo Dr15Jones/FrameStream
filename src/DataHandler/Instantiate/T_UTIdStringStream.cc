@@ -58,21 +58,21 @@
 
 #if ( defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX) )
 // for AXP
-#  pragma define_template UTIdentifier< string, Stream >
-#  pragma define_template operator<<< string, Stream >
-#  pragma define_template operator>>< string, Stream >
+#  pragma define_template UTIdentifier< std::string, Stream >
+#  pragma define_template operator<<< std::string, Stream >
+#  pragma define_template operator>>< std::string, Stream >
 #else
-template class UTIdentifier< string , Stream > ;
+template class UTIdentifier< std::string , Stream > ;
 
 #if defined( NEED_NAMESPACE_TO_INSTANTIATE_OVERLOADED_FUNCTION_BUG )
-template ostream& ::operator<<( ostream& iOStream , 
-                const UTIdentifier< string , Stream >& iIdentifier ) ;
-template istream& ::operator>>( istream& iIstream , 
-                UTIdentifier< string , Stream >& iIdentifier ) ;
+template std::ostream& ::operator<<(std::ostream& iOStream , 
+                const UTIdentifier< std::string , Stream >& iIdentifier ) ;
+template std::istream& ::operator>>( std::istream& iIstream , 
+                UTIdentifier< std::string , Stream >& iIdentifier ) ;
 #else
-template ostream& operator<<( ostream& iOStream , 
-                const UTIdentifier< string , Stream >& iIdentifier ) ;
-template istream& operator>>( istream& iIstream , 
-                UTIdentifier< string , Stream >& iIdentifier ) ;
+template std::ostream& operator<<(std::ostream& iOStream , 
+                const UTIdentifier< std::string , Stream >& iIdentifier ) ;
+template std::istream& operator>>( std::istream& iIstream , 
+                UTIdentifier< std::string , Stream >& iIdentifier ) ;
 #endif /* NEED_NAMESPACE_TO_INSTANTIATE_OVERLOADED_FUNCTION_BUG */
 #endif /* (defined(PRAGMA_TEMPLATE_INSTANTIATION_BUG) && defined(__DECCXX)) */

@@ -38,7 +38,7 @@ class BlankRecordSourceBinder : public DataSourceBinder
       // constants, enums and typedefs
 
       // Constructors and destructor
-      BlankRecordSourceBinder( const string& iSourceName,
+      BlankRecordSourceBinder( const std::string& iSourceName,
 			       const Stream::Set& iUseStreams,
 			       BlankRecordStopsBase* iStops );
       virtual ~BlankRecordSourceBinder();

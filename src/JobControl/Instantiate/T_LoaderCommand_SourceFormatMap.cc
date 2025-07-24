@@ -49,7 +49,7 @@ template<> int
 LoaderCommand< SourceFormatMap >::interactHandler()
 {
    report( ERROR, kFacilityString ) 
-      << "Sorry -- can't interact yet (soon)!" << endl;
+      << "Sorry -- can't interact yet (soon)!" << std::endl;
    return COMMAND_OK;
 }
 

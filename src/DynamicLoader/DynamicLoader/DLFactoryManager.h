@@ -40,13 +40,13 @@ class DLFactoryBase;
 class DLMultiFactoryChooserBase;
 
 template <class T> class DLFactoryManager;
-#include "STLUtility/fwd_map.h"
+#include <map>
 
 template <class T>
 class DLFactoryManagerPtr
 {
    public:
-      DLFactoryManagerPtr(const string iPaths) : m_ptr(0) { 
+      DLFactoryManagerPtr(const std::string iPaths) : m_ptr(0) { 
 	 setPaths(iPaths); grab(); }
       DLFactoryManagerPtr( const DLFactoryManagerPtr<T>& iCopyFrom) : m_ptr(0){
 	 grab(); m_ptr= iCopyFrom.m_ptr; }
@@ -67,7 +67,7 @@ class DLFactoryManagerPtr
 
    private:
       DLFactoryManager<T>* getPtr() const;
-      void setPaths(const string& iPaths );
+      void setPaths(const std::string& iPaths );
       void grab() ;
       DLFactoryManager<T>* m_ptr;
 };
@@ -85,21 +85,21 @@ class DLFactoryManager
       // ---------- Constructors and destructor ----------------
 
       // ---------- member functions ---------------------------
-      DABoolean add( const string& iName, DLFactoryBase* iFactory );
+      DABoolean add( const std::string& iName, DLFactoryBase* iFactory );
 
-      DABoolean remove( const string& iName );
+      DABoolean remove( const std::string& iName );
       void removeAll();
 
-      DLFactoryBase* fetch( const string& iName,
+      DLFactoryBase* fetch( const std::string& iName,
 			    DLMultiFactoryChooserBase& iChooser,
-			    string& oShortName );
+			    std::string& oShortName );
 
       // ---------- const member functions ---------------------
-      string listAvailable(const string& iPattern ) const;
-      string listLoaded() const;
-      DABoolean isLoaded(const string& iName ) const;
+      std::string listAvailable(const std::string& iPattern ) const;
+      std::string listLoaded() const;
+      DABoolean isLoaded(const std::string& iName ) const;
 
-      string fullName( const string& iName ) const;
+      std::string fullName( const std::string& iName ) const;
 
       // ---------- static member functions --------------------
 
@@ -112,8 +112,8 @@ class DLFactoryManager
 	 return s_numberOfPtrs;
       }
 
-      static string& paths() {
-	 static string s_paths;
+      static std::string& paths() {
+	 static std::string s_paths;
 	 return s_paths;
       }
 
@@ -135,13 +135,13 @@ class DLFactoryManager
 	 if( 0 == numberOfPtrs()) {
 	    delete instance();
 	    instance() = 0;
-	    paths() = string();
+	    paths() = std::string();
 	 }
       }
 
    private:
       // ---------- Constructors and destructor ----------------
-      DLFactoryManager( const string& iPaths ) : m_soh(iPaths) {}
+      DLFactoryManager( const std::string& iPaths ) : m_soh(iPaths) {}
       //virtual ~DLFactoryManager();
 
       DLFactoryManager( const DLFactoryManager& ); // stop default
@@ -152,13 +152,13 @@ class DLFactoryManager
       // ---------- private member functions -------------------
 
       // ---------- private const member functions -------------
-      string loadingAsSuperClassMesg( const string& iName ) const;
-      string symbolErrorMesg( const string& iName ) const;
+      std::string loadingAsSuperClassMesg( const std::string& iName ) const;
+      std::string symbolErrorMesg( const std::string& iName ) const;
 
       // ---------- data members -------------------------------
       DLSharedObjectHandler m_soh;
 
-      STL_MAP( string, DLFactoryBase *) m_factoryMap;
+      std::map< std::string, DLFactoryBase *> m_factoryMap;
       // ---------- static data members ------------------------
 
 };
@@ -175,7 +175,7 @@ DLFactoryManagerPtr<T>::grab()
 template <class T>
 inline
 void
-DLFactoryManagerPtr<T>::setPaths(const string& iPaths)
+DLFactoryManagerPtr<T>::setPaths(const std::string& iPaths)
 {
    DLFactoryManager<T>::paths() = iPaths;
 }

@@ -50,7 +50,7 @@ class DLSharedObject
       typedef NSModule Handle;
 #endif
       // ---------- Constructors and destructor ----------------
-      DLSharedObject(const string& iName, void* iHandle ) :
+      DLSharedObject(const std::string& iName, void* iHandle ) :
 	 m_name(iName), m_handle(iHandle) {}
       //virtual ~DLSharedObject();
 
@@ -58,9 +58,9 @@ class DLSharedObject
 
       // ---------- const member functions ---------------------
       //can throw a DLSymbolNotFoundException
-      void* getSymbol( const string& symbolName ) const; 
+      void* getSymbol( const std::string& symbolName ) const; 
 
-      const string& name() const { return m_name; }
+      const std::string& name() const { return m_name; }
       Handle handle() const { return m_handle; }
 
       // ---------- static member functions --------------------
@@ -82,7 +82,7 @@ class DLSharedObject
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      string m_name;
+      std::string m_name;
       Handle m_handle;
 
       // ---------- static data members ------------------------

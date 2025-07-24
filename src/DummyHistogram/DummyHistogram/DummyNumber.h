@@ -42,7 +42,7 @@ class DummyNumber : public HINumber
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      DummyNumber( const string& iName,
+      DummyNumber( const std::string& iName,
 		   float         iValue=0 );
       virtual ~DummyNumber();
 

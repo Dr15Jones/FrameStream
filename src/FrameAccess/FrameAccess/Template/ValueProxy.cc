@@ -45,7 +45,7 @@
 // constants, enums and typedefs
 //
 
-FILESCOPE_IN_TEMPLATE_CC_BUG string kValueProxyFacilityString 
+static std::string kValueProxyFacilityString 
 = "FrameAccess.ValueProxy" ;
 
 //

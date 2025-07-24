@@ -94,14 +94,14 @@ class SMFractionalPacker : public SMPackerTemplate<T>
 		 UInt32& oOverflowWord,
 		 unsigned char& ioStartBit ) const {
 	 if( iValue == T(0) ) {
-	    doBitShifting( T(0), ioStartWord, oOverflowWord, ioStartBit );
+	    this->doBitShifting( T(0), ioStartWord, oOverflowWord, ioStartBit );
 	    return;
 	 }
 	 if( iValue != iValue ) {
 	    //NaN
 	    // store as -0
 	    UInt32 compressedValue = m_signWord;
-	    doBitShifting( compressedValue,
+	    this->doBitShifting( compressedValue,
 			   ioStartWord,
 			   oOverflowWord,
 			   ioStartBit );
@@ -114,7 +114,7 @@ class SMFractionalPacker : public SMPackerTemplate<T>
 	 //compress the exponent
 	 long exponent = n - m_exponentOffset;
 	 if( exponent < 0 ) {
-	    doBitShifting( T(0), ioStartWord, oOverflowWord, ioStartBit );
+	    this->doBitShifting( T(0), ioStartWord, oOverflowWord, ioStartBit );
 	    return;
 	 }
 	 else if( exponent > m_mask ) {
@@ -143,7 +143,7 @@ class SMFractionalPacker : public SMPackerTemplate<T>
 	    compressedValue |= m_signWord;
 	 }
 
-	 doBitShifting( compressedValue,
+	 this->doBitShifting( compressedValue,
 			ioStartWord,
 			oOverflowWord,
 			ioStartBit );
@@ -154,7 +154,7 @@ class SMFractionalPacker : public SMPackerTemplate<T>
 			const UInt32 iOverflowWord,
 			unsigned char& ioStartBit ) const {
 
-	 UInt32 compressedValue = undoBitShifting( iStartWord,
+	 UInt32 compressedValue = this->undoBitShifting( iStartWord,
 						   iOverflowWord,
 						   ioStartBit );
 	 if( compressedValue == 0 ) {
@@ -211,7 +211,7 @@ class SMFractionalPacker : public SMPackerTemplate<T>
 	 int n_max, n_min;
 	 ::frexp( iMin, &n_min);
 	 ::frexp( iMax, &n_max);
-	 return calcNumberOfBitsNeeded( n_max - n_min, int(1) );
+	 return SMPackerTemplate<T>::calcNumberOfBitsNeeded( n_max - n_min, int(1) );
       }
 
       //The result includes the one bit needed by the sign AND

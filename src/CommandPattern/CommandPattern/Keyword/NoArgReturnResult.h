@@ -7,7 +7,7 @@
 // 
 /**\class NoArgReturnResult NoArgReturnResult.h CommandPattern/Keyword/NoArgReturnResult.h
 
- Description: Keyword that calls a method that takes no argument but returns a resulting string
+ Description: Keyword that calls a method that takes no argument but returns a resulting std::string
 
  Usage:
     <usage>
@@ -45,7 +45,7 @@ class NoArgReturnResult : public Base
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      NoArgReturnResult( const string& iName,
+      NoArgReturnResult( const std::string& iName,
 		      T* iTarget,
 		      ReturnT (T::* iMethod)(),
 		      const Command* iCommand,

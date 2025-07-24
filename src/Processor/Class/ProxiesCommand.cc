@@ -16,7 +16,7 @@
 //
 #include "Experiment/Experiment.h"
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <stdlib.h>
 
 // user include files
@@ -33,16 +33,16 @@
 //
 static const char* const kFacilityString = "Processor.ProxyCommand";
 
-const string helpMessage = 
-string( "                                                          \n" )+
-string( "// Description: ProxyCommand                              \n" )+
-string( "//                                                        \n" )+
-string( "//  Valid subcommands are:                                \n" )+
-string( "//                                                        \n" )+
-string( "//  proxy help                    see this help page      \n" )+
-string( "//  proxy list                    List proxies            \n" )+
-string( "//  proxy ls                      Synonym: \"list\"       \n" )+
-string( "                                                          \n" );
+const std::string helpMessage = 
+std::string( "                                                          \n" )+
+std::string( "// Description: ProxyCommand                              \n" )+
+std::string( "//                                                        \n" )+
+std::string( "//  Valid subcommands are:                                \n" )+
+std::string( "//                                                        \n" )+
+std::string( "//  proxy help                    see this help page      \n" )+
+std::string( "//  proxy list                    List proxies            \n" )+
+std::string( "//  proxy ls                      Synonym: \"list\"       \n" )+
+std::string( "                                                          \n" );
 
 //
 // static data member definitions
@@ -92,14 +92,14 @@ ProxiesCommand::execute( int argc, char* argv[] )
 	 result = listHandler();
       }
       else {
-	 report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+	 report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
 	 result = COMMAND_ERROR;
       }
    } // wrong # of args
    else 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -110,7 +110,7 @@ ProxiesCommand::execute( int argc, char* argv[] )
 int
 ProxiesCommand::helpHandler( )
 {
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
    return COMMAND_OK;
 }
 
@@ -123,27 +123,27 @@ ProxiesCommand::listHandler()
    Producer* producer = (Producer*)target();
    Stream::Set supplies = producer->supplies();
    Stream::Set::const_iterator itEnd = supplies.end();
-   string resultString;
+   std::string resultString;
    for( Stream::Set::const_iterator it = supplies.begin();
 	it != itEnd;
 	++it ) {
 
-      resultString += string( "Proxies for stream " ) 
-	 + (*it).value() + string( ":\n" );
-      typedef STL_VECTOR( DataKey ) DataKeys;
+      resultString += std::string( "Proxies for stream " ) 
+	 + (*it).value() + std::string( ":\n" );
+      typedef std::vector< DataKey > DataKeys;
       const DataKeys& proxyKeys = producer->proxyKeys( *it );
       DataKeys::const_iterator lastKey = proxyKeys.end();
       for( DataKeys::const_iterator itKey = proxyKeys.begin();
 	   itKey != lastKey;
 	   ++itKey ) {
 	 resultString += (*itKey).type().name()
-	    + string( "\", \"" )
+	    + std::string( "\", \"" )
 	    + (*itKey).usage().value()
-	    + string(  "\", \"" )
+	    + std::string(  "\", \"" )
 	    + (*itKey).production().value() 
-	    + string( "\"\n" );
+	    + std::string( "\"\n" );
       }
-      resultString += string( "\n" );
+      resultString += std::string( "\n" );
    }
    setResult( resultString );
 

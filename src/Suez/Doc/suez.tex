@@ -1676,7 +1676,7 @@ ActionBase::ActionResult
 ExampleProcessor::event( Frame& iFrame )
 {
    // standard meslog facility
-   report( INFO, kFacilityString ) << "::event()" << endl;
+   report( INFO, kFacilityString ) << "::event()" << std::endl;
 
    // find D*'s
    ...
@@ -2246,7 +2246,7 @@ proper calls:
              = (double(*)(double)) dlsym(handle, "cos");
    if( dlerror() != NULL)  { // error
 
-   cout << (*cosine)(2.0) << endl;
+   cout << (*cosine)(2.0) << std::endl;
 
    dlclose( handle );
 \end{verbatim}

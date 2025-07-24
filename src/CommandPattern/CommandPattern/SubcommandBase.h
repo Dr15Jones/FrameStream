@@ -36,7 +36,7 @@ class SubcommandBase
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      SubcommandBase( const string& iName,
+      SubcommandBase( const std::string& iName,
 		      Count iMinArgs,
 		      Count iMaxArgs );
       virtual ~SubcommandBase();
@@ -45,7 +45,7 @@ class SubcommandBase
       virtual int execute() = 0;
 
       // ---------- const member functions ---------------------
-      const string& name() const { return m_name; }
+      const std::string& name() const { return m_name; }
       Count minArgs() const { return m_minArgs; }
       Count maxArgs() const { return m_maxArgs; }
 
@@ -68,7 +68,7 @@ class SubcommandBase
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      string m_name;
+      std::string m_name;
       Count m_minArgs;
       Count m_maxArgs;
 

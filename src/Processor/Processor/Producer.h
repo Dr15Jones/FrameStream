@@ -29,10 +29,10 @@
 
 // forward declarations
 class ProxyFactoryBase;
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <vector>
+#include <map>
 #if !defined(_producer_stream2factories_)
-#define _producer_stream2factories_ STL_MULTIMAP( Stream::Type, Producer::FactoryInfo )
+#define _producer_stream2factories_ std::multimap< Stream::Type, Producer::FactoryInfo >
 #endif
 
 class Producer : public ProxyProvider, public Module 
@@ -41,7 +41,7 @@ class Producer : public ProxyProvider, public Module
 
    public:
       // constants, enums and typedefs
-      typedef string Name;
+      typedef std::string Name;
       struct FactoryInfo {
 	    FactoryInfo() {}
 	    FactoryInfo( const DataKey& iKey, 
@@ -71,7 +71,7 @@ class Producer : public ProxyProvider, public Module
       /// calls for proper sequence of events
       void setCallHistBook( DABoolean iValue );
 
-      void setProductionTag( const string& iProductionTag  );
+      void setProductionTag( const std::string& iProductionTag  );
 
       // -------------- const member functions -------------------
 
@@ -86,15 +86,15 @@ class Producer : public ProxyProvider, public Module
       DABoolean callHistBook() const;
       DABoolean callRegisterProxies( DABoolean forceReload = false ) const;
 
-      STL_VECTOR( DataKey ) proxyKeys( const Stream::Type& iStream ) const;
+      std::vector< DataKey > proxyKeys( const Stream::Type& iStream ) const;
 
       ProductionTag productionTag() const {
 	 return ProductionTag( m_productionTag.c_str() ); }
 
-      string defaultProductionTag() const;
+      std::string defaultProductionTag() const;
 
       // static member functions
-      static string factorySymbol();
+      static std::string factorySymbol();
 
    protected:
       // protected member functions
@@ -140,7 +140,7 @@ class Producer : public ProxyProvider, public Module
       // Have to use a string instead of a ProductionTag because
       //  ProductionTags do not own the 'const char *' that they
       //  hold.
-      string m_productionTag;
+      std::string m_productionTag;
 
       // static data members
 

@@ -37,7 +37,7 @@ class BlankRecordSourceController : public DataSourceController
       // constants, enums and typedefs
 
       // Constructors and destructor
-      BlankRecordSourceController( const string& iName,
+      BlankRecordSourceController( const std::string& iName,
 	                           const Stream::Set& iStreams,
 				   BlankRecordStopsBase* iStops );
       virtual ~BlankRecordSourceController();
@@ -58,12 +58,12 @@ class BlankRecordSourceController : public DataSourceController
       // const member functions
       virtual DABoolean canRandomAccess( void ) const;
 
-      virtual string dataSourceID( void ) const ;
+      virtual std::string dataSourceID( void ) const ;
 
-      virtual string parameters( void ) const ;
+      virtual std::string parameters( void ) const ;
       // static member functions
 
-      static string buildParameters( const Stream::Set& iStreams );
+      static std::string buildParameters( const Stream::Set& iStreams );
 
    protected:
       // protected member functions
@@ -87,7 +87,7 @@ class BlankRecordSourceController : public DataSourceController
       // private const member functions
 
       // data members
-      string m_name;
+     std::string m_name;
       Stream::Set& m_makeRecords;
       BlankRecordStopsBase* m_stops;
       SyncValue m_presentRecordSyncValue;

@@ -30,13 +30,8 @@
 //#include <map>
 //#include <algorithm>
 //#include <utility>
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#include <strstream.h>
-#define SSTREAM strstream
-#else
 #include <sstream>
-#define SSTREAM stringstream
-#endif
+#define SSTREAM std::stringstream
 
 // user include files
 //#include "Experiment/report.h"
@@ -55,7 +50,7 @@ const char*
 TooFewArgsException::what() const {
    if( m_result.size() == 0 ) {
       SSTREAM stream;
-      stream <<m_keyword <<" requires at least "<<m_need<<" arguments but was only given "<<m_got<<ends;
+      stream <<m_keyword <<" requires at least "<<m_need<<" arguments but was only given "<<m_got<<std::ends;
       m_result = stream.str();
    }
    return m_result.c_str();
@@ -65,7 +60,7 @@ const char*
 TooManyArgsException::what() const {
    if( m_result.size() == 0 ) {
       SSTREAM stream;
-      stream <<m_keyword <<" requires no more than "<<m_need<<" arguments but was given "<<m_got<<ends;
+      stream <<m_keyword <<" requires no more than "<<m_need<<" arguments but was given "<<m_got<<std::ends;
       m_result = stream.str();
    }
    return m_result.c_str();
@@ -75,7 +70,7 @@ const char*
 WrongNumberArgsException::what() const {
    if( m_result.size() == 0 ) {
       SSTREAM stream;
-      stream <<m_keyword <<" needs a different number of arguments than "<<m_got<<ends;
+      stream <<m_keyword <<" needs a different number of arguments than "<<m_got<<std::ends;
       m_result = stream.str();
    }
    return m_result.c_str();

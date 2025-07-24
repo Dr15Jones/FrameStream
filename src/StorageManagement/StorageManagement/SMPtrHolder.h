@@ -42,7 +42,7 @@
 // user include files
 
 // forward declarations
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 template<class T_Ptr, class T_valueType>
 class SMPtrHolder

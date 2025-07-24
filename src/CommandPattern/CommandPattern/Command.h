@@ -86,7 +86,7 @@
 
 // STL include
 #if defined(OLD_CXX_STRING_CLASS_BUG)
-#include "C++Std/fwd_string.h"
+#include <string>
 #include <String.h>
 #else
 #include <string>
@@ -94,9 +94,9 @@
 
 // forward declarations
 class Module;
-#include "STLUtility/fwd_map.h"
+#include <map>
 #if !defined(command_subcommandmap)
-#define command_subcommandmap STL_MAP( string, SubcommandBase* )
+#define command_subcommandmap std::map< std::string, SubcommandBase* >
 #endif
 
 class Command
@@ -108,7 +108,7 @@ class Command
       enum CommandResult { COMMAND_OK = 0, COMMAND_ERROR = 1,
                            COMMAND_EXIT = 1000};              
       typedef CommandResult Result;
-      typedef string Name;
+      typedef std::string Name;
 
       // Constructors and destructor
       Command( const Name& iName="command", 
@@ -133,16 +133,16 @@ class Command
       //virtual 
       Module* target();
 
-      void setHelpString( const string& helpText );
+      void setHelpString( const std::string& helpText );
 
       // const member functions
       const Name& name() const;
-      void setResult( const string& iResult ) const;
+      void setResult( const std::string& iResult ) const;
 
       //virtual 
       const Module* target() const;
 
-      const string& helpString() const;
+      const std::string& helpString() const;
 
       // static member functions
 
@@ -175,7 +175,7 @@ class Command
       Module* m_target;
       DABoolean m_isEnabled;
 
-      string m_helpString;
+      std::string m_helpString;
 
       // subcommand handling
       command_subcommandmap& m_subcommandMap;
@@ -187,13 +187,13 @@ class Command
 // inline function definitions
 inline
 void 
-Command::setHelpString( const string& helpText )
+Command::setHelpString( const std::string& helpText )
 {
    m_helpString = helpText;
 }
 
 inline
-const string& 
+const std::string& 
 Command::helpString() const
 {
    return m_helpString;

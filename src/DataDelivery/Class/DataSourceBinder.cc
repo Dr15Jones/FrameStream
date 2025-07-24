@@ -77,24 +77,24 @@
 // constructors and destructor
 //
 DataSourceBinder::DataSourceBinder( const Stream::Set& iBindStreams ):
-   DataSourceDescriptor( string(""), string(""), iBindStreams)
+   DataSourceDescriptor( std::string(""), std::string(""), iBindStreams)
 {
 }
 
 DataSourceBinder::DataSourceBinder( const Stream::Type& iBindStream ) :
-   DataSourceDescriptor( string(""), string(""), iBindStream)
+   DataSourceDescriptor( std::string(""), std::string(""), iBindStream)
 {
 }
 
-DataSourceBinder::DataSourceBinder( const string& iDataSourceID,
-				    const string& iParameters,
+DataSourceBinder::DataSourceBinder( const std::string& iDataSourceID,
+				    const std::string& iParameters,
 				    const Stream::Set& iBindStreams ):
    DataSourceDescriptor(iDataSourceID, iParameters, iBindStreams)
 {
 }
 
-DataSourceBinder::DataSourceBinder( const string& iDataSourceID,
-				    const string& iParameters,
+DataSourceBinder::DataSourceBinder( const std::string& iDataSourceID,
+				    const std::string& iParameters,
 				    const Stream::Type& iBindStream ):
    DataSourceDescriptor(iDataSourceID, iParameters, iBindStream)
 {

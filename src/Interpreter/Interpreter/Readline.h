@@ -53,8 +53,8 @@
 #include "Interpreter/readline_c.h"
 
 // forward declarations
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_set.h"
+#include <string>
+#include <set>
 
 class Readline
 {
@@ -65,8 +65,8 @@ class Readline
    public:
 
       // ---------- constants, enums and typedefs --------------
-      typedef string CommandName;
-      typedef STL_SET( CommandName ) Commands;
+      typedef std::string CommandName;
+      typedef std::set< CommandName > Commands;
 
       // ---------- Constructors and destructor ----------------
 

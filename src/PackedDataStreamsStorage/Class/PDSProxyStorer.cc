@@ -104,7 +104,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-PDSProxyStorer::PDSProxyStorer(ostream& iOStream,
+PDSProxyStorer::PDSProxyStorer(std::ostream& iOStream,
 			       const Stream::Set& iStreams,
 			       const PDSDataToStore& iDataToStore ) :
    m_ostream( iOStream),
@@ -136,8 +136,8 @@ PDSProxyStorer::~PDSProxyStorer()
 	   itPackers != itEnd;
 	   ++itPackers ) {
 	 
-	 STL_VECTOR(PDSPackerBase*)& packers = (*itPackers).second;
-	 for( STL_VECTOR(PDSPackerBase*)::iterator itPacker = packers.begin();
+	 std::vector<PDSPackerBase*>& packers = (*itPackers).second;
+	 for( std::vector<PDSPackerBase*>::iterator itPacker = packers.begin();
 	      itPacker != packers.end();
 	      ++itPacker ) {
 	    delete (*itPacker);
@@ -174,12 +174,12 @@ PDSProxyStorer::~PDSProxyStorer()
 void
 PDSProxyStorer::writeHeader( const PDSDataToStore& iDataToStore )
 {
-   STL_VECTOR(UInt32) headerData;
+   std::vector<UInt32> headerData;
    headerData.reserve(1000);
 
    createStreamList( headerData );
 
-   STL_SET(TypeTag) factoryTypeTags;
+   std::set<TypeTag> factoryTypeTags;
    createTypesInfo( headerData, iDataToStore, factoryTypeTags );
    createProxyWriters( factoryTypeTags );
 
@@ -214,7 +214,7 @@ template<class Iterator >
 static
 inline
 void
-fillNameList(STL_VECTOR(UInt32)& iContainer,
+fillNameList(std::vector<UInt32>& iContainer,
 	     Iterator itBegin,
 	     Iterator itEnd )
 {
@@ -258,7 +258,7 @@ fillNameList(STL_VECTOR(UInt32)& iContainer,
 template<class Iterator, class NameExtractor>
 static
 inline
-void fillNameList( STL_VECTOR(UInt32)& iContainer,
+void fillNameList( std::vector<UInt32>& iContainer,
 		   Iterator itBegin,
 		   Iterator itEnd,
 		   const NameExtractor& iNameExtractor )
@@ -286,7 +286,7 @@ void fillNameList( STL_VECTOR(UInt32)& iContainer,
    for( itNameHolder = itBegin;
 	itNameHolder != itEnd;
 	++itNameHolder ) {
-      string temp( iNameExtractor.name(itNameHolder) );
+      std::string temp( iNameExtractor.name(itNameHolder) );
       strcpy( pStartOfNextName, temp.c_str() );
       pStartOfNextName += temp.size()+1;
    }
@@ -308,12 +308,12 @@ void fillNameList( STL_VECTOR(UInt32)& iContainer,
 class StreamNameExtractor
 {
    public:
-      const string& name(Stream::Set::const_iterator iIterator ) const {
+      const std::string& name(Stream::Set::const_iterator iIterator ) const {
 	 return (*iIterator).value(); }
 };
 
 void
-PDSProxyStorer::createStreamList( STL_VECTOR(UInt32)& iContainer )
+PDSProxyStorer::createStreamList( std::vector<UInt32>& iContainer )
 {
    Stream::Set streams = stores();
 
@@ -334,15 +334,15 @@ PDSProxyStorer::createStreamList( STL_VECTOR(UInt32)& iContainer )
 
 class TypeTagNameExtractor {
    public:
-      string name( const STL_SET(TypeTag)::const_iterator& iIterator ) const { 
+      std::string name( const std::set<TypeTag>::const_iterator& iIterator ) const { 
 	 return (*iIterator).name();
       }
 };
 
 void
-PDSProxyStorer::createTypesInfo( STL_VECTOR(UInt32)& iContainer,
+PDSProxyStorer::createTypesInfo( std::vector<UInt32>& iContainer,
 				 const PDSDataToStore& iDataToStore,
-				 STL_SET(TypeTag)& oFactoryTypes )
+				 std::set<TypeTag>& oFactoryTypes )
 {
    //create a set of all the types that have factories
    PDSDataToStore::const_iterator itEndStreamData = iDataToStore.end();
@@ -350,10 +350,10 @@ PDSProxyStorer::createTypesInfo( STL_VECTOR(UInt32)& iContainer,
 	itStreamData != itEndStreamData;
 	++itStreamData ) {
       
-      const STL_SET(DurableDataKey)& keys = (*itStreamData).second();
+      const std::set<DurableDataKey>& keys = (*itStreamData).second();
 
-      STL_SET(DurableDataKey)::const_iterator itEndKey = keys.end();
-      for( STL_SET(DurableDataKey)::const_iterator itKey = keys.begin();
+      std::set<DurableDataKey>::const_iterator itEndKey = keys.end();
+      for( std::set<DurableDataKey>::const_iterator itKey = keys.begin();
 	   itKey != itEndKey;
 	   ++itKey ) {
 	 oFactoryTypes.insert( (*itKey).type() );
@@ -365,7 +365,7 @@ PDSProxyStorer::createTypesInfo( STL_VECTOR(UInt32)& iContainer,
    //  1) packing info
    //  2) the other types we need to store
    
-   STL_SET(TypeTag) subtypeTags;
+   std::set<TypeTag> subtypeTags;
    probeSchema( oFactoryTypes, subtypeTags );
 
    fillNameList( iContainer,
@@ -386,12 +386,12 @@ PDSProxyStorer::createTypesInfo( STL_VECTOR(UInt32)& iContainer,
 }
 
 void
-PDSProxyStorer::probeSchema( const STL_SET(TypeTag)& iFactoryTypes,
-			     STL_SET(TypeTag)& oSubTypes )
+PDSProxyStorer::probeSchema( const std::set<TypeTag>& iFactoryTypes,
+			     std::set<TypeTag>& oSubTypes )
 {
    //Obtain all the packing information
-   STL_SET(TypeTag) typesLeftToCheck( iFactoryTypes );
-   STL_SET(TypeTag) typesChecked;
+   std::set<TypeTag> typesLeftToCheck( iFactoryTypes );
+   std::set<TypeTag> typesChecked;
    
    SMStorageHelperManager& sm = SMStorageHelperManager::instance();
 
@@ -413,7 +413,7 @@ PDSProxyStorer::probeSchema( const STL_SET(TypeTag)& iFactoryTypes,
 
       //Add to the types left to check only those subtypes found 
       // entries that are not already in the types checked list
-      insert_iterator<STL_SET(TypeTag)> 
+      std::insert_iterator<std::set<TypeTag>> 
 	 typesLeftToCheckOutputIterator( typesLeftToCheck,
 					 typesLeftToCheck.begin() );
 
@@ -423,7 +423,7 @@ PDSProxyStorer::probeSchema( const STL_SET(TypeTag)& iFactoryTypes,
 		      typesChecked.end(),
 		      typesLeftToCheckOutputIterator );
 
-      insert_iterator<STL_SET(TypeTag)> 
+      std::insert_iterator<std::set<TypeTag>> 
 	 subTypesOutputIterator( oSubTypes,
 				 oSubTypes.begin());
       set_difference( schemaProbe.subtypesFound().begin(),
@@ -438,20 +438,20 @@ PDSProxyStorer::probeSchema( const STL_SET(TypeTag)& iFactoryTypes,
 }
 
 void
-PDSProxyStorer::fillPackingInfo( STL_VECTOR(UInt32)& ioContainer,
-				 STL_SET(TypeTag)::const_iterator iBegin,
-				 STL_SET(TypeTag)::const_iterator iEnd )
+PDSProxyStorer::fillPackingInfo( std::vector<UInt32>& ioContainer,
+				 std::set<TypeTag>::const_iterator iBegin,
+				 std::set<TypeTag>::const_iterator iEnd )
 {
    SMContainerSizePacker sizePacker;
 
    
-   for( STL_SET(TypeTag)::const_iterator itType = iBegin;
+   for( std::set<TypeTag>::const_iterator itType = iBegin;
 	itType != iEnd;
 	++itType ) {
-      //cout <<" fillPackingInfo for type " << (*itType).name() << endl;
+      //cout <<" fillPackingInfo for type " << (*itType).name() << std::endl;
       PackersForTypeMap::iterator itPackers = m_packersForTypeMap.find(*itType);
       assert( itPackers != m_packersForTypeMap.end() );
-      const STL_VECTOR(PDSPackerBase*)& packers = m_packersForTypeMap[*itType];
+      const std::vector<PDSPackerBase*>& packers = m_packersForTypeMap[*itType];
 
       UInt32 packedWord = 0;
       unsigned char startBit = 0;
@@ -476,7 +476,7 @@ PDSProxyStorer::fillPackingInfo( STL_VECTOR(UInt32)& ioContainer,
 	 packedWord = overflow;
 	 overflow = 0;
       }
-      //cout <<"     packed versionToStore" <<endl;
+      //cout <<"     packed versionToStore" <<std::endl;
       
 
       //store number of fields
@@ -489,9 +489,9 @@ PDSProxyStorer::fillPackingInfo( STL_VECTOR(UInt32)& ioContainer,
 	 startBit -= 32;
 	 packedWord = overflow;
       }
-      //cout <<"     packed number of fields" <<endl;
+      //cout <<"     packed number of fields" <<std::endl;
 
-      for( STL_VECTOR(PDSPackerBase*)::const_iterator itPacker = packers.begin();
+      for( std::vector<PDSPackerBase*>::const_iterator itPacker = packers.begin();
 	   itPacker != packers.end();
 	   ++itPacker ) {
 	 //store field packing info
@@ -508,15 +508,15 @@ PDSProxyStorer::fillPackingInfo( STL_VECTOR(UInt32)& ioContainer,
 
 void
 PDSProxyStorer::createProxiesInRecordsInfo( 
-   STL_VECTOR(UInt32)& ioContainer, 
+   std::vector<UInt32>& ioContainer, 
    const PDSDataToStore& iDataToStore,
-   const STL_SET(TypeTag)& iFactoryTypes )
+   const std::set<TypeTag>& iFactoryTypes )
 {
    //Need to create a lookup table between TypeTag and index number
-   STL_MAP(TypeTag, unsigned int ) typeToIndex;
+   std::map<TypeTag, unsigned int > typeToIndex;
 
    unsigned int index = 0;
-   for( STL_SET(TypeTag)::const_iterator itType = iFactoryTypes.begin();
+   for( std::set<TypeTag>::const_iterator itType = iFactoryTypes.begin();
 	itType != iFactoryTypes.end();
 	++itType ) {
 
@@ -529,12 +529,12 @@ PDSProxyStorer::createProxiesInRecordsInfo(
 	itKeySet != iDataToStore.end();
 	++itKeySet ) {
 
-      const STL_SET(DurableDataKey)& keySet = (*itKeySet).second();
+      const std::set<DurableDataKey>& keySet = (*itKeySet).second();
    
       //Number of Proxies in this record
       ioContainer.push_back( keySet.size() );
    
-      for( STL_SET(DurableDataKey)::const_iterator itKey = keySet.begin();
+      for( std::set<DurableDataKey>::const_iterator itKey = keySet.begin();
 	   itKey != keySet.end();
 	   ++itKey ) {
 
@@ -542,7 +542,7 @@ PDSProxyStorer::createProxiesInRecordsInfo(
 
 	 //Essentially put usage and production tags into a container
 	 // so we can use iterators to do the filling
-	 string usageProductionTags[2];
+	 std::string usageProductionTags[2];
 	 usageProductionTags[0] = (*itKey).usage().value();
 	 usageProductionTags[1] = (*itKey).production().value();
 
@@ -555,12 +555,12 @@ PDSProxyStorer::createProxiesInRecordsInfo(
 
 
 void
-PDSProxyStorer::createProxyWriters( const STL_SET(TypeTag)& iFactoryTypes )
+PDSProxyStorer::createProxyWriters( const std::set<TypeTag>& iFactoryTypes )
 {
    SMStorageHelperManager& shm = SMStorageHelperManager::instance();
    
-   STL_SET(TypeTag)::const_iterator itEnd = iFactoryTypes.end();
-   for( STL_SET(TypeTag)::const_iterator itType = iFactoryTypes.begin();
+   std::set<TypeTag>::const_iterator itEnd = iFactoryTypes.end();
+   for( std::set<TypeTag>::const_iterator itType = iFactoryTypes.begin();
 	itType != itEnd;
 	++itType ) {
 
@@ -578,7 +578,7 @@ PDSProxyStorer::createProxyWriters( const STL_SET(TypeTag)& iFactoryTypes )
 ProxyStorer::StoreStatus
 PDSProxyStorer::implementStore( const Record& iRecord ) const
 {
-   STL_VECTOR(UInt32)& dataBuffer = const_cast<PDSProxyStorer*>(this)->m_dataBuffer;
+   std::vector<UInt32>& dataBuffer = const_cast<PDSProxyStorer*>(this)->m_dataBuffer;
 
    dataBuffer.clear();
    //reserve space for the header
@@ -591,12 +591,12 @@ PDSProxyStorer::implementStore( const Record& iRecord ) const
    sinkStream.setContainer( dataBuffer );
    sinkStream.setPackers( m_packersForTypeMap );
 
-   const STL_SET(DurableDataKey)& keys = 
+   const std::set<DurableDataKey>& keys = 
       const_cast<PDSProxyStorer*>(this)->m_dataToStore[iRecord.stream()]();
 
-   STL_SET(DurableDataKey)::const_iterator itEnd = keys.end();
+   std::set<DurableDataKey>::const_iterator itEnd = keys.end();
    unsigned int index = 0;
-   for( STL_SET(DurableDataKey)::const_iterator itKey = keys.begin();
+   for( std::set<DurableDataKey>::const_iterator itKey = keys.begin();
 	itKey != itEnd;
 	++itKey, ++index ) {
 

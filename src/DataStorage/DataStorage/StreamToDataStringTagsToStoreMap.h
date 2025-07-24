@@ -28,9 +28,9 @@
 // system include files
 
 // user include files
-#include "STLUtility/fwd_map.h"
+#include <map>
 #include "DataStorage/DataStringTagsToStore.h"
 // forward declarations
 
-typedef STL_MAP(StreamType, DataStringTagsToStore) StreamToDataStringTagsToStoreMap;
+typedef std::map<StreamType, DataStringTagsToStore> StreamToDataStringTagsToStoreMap;
 #endif /* DATASTORAGE_STREAMTODATASTRINGTAGSTOSTOREMAP_H */

@@ -29,7 +29,7 @@
 //
 // constants, enums and typedefs
 //
-FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kFormatCommandString 
+static const char* const kFormatCommandString 
 = "JobControl.FormatCommand";
  
 //

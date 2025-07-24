@@ -71,32 +71,32 @@
 //
 static const char* const kFacilityString = "JobControl.ReportModuleCommand" ;
 
-// ---- cvs-based strings (Id and Tag with which file was checked out)
+// ---- cvs-based std::strings (Id and Tag with which file was checked out)
 static const char* const kIdString  = "$Id: ReportModuleCommand.cc,v 1.5 2003/09/19 21:05:08 cdj Exp $";
 static const char* const kTagString = "$Name:  $";
 
 //
 // static data member definitions
 //
-static const string helpMessage =
-string( " Subcommands are:                                                  \n" )+
-string( "  help                                                             \n" )+
-string( "                                                                   \n" )+
-string( "  level [<level>]                  set or print level              \n" )+
-string( "                                   where <level> is: \"default\"   \n" )+
-string( "                                   or any of \"printlevels\"       \n" )+
-string( "                                   (partial match, upper/lowercase)\n" )+
-string( "                                                                   \n" )+
-string( "  printlevels                      print available levels          \n" )+
-string( "                                                                   \n" )+
-string( "  file open   <logfile> [<level>]  create new logfile logger       \n" )+
-string( "  file level  <logfile> <level>    change level in logger          \n" )+
-string( "  file off    <logfile>            temporarily switch off logging  \n" )+
-string( "  file on     <logfile>            resume logging                  \n" )+
-string( "  file close  <logfile>            close logfile, remove logger    \n" )+
-string( "  file status <logfile>            print status of logger          \n" )+
-string( "  file list                        list all file loggers           \n" )+
-string( "                                                                   \n" );
+static const std::string helpMessage =
+std::string( " Subcommands are:                                                  \n" )+
+std::string( "  help                                                             \n" )+
+std::string( "                                                                   \n" )+
+std::string( "  level [<level>]                  set or print level              \n" )+
+std::string( "                                   where <level> is: \"default\"   \n" )+
+std::string( "                                   or any of \"printlevels\"       \n" )+
+std::string( "                                   (partial match, upper/lowercase)\n" )+
+std::string( "                                                                   \n" )+
+std::string( "  printlevels                      print available levels          \n" )+
+std::string( "                                                                   \n" )+
+std::string( "  file open   <logfile> [<level>]  create new logfile logger       \n" )+
+std::string( "  file level  <logfile> <level>    change level in logger          \n" )+
+std::string( "  file off    <logfile>            temporarily switch off logging  \n" )+
+std::string( "  file on     <logfile>            resume logging                  \n" )+
+std::string( "  file close  <logfile>            close logfile, remove logger    \n" )+
+std::string( "  file status <logfile>            print status of logger          \n" )+
+std::string( "  file list                        list all file loggers           \n" )+
+std::string( "                                                                   \n" );
 
 //
 // constructors and destructor
@@ -169,7 +169,7 @@ ReportModuleCommand::execute( int argc, char* argv[] )
 	 {	
 	    if( 5 != argc )
 	    {
-	       report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+	       report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
 	       result = COMMAND_ERROR;
 	    }
 	    else
@@ -196,7 +196,7 @@ ReportModuleCommand::execute( int argc, char* argv[] )
 	 else
 	 {
 	    report( SYSTEM, kFacilityString ) 
-	       << "invalid command subargument " << argv[2] << endl;
+	       << "invalid command subargument " << argv[2] << std::endl;
 	    result = COMMAND_ERROR;
 	 }
       } else
@@ -209,19 +209,19 @@ ReportModuleCommand::execute( int argc, char* argv[] )
 	 else
 	 {
 	    report( SYSTEM, kFacilityString ) 
-	       << "invalid command subargument " << argv[2] << endl;
+	       << "invalid command subargument " << argv[2] << std::endl;
 	    result = COMMAND_ERROR;
 	 }
       }
       else { // bad command argument!
-         report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+         report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
          result = COMMAND_ERROR;
       }
    }
    else // number of arguments
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -237,7 +237,7 @@ ReportModuleCommand::helpHandler()
    report( SYSTEM, kFacilityString )
       << "\n\nDescription: " << name() << "\n\n"
       << helpMessage
-      << endl;
+      << std::endl;
 
    return COMMAND_OK;
 }
@@ -264,7 +264,7 @@ ReportModuleCommand::setReportLevelHandler()
    Command::Result returnValue = Command::COMMAND_OK;
 
    // second argument is report level
-   string severity( m_argv[2] );
+   std::string severity( m_argv[2] );
    DABoolean status = target()->setReportLevel( severity );
    if( true == status )
    {
@@ -273,7 +273,7 @@ ReportModuleCommand::setReportLevelHandler()
    else
    {
       report( SYSTEM, kFacilityString )
-	 << "Unknown severity \"" << severity << "\"" << endl;
+	 << "Unknown severity \"" << severity << "\"" << std::endl;
       returnValue = Command::COMMAND_ERROR;
    }
 
@@ -289,11 +289,11 @@ ReportModuleCommand::logfileOpenHandler()
    assert( m_argc >= 4 );
 
    // logfile
-   string logfile( m_argv[3] );
+   std::string logfile( m_argv[3] );
    DABoolean status;
    if( m_argc > 4 ) 
    {
-      string severity( m_argv[4] );
+      std::string severity( m_argv[4] );
       status = target()->openFileLogger( logfile, severity );
    }
    else
@@ -304,12 +304,12 @@ ReportModuleCommand::logfileOpenHandler()
    if( true == status )
    {
       report( INFO, kFacilityString )
-	 << "opened logfile \"" << logfile << "\"" << endl;
+	 << "opened logfile \"" << logfile << "\"" << std::endl;
    }
    else
    {
       report( SYSTEM, kFacilityString )
-	 << "problem with logfile \"" << logfile << "\"" << endl;
+	 << "problem with logfile \"" << logfile << "\"" << std::endl;
       returnValue = Command::COMMAND_ERROR;
    }
 
@@ -325,19 +325,19 @@ ReportModuleCommand::logfileLevelHandler()
    assert( m_argc == 5 );
 
    // logfile
-   string logfile( m_argv[3] );
-   string level  ( m_argv[4] );
+   std::string logfile( m_argv[3] );
+   std::string level  ( m_argv[4] );
    DABoolean status = target()->setReportLevelOnFileLogger( logfile, level );
    if( true == status )
    {
       report( INFO, kFacilityString )
 	 << "reset report level for \"" 
-	 << logfile << "\" to \"" << level << "\"" << endl;
+	 << logfile << "\" to \"" << level << "\"" << std::endl;
    }
    else
    {
       report( SYSTEM, kFacilityString )
-	 << "problem with logfile \"" << logfile << "\"" << endl;
+	 << "problem with logfile \"" << logfile << "\"" << std::endl;
       returnValue = Command::COMMAND_ERROR;
    }
 
@@ -353,17 +353,17 @@ ReportModuleCommand::logfileOffHandler()
    assert( m_argc >= 4 );
 
    // logfile
-   string logfile( m_argv[3] );
+   std::string logfile( m_argv[3] );
    DABoolean status = target()->turnOffFileLogger( logfile );
    if( true == status )
    {
       report( INFO, kFacilityString )
-	 << "turned off \"" << logfile << "\"" << endl;
+	 << "turned off \"" << logfile << "\"" << std::endl;
    }
    else
    {
       report( SYSTEM, kFacilityString )
-	 << "problem with logfile \"" << logfile << "\"" << endl;
+	 << "problem with logfile \"" << logfile << "\"" << std::endl;
       returnValue = Command::COMMAND_ERROR;
    }
 
@@ -379,17 +379,17 @@ ReportModuleCommand::logfileOnHandler()
    assert( m_argc >= 4 );
 
    // logfile
-   string logfile( m_argv[3] );
+   std::string logfile( m_argv[3] );
    DABoolean status = target()->turnOnFileLogger( logfile );
    if( true == status )
    {
       report( INFO, kFacilityString )
-	 << "turned on \"" << logfile << "\"" << endl;
+	 << "turned on \"" << logfile << "\"" << std::endl;
    }
    else
    {
       report( SYSTEM, kFacilityString )
-	 << "problem with logfile \"" << logfile << "\"" << endl;
+	 << "problem with logfile \"" << logfile << "\"" << std::endl;
       returnValue = Command::COMMAND_ERROR;
    }
 
@@ -405,17 +405,17 @@ ReportModuleCommand::logfileCloseHandler()
    assert( m_argc >= 4 );
 
    // logfile
-   string logfile( m_argv[3] );
+   std::string logfile( m_argv[3] );
    DABoolean status = target()->closeFileLogger( logfile );
    if( true == status )
    {
       report( INFO, kFacilityString )
-	 << "closed \"" << logfile << "\"" << endl;
+	 << "closed \"" << logfile << "\"" << std::endl;
    }
    else
    {
       report( SYSTEM, kFacilityString )
-	 << "problem with logfile \"" << logfile << "\"" << endl;
+	 << "problem with logfile \"" << logfile << "\"" << std::endl;
       returnValue = Command::COMMAND_ERROR;
    }
 
@@ -431,12 +431,12 @@ ReportModuleCommand::logfileStatusHandler()
    assert( m_argc >= 4 );
 
    // logfile
-   string logfile( m_argv[3] );
+   std::string logfile( m_argv[3] );
    DABoolean status = target()->printInfoFileLogger( logfile );
    if( false )
    {
       report( SYSTEM, kFacilityString )
-	 << "problem with logfile \"" << logfile << "\"" << endl;
+	 << "problem with logfile \"" << logfile << "\"" << std::endl;
       returnValue = Command::COMMAND_ERROR;
    }
 

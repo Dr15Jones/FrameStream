@@ -94,11 +94,11 @@ static const char* const kTagString = "$Name:  $";
 // constructors and destructor
 //
 DummyHistoManager::DummyHistoManager()
-   : m_root( new DummyDir(string()) ),
+   : m_root( new DummyDir(std::string()) ),
      m_default( m_root )
 {
    report( WARNING, kFacilityString )
-      << "Creating Dummy HistogramManager." << endl;  
+      << "Creating Dummy HistogramManager." << std::endl;  
 
    assert( 0!= m_root);
 }
@@ -132,7 +132,7 @@ DummyHistoManager::~DummyHistoManager()
 // member functions
 //
 HIHistDir*
-DummyHistoManager::mkdir( const string& iName ) 
+DummyHistoManager::mkdir( const std::string& iName ) 
 {
    return m_default->mkdir( iName );
 }
@@ -140,7 +140,7 @@ DummyHistoManager::mkdir( const string& iName )
 // 1D histogram
 HIHist1D* 
 DummyHistoManager::histogram( Count          iId,
-			      const string&  iTitle,
+			      const std::string&  iTitle,
 			      Count   iNChannels,
 			      float          iLowEdge,
 			      float          iHighEdge,
@@ -156,7 +156,7 @@ DummyHistoManager::histogram( Count          iId,
 
 // 1D histogram with automatic id assignment
 HIHist1D* 
-DummyHistoManager::histogram( const string&  iTitle,
+DummyHistoManager::histogram( const std::string&  iTitle,
 			      Count   iNChannels,
 			      float          iLowEdge,
 			      float          iHighEdge,
@@ -172,7 +172,7 @@ DummyHistoManager::histogram( const string&  iTitle,
 // 2D histogram
 HIHist2D* 
 DummyHistoManager::histogram( Count          iId,
-			      const string&  iTitle,
+			      const std::string&  iTitle,
 			      unsigned int   iNChannelsX, 
 			      float          iLowEdgeX, 
 			      float          iHighEdgeX,
@@ -194,7 +194,7 @@ DummyHistoManager::histogram( Count          iId,
 
 // 2D histogram with automatic id assignment
 HIHist2D* 
-DummyHistoManager::histogram( const string&  iTitle,
+DummyHistoManager::histogram( const std::string&  iTitle,
 			      unsigned int   iNChannelsX, 
 			      float          iLowEdgeX, 
 			      float          iHighEdgeX,
@@ -216,7 +216,7 @@ DummyHistoManager::histogram( const string&  iTitle,
 // profile histogram
 HIHistProf* 
 DummyHistoManager::profile( Count          iId,
-			    const string&  iTitle,
+			    const std::string&  iTitle,
 			    unsigned int   iNChannels, 
 			    float          iLowEdgeX, 
 			    float          iHighEdgeX,
@@ -236,7 +236,7 @@ DummyHistoManager::profile( Count          iId,
 
 // profile histogram with automatic id assignment
 HIHistProf* 
-DummyHistoManager::profile( const string&  iTitle,
+DummyHistoManager::profile( const std::string&  iTitle,
 			    unsigned int   iNChannels, 
 			    float          iLowEdgeX, 
 			    float          iHighEdgeX,
@@ -256,7 +256,7 @@ DummyHistoManager::profile( const string&  iTitle,
 // ntuple
 HINtuple* 
 DummyHistoManager::ntuple( Count          iId,
-			   const string&  iTitle,
+			   const std::string&  iTitle,
 			   unsigned int   iNumberOfVariables,
 			   unsigned int   iChunkSize,
 			   const char* const* iLabels )
@@ -270,7 +270,7 @@ DummyHistoManager::ntuple( Count          iId,
 
 // ntuple with automatic id assignment
 HINtuple* 
-DummyHistoManager::ntuple( const string&  iTitle,
+DummyHistoManager::ntuple( const std::string&  iTitle,
 			   unsigned int   iNumberOfVariables,
 			   unsigned int   iChunkSize,
 			   const char* const* iLabels )
@@ -282,14 +282,14 @@ DummyHistoManager::ntuple( const string&  iTitle,
 }
 
 HINumber* 
-DummyHistoManager::number( const string& iName,
+DummyHistoManager::number( const std::string& iName,
 			   float         iValue )
 {
    return m_default->number( iName, iValue );
 }
 
 HINumberWithErrors* 
-DummyHistoManager::numberWithErrors( const string& iName,
+DummyHistoManager::numberWithErrors( const std::string& iName,
 				     float         iValue,
 				     float         iPositiveError,
 				     float         iNegativeError )
@@ -303,13 +303,13 @@ DummyHistoManager::numberWithErrors( const string& iName,
 //{
 //   report( ERROR, kFacilityString )
 //      << "mkSwitch() not implemented yet"
-//      << endl;
+//      << std::endl;
 //   assert( false );
 //   return 0;
 //}
 
 void
-DummyHistoManager::setDefaultDir( const string& iDirectoryName )
+DummyHistoManager::setDefaultDir( const std::string& iDirectoryName )
 {
    m_default = m_root->mkdir( iDirectoryName );
 }

@@ -29,19 +29,11 @@
 //
 
 // system include files
-#if defined(AMBIGUOUS_FUNCTION_RESOLUTION_BUG)
-#include <string>
-#endif /* AMGBIGUOUS_FUNCTION_RESOLUTION_BUG */
 
 // user include files
 
 // STL include
-#include "C++Std/fwd_string.h"
-#if defined(OLD_CXX_STRING_CLASS_BUG)
-#include <String.h>
-#else
 #include <string>
-#endif /* OLD_CXX_STRING_CLASS_BUG */
 
 // forward declarations
 
@@ -53,16 +45,16 @@ class StringWrapper
       // constants, enums and typedefs
 
       // Constructors and destructor
-      StringWrapper( string& iString );
+      StringWrapper( std::string& iString );
       StringWrapper();
       // default copy constructor is fine!
       ~StringWrapper();
 
       // member functions
-      string& operator()();
+      std::string& operator()();
 
       // const member functions
-      const string& operator()() const;
+      const std::string& operator()() const;
 
       // static member functions
 
@@ -83,7 +75,7 @@ class StringWrapper
       // private const member functions
 
       // data members
-      string m_string;
+      std::string m_string;
 
       // static data members
 

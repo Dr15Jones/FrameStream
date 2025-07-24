@@ -25,10 +25,10 @@
 // user include files
 #include "DataHandler/Frame.h"
 
-#include "FrameAccess/instantiate_macros.h"
-INSTANTIATE_ONE( Frame )
+//#include "FrameAccess/instantiate_macros.h"
+//INSTANTIATE_ONE( Frame )
 //Use the following if 'Frame' contains a ','
 // also make sure there are no blank spaces within 'Frame'
 /* INSTANTIATE_ONE_1_COMMA( Frame ) */
-#include "FrameAccess/instantiate_one.h"
+//#include "FrameAccess/instantiate_one.h"
 

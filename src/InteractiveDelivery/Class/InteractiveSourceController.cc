@@ -172,16 +172,16 @@ InteractiveSourceController::createProxyDeliverer( void ) const
    return returnValue;
 }
 
-string
+std::string
 InteractiveSourceController::dataSourceID( void ) const
 {
-   return string(kID);
+   return std::string(kID);
 }
 
-string
+std::string
 InteractiveSourceController::parameters( void ) const
 {
-   return string("");
+   return std::string("");
 }
 
 //

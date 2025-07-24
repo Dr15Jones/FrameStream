@@ -51,10 +51,10 @@
 // constants, enums and typedefs
 //
 class PDSPackerBase;
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 typedef TypeTag _map_key_;
-typedef STL_VECTOR(PDSPackerBase*) _map_contents_;
+typedef std::vector<PDSPackerBase*> _map_contents_;
 typedef less<_map_key_> _map_compare_;
 
 #include "STLUtility/instantiate_map.h"

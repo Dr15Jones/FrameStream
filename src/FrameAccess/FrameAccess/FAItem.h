@@ -43,7 +43,7 @@
         report( INFO ) << "The energy is " << *energy ;
      } catch( NO_ITEM_EXCEPTION(GeV)& iException ) {
        //print a nice diagnostic message
-       report(WARNING ) << iException.what() << endl;
+       report(WARNING ) << iException.what() << std::endl;
      }
      
      //want to know if the extract call worked

@@ -45,7 +45,7 @@ class HINtuple
 
       // ---------- Constructors and destructor ----------------
       HINtuple( Count         iId,
-		const string& iTitle,
+		const std::string& iTitle,
 		unsigned int  iNumberOfVariables,
 		unsigned int  iChunkSize,
 		const char* const* iLabels ) ;
@@ -56,7 +56,7 @@ class HINtuple
       virtual void fill( const float* iEntry ) =0 ;
       // ---------- const member functions ---------------------
       Count         id ( void ) const ;
-      const string& title ( void ) const ;
+      const std::string& title ( void ) const ;
       unsigned int  numberOfVariables ( void ) const ;
       unsigned int  chunkSize ( void ) const ;
       const char* const* labels ( void ) const ;
@@ -64,8 +64,8 @@ class HINtuple
 
    protected:
       // ---------- protected member functions -----------------
-      virtual void book ( const string& iTitle,
-			  const string& iTopDir,
+      virtual void book ( const std::string& iTitle,
+			  const std::string& iTopDir,
 			  unsigned int  iNumberOfVariables,
 			  unsigned int  iChunkSize,
 			  const char* const* iLabels ) =0 ;
@@ -86,7 +86,7 @@ class HINtuple
 
       // ---------- data members -------------------------------
       Count         m_id ;
-      string        m_title ;
+      std::string        m_title ;
       unsigned int  m_numberofvariables ;
       unsigned int  m_chunksize ;
       char* *  m_labels ;

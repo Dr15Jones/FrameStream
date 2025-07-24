@@ -31,7 +31,7 @@
 // system include files
 #include <string>
 
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 
 // user include files
 #include "DataStorage/FrameStorer.h"
@@ -54,10 +54,10 @@ class Path : public SSSlotted
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      Path( const string& iName,
+      Path( const std::string& iName,
             FilterBase* iFilter,
-	   const STL_VECTOR(Processor*)& iOpProcs,
-	   const STL_VECTOR(DataSinkBinder*)& iSinks);
+	   const std::vector<Processor*>& iOpProcs,
+	   const std::vector<DataSinkBinder*>& iSinks);
       virtual ~Path();
 
       // ---------- member functions ---------------------------
@@ -74,17 +74,17 @@ class Path : public SSSlotted
       
       void initializeSinks();
 
-      void isNotInOperations(const string& iName, DABoolean&);
-      void notUsingSink(const string& iName, DABoolean&);
+      void isNotInOperations(const std::string& iName, DABoolean&);
+      void notUsingSink(const std::string& iName, DABoolean&);
       
       // ---------- const member functions ---------------------
       DABoolean mustBeSequential() const;
 
       _framestorer_sinkdescriptors_ sinks() const; 
 
-      const string& name() const { return m_name;}
+      const std::string& name() const { return m_name;}
       FilterBase* filter() const {return m_filter.get();}
-      const STL_VECTOR(Processor*)& operations() const {return m_procOperations;}
+      const std::vector<Processor*>& operations() const {return m_procOperations;}
       
       // ---------- static member functions --------------------
 
@@ -108,11 +108,11 @@ class Path : public SSSlotted
 
       // ---------- data members -------------------------------
       Holder<FilterBase> m_filter;
-      STL_VECTOR(Processor* ) m_procOperations;
+      std::vector<Processor* > m_procOperations;
       FrameStorer m_storer;
-      string m_name;
+      std::string m_name;
  
-      STL_VECTOR(DataSinkBinder*) m_uninitializedSinks;     
+      std::vector<DataSinkBinder*> m_uninitializedSinks;     
       // ---------- static data members ------------------------
 
 };

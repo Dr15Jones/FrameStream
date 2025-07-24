@@ -30,9 +30,9 @@
 #include "CommandPattern/LoaderBase.h"
 
 // forward declarations
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_vector.h"
-#include "STLUtility/fwd_map.h"
+#include <string>
+#include <vector>
+#include <map>
 
 template< class T >
 class MultiLoader : public LoaderBase<T>
@@ -41,22 +41,22 @@ class MultiLoader : public LoaderBase<T>
 
    public:
       // constants, enums and typedefs
-      typedef STL_VECTOR( string ) _loader_loaded_;
+      typedef std::vector< std::string > _loader_loaded_;
 
       // Constructors and destructor
-      MultiLoader( const string& environment );
+      MultiLoader( const std::string& environment );
       virtual ~MultiLoader();
 
       // member functions
       
-      virtual DABoolean load( const string& iName );
-      virtual DABoolean load( const string& iName, const string& iTag );
-      virtual DABoolean unload( const string& iName );
+      virtual DABoolean load( const std::string& iName );
+      virtual DABoolean load( const std::string& iName, const std::string& iTag );
+      virtual DABoolean unload( const std::string& iName );
       virtual void unloadAll();
 
-      virtual DABoolean reorder( const string& iListString );
+      virtual DABoolean reorder( const std::string& iListString );
       
-      virtual pair<string,string> disassembleName(const string& iName) const;
+      virtual std::pair<std::string,std::string> disassembleName(const std::string& iName) const;
 
       // static factory
 
@@ -67,9 +67,9 @@ class MultiLoader : public LoaderBase<T>
       _loader_loaded_&     loaded()    { return m_loaded; } 
 
       // warning/error messages
-      virtual string makeErrorMesg( const string& iName ) const;
+      virtual std::string makeErrorMesg( const std::string& iName ) const;
       // give derived class a change to perform specific actions
-      virtual void initializeTag( const string& iTag, T& )  {}
+      virtual void initializeTag( const std::string& iTag, T& )  {}
 
       // protected const member functions
       const _loader_loaded_&     loaded()    const { return m_loaded; } 

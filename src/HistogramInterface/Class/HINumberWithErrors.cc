@@ -67,7 +67,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-HINumberWithErrors::HINumberWithErrors( const string&  iName,
+HINumberWithErrors::HINumberWithErrors( const std::string&  iName,
 					float          iValue,
 					float          iPositiveError,
 					float          iNegativeError )

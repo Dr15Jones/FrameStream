@@ -47,7 +47,7 @@ class DummyHistProf : public HIHistProf
       // ---------- Constructors and destructor ----------------
       DummyHistProf(
      		     unsigned int   iId,
-		     const string&  iTitle,
+		     const std::string&  iTitle,
 		     unsigned int   iNChannels,
 		     float          iLowEdgeX,
 		     float          iHighEdgeX,

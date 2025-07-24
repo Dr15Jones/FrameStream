@@ -35,8 +35,8 @@
 //
 
 // system include files
-#include "C++Std/iostream.h"
-#include "C++Std/fstream.h"
+#include <iostream>
+#include <fstream>
 
 // user include files
 #include "CommandPattern/Module.h"
@@ -46,9 +46,9 @@
 // forward declarations
 #include <string>
 
-#include "STLUtility/fwd_map.h"
+#include <map>
 #if !defined(reportmodule_loggers)
-#define reportmodule_loggers STL_MAP( string, ReportModule::LogAndStreamStruct )
+#define reportmodule_loggers std::map< std::string, ReportModule::LogAndStreamStruct >
 #endif
 
 class ReportModule : public Module
@@ -60,7 +60,7 @@ class ReportModule : public Module
       // for internal bookkeeping (could be private but problem with typedef)
       struct LogAndStreamStruct { 
 	 FrameLogger* m_logger;
-	 ofstream* m_outputStream;
+	 std::ofstream* m_outputStream;
 	 DABoolean m_isActive;
       };
 
@@ -70,25 +70,25 @@ class ReportModule : public Module
 
       // ---------- member functions ---------------------------
       FrameLogger& logger();
-      DABoolean setReportLevel( const string& iReportLevel, 
+      DABoolean setReportLevel( const std::string& iReportLevel, 
 				FrameLogger* iLogger=0 );
 
-      DABoolean openFileLogger( const string& iLogfile, 
-				const string& iReportLevel=string("") );
-      DABoolean closeFileLogger( const string& iLogfile );
+      DABoolean openFileLogger( const std::string& iLogfile, 
+				const std::string& iReportLevel=std::string("") );
+      DABoolean closeFileLogger( const std::string& iLogfile );
       void closeAllFileLoggers();
-      DABoolean setReportLevelOnFileLogger( const string& iLogfile,
-					    const string& iReportLevel );
-      DABoolean turnOffFileLogger( const string& iLogfile );
-      DABoolean turnOnFileLogger( const string& iLogfile );
+      DABoolean setReportLevelOnFileLogger( const std::string& iLogfile,
+					    const std::string& iReportLevel );
+      DABoolean turnOffFileLogger( const std::string& iLogfile );
+      DABoolean turnOnFileLogger( const std::string& iLogfile );
 
       // ---------- const member functions ---------------------
       const FrameLogger& logger() const;
-      string printReportLevel() const;
-      string printAllReportLevels() const;
+      std::string printReportLevel() const;
+      std::string printAllReportLevels() const;
 
-      DABoolean printInfoFileLogger( const string& iLogfile, 
-				     ostream& os=cout,
+      DABoolean printInfoFileLogger( const std::string& iLogfile, 
+				    std::ostream& os=std::cout,
 				     DABoolean iFlush=true ) const;
       void printInfoAllFileLoggers() const;
 

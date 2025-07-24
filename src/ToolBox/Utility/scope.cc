@@ -1,4 +1,4 @@
-#include "C++Std/iostream.h"
+#include <iostream>
 #if !defined(FILENAME_ONLY) /* relative path includes */
 #include "ToolBox/Include/bug7_deccxx.h"
 #include "ToolBox/Include/bug2_mwerks.h"
@@ -73,5 +73,5 @@ int main( void)
    One a( 2 ) ;
    Two b( "Alan" ) ;
    
-   cout << "a " << a.identifier() << " b " << b.identifier() << endl ;
+   cout << "a " << a.identifier() << " b " << b.identifier() << std::endl ;
 }

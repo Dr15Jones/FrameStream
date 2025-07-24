@@ -33,11 +33,11 @@
 // user include files
 //#include "Experiment/report.h"
 #include "DataHandler/DataKeyTags.h"
-#include "STLUtility/fwd_set.h"
+#include <set>
 
-typedef insert_iterator< STL_SET(TypeTag) > _output_iterator_;
-typedef STL_SET( TypeTag )::const_iterator _const_input_iterator_;
-typedef STL_SET( TypeTag )::iterator _input_iterator_;
+typedef insert_iterator< std::set<TypeTag> > _output_iterator_;
+typedef std::set< TypeTag >::const_iterator _const_input_iterator_;
+typedef std::set< TypeTag >::iterator _input_iterator_;
 
 #if defined(NO_IMPLICIT_INSTANTIATION)
 template 

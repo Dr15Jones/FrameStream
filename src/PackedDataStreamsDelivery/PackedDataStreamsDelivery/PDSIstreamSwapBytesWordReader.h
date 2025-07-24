@@ -45,7 +45,7 @@ class PDSIstreamSwapBytesWordReader : public PDSIstreamWordReader
       // ---------- constants, enums and typedefs --------------
 
       // ---------- Constructors and destructor ----------------
-      PDSIstreamSwapBytesWordReader( istream& iStream ) :
+      PDSIstreamSwapBytesWordReader( std::istream& iStream ) :
 	 PDSIstreamWordReader( iStream ) {}
       //virtual ~PDSIstreamSwapBytesWordReader();
 

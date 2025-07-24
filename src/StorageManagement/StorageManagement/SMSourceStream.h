@@ -61,7 +61,7 @@ class SMSourceStream
 
       virtual SMSourceStream& operator>>( float  &) = 0;
       virtual SMSourceStream& operator>>( double &) = 0;
-      virtual SMSourceStream& operator>>( string& ) = 0;
+      virtual SMSourceStream& operator>>( std::string& ) = 0;
 
       // need to know when enter/exit object
       // (since not all may require to know, implement default)

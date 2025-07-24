@@ -29,19 +29,14 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <deque>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
-
 // user include files
-#include "Experiment/report.h"
 #include "Utility/NoSkipStringTokenizer.h"
 
 // STL classes
 #include <string>
 #include <deque>
 
+using namespace std;
 //
 // constants, enums and typedefs
 //
@@ -55,7 +50,7 @@ static const char* const kFacilityString = "Utility.NoSkipStringTokenizer" ;
 //
 // constructors and destructor
 //
-NoSkipStringTokenizer::NoSkipStringTokenizer( const string& aString, 
+NoSkipStringTokenizer::NoSkipStringTokenizer( const std::string& aString, 
 					      char aDelimiter )
    : StringTokenizer( aString, aDelimiter, &NoSkipStringTokenizer::parseString )
 {
@@ -96,16 +91,16 @@ NoSkipStringTokenizer::~NoSkipStringTokenizer()
 // static member functions
 //
 NoSkipStringTokenizer::Tokens
-NoSkipStringTokenizer::parseString( const string& aString, char aDelimiter )
+NoSkipStringTokenizer::parseString( const std::string& aString, char aDelimiter )
 {
    Tokens returnValue;
 
-   string::size_type i=0;
+   std::string::size_type i=0;
    do {
-      string::size_type j = aString.find( aDelimiter, i );
-      string token = (j>i) ? aString.substr( i, j-i ) : string("");
+      std::string::size_type j = aString.find( aDelimiter, i );
+      std::string token = (j>i) ? aString.substr( i, j-i ) : std::string("");
       i=j+1;
-      //cout << "Token=" << token << endl;
+      //cout << "Token=" << token << std::endl;
       returnValue.push_back( token );
    } while( i>0 && i<aString.size());
 

@@ -21,12 +21,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Experiment/report.h"
@@ -55,20 +49,11 @@ static const char* const kFacilityString = "JobControl.SourceFormatMap" ;
 //
 // constructors and destructor
 //
-SourceFormatMap::SourceFormatMap( const string& environment )
+SourceFormatMap::SourceFormatMap( const std::string& environment )
    : FormatMap< SourceFormat >( "SourceFormatMap", environment ),
      m_command( *new FormatCommand< SourceFormatMap >( "source_format", this ) ),
      m_extensionVsName ( *new _extensionname_map_ )
 {
-   if( 0 == &m_extensionVsName
-       || 0 == &m_command
-      )
-   {
-      report( EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 // SourceFormatMap::SourceFormatMap( const SourceFormatMap& rhs )
@@ -104,13 +89,13 @@ SourceFormatMap::~SourceFormatMap()
 // member functions
 //
 BinderBase* 
-SourceFormatMap::createBinder( const string& iName,
+SourceFormatMap::createBinder( const std::string& iName,
 			       const Stream::Set& iBindStreams )
 {
    BinderBase* returnValue = 0;
 
    // figure out extension
-   string extension;
+   std::string extension;
    extension = findExtension( iName, extension );
 
    _extensionname_map_::iterator it = m_extensionVsName.find( extension );
@@ -121,19 +106,19 @@ SourceFormatMap::createBinder( const string& iName,
    }
    else {
       report( ERROR, kFacilityString )
-	 << "no proper format found for " << iName << endl;
+	 << "no proper format found for " << iName << std::endl;
    }
 
    return returnValue;
 }
 
 Stream::Set
-SourceFormatMap::defaultStreams( const string& iName )
+SourceFormatMap::defaultStreams( const std::string& iName )
 {
    Stream::Set returnValue;
    
    // figure out extension
-   string extension;
+   std::string extension;
    extension = findExtension( iName, extension );
    
    _extensionname_map_::iterator it = m_extensionVsName.find( extension );
@@ -144,7 +129,7 @@ SourceFormatMap::defaultStreams( const string& iName )
    }
    else {
       report( ERROR, kFacilityString )
-	 << "no default streams found for " << iName << endl;
+	 << "no default streams found for " << iName << std::endl;
    }
    
    return returnValue;
@@ -152,7 +137,7 @@ SourceFormatMap::defaultStreams( const string& iName )
 
 // ------------- overridden Loader< Producer > method
 void
-SourceFormatMap::initialize( const string& iName, SourceFormat& iFormat )
+SourceFormatMap::initialize( const std::string& iName, SourceFormat& iFormat )
 {
    // bind all format extensions
    const SourceFormat::Extensions& extensions = iFormat.extensions();
@@ -164,10 +149,10 @@ SourceFormatMap::initialize( const string& iName, SourceFormat& iFormat )
 
 // ------------- overridden Loader< Producer > method
 void
-SourceFormatMap::finalize( const string& iName, SourceFormat& iFormat )
+SourceFormatMap::finalize( const std::string& iName, SourceFormat& iFormat )
 {
    // unbind all extensions used by this format
-   typedef vector< string > ToBeUnbound;
+   typedef std::vector< std::string > ToBeUnbound;
    ToBeUnbound toBeUnbound;
    _extensionname_map_::const_iterator end = m_extensionVsName.end();
    for( _extensionname_map_::const_iterator it = m_extensionVsName.begin();
@@ -189,18 +174,18 @@ SourceFormatMap::finalize( const string& iName, SourceFormat& iFormat )
 // const member functions
 //
 DABoolean 
-SourceFormatMap::bind( const string& iFormatName,
-		       const string& iExtension )
+SourceFormatMap::bind( const std::string& iFormatName,
+		       const std::string& iExtension )
 {
    DABoolean returnValue = true;
 
    if( !( loadedMap().find(iFormatName) != loadedMap().end() ) ) {
       report( ERROR, kFacilityString )
-	 << "no such formatname " << iFormatName << endl;
+	 << "no such formatname " << iFormatName << std::endl;
       return false;
    }
 
-   string formatName = iFormatName;
+   std::string formatName = iFormatName;
 
    // check that extension hasn't been bound yet
    _extensionname_map_::iterator findExtension 
@@ -213,7 +198,7 @@ SourceFormatMap::bind( const string& iFormatName,
    }
    else {
       report( ERROR, kFacilityString )
-	 << "extension already in use!" << endl;
+	 << "extension already in use!" << std::endl;
       return false;
    }
 
@@ -221,7 +206,7 @@ SourceFormatMap::bind( const string& iFormatName,
 }
 
 DABoolean 
-SourceFormatMap::unbind( const string& iExtension )
+SourceFormatMap::unbind( const std::string& iExtension )
 {
    DABoolean returnValue = true;
 
@@ -232,7 +217,7 @@ SourceFormatMap::unbind( const string& iExtension )
    }
    else {
       report( ERROR, kFacilityString )
-	 << "no such extension " << iExtension << endl;
+	 << "no such extension " << iExtension << std::endl;
       returnValue = false;
    }
 
@@ -262,14 +247,14 @@ SourceFormatMap::clearAll()
 }
 
 DABoolean 
-SourceFormatMap::bind( const string& iFormatName,
+SourceFormatMap::bind( const std::string& iFormatName,
 		       const SourceFormat::Extensions& iExtensions )
 {
    DABoolean returnValue = true;
 
    if( true == iExtensions.empty() ) {
       report( ERROR, kFacilityString )
-	 << "format " << iFormatName << " supports NO extensions" << endl;
+	 << "format " << iFormatName << " supports NO extensions" << std::endl;
       return returnValue = false;
    }
 
@@ -279,7 +264,7 @@ SourceFormatMap::bind( const string& iFormatName,
 	++it )
    {
       //report( INFO, kFacilityString )
-      // << "binding " << iFormatName << " to " << *it << endl;
+      // << "binding " << iFormatName << " to " << *it << std::endl;
       DABoolean success = bind( iFormatName, *it );
       if( false == success ) returnValue = false;
    }
@@ -289,18 +274,18 @@ SourceFormatMap::bind( const string& iFormatName,
 
 // ------------- overridden Loader< Producer > method
 void
-SourceFormatMap::errorMesg( const string& iName ) const
+SourceFormatMap::errorMesg( const std::string& iName ) const
 {
    report( ERROR, kFacilityString ) 
       << "cannot make format; "
-      << "are you sure \"" << iName << "\" is a SourceFormat?" << endl;
+      << "are you sure \"" << iName << "\" is a SourceFormat?" << std::endl;
 }
 
 // ------------- overridden Loader< Producer > method
-string
+std::string
 SourceFormatMap::listLoaded() const
 {
-   string resultString;
+   std::string resultString;
 
    _extensionname_map_::const_iterator endExtension( m_extensionVsName.end() );
    for( _extensionname_map_::const_iterator itExtension 
@@ -308,8 +293,8 @@ SourceFormatMap::listLoaded() const
 	itExtension != endExtension;
 	++itExtension )
    {
-      resultString += string( " " ) + (*itExtension).first 
-	 + string( " " ) + ((*itExtension).second)() + string( "\n" );
+      resultString += std::string( " " ) + (*itExtension).first 
+	 + std::string( " " ) + ((*itExtension).second)() + std::string( "\n" );
    }
 
    return resultString;

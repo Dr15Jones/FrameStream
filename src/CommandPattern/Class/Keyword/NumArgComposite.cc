@@ -59,7 +59,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-NumArgComposite::NumArgComposite(const string& iName) :
+NumArgComposite::NumArgComposite(const std::string& iName) :
    Base(iName)
 {
 }
@@ -73,7 +73,7 @@ NumArgComposite::NumArgComposite(const string& iName) :
 
 NumArgComposite::~NumArgComposite()
 {
-   for(STL_VECTOR(Base*)::iterator itBase = m_keywords.begin();
+   for(std::vector<Base*>::iterator itBase = m_keywords.begin();
        itBase != m_keywords.end();
        ++itBase ) {
       delete (*itBase);
@@ -100,13 +100,13 @@ void
 NumArgComposite::add(Base* iKeyword)
 {
    //check where this should be added to our list
-   for(STL_VECTOR(Base*)::iterator itBase = m_keywords.begin();
+   for(std::vector<Base*>::iterator itBase = m_keywords.begin();
        itBase != m_keywords.end();
        ++itBase ) {
       if( (*itBase)->minArgs() > iKeyword->minArgs() ) {
 	 if( (*itBase)->minArgs() > iKeyword->maxArgs() ) {
 	    //check that next item doesn't overlap
-	    STL_VECTOR(Base*)::iterator itNext = itBase+1;
+	    std::vector<Base*>::iterator itNext = itBase+1;
 	    if( itNext == m_keywords.end() ) {
 	       break;
 	    }
@@ -121,7 +121,7 @@ NumArgComposite::add(Base* iKeyword)
 		  <<iKeyword->minArgs() <<" "<<iKeyword->maxArgs()
 		  <<" overlaps with a previous insert that uses "
 		  <<(*itNext)->minArgs() <<" "<<(*itNext)->maxArgs()
-		  << endl;
+		  << std::endl;
 	       assert(false);
 	       ::exit(-1);
 	    }
@@ -132,7 +132,7 @@ NumArgComposite::add(Base* iKeyword)
 	       <<iKeyword->minArgs() <<" "<<iKeyword->maxArgs()
 	       <<" overlaps with a previous insert that uses "
 	       <<(*itBase)->minArgs() <<" "<<(*itBase)->maxArgs()
-	       << endl;
+	       << std::endl;
 	    assert(false);
 	    ::exit(-1);
 	 }
@@ -145,7 +145,7 @@ NumArgComposite::add(Base* iKeyword)
 int 
 NumArgComposite::implementExecute( int argc, char** argv )
 {
-   for(STL_VECTOR(Base*)::iterator itBase = m_keywords.begin();
+   for(std::vector<Base*>::iterator itBase = m_keywords.begin();
        itBase != m_keywords.end();
        ++itBase ) {
       if( argc >= (*itBase)->minArgs() && argc <= (*itBase)->maxArgs() ) {

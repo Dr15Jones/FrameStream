@@ -64,7 +64,7 @@ DBOne< YourItemHere >::fillContents( YourItemHere*& pItem )
 
 #ifdef CLEO_DEBUG
    report( DEBUG, kFacilityString )
-      << "DBOne< YourItemHere >::fillContents()" << endl;
+      << "DBOne< YourItemHere >::fillContents()" << std::endl;
 #endif
 
    // get ahold of proper handle for stream
@@ -88,7 +88,7 @@ DBOne< YourItemHere >::fillContents( YourItemHere*& pItem )
       {
 	 report( EMERGENCY, kFacilityString )
 	    << "out of memory"
-	    << endl;
+	    << std::endl;
 	 assert( false );
 	 ::exit( 1 );
       }
@@ -97,7 +97,7 @@ DBOne< YourItemHere >::fillContents( YourItemHere*& pItem )
    {
 #ifdef CLEO_DEBUG
       report( DEBUG, kFacilityString )
-	 << "no YourItemHere association available" << endl;
+	 << "no YourItemHere association available" << std::endl;
 #endif
       pItem = 0;
       returnValue = false;

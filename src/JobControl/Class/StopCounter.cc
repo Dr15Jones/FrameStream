@@ -184,7 +184,7 @@ StopCounter::checkAllStreamsToBeActive( const StreamSet& iStreams ) const
    DABoolean returnValue = true;
 
    if( false == iStreams.contains( m_streams ) ) {
-      ostream& reportStream = report( ERROR, kFacilityString );
+     std::ostream& reportStream = report( ERROR, kFacilityString );
       reportStream <<"can only stop on active Streams: ";
 
       {
@@ -207,7 +207,7 @@ StopCounter::checkAllStreamsToBeActive( const StreamSet& iStreams ) const
 			 <<"\" is not an active Stream";
 	 }
       }
-      reportStream << endl;
+      reportStream << std::endl;
       returnValue = false;
    }
 

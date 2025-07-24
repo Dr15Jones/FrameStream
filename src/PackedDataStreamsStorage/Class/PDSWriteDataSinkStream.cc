@@ -63,7 +63,7 @@
 #include "StorageManagement/Compression/SMIntNoPackPacker.h"
 #include "StorageManagement/SMContentsBase.h"
 
-#include "BinaryDelivery/ByteSwapping.h"
+#include "StorageManagement/ByteSwapping.h"
 
 // STL classes
 // You may have to uncomment some of these or other stl headers
@@ -199,7 +199,7 @@ PDSWriteDataSinkStream::put( const char * iFieldName, double iData )
    COMPRESS_DATA
 }
 void 
-PDSWriteDataSinkStream::put( const char * iFieldName, const string& iData )
+PDSWriteDataSinkStream::put( const char * iFieldName, const std::string& iData )
 {
    m_presentPacker.packer();
 
@@ -276,7 +276,7 @@ PDSWriteDataSinkStream::put( const char * iFieldName,
    //Now store the contents
    PDSPackerBase* packer = m_presentPacker.packer();
    if( iData.strategy() == SMContentsBase::kBuiltin ) {
-      static STL_VECTOR(PDSPackerBase*) packers( 1, static_cast<PDSPackerBase*>(0) );
+      static std::vector<PDSPackerBase*> packers( 1, static_cast<PDSPackerBase*>(0) );
       packers[0] = static_cast<PDSContainerPackedPacker*>( packer )->packer();
       
       //Need to switch to a packer that does not increment

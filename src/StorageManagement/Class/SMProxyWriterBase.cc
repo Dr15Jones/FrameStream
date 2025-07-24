@@ -106,7 +106,7 @@ SMProxyWriterBase::store( const DataKey& iKey   ,
 {
    DABoolean returnValue;
 
-   if( returnValue = extractData( iKey, iRecord , iOStream ) )
+   if( (returnValue = extractData( iKey, iRecord , iOStream )) )
    {
       writeData( iOStream );
    }

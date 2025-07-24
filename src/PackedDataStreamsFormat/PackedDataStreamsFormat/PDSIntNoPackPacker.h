@@ -53,7 +53,7 @@ class PDSIntNoPackPacker : public PDSPackerTemplate<T>
 
       // ---------- member functions ---------------------------
       SMPackerTemplate<T>& packer() { return m_packer;}
-      const SMIntNoPackPacker<T>& packerTrueType() const { return m_packer;}
+      SMIntNoPackPacker<T>& packerTrueType() { return m_packer;}
 
       // ---------- const member functions ---------------------
       PDSPacking::Strategies strategy() const { return PDSPacking::kNoPacking; }
@@ -65,7 +65,7 @@ class PDSIntNoPackPacker : public PDSPackerTemplate<T>
       // ---------- protected member functions -----------------
       void storeStrategyInfo( UInt32& ioPackedWord,
 			     unsigned char& ioStartBit,
-			     STL_VECTOR(UInt32)& iContainer ) const {
+			     std::vector<UInt32>& iContainer ) const {
 	 //No additional info needs to be saved
       }
 

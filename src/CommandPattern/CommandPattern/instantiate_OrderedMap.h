@@ -29,9 +29,5 @@
 #include "CommandPattern/Template/OrderedMap.cc"
 
 template class OrderedMap< _orderedmap_key_, _orderedmap_contents_ >;
-typedef OrderedMap< _orderedmap_key_, _orderedmap_contents_ >::value_type
-_vector_contents_;
-
-#include "STLUtility/instantiate_vector.h"
 
 #endif /* COMMANDPATTERN_INSTANTIATE_ORDEREDMAP_H */

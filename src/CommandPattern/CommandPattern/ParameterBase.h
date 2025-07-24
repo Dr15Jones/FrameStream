@@ -52,7 +52,8 @@ class ParameterBase : public Command
       // parameter change call back
       class ParameterChangeCallBackBase {
 	 public:
-	    virtual DABoolean operator()() = 0;
+       virtual ~ParameterChangeCallBackBase() = default;
+       virtual DABoolean operator()() = 0;
       };
 
       // ---------- Constructors and destructor ----------------

@@ -24,10 +24,10 @@
 
       report(INFO, kFacilityString ) << "run # " << eventHeader->runNumber()
                                      << "event # " << eventHeader->number()
-				     << endl;
+				     << std::endl;
 
     } catch( DANoDataException<FAItem<DBEventHeader>::contents> &iException ) {
-      report(WARNING, kFacilityString ) << iException.what() << endl;
+      report(WARNING, kFacilityString ) << iException.what() << std::endl;
     }
       
     \endcode
@@ -105,13 +105,13 @@ class DANoDataException : public DAExceptionBase
       const DurableDataKey& dataKey() const { return m_dataKey; }
       virtual const char* what () const { 
         if( m_message.size() == 0 ) {
-          string& message = 
+          std::string& message = 
             const_cast<DANoDataException<T>*>(this)->m_message;
           message = dataTypeMessage();
-          message+= string(" \n ")
-                 +string(" A proxy for this data exists, but it's unable to deliver the data for this ")
-                 +string(m_stream.value())
-                 +string(" record.");
+          message+= std::string(" \n ")
+                 +std::string(" A proxy for this data exists, but it's unable to deliver the data for this ")
+                 +std::string(m_stream.value())
+                 +std::string(" record.");
         }
 	 return m_message.c_str();
       }
@@ -123,24 +123,24 @@ class DANoDataException : public DAExceptionBase
       // ---------- protected member functions -----------------
 
       // ---------- protected const member functions -----------
-      const string& dataTypeMessage () const { 
+      const std::string& dataTypeMessage () const { 
 	 if( m_dataTypeMessage.size() == 0 ) {
 	    //should make m_message mutable
-	    string& message = 
+	    std::string& message = 
 	       const_cast<DANoDataException<T>*>(this)->m_dataTypeMessage;
 
-	    message = string("No data of type ") 
-	       +string("\"")
-	         +string(HCTypeTagTemplate<T,DataKey>::className()) 
-	       +string("\" ")
-	       +string("\"")
-	         +string(m_dataKey.usage().value() )
-	       +string("\" ")
-	       +string("\"")
-	         +string(m_dataKey.production().value() )
-	       +string("\" ")
-	       +string("in Record ")
-	       +string(m_stream.value());
+	    message = std::string("No data of type ") 
+	       +std::string("\"")
+	         +std::string(HCTypeTagTemplate<T,DataKey>::className()) 
+	       +std::string("\" ")
+	       +std::string("\"")
+	         +std::string(m_dataKey.usage().value() )
+	       +std::string("\" ")
+	       +std::string("\"")
+	         +std::string(m_dataKey.production().value() )
+	       +std::string("\" ")
+	       +std::string("in Record ")
+	       +std::string(m_stream.value());
 	 }
 	 return m_dataTypeMessage;
       }
@@ -159,8 +159,8 @@ class DANoDataException : public DAExceptionBase
       // ---------- data members -------------------------------
       Stream::Type m_stream;
       DurableDataKey m_dataKey;
-      string m_message;
-      string m_dataTypeMessage;
+      std::string m_message;
+      std::string m_dataTypeMessage;
       
       // ---------- static data members ------------------------
 

@@ -87,7 +87,7 @@
 #include "StorageManagement/SMStorageHelperManager.h"
 #include "StorageManagement/SMProxyBase.h"
 
-#include "BinaryDelivery/ByteSwapping.h"
+#include "StorageManagement/ByteSwapping.h"
 
 // STL classes
 // You may have to uncomment some of these or other stl headers
@@ -113,14 +113,14 @@ static const char* const kTagString = "$Name:  $";
 // static data member definitions
 //
 /*
-class PDSTypeToUnpackingInfoMap : public STL_MAP(TypeTag, PDSTypeUnpackingInfo *)
+class PDSTypeToUnpackingInfoMap : public std::map<TypeTag, PDSTypeUnpackingInfo *>
 {
    public:
    ~PDSTypeToUnpackingInfoMap() {
       iterator itEnd = end();
       for( iterator itEntry = begin(); itEntry != itEnd;
 	        ++itEntry ) {
-	        	//cout <<"deleting packerInfo"<<(*itEntry).second<<endl;
+	        	//cout <<"deleting packerInfo"<<(*itEntry).second<<std::endl;
 	      delete (*itEntry).second;
       }
    }
@@ -131,13 +131,13 @@ class PDSTypeToUnpackingInfoMap : public STL_MAP(TypeTag, PDSTypeUnpackingInfo *
 //
 // constructors and destructor
 //
-PDSProxyDeliverer::PDSProxyDeliverer(istream& iIStream ) :
+PDSProxyDeliverer::PDSProxyDeliverer(std::istream& iIStream ) :
    ProxyDeliverer("PDSProxyDeliverer"),
    m_headerInfo(iIStream),
    m_haveRecordsFromPreviousFiles(false)
 {
-   //cout <<"constructing PDSProxyDeliverer"<<endl;
-   //cout << "  m_typeToUnpackingInfoMap="<<m_typeToUnpackingInfoMap <<endl;
+   //cout <<"constructing PDSProxyDeliverer"<<std::endl;
+   //cout << "  m_typeToUnpackingInfoMap="<<m_typeToUnpackingInfoMap <<std::endl;
    initializeStreams();
 }
 
@@ -150,12 +150,12 @@ PDSProxyDeliverer::PDSProxyDeliverer(istream& iIStream ) :
 
 PDSProxyDeliverer::~PDSProxyDeliverer()
 {
-   //cout <<"deleting PDSProxyDeliverer"<<endl;
+   //cout <<"deleting PDSProxyDeliverer"<<std::endl;
 
    {
-      STL_MAP(StreamType, PDSRecordReadBuffer*)::iterator itEnd = 
+      std::map<StreamType, PDSRecordReadBuffer*>::iterator itEnd = 
 	 m_streamToBufferMap.end();
-      for( STL_MAP(StreamType, PDSRecordReadBuffer*)::iterator itEntry =
+      for( std::map<StreamType, PDSRecordReadBuffer*>::iterator itEntry =
 	      m_streamToBufferMap.begin();
 	   itEntry != itEnd;
 	   ++itEntry ) {
@@ -180,10 +180,10 @@ PDSProxyDeliverer::~PDSProxyDeliverer()
    }
 
    {
-   	STL_SET(TypeToUnpackingInfoMap*) infoSet;
-   	STL_MAP(StreamType, TypeToUnpackingInfoMap*)::iterator itEnd = 
+   	std::set<TypeToUnpackingInfoMap*> infoSet;
+   	std::map<StreamType, TypeToUnpackingInfoMap*>::iterator itEnd = 
    	   m_presentPackingInfo.end();
-   	for( STL_MAP(StreamType, TypeToUnpackingInfoMap*)::iterator itEntry
+   	for( std::map<StreamType, TypeToUnpackingInfoMap*>::iterator itEntry
    	         = m_presentPackingInfo.begin();
    	      itEntry != itEnd;
    	      ++itEntry ) {
@@ -192,15 +192,15 @@ PDSProxyDeliverer::~PDSProxyDeliverer()
    	    }
    	}
    	
-   	STL_SET(TypeToUnpackingInfoMap*)::iterator itSetEnd = infoSet.end();
-   	for( STL_SET(TypeToUnpackingInfoMap*)::iterator itSet = infoSet.begin();
+   	std::set<TypeToUnpackingInfoMap*>::iterator itSetEnd = infoSet.end();
+   	for( std::set<TypeToUnpackingInfoMap*>::iterator itSet = infoSet.begin();
    	     itSet != itSetEnd;
    	     ++itSet ) {
-   	   //cout <<"   deleting "<< *itSet<<endl;
+   	   //cout <<"   deleting "<< *itSet<<std::endl;
          delete *itSet;
       }
    }
-   //cout <<"deleting m_typeToUnpackingInfoMap "<<m_typeToUnpackingInfoMap <<endl;
+   //cout <<"deleting m_typeToUnpackingInfoMap "<<m_typeToUnpackingInfoMap <<std::endl;
 }
 
 //
@@ -221,7 +221,7 @@ PDSProxyDeliverer::~PDSProxyDeliverer()
 //
 static
 inline
-void check_for_exceptions( istream& iIStream, 
+void check_for_exceptions( std::istream& iIStream, 
 			   const char* iHappenedWhile ) 
 {
    if( iIStream.eof() ) {
@@ -236,7 +236,7 @@ void
 PDSProxyDeliverer::initializeStreams()
 {
 
-   for( STL_VECTOR(StreamType)::const_iterator itStream = m_headerInfo.indexToStreamType().begin();
+   for( std::vector<StreamType>::const_iterator itStream = m_headerInfo.indexToStreamType().begin();
 	itStream != m_headerInfo.indexToStreamType().end();
 	++itStream ) {
 
@@ -258,16 +258,16 @@ PDSProxyDeliverer::enable( const Stream::Type& aStream )
 
 void
 PDSProxyDeliverer::readBody( const Stream::Type& iStream,
-			     istream& iIFStream,
+			     std::istream& iIFStream,
 			     UInt32 iWordsToRead )
 {
    //When chaining, we have to keep around the old PackingInfo until
    // a new record appears
    if( m_haveRecordsFromPreviousFiles ) {
-   	STL_MAP(StreamType, TypeToUnpackingInfoMap*)::iterator itFound =
+   	std::map<StreamType, TypeToUnpackingInfoMap*>::iterator itFound =
    	   m_presentPackingInfo.find( iStream );
 
-   	STL_MAP(StreamType, TypeToUnpackingInfoMap*)::iterator itEnd =
+   	std::map<StreamType, TypeToUnpackingInfoMap*>::iterator itEnd =
    	   m_presentPackingInfo.end();
    	 
    	assert( itFound != itEnd );  
@@ -275,7 +275,7 @@ PDSProxyDeliverer::readBody( const Stream::Type& iStream,
    		//see if this is the last one in our list to see if we must delete
          DABoolean isLast = true;
          DABoolean onlyTwoInfos = true;
-			for( STL_MAP(StreamType, TypeToUnpackingInfoMap*)::iterator itInfo =
+			for( std::map<StreamType, TypeToUnpackingInfoMap*>::iterator itInfo =
    			   m_presentPackingInfo.begin();
    		      itInfo != itEnd;
    		      ++itInfo ) {
@@ -289,14 +289,14 @@ PDSProxyDeliverer::readBody( const Stream::Type& iStream,
             }
    		}
          if( isLast ) { 
-            //cout <<"deleting last instance of old TypeToUnpackingInfoMap " <<(*itFound).second<<endl;
+            //cout <<"deleting last instance of old TypeToUnpackingInfoMap " <<(*itFound).second<<std::endl;
 
          	delete (*itFound).second;
          	if( onlyTwoInfos ) {
              		m_haveRecordsFromPreviousFiles = false;
          	}	
          }
-         // <<" changing to new packing info from "<<(*itFound).second<<" to "<<m_typeToUnpackingInfoMap<<endl;
+         // <<" changing to new packing info from "<<(*itFound).second<<" to "<<m_typeToUnpackingInfoMap<<std::endl;
          (*itFound).second = m_headerInfo.typeToUnpackingInfoMap();
          //Now reset all the SourceStreams' packing info
          
@@ -315,7 +315,7 @@ PDSProxyDeliverer::readBody( const Stream::Type& iStream,
    pBuffer->read( *wordReader(), iWordsToRead );
 
 
-   //cout <<" # words in Record " << iWordsToRead << endl;
+   //cout <<" # words in Record " << iWordsToRead << std::endl;
    
    SourceStreams& sourceStreams = m_streamToSourcesMap[ iStream ];
    const PDSRecordReadBuffer* buffer = m_streamToBufferMap[iStream];
@@ -337,13 +337,13 @@ PDSProxyDeliverer::readBody( const Stream::Type& iStream,
 	 //cout << "    buffer index " << (*itBuffer).index();
 	 if( (*itBuffer).index() == (*itSource)->index() ) {
 	    (*itSource)->setBuffer( (*itBuffer) );
-	    //cout <<" found source" <<endl;
+	    //cout <<" found source" <<std::endl;
 	    ++itBuffer;
 	    ++itSource;
 	    continue;
 	 }
 	 
-	 //cout << " no source found" << endl;
+	 //cout << " no source found" << std::endl;
 	 if( (*itBuffer).index() > (*itSource)->index() ) {
 	    (*itSource)->invalidate();
 	    ++itSource;
@@ -369,7 +369,7 @@ void
 PDSProxyDeliverer::registerProxies( const Stream::Type& aStream ,
 				    KeyedProxies& aProxyList ) 
 {
-   const STL_VECTOR(DurableDataKey)& dataKeys = 
+   const std::vector<DurableDataKey>& dataKeys = 
       m_headerInfo.streamProxyFactoryInfoMap()[aStream];
 
    //get the SourceStream container we need to fill
@@ -380,7 +380,7 @@ PDSProxyDeliverer::registerProxies( const Stream::Type& aStream ,
    SMStorageHelperManager::factory_iterator itFactoryEnd = shm.factory_end();
 
    unsigned int index = PDSFileHeaderInfo::kFirstProxyIndex;
-   for( STL_VECTOR(DurableDataKey)::const_iterator itKey = dataKeys.begin();
+   for( std::vector<DurableDataKey>::const_iterator itKey = dataKeys.begin();
 	itKey != dataKeys.end();
 	++itKey ) {
 
@@ -391,7 +391,7 @@ PDSProxyDeliverer::registerProxies( const Stream::Type& aStream ,
 
       if( itFactory != itFactoryEnd ) {
 /*      	cout <<"   creating proxy for "<<itKey->type().name() <<"+"
-      	   <<itKey->usage().value() << itKey->production().value() << endl; */
+      	   <<itKey->usage().value() << itKey->production().value() << std::endl; */
 	 PDSSourceStream* pSourceStream = 
 	    new PDSSourceStream(m_headerInfo.typeToUnpackingInfoMap(), index);
 	 sourceStreams.push_back( pSourceStream );
@@ -406,7 +406,7 @@ PDSProxyDeliverer::registerProxies( const Stream::Type& aStream ,
       }
       ++index;
    }
-   //cout <<" adding "<<m_typeToUnpackingInfoMap<<" to m_presentPackingInfo"<<endl;
+   //cout <<" adding "<<m_typeToUnpackingInfoMap<<" to m_presentPackingInfo"<<std::endl;
    m_presentPackingInfo[aStream] = m_headerInfo.typeToUnpackingInfoMap();
 }
 
@@ -424,28 +424,28 @@ PDSProxyDeliverer::changeSourceController( PDSSourceController& iController )
 }
 
 void
-PDSProxyDeliverer::changeIStream( istream& iStream )
+PDSProxyDeliverer::changeIStream( std::istream& iStream )
 {
-   //cout <<"Changing SourceController "<< iController.dataSourceID() << endl;
+   //cout <<"Changing SourceController "<< iController.dataSourceID() << std::endl;
    
    if( m_presentPackingInfo.size() != 0 ) {
    	m_haveRecordsFromPreviousFiles = true;
 	m_headerInfo.dropOwnershipOfTypeToUnpackingInfoMap();
    	//m_typeToUnpackingInfoMap = new TypeToUnpackingInfoMap;
-      //cout <<"  made new " <<m_typeToUnpackingInfoMap<<endl;
+      //cout <<"  made new " <<m_typeToUnpackingInfoMap<<std::endl;
    } else {
    	//Haven't yet created Proxies so we can get rid of the packing info
    	//  since it hasn't been used yet   	
-      //cout <<"deleting m_typeToUnpackingInfoMap since hasn't been used " << m_typeToUnpackingInfoMap<<endl;
+      //cout <<"deleting m_typeToUnpackingInfoMap since hasn't been used " << m_typeToUnpackingInfoMap<<std::endl;
 
       delete m_headerInfo.dropOwnershipOfTypeToUnpackingInfoMap();
       //m_typeToUnpackingInfoMap = new TypeToUnpackingInfoMap;
-      //cout <<"  made new " <<m_typeToUnpackingInfoMap<<endl;
+      //cout <<"  made new " <<m_typeToUnpackingInfoMap<<std::endl;
    }
 
    //need to keep ahold of old m_headerInfo.streamProxyFactoryInfoMap so 
    //  we can reindex the SourceStreams
-   typedef STL_MAP(StreamType, STL_VECTOR(DurableDataKey) ) StreamTypesMap;
+   typedef std::map<StreamType, std::vector<DurableDataKey> > StreamTypesMap;
    StreamTypesMap oldStreamTypesMap(
       m_headerInfo.streamProxyFactoryInfoMap() );
 
@@ -461,7 +461,7 @@ PDSProxyDeliverer::changeIStream( istream& iStream )
 
    //At the end, add Keys that are not in the new list but are in the
    // old list
-   STL_VECTOR(DurableDataKey) keysToSave;
+   std::vector<DurableDataKey> keysToSave;
 
    while( itNew != itNewEnd && itOld != itOldEnd ) {
       if( (*itNew).first == (*itOld).first ) {
@@ -481,11 +481,11 @@ PDSProxyDeliverer::changeIStream( istream& iStream )
             SourceStreams::iterator itSourceStream = sourceStreams.begin();
 	    SourceStreams::iterator itSourceStreamEnd = sourceStreams.end();
 
-            STL_VECTOR(DurableDataKey)::iterator itNewKeyBegin = (*itNew).second.begin();
-            STL_VECTOR(DurableDataKey)::iterator itNewKey = itNewKeyBegin;
-            STL_VECTOR(DurableDataKey)::iterator itNewKeyEnd = (*itNew).second.end();
-            STL_VECTOR(DurableDataKey)::iterator itOldKey = (*itOld).second.begin();
-            STL_VECTOR(DurableDataKey)::iterator itOldKeyEnd = (*itOld).second.end();
+            std::vector<DurableDataKey>::iterator itNewKeyBegin = (*itNew).second.begin();
+            std::vector<DurableDataKey>::iterator itNewKey = itNewKeyBegin;
+            std::vector<DurableDataKey>::iterator itNewKeyEnd = (*itNew).second.end();
+            std::vector<DurableDataKey>::iterator itOldKey = (*itOld).second.begin();
+            std::vector<DurableDataKey>::iterator itOldKeyEnd = (*itOld).second.end();
             
             DABoolean mustReorder = false;
 	    unsigned int index = PDSFileHeaderInfo::kFirstProxyIndex;
@@ -506,7 +506,7 @@ PDSProxyDeliverer::changeIStream( istream& iStream )
 		  //indicies do not agree
 		  mustReorder = true;
 		  //Try to find where this type lives in the new list
-		  STL_VECTOR(DurableDataKey)::iterator itFound =
+		  std::vector<DurableDataKey>::iterator itFound =
 		     find( itNewKeyBegin, itNewKeyEnd, *itOldKey );
 		  if( itFound != itNewKeyEnd ) {
 		     /*	cout << (*itSourceStream)->index() <<" -> "
@@ -524,7 +524,7 @@ PDSProxyDeliverer::changeIStream( istream& iStream )
 	       if( itNewKey != itNewKeyEnd ) {
 		  ++itNewKey;
 	       }
-	       //cout << endl;
+	       //cout << std::endl;
 	       ++itSourceStream;
             }
 	    if (mustReorder ) {
@@ -532,7 +532,7 @@ PDSProxyDeliverer::changeIStream( istream& iStream )
 	    }
 	    if( ! keysToSave.empty() ) {
 	       //add these Keys to our list
-	       for( STL_VECTOR(DurableDataKey)::iterator itKey = keysToSave.begin();
+	       for( std::vector<DurableDataKey>::iterator itKey = keysToSave.begin();
 		    itKey != keysToSave.end();
 		    ++itKey ) {
 		  (*itNew).second.push_back( *itKey );
@@ -556,12 +556,3 @@ PDSProxyDeliverer::changeIStream( istream& iStream )
 //
 // static member functions
 //
-
-typedef DurableDataKey* _find_iterator_;
-typedef DurableDataKey _find_type_;
-#include "STLUtility/instantiate_find.h"
-
-typedef PDSSourceStream** _sort_iterator_ ;
-typedef SourceStreamCompare _sort_compare_class_;
-typedef PDSSourceStream* _sort_value_type_;
-#include "STLUtility/instantiate_sort_compare.h"

@@ -117,25 +117,12 @@ static const char* const kTagString = "$Name:  $";
 //
 
 void* 
-DLSharedObject::getSymbol( const string& symbolName ) const
+DLSharedObject::getSymbol( const std::string& symbolName ) const
 {
    void* returnValue = 0;
 
    assert( m_handle != 0 );
 
-#if !defined(D_AIX) /* -------------------------------------------- */
-#if defined(Darwin)
-   string modifiedSymbolName = string("_")+symbolName;
-   NSSymbol nsSymbol = NSLookupSymbolInModule(m_handle, modifiedSymbolName.c_str() );
-   if( NULL !=nsSymbol) {
-     returnValue = NSAddressOfSymbol(nsSymbol);
-   } else {
-     throw DLSymbolNotFoundException("");
-   }
-   //   if ( NULL != returnValue ) {
-
-   //   }
-#else
    returnValue = dlsym( m_handle, 
 		   symbolName.c_str() );
 
@@ -145,14 +132,6 @@ DLSharedObject::getSymbol( const string& symbolName ) const
    {
       throw DLSymbolNotFoundException( error );
    }
-#endif
-#else /* --------------------- AIX -------------------------------- */
-   //AIX only allows once symbol to be accessible per shared library
-
-   string dummy( symbolName ); // to get rid of "unused variable" warning
-   returnValue = m_handle;
-   
-#endif /* --------------------------------------------------------- */
 
    return returnValue;
 }

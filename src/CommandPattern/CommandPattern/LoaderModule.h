@@ -35,21 +35,21 @@ class LoaderModule : public CompositeModule, public Loader< Module >
       // Constructors and destructor
       LoaderModule( const Module::Name& iName, 
 		    const Module::Name& iDescription,
-		    const string& environment = "C3_SHLIB" );
+		    const std::string& environment = "C3_SHLIB" );
       virtual ~LoaderModule( void );
 
       // member functions
-      virtual Module* fetch( const string& iName );
+      virtual Module* fetch( const std::string& iName );
 
       virtual DABoolean clearModules();
 
       // const member functions
-      virtual const Module* fetch( const string& iName ) const;
+      virtual const Module* fetch( const std::string& iName ) const;
 
       // pattern for listings
-      virtual string listAvailablePatternString() const { 
-	 //return string( "Mod*" ); 
-	 return string( "" ); 
+      virtual std::string listAvailablePatternString() const { 
+	 //return std::string( "Mod*" ); 
+	 return std::string( "" ); 
       }
 
       // static member functions
@@ -58,13 +58,13 @@ class LoaderModule : public CompositeModule, public Loader< Module >
       // protected member functions
 
       // give derived class a change to perform specific actions
-      virtual void initialize( const string& iName, Module& );
-      virtual void finalize  ( const string& iName, Module& );
+      virtual void initialize( const std::string& iName, Module& );
+      virtual void finalize  ( const std::string& iName, Module& );
 
       // protected const member functions
 
       // error/warning messages
-      virtual string makeErrorMesg( const string& iName ) const;
+      virtual std::string makeErrorMesg( const std::string& iName ) const;
 
       // static data members
 

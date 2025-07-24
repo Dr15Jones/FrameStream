@@ -1,1 +1,0 @@
-	$(CXX) $(CXXFLAGS) $(DEBUG) $(CSWITCH) $< $(OUTSWITCH) $@

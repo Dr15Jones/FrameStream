@@ -48,9 +48,9 @@
 //    Describing the Data Sink
 //      FrameStorer needs to be able to tell the differences between
 //      Data Sinks.  The methods dataSinkID() and parameters() are used to 
-//      identify Data sinks. dataSinkID() returns a string that identifies 
+//      identify Data sinks. dataSinkID() returns a std::string that identifies 
 //      the data sink, E.g a DataSinkController that writes to a file would 
-//      return the files name. parameters() returns a string that describes 
+//      return the files name. parameters() returns a std::string that describes 
 //      any additional information that is needed to distinguish a data sink. 
 //      E.g. if the data sink is a data base, the dataSinkID() may be the 
 //      name of the database, "CLEO data", and parameters() may be a selection 
@@ -136,8 +136,8 @@ class DataSinkController
 
       ProxyStorer*  proxyStorer( void ) const;
 
-      virtual string dataSinkID( void ) const = 0;
-      virtual string parameters( void ) const = 0;
+      virtual std::string dataSinkID( void ) const = 0;
+      virtual std::string parameters( void ) const = 0;
 
       // static member functions
 

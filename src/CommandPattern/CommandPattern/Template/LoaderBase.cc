@@ -53,11 +53,11 @@
 #include <vector>
 #include <map>
 
-#include "C++Std/iostream.h"
+#include <iostream>
 //
 // constants, enums and typedefs
 //
-//FILESCOPE_IN_TEMPLATE_CC_BUG const char* const kLoaderBaseFacilityString
+//static const char* const kLoaderBaseFacilityString
 static const char* const kLoaderBaseFacilityString
  = "CommandPattern.LoaderBase";
 
@@ -69,7 +69,7 @@ static const char* const kLoaderBaseFacilityString
 // constructors and destructor
 //
 template< class T >
-LoaderBase< T >::LoaderBase( const string& environment ) 
+LoaderBase< T >::LoaderBase( const std::string& environment ) 
    :  m_factoryManagerPtr( environment )
 {
 }
@@ -97,17 +97,17 @@ LoaderBase< T >::~LoaderBase()
 
 template< class T >
 DABoolean
-LoaderBase< T >::add( const string& iName, 
+LoaderBase< T >::add( const std::string& iName, 
 		  DLFactoryBase* iFactory )
 {
-   string sName = shortName(iName);
+   std::string sName = shortName(iName);
    return m_factoryManagerPtr->add( sName, iFactory );
 }
 
 
 template< class T >
 DABoolean
-LoaderBase< T >::alreadyLoaded( const string& iName )
+LoaderBase< T >::alreadyLoaded( const std::string& iName )
 {
   // check if iName already exist
   typename _loader_loaded_map_::iterator findName = m_loadedMap.find( iName );
@@ -119,36 +119,36 @@ LoaderBase< T >::alreadyLoaded( const string& iName )
 
 template< class T >
 DABoolean
-LoaderBase< T >::alreadyLoadedFactory( const string& iName )
+LoaderBase< T >::alreadyLoadedFactory( const std::string& iName )
 {
    return m_factoryManagerPtr->isLoaded(iName);
 }
 
 template< class T >
 DABoolean
-LoaderBase< T >::load( const string& iName )
+LoaderBase< T >::load( const std::string& iName )
 {
    DABoolean returnValue;
    T* object = 0;
 
    // disassemble input name for Dynamic Loader
-   string pName = localPath(iName);
-   string sName = shortName(iName);
-   pair<string,string> pairName = disassembleName(sName);
-   string shortName             = pairName.first;
-   string tag                   = pairName.second;
-   string loadedAsName          = shortName+tag;
+   std::string pName = localPath(iName);
+   std::string sName = shortName(iName);
+   std::pair<std::string,std::string> pairName = disassembleName(sName);
+   std::string shortName             = pairName.first;
+   std::string tag                   = pairName.second;
+   std::string loadedAsName          = shortName+tag;
 
    report( DEBUG, kLoaderBaseFacilityString )
       <<" iName "<< iName 
       <<" pathName " << pName 
       <<" shortName " << shortName 
-      <<" loadedAsName " << loadedAsName << endl;
+      <<" loadedAsName " << loadedAsName << std::endl;
 
    // check that iName doesn't already exist!
    if( alreadyLoaded(loadedAsName) ) {
       report( INFO, kLoaderBaseFacilityString )
-      << loadedAsName << " has already been loaded " << endl;
+      << loadedAsName << " has already been loaded " << std::endl;
       return true;
    }
 
@@ -168,7 +168,7 @@ LoaderBase< T >::load( const string& iName )
       {
 	 report( ERROR, kLoaderBaseFacilityString )
 	    << makeErrorMesg( loadedAsName )
-	    << endl;
+	    << std::endl;
       }
    }
 
@@ -192,14 +192,14 @@ LoaderBase< T >::unloadAll()
 {
    typename _loader_loaded_map_::const_iterator end( m_loadedMap.end() );
    typename _loader_loaded_map_::const_iterator iter;
-   T* object = 0; string objectName="";
+   T* object = 0; std::string objectName="";
    for( iter = m_loadedMap.begin(); iter != end; ++iter )
    {
      // unload( objectName );
      objectName = (*iter).first;
      T* object  = (*iter).second;
      report( DEBUG, kLoaderBaseFacilityString )
-       << "unloading " << objectName << endl;
+       << "unloading " << objectName << std::endl;
 
      assert( 0 != object );
 
@@ -214,12 +214,12 @@ LoaderBase< T >::unloadAll()
 
 template< class T >
 DABoolean
-LoaderBase< T >::unload( const string& iName )
+LoaderBase< T >::unload( const std::string& iName )
 {
    DABoolean returnValue = true;
    
    // erase from _loader_loaded_map_
-   string sName = shortName(iName);
+   std::string sName = shortName(iName);
    typename _loader_loaded_map_::iterator iter = m_loadedMap.find( sName );
    if( iter != m_loadedMap.end() )  {
       
@@ -248,11 +248,11 @@ return true;
 
 template< class T >
 T*
-LoaderBase< T >::fetch( const string& iName )
+LoaderBase< T >::fetch( const std::string& iName )
 {
    T* object = 0;
 
-   string sName = shortName(iName);
+   std::string sName = shortName(iName);
    typename _loader_loaded_map_::iterator iter = m_loadedMap.find( sName );
    if( iter != m_loadedMap.end() )
    {
@@ -266,44 +266,44 @@ LoaderBase< T >::fetch( const string& iName )
 //
 template< class T >
 const T*
-LoaderBase< T >::fetch( const string& iName ) const
+LoaderBase< T >::fetch( const std::string& iName ) const
 {
    const T* object = 0;
 
-   string sName = shortName(iName);
+   std::string sName = shortName(iName);
    typename _loader_loaded_map_::const_iterator iter = m_loadedMap.find( sName );
    if( iter != m_loadedMap.end() )
    {
      object = (*iter).second;
    } else  {
      report( DEBUG, kLoaderBaseFacilityString )
-       << "couldn't find \"" << iName << "\"" << endl;
+       << "couldn't find \"" << iName << "\"" << std::endl;
    }
 
    return object;
 }
 
 template< class T >
-string
+std::string
 LoaderBase< T >::listAvailable() const
 {
    return m_factoryManagerPtr->listAvailable( listAvailablePatternString() );
 }
 
 template< class T >
-string
+std::string
 LoaderBase< T >::listLoaded() const
 {
-   string returnValue;
+   std::string returnValue;
 
    typename _loader_loaded_map_::const_iterator end( m_loadedMap.end() );
    typename _loader_loaded_map_::const_iterator iter;
    for( iter = m_loadedMap.begin(); iter != end; ++iter )
    {
       // disassemble name
-      pair<string,string> pairName = disassembleName((*iter).first);
-      string name = pairName.first;
-      string tag  = pairName.second;
+      std::pair<std::string,std::string> pairName = disassembleName((*iter).first);
+      std::string name = pairName.first;
+      std::string tag  = pairName.second;
       
       // assemble return string
       T* object = (*iter).second;
@@ -313,13 +313,13 @@ LoaderBase< T >::listLoaded() const
       char str[80];
       ostrstream objAddress(str,sizeof(str));
       objAddress << object;
-      string strAddress = objAddress.str();
+      std::string strAddress = objAddress.str();
 */      
       report( DEBUG, kLoaderBaseFacilityString )
-        << "object "<<name<<" fullName "<<name+tag<<" object address "<<object<<endl;
+        << "object "<<name<<" fullName "<<name+tag<<" object address "<<object<<std::endl;
 
-      returnValue += string( " " ) + (*iter).first + string( " :   " )
-	 + m_factoryManagerPtr->fullName( name ) + string( "\n" );
+      returnValue += std::string( " " ) + (*iter).first + std::string( " :   " )
+	 + m_factoryManagerPtr->fullName( name ) + std::string( "\n" );
 
    }
 
@@ -327,28 +327,28 @@ LoaderBase< T >::listLoaded() const
 }
 
 template< class T >
-string
+std::string
 LoaderBase< T >::factorySymbol() const
 {
    return T::factorySymbol();
 }
 
 template< class T >
-string 
-LoaderBase< T >::shortName(const string& iName) const
+std::string 
+LoaderBase< T >::shortName(const std::string& iName) const
 {
-   string name = iName;
-   string tag="";
+   std::string name = iName;
+   std::string tag="";
 
    // disassemble .<extension> (by deafult we assume only .o or .so)
    int iSearch = iName.find(".so");
    int jSearch = iName.find(".o");
-   if( iSearch!= string::npos ) {
+   if( iSearch!= std::string::npos ) {
 
      tag.assign(iName,iSearch,iName.size());
      name.replace(iSearch,iName.size()-iSearch,"");
 
-   } else if( jSearch != string::npos ) {
+   } else if( jSearch != std::string::npos ) {
 
      tag.assign(iName,jSearch,iName.size());
      name.replace(jSearch,iName.size()-jSearch,"");
@@ -356,10 +356,10 @@ LoaderBase< T >::shortName(const string& iName) const
    }
 
 
-   // disassemble <full_path_to_object>/ part and return remaining string
-   string sName=name;
+   // disassemble <full_path_to_object>/ part and return remaining std::string
+   std::string sName=name;
    int kSearch = name.rfind("/");
-   if( kSearch!= string::npos ) {
+   if( kSearch!= std::string::npos ) {
      sName.assign(name,kSearch+1,name.size());
    }
 
@@ -367,16 +367,16 @@ LoaderBase< T >::shortName(const string& iName) const
 }
 
 template< class T >
-string 
-LoaderBase< T >::localPath(const string& iName) const
+std::string 
+LoaderBase< T >::localPath(const std::string& iName) const
 {
-   string name = iName;
+   std::string name = iName;
 
    // disassemble <path_to_object>/ part
-   string pathName=iName;
+   std::string pathName=iName;
    int kSearch = name.rfind("/");
 
-   if( kSearch!= string::npos ) {
+   if( kSearch!= std::string::npos ) {
      pathName.erase(kSearch+1,name.size()-kSearch);
    } else {
      pathName = "";
@@ -388,10 +388,10 @@ LoaderBase< T >::localPath(const string& iName) const
 
 
 template< class T >
-string
-LoaderBase< T >::makeErrorMesg( const string& iName ) const
+std::string
+LoaderBase< T >::makeErrorMesg( const std::string& iName ) const
 {
-   string returnValue = string( "Can't make " ) + iName;
+   std::string returnValue = std::string( "Can't make " ) + iName;
    return returnValue;
 }
 

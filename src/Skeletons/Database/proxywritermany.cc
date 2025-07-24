@@ -65,7 +65,7 @@ DBManyWriter< YourItemHere >::storeContents( const YourItemHere& iItem,
 #ifdef CLEO_DEBUG
    report( DEBUG, kFacilityString )
       << "DBManyWriter< YourItemHere >::storeContents()" 
-      << endl;
+      << std::endl;
 #endif
 
    // get ahold of proper handle for stream
@@ -78,7 +78,7 @@ DBManyWriter< YourItemHere >::storeContents( const YourItemHere& iItem,
    {
 #ifdef CLEO_DEBUG
       report( DEBUG, kFacilityString )
-	 << "creating new OBBank< OBYourItemHere >" << endl;
+	 << "creating new OBBank< OBYourItemHere >" << std::endl;
 #endif
       bank = new(iClusteringHint) OBBank< OBYourItemHere >( iSize );
       ooStatus status = streamHandle->set_obyouritemheres( bank );
@@ -106,13 +106,13 @@ DBManyWriter< YourItemHere >::storeContents( const YourItemHere& iItem,
    return storeStatus;
 }
 
-const string&
+const std::string&
 DBManyWriter< YourItemHere >::storageName() const
 {
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Please fill in the storage category name:
 // (e.g. Tracking, Showering, Misc, etc.)
-   static string returnValue( "Misc" );
+   static std::string returnValue( "Misc" );
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    return returnValue;
 }

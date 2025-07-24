@@ -45,11 +45,11 @@ class FrameLogger : public Logger
       // ---------- constants, enums and typedefs --------------
       // ---------- Constructors and destructor ----------------
       FrameLogger( Severity level,
-		   ostream& out   ) ;
+		  std::ostream& out   ) ;
       // : Logger(level), _out(out) {}
       void Log(Severity      severity,
-	       const string& facility,
-	       const string& logmsg,
+	       const std::string& facility,
+	       const std::string& logmsg,
 	       Messenger*    messenger ) ;
 
       //virtual ~FrameLogger() ;
@@ -78,12 +78,12 @@ class FrameLogger : public Logger
       // ---------- private const member functions -------------
       // ---------- data members -------------------------------
 
-      ostream& m_out      ;
+     std::ostream& m_out      ;
 
       time_t   m_oldTime  ;
       UInt32   m_oldRun   ;
       UInt32   m_oldEvt   ;
-      string   m_oldStop  ;
+      std::string   m_oldStop  ;
 
       Frame*   m_framePtr ;
 

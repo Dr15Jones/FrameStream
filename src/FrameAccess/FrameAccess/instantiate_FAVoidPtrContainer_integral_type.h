@@ -37,17 +37,5 @@
 // user include files
 #include "FrameAccess/FAVoidPtrContainer.h"
 
-typedef pair<_favoidptrcontainer_integral_type_, void*> _vector_contents_;
-#include "STLUtility/instantiate_vector.h"
-
-#if defined(AUTO_INSTANTIATE_TEMPLATE_BUG)
-template class pair<_favoidptrcontainer_integral_type_,void*>;
-template class allocator<pair<_favoidptrcontainer_integral_type_,void*> >;
-#endif
-
-typedef STD_PREFIX vector< STD_PREFIX pair<_favoidptrcontainer_integral_type_, void*> >::iterator _lower_bound_iterator_;
-typedef FAVoidPtrIntegralIdContainer<_favoidptrcontainer_integral_type_>::PairFirstCompare _lower_bound_compare_;
-#include "STLUtility/instantiate_lower_bound_with_compare.h"
-
 
 #endif /* FRAMEACCESS_INSTANTIATE_FAVOIDPTRCONTAINER_INTEGRAL_TYPE_H */

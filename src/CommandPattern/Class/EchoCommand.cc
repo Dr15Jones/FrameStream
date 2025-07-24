@@ -46,10 +46,10 @@
 
 static const char* const kFacilityString = "CommandPattern.EchoCommand" ;
 
-static const string helpMessage = 
-string( "                                               \n" )+
-string( "// Description: Echo Command                   \n" )+
-string( "//              \"echo\" echos an info message.\n" );
+static const std::string helpMessage = 
+std::string( "                                               \n" )+
+std::string( "// Description: Echo Command                   \n" )+
+std::string( "//              \"echo\" echos an info message.\n" );
 
 //
 // static data member definitions
@@ -97,12 +97,12 @@ EchoCommand::execute( int argc, char* argv[] )
    }
 
    //ostream& os = report( INFO );
-   ostream& os = cout;
+  std::ostream& os = std::cout;
    for( int i=1; i<argc; ++i )
    {
       os << argv[i] << " ";
    }
-   os << endl;
+   os << std::endl;
 
    return result;
 }
@@ -111,7 +111,7 @@ int
 EchoCommand::helpHandler()
 {
    // print help from header
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
 
    return COMMAND_OK;
 }

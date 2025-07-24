@@ -25,30 +25,12 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-// You may have to uncomment some of these or other stl headers
-// depending on what other header files you include (e.g. FrameAccess etc.)!
-//#include <string>
-//#include <vector>
-//#include <set>
-//#include <map>
-//#include <algorithm>
-//#include <utility>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
 #include "Experiment/report.h"
 #include "Processor/ProductionTagCommand.h"
 
 // STL classes
-// You may have to uncomment some of these or other stl headers
-// depending on what other header files you include (e.g. FrameAccess etc.)!
-//#include <string>
-//#include <vector>
-//#include <set>
-//#include <map>
-//#include <algorithm>
-//#include <utility>
 
 //
 // constants, enums and typedefs
@@ -125,7 +107,7 @@ ProductionTagCommand::execute( int argc, char* argv[] )
    } 
    else {
       report( SYSTEM, kFacilityString )
-         << "wrong # args" << endl;
+         << "wrong # args" << std::endl;
       result = COMMAND_ERROR;
    }
    
@@ -140,13 +122,13 @@ ProductionTagCommand::setHandler()
    
    if ( m_argc < 2 ) {
       report( SYSTEM, kFacilityString )
-         << "too few arguments" << endl;
+         << "too few arguments" << std::endl;
    }
    else {
 
    if( 2 < m_argc ) {
       report( SYSTEM, kFacilityString )
-	 << "will ignore extra arguments!" << endl;
+	 << "will ignore extra arguments!" << std::endl;
    }
       producer()->setProductionTag( getArgument( 1 )  );
 
@@ -163,7 +145,7 @@ ProductionTagCommand::listHandler()
 {
    Command::Result returnValue = Command::COMMAND_OK;
    
-   cout << producer()->productionTag().value() << endl;
+   std::cout << producer()->productionTag().value() << std::endl;
 
    return returnValue;
 }
@@ -185,24 +167,24 @@ ProductionTagCommand::setDefaultHandler()
 int
 ProductionTagCommand::helpHandler()
 {
-   const string helpMessage = 
-      string( "                                                          \n" )+
-      string( " Description: " ) + name() + string( "                    \n" )+
-      string( "                                                          \n" )+
-      string( "  Valid subcommands are:                                  \n" )+
-      string( "                                                          \n" )+
-      string( "  " ) + name() + string( " help      prints this help page\n" )+
-      string( "  " ) + name() + string( " <value>   " ) 
-      + name() + string( " = <value>       \n" )+
-      string( "  " ) + name() + string( "           list value           \n" )+
-      string( "  " ) + name() + string( " def       " )
-      + name() + string( " = default       \n" )+
-      string( "                                                          \n" );
+   const std::string helpMessage = 
+      std::string( "                                                          \n" )+
+      std::string( " Description: " ) + name() + std::string( "                    \n" )+
+      std::string( "                                                          \n" )+
+      std::string( "  Valid subcommands are:                                  \n" )+
+      std::string( "                                                          \n" )+
+      std::string( "  " ) + name() + std::string( " help      prints this help page\n" )+
+      std::string( "  " ) + name() + std::string( " <value>   " ) 
+      + name() + std::string( " = <value>       \n" )+
+      std::string( "  " ) + name() + std::string( "           list value           \n" )+
+      std::string( "  " ) + name() + std::string( " def       " )
+      + name() + std::string( " = default       \n" )+
+      std::string( "                                                          \n" );
 
    // print help
    report( SYSTEM, kFacilityString )
       << "\n" << helpMessage 
-      << "\n" << helpString() << endl;
+      << "\n" << helpString() << std::endl;
       
    return COMMAND_OK;
 }

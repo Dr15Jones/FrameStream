@@ -43,7 +43,7 @@
 
 #include "Experiment/Experiment.h"
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 #include <vector>
 #include <map>
@@ -98,7 +98,7 @@ ModuleCommand::listSelectedHandler()
 {
    DABoolean result = COMMAND_OK;
 
-   string resultString;
+   std::string resultString;
    //// don't do that -- duplicated:  resultString += target()->listLoaded();
    resultString += target()->listModules();
    setResult( resultString );

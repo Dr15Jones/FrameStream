@@ -29,10 +29,10 @@
 // user include files
 
 // forward declarations
-#include "C++Std/fwd_string.h"
-#include "STLUtility/fwd_map.h"
+#include <string>
+#include <map>
 #if !defined(_naming_service_namemap_)
-#define _naming_service_namemap_ STL_MAP( string, T* ) 
+#define _naming_service_namemap_ std::map< std::string, T* > 
 #endif
 
 template< class T >
@@ -48,12 +48,12 @@ class NamingService
       virtual ~NamingService();
 
       // ---------- member functions ---------------------------
-      DABoolean registerObject( const string& iName,
+      DABoolean registerObject( const std::string& iName,
 				T* iObject );
-      DABoolean deregisterObject( const string& iName );
+      DABoolean deregisterObject( const std::string& iName );
 
       // ---------- const member functions ---------------------
-      T* resolve( const string& iName );
+      T* resolve( const std::string& iName );
 
       // ---------- static member functions --------------------
 

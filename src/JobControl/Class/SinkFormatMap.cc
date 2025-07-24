@@ -21,13 +21,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
-
 // user include files
 #include "Experiment/report.h"
 #include "JobControl/SinkFormatMap.h"
@@ -58,20 +51,11 @@ static const char* const kFacilityString = "JobControl.SinkFormatMap" ;
 //
 // constructors and destructor
 //
-SinkFormatMap::SinkFormatMap( const string& environment )
+SinkFormatMap::SinkFormatMap( const std::string& environment )
    : FormatMap< SinkFormat >( "SinkFormatMap", environment ),
      m_command( *new FormatCommand< SinkFormatMap >( "sink_format", this ) ),
      m_extensionVsName ( *new _extensionname_map_ )
 {
-   if( 0 == &m_extensionVsName
-       || 0 == &m_command
-      )
-   {
-      report( EMERGENCY, kFacilityString )
-	 << "out of memory" << endl;
-      assert( false );
-      ::exit( 1 );
-   }
 }
 
 // SinkFormatMap::SinkFormatMap( const SinkFormatMap& rhs )
@@ -107,13 +91,13 @@ SinkFormatMap::~SinkFormatMap()
 // member functions
 //
 DataSinkBinder*
-SinkFormatMap::createBinder( const string& iName,
+SinkFormatMap::createBinder( const std::string& iName,
 			     const Stream::Set& iBindStreams )
 {
    DataSinkBinder* returnValue = 0;
 
    // figure out extension
-   string extension;
+   std::string extension;
    extension = findExtension( iName, extension );
 
    _extensionname_map_::iterator it = m_extensionVsName.find( extension );
@@ -124,21 +108,21 @@ SinkFormatMap::createBinder( const string& iName,
    }
    else {
       report( ERROR, kFacilityString )
-	 << "no proper format found for " << iName << endl;
+	 << "no proper format found for " << iName << std::endl;
    }
    
    return returnValue;
 }
 
 DataSinkBinder*
-SinkFormatMap::createBinder( const string& iName,
+SinkFormatMap::createBinder( const std::string& iName,
 			     const Stream::Set& iBindStreams,
 			     const StreamToDataStringTagsToStoreMap& iStreamTagsMap )
 {
    DataSinkBinder* returnValue = 0;
 
    // figure out extension
-   string extension;
+   std::string extension;
    extension = findExtension( iName, extension );
 
    _extensionname_map_::iterator it = m_extensionVsName.find( extension );
@@ -153,14 +137,14 @@ SinkFormatMap::createBinder( const string& iName,
    	} else {
    		report(WARNING, kFacilityString ) 
    		   <<"sink type does not support specifying output"
-   		   <<"\nwill ignore output specification"<<endl;
+   		   <<"\nwill ignore output specification"<<std::endl;
    		returnValue 
 	         = loadedMap()[ ((*it).second)() ]->createBinder( iName, iBindStreams );
    	}
    }
    else {
       report( ERROR, kFacilityString )
-	 << "no proper format found for " << iName << endl;
+	 << "no proper format found for " << iName << std::endl;
    }
    
    return returnValue;
@@ -168,7 +152,7 @@ SinkFormatMap::createBinder( const string& iName,
 
 // ------------- overridden Loader< Producer > method
 void
-SinkFormatMap::initialize( const string& iName, SinkFormat& iFormat )
+SinkFormatMap::initialize( const std::string& iName, SinkFormat& iFormat )
 {
    // bind all format extensions
    const SinkFormat::Extensions& extensions = iFormat.extensions();
@@ -180,10 +164,10 @@ SinkFormatMap::initialize( const string& iName, SinkFormat& iFormat )
 
 // ------------- overridden Loader< Producer > method
 void
-SinkFormatMap::finalize( const string& iName, SinkFormat& iFormat )
+SinkFormatMap::finalize( const std::string& iName, SinkFormat& iFormat )
 {
    // unbind all extensions used by this format
-   typedef vector< string > ToBeUnbound;
+   typedef std::vector< std::string > ToBeUnbound;
    ToBeUnbound toBeUnbound;
    _extensionname_map_::const_iterator end = m_extensionVsName.end();
    for( _extensionname_map_::const_iterator it = m_extensionVsName.begin();
@@ -205,18 +189,18 @@ SinkFormatMap::finalize( const string& iName, SinkFormat& iFormat )
 // const member functions
 //
 DABoolean 
-SinkFormatMap::bind( const string& iFormatName,
-		     const string& iExtension )
+SinkFormatMap::bind( const std::string& iFormatName,
+		     const std::string& iExtension )
 {
    DABoolean returnValue = true;
 
    if( !( loadedMap().find(iFormatName) != loadedMap().end() ) ) {
      report( ERROR, kFacilityString )
-        << "no such formatname " << iFormatName << endl;
+        << "no such formatname " << iFormatName << std::endl;
      return false;
    }
 
-   string formatName = iFormatName;
+   std::string formatName = iFormatName;
 
    // check that extension hasn't been bound yet
    _extensionname_map_::iterator findExtension 
@@ -229,7 +213,7 @@ SinkFormatMap::bind( const string& iFormatName,
    }
    else {
       report( ERROR, kFacilityString )
-	 << "extension already in use!" << endl;
+	 << "extension already in use!" << std::endl;
       return false;
    }
 
@@ -238,7 +222,7 @@ SinkFormatMap::bind( const string& iFormatName,
 }
 
 DABoolean 
-SinkFormatMap::unbind( const string& iExtension )
+SinkFormatMap::unbind( const std::string& iExtension )
 {
    DABoolean returnValue = true;
 
@@ -249,7 +233,7 @@ SinkFormatMap::unbind( const string& iExtension )
    }
    else {
       report( ERROR, kFacilityString )
-	 << "no such extension " << iExtension << endl;
+	 << "no such extension " << iExtension << std::endl;
       returnValue = false;
    }
 
@@ -279,14 +263,14 @@ SinkFormatMap::clearAll()
 }
 
 DABoolean 
-SinkFormatMap::bind( const string& iFormatName,
+SinkFormatMap::bind( const std::string& iFormatName,
 		     const SinkFormat::Extensions& iExtensions )
 {
    DABoolean returnValue = true;
 
    if( true == iExtensions.empty() ) {
       report( ERROR, kFacilityString )
-	 << "format " << iFormatName << " supports NO extensions" << endl;
+	 << "format " << iFormatName << " supports NO extensions" << std::endl;
       return returnValue = false;
    }
 
@@ -304,18 +288,18 @@ SinkFormatMap::bind( const string& iFormatName,
 
 // ------------- overridden Loader< Producer > method
 void
-SinkFormatMap::errorMesg( const string& iName ) const
+SinkFormatMap::errorMesg( const std::string& iName ) const
 {
    report( ERROR, kFacilityString ) 
       << "cannot make format; "
-      << "are you sure \"" << iName << "\" is a SinkFormat?" << endl;
+      << "are you sure \"" << iName << "\" is a SinkFormat?" << std::endl;
 }
 
 // ------------- overridden Loader< Producer > method
-string
+std::string
 SinkFormatMap::listLoaded() const
 {
-   string resultString;
+   std::string resultString;
 
    _extensionname_map_::const_iterator endExtension( m_extensionVsName.end() );
    for( _extensionname_map_::const_iterator itExtension 
@@ -323,8 +307,8 @@ SinkFormatMap::listLoaded() const
 	itExtension != endExtension;
 	++itExtension )
    {
-      resultString += string( " " ) + (*itExtension).first 
-	 + string( " " ) + ((*itExtension).second)() + string( "\n" );
+      resultString += std::string( " " ) + (*itExtension).first 
+	 + std::string( " " ) + ((*itExtension).second)() + std::string( "\n" );
    }
 
    return resultString;

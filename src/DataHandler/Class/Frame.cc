@@ -96,7 +96,7 @@
 // constants, enums and typedefs
 //
 
-const string kFacilityString = "DataHandler.Frame" ;
+const std::string kFacilityString = "DataHandler.Frame" ;
 
 typedef _frame_records_ RecordMap ;
 
@@ -112,13 +112,6 @@ Frame::Frame() :
    m_records( *new RecordMap ) ,
    m_latestRecord( 0 )
 {
-   if ( 0 == &m_records ) {
-      report( EMERGENCY ,
-	      kFacilityString )
-		 << "Unable to allocate memory"
-		 << endl ;
-      exit( 1 ) ;
-   }
 }
 
 // Frame::Frame( const Frame& )
@@ -163,7 +156,7 @@ Frame::add( Record& aRecord )
 	      kFacilityString )
 		 << "\nProgramming error!! "
 		 << "Record is not associated with a Stream."
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
 //
@@ -179,7 +172,7 @@ Frame::add( Record& aRecord )
 		 << "\nDuplicated record added to Frame!"
 		 << "\nThis means there is a programming error "
 		 << "in FrameDeliverer"
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
 #endif
@@ -192,7 +185,7 @@ Frame::add( Record& aRecord )
       report( ERROR ,
 	      kFacilityString )
 		 << "\nTrying to associate Record with a second Frame"
-		 << endl ;
+		 << std::endl ;
       exit( 1 ) ;
    }
    m_records.insert( RecordMap::value_type( recordStream , &aRecord ) ) ;

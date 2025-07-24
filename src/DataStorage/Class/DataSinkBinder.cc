@@ -46,24 +46,24 @@
 // constructors and destructor
 //
 DataSinkBinder::DataSinkBinder( const Stream::Set& iBindStreams ):
-   DataSinkDescriptor( string(""), string(""), iBindStreams)
+   DataSinkDescriptor( std::string(""), std::string(""), iBindStreams)
 {
 }
 
 DataSinkBinder::DataSinkBinder( const Stream::Type& iBindStream ) :
-   DataSinkDescriptor( string(""), string(""), iBindStream)
+   DataSinkDescriptor( std::string(""), std::string(""), iBindStream)
 {
 }
 
-DataSinkBinder::DataSinkBinder( const string& iDataSinkID,
-				    const string& iParameters,
+DataSinkBinder::DataSinkBinder( const std::string& iDataSinkID,
+				    const std::string& iParameters,
 				    const Stream::Set& iBindStreams ):
    DataSinkDescriptor(iDataSinkID, iParameters, iBindStreams)
 {
 }
 
-DataSinkBinder::DataSinkBinder( const string& iDataSinkID,
-				    const string& iParameters,
+DataSinkBinder::DataSinkBinder( const std::string& iDataSinkID,
+				    const std::string& iParameters,
 				    const Stream::Type& iBindStream ):
    DataSinkDescriptor(iDataSinkID, iParameters, iBindStream)
 {

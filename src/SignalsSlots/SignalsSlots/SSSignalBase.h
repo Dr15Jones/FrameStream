@@ -41,8 +41,8 @@ class SSSignalBase
 
    public:
       // ---------- constants, enums and typedefs --------------
-      typedef list<SSSlotBase*>::iterator iterator;
-      typedef list<SSSlotBase*>::const_iterator const_iterator;
+      typedef std::list<SSSlotBase*>::iterator iterator;
+      typedef std::list<SSSlotBase*>::const_iterator const_iterator;
 
       // ---------- Constructors and destructor ----------------
       SSSignalBase() {}
@@ -57,12 +57,12 @@ class SSSignalBase
    protected:
 
       
-      list<SSSlotBase*>::iterator begin() { return m_slots.begin(); }
-      list<SSSlotBase*>::iterator end() {return m_slots.end(); }
+      std::list<SSSlotBase*>::iterator begin() { return m_slots.begin(); }
+      std::list<SSSlotBase*>::iterator end() {return m_slots.end(); }
 
-      list<SSSlotBase*>::const_iterator begin() const { 
+      std::list<SSSlotBase*>::const_iterator begin() const { 
 	 return m_slots.begin(); }
-      list<SSSlotBase*>::const_iterator end() const {
+      std::list<SSSlotBase*>::const_iterator end() const {
 	 return m_slots.end(); }
 
       ///The ownership is taken for iSlot
@@ -83,7 +83,7 @@ class SSSignalBase
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      list<SSSlotBase*> m_slots;
+      std::list<SSSlotBase*> m_slots;
 
       // ---------- static data members ------------------------
 

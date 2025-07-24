@@ -95,7 +95,7 @@ FilterOr::implementFilter(Frame& iFrame,
    DABoolean anyAction = false;
 
 
-   for( STL_VECTOR(Holder<FilterBase> )::iterator itFilter = filters().begin();
+   for( std::vector<Holder<FilterBase> >::iterator itFilter = filters().begin();
         itFilter != filters().end();
         ++itFilter )
    {
@@ -114,19 +114,19 @@ FilterOr::implementFilter(Frame& iFrame,
       if( ActionBase::kPassed == returnValue )
       {
 	 report( DEBUG, kFacilityString ) 
-	    << "ActionBase::kPassed" << endl;
+	    << "ActionBase::kPassed" << std::endl;
 	 break;
       }
       else if( ActionBase::kError == returnValue )
       {
 	 report( DEBUG, kFacilityString ) 
-	    << "ActionBase::kError" << endl;
+	    << "ActionBase::kError" << std::endl;
 	 break;
       }
       else if( ActionBase::kStopProcessLoop == returnValue )
       {
 	 report( DEBUG, kFacilityString ) 
-	    << "ActionBase::kStopProcessLoop" << endl;
+	    << "ActionBase::kStopProcessLoop" << std::endl;
 	 break;
       }
    }
@@ -144,11 +144,11 @@ FilterOr::implementFilter(Frame& iFrame,
 //
 // const member functions
 //
-string 
+std::string 
 FilterOr::description() const
 {
-   string returnValue( filters().front()->name() );
-   for( STL_VECTOR(Holder<FilterBase> )::const_iterator itFilter = filters().begin() + 1;
+   std::string returnValue( filters().front()->name() );
+   for( std::vector<Holder<FilterBase> >::const_iterator itFilter = filters().begin() + 1;
         itFilter != filters().end();
         ++itFilter )
    {

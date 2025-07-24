@@ -19,7 +19,7 @@
 // switch non-EMERGENCY suez messages to SYSTEM severity level
 //
 // Revision 1.6  2000/03/22 23:35:16  mkl
-// turned cin-related couts into report(EMERGENCY) so that can check for errors in logfiles AND avoid too-high report level
+// turned std::cin-related couts into report(EMERGENCY) so that can check for errors in logfiles AND avoid too-high report level
 //
 // Revision 1.5  1998/07/30 21:18:01  mkl
 // slight freshen up of asynchronous interrupts
@@ -115,9 +115,9 @@ AsyncInterrupt::checkForUserInput( void )
       ) 
    {
       report( SYSTEM, kFacilityString )
-	 << "Do you really want to quit (Y/N)? " << flush;
+	 << "Do you really want to quit (Y/N)? " << std::flush;
       char reply;
-      cin >> reply;
+      std::cin >> reply;
       if( 'y' == reply || 'Y' == reply ) returnValue = true;
    }
    else if( input == 'p'
@@ -125,9 +125,9 @@ AsyncInterrupt::checkForUserInput( void )
       )
    {
       report( SYSTEM, kFacilityString )
-	 << "Pausing... Continue? (y/n)" << flush;
+	 << "Pausing... Continue? (y/n)" << std::flush;
       char reply;
-      cin >> reply;
+      std::cin >> reply;
       returnValue = ('y' == reply || 'Y' == reply) ? false : true;
    }
 	    
@@ -148,7 +148,7 @@ AsyncInterrupt::readTerminal( char& oInput )
 
    if( numberOfBytes > 0)
    {
-      cin.get( oInput );
+      std::cin.get( oInput );
       haveInput = true;
    }
    else

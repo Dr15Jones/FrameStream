@@ -79,7 +79,7 @@ RunEventNumberProc::RunEventNumberProc( void )               // anal1
    : Processor( "RunEventNumberProc" ),
      m_frequency( "Frequency", this, 1)
 {
-   report( DEBUG, kFacilityString ) << "here in ctor()" << endl;
+   report( DEBUG, kFacilityString ) << "here in ctor()" << std::endl;
 
    // ---- bind a method to a stream -----
    // These lines ARE VERY IMPORTANT! If you don't bind the 
@@ -101,7 +101,7 @@ RunEventNumberProc::RunEventNumberProc( void )               // anal1
 
 RunEventNumberProc::~RunEventNumberProc()                    // anal5
 {
-   report( DEBUG, kFacilityString ) << "here in dtor()" << endl;
+   report( DEBUG, kFacilityString ) << "here in dtor()" << std::endl;
  
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
@@ -124,7 +124,7 @@ RunEventNumberProc::~RunEventNumberProc()                    // anal5
 void
 RunEventNumberProc::init( void )          // anal1 "Interactive"
 {
-   report( DEBUG, kFacilityString ) << "here in init()" << endl;
+   report( DEBUG, kFacilityString ) << "here in init()" << std::endl;
 
    // do any initialization here based on Parameter Input by User
    // (e.g. run expensive algorithms that are based on parameters
@@ -136,7 +136,7 @@ RunEventNumberProc::init( void )          // anal1 "Interactive"
 void
 RunEventNumberProc::terminate( void )     // anal5 "Interactive"
 {
-   report( DEBUG, kFacilityString ) << "here in terminate()" << endl;
+   report( DEBUG, kFacilityString ) << "here in terminate()" << std::endl;
 
    // do anything here BEFORE New Parameter Change
    // (e.g. write out result based on parameters from user-input)
@@ -147,7 +147,7 @@ RunEventNumberProc::terminate( void )     // anal5 "Interactive"
 void
 RunEventNumberProc::hist_book( TBHistoManager& )
 {
-   report( DEBUG, kFacilityString ) << "here in hist_book()" << endl;
+   report( DEBUG, kFacilityString ) << "here in hist_book()" << std::endl;
 
    // book your histograms here
 
@@ -157,7 +157,7 @@ RunEventNumberProc::hist_book( TBHistoManager& )
 ActionBase::ActionResult
 RunEventNumberProc::event( Frame& aFrame )          // anal3 equiv.
 {
-   report( DEBUG, kFacilityString ) << "here in event()" << endl;
+   report( DEBUG, kFacilityString ) << "here in event()" << std::endl;
 
    static int eventCount(0);
    ++eventCount;
@@ -173,11 +173,11 @@ RunEventNumberProc::event( Frame& aFrame )          // anal3 equiv.
          report( NOTICE, kFacilityString )
             << "Run: "   << (*eventHeader).run() << " "
             << "Event: " << (*eventHeader).number()
-            << endl;
+            << std::endl;
       }
       catch( NO_ITEM_EXCEPTION(DBEventHeader)& iException )
       {
-         report( ERROR, kFacilityString ) << iException.what() << endl;
+         report( ERROR, kFacilityString ) << iException.what() << std::endl;
       }
    }
    return ActionBase::kPassed;
@@ -186,7 +186,7 @@ RunEventNumberProc::event( Frame& aFrame )          // anal3 equiv.
 ActionBase::ActionResult
 RunEventNumberProc::beginRun( Frame& aFrame )       // anal2 equiv.
 {
-   report( DEBUG, kFacilityString ) << "here in beginRun()" << endl;
+   report( DEBUG, kFacilityString ) << "here in beginRun()" << std::endl;
 
    try {
       FAItem< DBRunHeader > runHeader ;
@@ -195,10 +195,10 @@ RunEventNumberProc::beginRun( Frame& aFrame )       // anal2 equiv.
 
       report( NOTICE, kFacilityString )
 	 << "Run: " << (*runHeader).number()
-	 << endl;
+	 << std::endl;
    }
    catch( NO_ITEM_EXCEPTION(DBRunHeader)& iException) {
-      report( ERROR, kFacilityString ) << iException.what() << endl;
+      report( ERROR, kFacilityString ) << iException.what() << std::endl;
    }
 
    return ActionBase::kPassed;

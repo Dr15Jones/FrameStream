@@ -33,7 +33,7 @@
 #include "PackedDataStreamsStorage/PDSProxyStorer.h"
 
 // forward declarations
-#include "STLUtility/fwd_set.h"
+#include <set>
 
 class PDSSchemaProbeSinkStream : public SMSinkStream
 {
@@ -59,7 +59,7 @@ class PDSSchemaProbeSinkStream : public SMSinkStream
 
       virtual void put( const char * iFieldName, float );
       virtual void put( const char * iFieldName, double );
-      virtual void put( const char * iFieldName, const string& );
+      virtual void put( const char * iFieldName, const std::string& );
 
       virtual void put( const char * iFieldName, const SMContentsBase& );
 
@@ -67,13 +67,13 @@ class PDSSchemaProbeSinkStream : public SMSinkStream
       virtual void endObject();
 
 
-      void setPackerContainer( STL_VECTOR(PDSPackerBase*)* iContainer ) {
+      void setPackerContainer( std::vector<PDSPackerBase*>* iContainer ) {
 	 m_packers = iContainer; }
 
       void clearSubtypes();
 
       // ---------- const member functions ---------------------
-      const STL_SET(TypeTag)& subtypesFound() const {
+      const std::set<TypeTag>& subtypesFound() const {
 	 return m_subtypes; }
 
       // ---------- static member functions --------------------
@@ -95,8 +95,8 @@ class PDSSchemaProbeSinkStream : public SMSinkStream
       // ---------- private const member functions -------------
 
       // ---------- data members -------------------------------
-      STL_SET(TypeTag) m_subtypes;
-      STL_VECTOR(PDSPackerBase*)* m_packers;
+      std::set<TypeTag> m_subtypes;
+      std::vector<PDSPackerBase*>* m_packers;
 
       // ---------- static data members ------------------------
 

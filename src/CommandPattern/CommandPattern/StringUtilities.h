@@ -76,7 +76,7 @@ class StringUtil
 
       // ---------- static member functions --------------------
       // uppercase, since not all iomanip implementations support it yet
-      static string toUppercase( const string& iString );
+      static std::string toUppercase( const std::string& iString );
 
    protected:
       // ---------- protected member functions -----------------

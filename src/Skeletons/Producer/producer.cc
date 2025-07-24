@@ -58,7 +58,7 @@ static const char* const kTagString = "$Name:  $";
 prodname::prodname( void )               // anal1
    : Producer( "prodname" )
 {
-   report( DEBUG, kFacilityString ) << "here in ctor()" << endl;
+   report( DEBUG, kFacilityString ) << "here in ctor()" << std::endl;
 
    // ----- register proxy factories ------------------
    // (Please see the "ProxyExample" library for examples!)
@@ -115,7 +115,7 @@ prodname::makeMyProxy()
 
 prodname::~prodname()                    // anal5
 {
-   report( DEBUG, kFacilityString ) << "here in dtor()" << endl;
+   report( DEBUG, kFacilityString ) << "here in dtor()" << std::endl;
  
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
@@ -144,7 +144,7 @@ prodname::~prodname()                    // anal5
 void
 prodname::init( void )          // anal1 "Interactive"
 {
-   report( DEBUG, kFacilityString ) << "here in init()" << endl;
+   report( DEBUG, kFacilityString ) << "here in init()" << std::endl;
 
    // do any initialization here based on Parameter Input by User
    // (e.g. run expensive algorithms that are based on parameters
@@ -156,7 +156,7 @@ prodname::init( void )          // anal1 "Interactive"
 void
 prodname::terminate( void )     // anal5 "Interactive"
 {
-   report( DEBUG, kFacilityString ) << "here in terminate()" << endl;
+   report( DEBUG, kFacilityString ) << "here in terminate()" << std::endl;
 
    // do anything here BEFORE New Parameter Change
    // (e.g. write out result based on parameters from user-input)
@@ -167,7 +167,7 @@ prodname::terminate( void )     // anal5 "Interactive"
 void
 prodname::hist_book( HIHistoManager& )
 {
-   report( DEBUG, kFacilityString ) << "here in hist_book()" << endl;
+   report( DEBUG, kFacilityString ) << "here in hist_book()" << std::endl;
 
    // book your histograms here
 

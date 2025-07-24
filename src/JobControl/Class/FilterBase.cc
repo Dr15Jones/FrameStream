@@ -57,7 +57,7 @@ namespace JobControlNS {
 //
 // constructors and destructor
 //
-FilterBase::FilterBase(const string& iName) :
+FilterBase::FilterBase(const std::string& iName) :
    m_filtered(false),
    m_name(iName),
    m_refCount(0)

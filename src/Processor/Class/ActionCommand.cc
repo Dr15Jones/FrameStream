@@ -16,7 +16,7 @@
 //
 #include "Experiment/Experiment.h"
 // system include files
-#include "C++Std/iostream.h"
+#include <iostream>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -44,18 +44,18 @@ static const char* const kFacilityString = "Processor.ActionCommand";
 
 typedef _processor_stream2actions_ ActionMap;
 
-const string helpMessage = 
-string( "                                                                \n" )+
-string( "// Description: ProxyCommand                                    \n" )+
-string( "//                                                              \n" )+
-string( "//  Valid subcommands are:                                      \n" )+
-string( "//                                                              \n" )+
-string( "//  action help                    see this help page           \n" )+
-string( "//  action list                    List Action                  \n" )+
-string( "//  action ls                      Synonym: \"list\"            \n" )+
-string( "//  action enable  <stream>        enable action tied to stream \n" )+
-string( "//  action disable <stream>        disable action tied to stream\n" )+
-string( "                                                                \n" );
+const std::string helpMessage = 
+std::string( "                                                                \n" )+
+std::string( "// Description: ProxyCommand                                    \n" )+
+std::string( "//                                                              \n" )+
+std::string( "//  Valid subcommands are:                                      \n" )+
+std::string( "//                                                              \n" )+
+std::string( "//  action help                    see this help page           \n" )+
+std::string( "//  action list                    List Action                  \n" )+
+std::string( "//  action ls                      Synonym: \"list\"            \n" )+
+std::string( "//  action enable  <stream>        enable action tied to stream \n" )+
+std::string( "//  action disable <stream>        disable action tied to stream\n" )+
+std::string( "                                                                \n" );
 
 //
 // static data member definitions
@@ -105,7 +105,7 @@ ActionCommand::execute( int argc, char* argv[] )
 	 result = listHandler();
       }
       else {
-	 report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+	 report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
 	 result = COMMAND_ERROR;
       }
@@ -118,14 +118,14 @@ ActionCommand::execute( int argc, char* argv[] )
 	 result = switchOnOffHandler( false );
       }
       else {
-	 report( SYSTEM, kFacilityString ) << "invalid command arg" << endl;
+	 report( SYSTEM, kFacilityString ) << "invalid command arg" << std::endl;
 	 helpHandler();
 	 result = COMMAND_ERROR;
       }
    } // wrong # of args
    else 
    {
-      report( SYSTEM, kFacilityString ) << "wrong # args" << endl;
+      report( SYSTEM, kFacilityString ) << "wrong # args" << std::endl;
       helpHandler();
       result = COMMAND_ERROR;
    }
@@ -136,7 +136,7 @@ ActionCommand::execute( int argc, char* argv[] )
 int
 ActionCommand::helpHandler( )
 {
-   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << endl;
+   report( SYSTEM, kFacilityString ) << "\n" << helpMessage << std::endl;
    return COMMAND_OK;
 }
 
@@ -145,7 +145,7 @@ ActionCommand::listHandler()
 {
    int result = COMMAND_OK;
 
-   string resultString;
+   std::string resultString;
 
    // list all Actions in Processor
    const ActionMap& actionMap = target()->actions();
@@ -155,9 +155,9 @@ ActionCommand::listHandler()
 	actIt != endAct;
 	++actIt )
    {
-      string stream = (*actIt).first.value(); 
-      string setting = ( true == (*actIt).second.shouldUse() ) ? "on":"off";
-      resultString += stream + string(" : ") + setting + string("\n");
+      std::string stream = (*actIt).first.value(); 
+      std::string setting = ( true == (*actIt).second.shouldUse() ) ? "on":"off";
+      resultString += stream + std::string(" : ") + setting + std::string("\n");
 
    }
    setResult( resultString );
@@ -169,11 +169,11 @@ int
 ActionCommand::switchOnOffHandler( DABoolean iOnOff )
 {
    int result = COMMAND_OK;
-   string resultString;
+   std::string resultString;
 
    // assume "action enable/disable <stream> 
    assert( 3 == m_argc );
-   string stream( m_argv[2] );
+   std::string stream( m_argv[2] );
 
    // list all Actions in Processor
    ActionMap& actionMap = target()->actions();
@@ -182,14 +182,14 @@ ActionCommand::switchOnOffHandler( DABoolean iOnOff )
    if( actionMap.end() != actionIter )
    {
       (*actionIter).second.shouldUse() = iOnOff;
-      string onOffString = ( true == iOnOff ) ? "on" : "off";
-      resultString += stream + string( " : " ) + onOffString + string("\n");
+      std::string onOffString = ( true == iOnOff ) ? "on" : "off";
+      resultString += stream + std::string( " : " ) + onOffString + std::string("\n");
    }
    else
    {
       report( SYSTEM, kFacilityString )
 	 << "no action bound to stream " << stream
-	 << endl;
+	 << std::endl;
    }
 
    setResult( resultString );

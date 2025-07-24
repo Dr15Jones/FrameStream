@@ -27,13 +27,13 @@
 #endif /* STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG */
 
 // user include files
-#include "Experiment/report.h"
 #include "Utility/StringTokenizer.h"
 
 // STL classes
 #include <string>
 #include <deque>
 
+using namespace std;
 //
 // constants, enums and typedefs
 //
@@ -47,7 +47,7 @@ static const char* const kFacilityString = "Utility.StringTokenizer" ;
 //
 // constructors and destructor
 //
-StringTokenizer::StringTokenizer( const string& aString, 
+StringTokenizer::StringTokenizer( const std::string& aString, 
 				  char aDelimiter,
 				  ParsingFunction iParsingFunction )
 {
@@ -93,7 +93,7 @@ StringTokenizer::hasMoreElements() const
 string
 StringTokenizer::nextElement()
 {
-   string nextElement( m_tokens.front() );
+   std::string nextElement( m_tokens.front() );
    m_tokens.pop_front();
 
    return nextElement;
@@ -103,16 +103,16 @@ StringTokenizer::nextElement()
 // static member functions
 //
 StringTokenizer::Tokens
-StringTokenizer::parseString( const string& aString, char aDelimiter )
+StringTokenizer::parseString( const std::string& aString, char aDelimiter )
 {
    Tokens returnValue;
 
-   string::size_type i=0;
+   std::string::size_type i=0;
    do {
       i = aString.find_first_not_of( aDelimiter, i );
-      string::size_type j = aString.find( aDelimiter, i+1 );
+      std::string::size_type j = aString.find( aDelimiter, i+1 );
       if( i >= j ) break;
-      string token( aString.substr( i, j-i ) );
+      std::string token( aString.substr( i, j-i ) );
       i=j+1;
       returnValue.push_back( token );
    } while( i>0 && i<aString.size());
@@ -140,6 +140,6 @@ StringTokenizer::parseString( const string& aString, char aDelimiter )
 // handle null string properly
 //
 // Revision 1.1  1998/08/22 21:58:26  mkl
-// new StringTokenizer to parse strings into substrings based on a delimiter
+// new StringTokenizer to parse std::strings into substrings based on a delimiter
 //
 

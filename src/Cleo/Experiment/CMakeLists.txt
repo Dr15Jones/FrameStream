@@ -1,0 +1,2 @@
+add_library(Experiment INTERFACE)
+target_include_directories(Experiment INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

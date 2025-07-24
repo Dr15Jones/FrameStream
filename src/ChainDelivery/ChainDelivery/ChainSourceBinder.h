@@ -48,13 +48,13 @@
 #include "ChainDelivery/ChainSourceBinderBase.h"
 
 // forward declarations
-#include "STLUtility/fwd_vector.h"
+#include <vector>
 class DataSourceDescriptor;
 
 #if !defined(_chainsourcebinder_binders_)
 // the following CPP macro is used to avoid having a typedef
 // from a template in the constructor arguments
-#define _chainsourcebinder_binders_ STL_VECTOR( Binder )
+#define _chainsourcebinder_binders_ std::vector< Binder >
 #endif /* _chainsourcebinder_binders_ */
 
 template< class Binder> 
@@ -67,10 +67,10 @@ class ChainSourceBinder : public ChainSourceBinderBase
       typedef _chainsourcebinder_binders_ Binders ;
 
       // Constructors and destructor
-      ChainSourceBinder( const string& iName,
+      ChainSourceBinder( const std::string& iName,
 			 const Binders& iBinders,
 			 const Stream::Set& iBindStreams );
-      ChainSourceBinder( const string& iName,
+      ChainSourceBinder( const std::string& iName,
 			 const Stream::Set& iBindStreams );
       virtual ~ChainSourceBinder();
 

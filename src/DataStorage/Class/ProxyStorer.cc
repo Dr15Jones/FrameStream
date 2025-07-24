@@ -66,7 +66,7 @@
 //
 // constants, enums and typedefs
 //
-const string kFacilityString = "DataStorage.ProxyStorer" ;
+const std::string kFacilityString = "DataStorage.ProxyStorer" ;
 
 //
 // static data member definitions
@@ -79,14 +79,6 @@ ProxyStorer::ProxyStorer( const Identifier& aId ) :
    m_records( *(new Stream::Set) ),
    m_id( aId ), m_paramId(""), m_sinkId("")
 {
-   if (0 == &m_records ) {
-      report( EMERGENCY ,
-	      kFacilityString )
-		 << "Unable to allocate memory"
-		 << endl ;
-      assert(false);
-      exit( 1 ) ;
-   }
 }
 
 // ProxyStorer::ProxyStorer( const ProxyStorer& )
@@ -109,13 +101,13 @@ ProxyStorer::~ProxyStorer()
 // member functions
 //
 void 
-ProxyStorer::setDataSinkId(const string& sId)
+ProxyStorer::setDataSinkId(const std::string& sId)
 {
   m_sinkId = sId;
 }
 
 void 
-ProxyStorer::setParamId(const string& sParam)
+ProxyStorer::setParamId(const std::string& sParam)
 {
   m_paramId = sParam;
 }
@@ -157,7 +149,7 @@ ProxyStorer::StoreStatus
 ProxyStorer::store( const Record& aRecord ) const
 {
    // add entry to the stack
-   string sss = " file: \""+m_sinkId+"\" parameter: \""+m_paramId+"\"";
+   std::string sss = " file: \""+m_sinkId+"\" parameter: \""+m_paramId+"\"";
    DAExceptionStackNameEntry stackNameEntry(sss);
 
    StoreStatus temp = implementStore( aRecord );

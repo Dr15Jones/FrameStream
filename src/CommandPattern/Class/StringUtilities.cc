@@ -107,8 +107,8 @@ static const char* const kFacilityString = "CommandPattern.StringUtilities";
 //
 
 
-string
-StringUtil::toUppercase( const string& iString )
+std::string
+StringUtil::toUppercase( const std::string& iString )
 {
    size_t length = iString.length();
    char* charArray = new char[ length +1 ];
@@ -119,7 +119,7 @@ StringUtil::toUppercase( const string& iString )
       char& c = charArray[i];
       c = (isascii(c) && islower(c)) ? toupper(c) : c;
    }
-   string returnValue( charArray );
+   std::string returnValue( charArray );
    delete [] charArray;
    return returnValue;
 }

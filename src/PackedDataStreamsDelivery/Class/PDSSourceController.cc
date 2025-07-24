@@ -43,8 +43,8 @@
 #include "Experiment/Experiment.h"
 
 // system include files
-#include "C++Std/iostream.h"
-#include "C++Std/iomanip.h"
+#include <iostream>
+#include <iomanip>
 
 #if defined(STL_TEMPLATE_DEFAULT_PARAMS_FIRST_BUG)
 // You may have to uncomment some of these or other stl headers
@@ -95,7 +95,7 @@ static const unsigned char kBytesPerWord = sizeof(UInt32)/sizeof(char);
 //
 // constructors and destructor
 //
-PDSSourceController::PDSSourceController(const string& iFileName,
+PDSSourceController::PDSSourceController(const std::string& iFileName,
 					 const Stream::Set& iReadStreams,
 					 PDSProxyDeliverer* iDeliverer ):
    DataSourceController( iDeliverer ),
@@ -119,7 +119,7 @@ PDSSourceController::PDSSourceController(const string& iFileName,
 		 kFacilityString )
 		    << "\n\tUnable to open pds data file "
 		    << m_fileName
-		    << endl ;
+		    << std::endl ;
 	 setInitializationStatus( kInitSourceInaccessible ) ;
 	 m_reachedEOF = true ;
 	 return ;
@@ -159,7 +159,7 @@ PDSSourceController::PDSSourceController(const string& iFileName,
 		     << " " << *streamName ;
 	    }
        }
-	    report( ERROR, kFacilityString ) << endl ;
+	    report( ERROR, kFacilityString ) << std::endl ;
 	    return;
 	 }
       }
@@ -182,7 +182,7 @@ PDSSourceController::PDSSourceController(const string& iFileName,
 
       report(ERROR, kFacilityString ) <<"While initializing "<<iFileName
 				      <<"\n"
-				      << iException.what() << endl;
+				      << iException.what() << std::endl;
    }
 }
 
@@ -250,7 +250,7 @@ PDSSourceController::synchronizeSource( const SyncValue& iSyncTo )
 //  report( DEBUG, kFacilityString )
 //    << "Requested sync value (" << iSyncTo << "); "
 //    << "Current sync value (" << currentSyncValue() << ")"
-//    << endl;
+//    << std::endl;
   
   if ( currentSyncValue() != iSyncTo )
   {
@@ -263,7 +263,7 @@ PDSSourceController::synchronizeSource( const SyncValue& iSyncTo )
         << "suggests source is already past "
         << "requested sync value (" << iSyncTo << ")\n"
         << " . . . But will seek *forward* to look for requested event anyway"
-        << endl;
+        << std::endl;
       
       // In this case, we'll require an exact match as we step forward
       exactMatchRequired = true;
@@ -292,7 +292,7 @@ PDSSourceController::synchronizeSource( const SyncValue& iSyncTo )
         << "Next Record SyncValue: " << syncValueOfNextRecord << " "
         << "Search status: " << searchStatus << " "
         << "Current: " << currentSyncValue()
-        << endl;
+        << std::endl;
 
       //  Encountered an error while reading records
       //  Drop out of the continueLoop if end of file reached:  still returns a
@@ -318,7 +318,7 @@ PDSSourceController::synchronizeSource( const SyncValue& iSyncTo )
               << iSyncTo << ")\n"
               << " . . . Continuing search *forward* to find it in next file\n"
               << " . . . MAKE SURE THIS RECORD IS ACTUALLY IN THE PDS SOURCE!!"
-              << endl;
+              << std::endl;
           }
           else
           {
@@ -390,7 +390,7 @@ PDSSourceController::findNextRecord(SyncValue& oSyncValueOfNextRecord,
       do { 
          
          isGood = (kSearchNoError == movePeekToNextRecord());
-	 report(DEBUG, kFacilityString) << "next Record " << m_peekAheadRecordType.value() << endl;
+	 report(DEBUG, kFacilityString) << "next Record " << m_peekAheadRecordType.value() << std::endl;
 
          if ( isGood ) {
             isRecordToRetrieve = tempRecordsToRetrieve.contains( 
@@ -444,7 +444,7 @@ PDSSourceController::gotoNextRecord( void )
    //read the Record's body
    if ( m_reachedEOF )
    {
-      report(ERROR,kFacilityString) <<"trying to read past end of file"<<endl;
+      report(ERROR,kFacilityString) <<"trying to read past end of file"<<std::endl;
       m_peekAheadStatus = kSearchProblemWithSource ;
       setCurrentStop( Stream::kNone );
       return m_peekAheadStatus ;
@@ -464,7 +464,7 @@ PDSSourceController::gotoNextRecord( void )
             << ", event "
             << m_nextRecordHeader.syncValue().eventNumber()
             << "\n"
-	    << iException.what() << endl;
+	    << iException.what() << std::endl;
 	 setCurrentStop( Stream::kNone );
 	 return m_peekAheadStatus ;
       }
@@ -536,7 +536,7 @@ PDSSourceController::movePeekToNextRecord()
       m_peekAheadRecordType = Stream::kNone ;
       m_peekAheadStatus = kSearchProblemWithSource ;
       
-      report(ERROR, kFacilityString ) << iException.what() << endl;
+      report(ERROR, kFacilityString ) << iException.what() << std::endl;
    }
 
    return m_peekAheadStatus;
@@ -574,13 +574,13 @@ PDSSourceController::ignoreRemainderOfUnwantedRecord()
 	    << lengthCheck
 	    << " at end of record "
 	    << m_nextRecordHeader.syncValue()
-	    << endl ;
+	    << std::endl ;
 	 m_peekAheadStatus = kSearchProblemWithSource ;
       }
    } catch (PDSDExceptionBase& iException ) {
       m_peekAheadStatus = kSearchProblemWithSource ;
 
-      report( ERROR, kFacilityString ) << iException.what() << endl;
+      report( ERROR, kFacilityString ) << iException.what() << std::endl;
    }
    return m_peekAheadStatus ;
 }
@@ -595,15 +595,15 @@ PDSSourceController::canRandomAccess( void ) const
    return false;
 }
 
-string
+std::string
 PDSSourceController::dataSourceID( void ) const
 {
    return m_fileName;
 }
-string
+std::string
 PDSSourceController::parameters( void ) const
 {
-   return string("");
+   return std::string("");
 }
 
 ProxyDeliverer*

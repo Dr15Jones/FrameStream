@@ -116,11 +116,11 @@ SMStorageHelperManager::registerHelper( SMStorageHelperBase* iHelper )
    if( m_helpers.end() != m_helpers.find( iHelper ) ) {
       report(DEBUG, kFacilityString ) 
 	 << " attempted to register 2nd Helper for "
-	 << iHelper->typeTag().name() << endl;
+	 << iHelper->typeTag().name() << std::endl;
    } else {
       report(DEBUG, kFacilityString) <<"registering " 
 				     <<iHelper->typeTag().name()
-				     << endl;
+				     << std::endl;
       m_helpers.insert( iHelper );
    }
 }
@@ -170,11 +170,11 @@ SMStorageHelperManager::registerFactory( SMProxyFactoryBase* iFactory )
    if( m_factories.end() != m_factories.find( iFactory ) ) {
       report(DEBUG, kFacilityString ) 
 	 << " attempted to register 2nd Factory for "
-	 << iFactory->proxyTypeTag().name() << endl;
+	 << iFactory->proxyTypeTag().name() << std::endl;
    } else {
       report(DEBUG, kFacilityString) <<"registering Factory " 
 				     <<iFactory->proxyTypeTag().name()
-				     << endl;
+				     << std::endl;
       m_factories.insert( iFactory );
    }
 }
