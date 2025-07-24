@@ -57,72 +57,8 @@
 // Cleo's implementation of the EXperiement directory.
 //
 
-#if defined(__APPLE__)
-#include "Experiment/gnug_flags.h"
-#define CLHEP_TARGET_H "CLHEP/config/CLHEP.h"
-//#define CLHEP_TARGET_H "CLHEP-powerpc-apple-darwin6.6-c++.h"
-//#define CLHEP_TARGET_H "CLHEP/config/CLHEP-alpha-dec-osf4.0-g++.h"
-#else
-#if defined(__GNUG__)
-#include "Experiment/gnug_flags.h"
-#define CLHEP_TARGET_H "CLHEP/config/CLHEP-x86_64-unknown-linux-gnu-c++.h"
-#endif // __GNUG__
-#endif /* __APPLE__ */
-
-
-#if defined(__DECCXX)
-#include "Experiment/deccxx_flags.h"
-#define CLHEP_TARGET_H "CLHEP/config/CLHEP-alpha-dec-osf4.0-cxx.h"
-#endif /* __DECCXX */
-
-#if defined(__MWERKS__)
-#include "Experiment/mwerks_flags.h"
-#endif /* __MWERKS__ */
-
-#if defined(SUNCC)
-#include "Experiment/SUNCC_flags.h"
-#endif /* SUNCC */
-
-#if defined(__GNUG__) && defined(__APPLE__)
-#include "Experiment/apple_flags.h"
-#endif /* __GNUG__ */
-
-#if defined(__XLC__)
-#include "Experiment/xlc_flags.h"
-#endif /* __XLC__ */
-
-#if defined(HP1022)
-#include "Experiment/HPCC_flags.h"
-#endif /* HP1022 */
-
-// use the MessageLog class to handle messaged through report
-#if !defined(__MWERKS__)
-#define USE_MESSAGELOG_FOR_REPORT
-#endif /* __MWERKS__ */
-
-// use implicit instantiation for Codewarrior
-#if defined(__MWERKS__)
-#define INCLUDE_TEMPLATE_DEFINITIONS
-#endif /* __MWERKS__ */
 
 // include types.h for backwards compatibility
 #include "Experiment/types.h"
-
-//
-// This installation uses CLHEP vectors
-#define USE_CLHEP_THREEVECTOR
-#define USE_CLHEP_LORENTZVECTOR
-
-#if !defined(STD_PREFIX)
-#if !defined(NO_STD_NAMESPACE_BUG)
-#define STD_PREFIX std::
-#else
-#define STD_PREFIX
-#endif
-#endif
-
-#if __SUNPRO_CC == 0x420 
-#define CLHEP_MAX_MIN_DEFINED
-#endif
 
 #endif /* EXPERIMENT_EXPERIMENT_H */

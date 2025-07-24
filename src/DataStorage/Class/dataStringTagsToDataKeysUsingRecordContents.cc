@@ -134,39 +134,4 @@ dataStringTagsToDataKeysUsingRecordContents( const DataStringTagsToStore& iStore
    }
    return returnValue;
 }
-
-#if !defined(NO_STD_NAMESPACE_BUG)
-#define STD_PREFIX std::
-#else
-#define STD_PREFIX
-#endif
-
-#if defined(NEED_TO_BE_IN_NAMESPACE_TO_INSTANTIATE_TEMPLATE_BUG)
-#if defined(STD_PREFIX)
-#undef STD_PREFIX
-#define STD_PREFIX
-#endif
-namespace std {
-#endif
-template 
-std::insert_iterator<std::set<DurableDataKey> > 
-STD_PREFIX set_difference( Record::const_key_iterator, Record::const_key_iterator,
- std::set<DurableDataKey>::iterator, std::set<DurableDataKey>::iterator,
- std::insert_iterator<std::set<DurableDataKey> > );  
- 
-template 
-std::insert_iterator<std::set<DurableDataKey> > 
-STD_PREFIX set_difference( std::set<DurableDataKey>::iterator, std::set<DurableDataKey>::iterator,
-Record::const_key_iterator, Record::const_key_iterator,
-  std::insert_iterator<std::set<DurableDataKey> > );  
-
-template 
-std::insert_iterator<std::set<DurableDataKey> > 
-STD_PREFIX set_intersection( std::set<DurableDataKey>::iterator, std::set<DurableDataKey>::iterator,
- Record::const_key_iterator, Record::const_key_iterator,
- std::insert_iterator<std::set<DurableDataKey> > );  
-#if defined(NEED_TO_BE_IN_NAMESPACE_TO_INSTANTIATE_TEMPLATE_BUG)
-#undef STD_PREFIX
-}
-#endif
  

@@ -62,7 +62,7 @@ static const char* const kTagString = "$Name:  $";
 //
 static DefaultModule *gDefault = nullptr;
 DefaultModule const* DefaultModule::instance() {
-
+   return gDefault;
 }
 
 //

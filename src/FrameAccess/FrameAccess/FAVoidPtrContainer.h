@@ -157,9 +157,9 @@ class FAVoidPtrIntegralIdContainer : public std::vector< std::pair<T,void *> >
 	 return insert( iValueType ).first;
       }
 
-      STD_PREFIX pair<iterator, DABoolean> 
+      std::pair<iterator, DABoolean> 
       insert( const value_type& iValueType ) {
-	 STD_PREFIX pair<iterator,DABoolean> returnValue;
+	 std::pair<iterator,DABoolean> returnValue;
 	 returnValue.second = true;
 	 if( this->empty() ) {
 	    m_isIndexable = true;

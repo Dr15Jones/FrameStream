@@ -22,13 +22,7 @@
 
 #include "Experiment/Experiment.h"
 
-#if defined(EXCEPTION_CLASH_WITH_MATH_H_BUG)
-#define exception _math_bug_
 #include <math.h>  // required for trigonometry and fabs
-#undef exception
-#else
-#include <math.h>  // required for trigonometry and fabs
-#endif
 
 
 #endif /* EXPERIMENT_CLEO_MATH_H */

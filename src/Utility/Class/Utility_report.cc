@@ -56,7 +56,7 @@ ostream& report(Severity severity)
 ostream& report(Severity severity,
 		const char* facility)
 {
-   report( severity , std::string( facility ) ) ;
+   return report( severity , std::string( facility ) ) ;
 }
 
 ostream& report(Severity severity,
