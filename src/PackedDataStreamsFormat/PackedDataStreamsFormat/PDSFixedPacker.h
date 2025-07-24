@@ -76,25 +76,25 @@ class PDSFixedPacker : public PDSPackerTemplate<T>
 			     unsigned char& ioStartBit,
 			     std::vector<UInt32>& ioContainer ) const {
 	 UInt32 overflow = 0;
-	 numberOfBitsPacker().pack(m_packer.numberOfBits(),
+	 this->numberOfBitsPacker().pack(m_packer.numberOfBits(),
 				   ioPackedWord,
 				   overflow,
 				   ioStartBit);
-	 putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
+	 this->putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
 					ioContainer);
 
 	 precisionPacker().pack(m_packer.precision(),
 				ioPackedWord,
 				overflow,
 				ioStartBit);
-	 putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
+	 this->putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
 					ioContainer);
 
 	 offsetPacker().pack(m_packer.offset(),
 			     ioPackedWord,
 			     overflow,
 			     ioStartBit);
-	 putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
+	 this->putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
 					ioContainer);
       }
 
@@ -116,19 +116,19 @@ class PDSFixedPacker : public PDSPackerTemplate<T>
 
       static SMFixedPacker<T> readBuffer(const UInt32*(& ioBuffer), 
 					 unsigned char& ioStartBit ) {
-	 unsigned char numberOfBits = numberOfBitsPacker().unpack( 
+	 unsigned char numberOfBits = PDSPackerTemplate<T>::numberOfBitsPacker().unpack( 
 	    *ioBuffer, *(ioBuffer+1), ioStartBit);
-	 advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
+	 PDSPackerTemplate<T>::advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
 
 	 T precision = precisionPacker().unpack(*ioBuffer, 
 						*(ioBuffer+1), 
 						ioStartBit);
-	 advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
+	 PDSPackerTemplate<T>::advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
 
 	 T offset = offsetPacker().unpack(*ioBuffer, 
 					  *(ioBuffer+1), 
 					  ioStartBit);
-	 advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
+	 PDSPackerTemplate<T>::advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
 
 	 return SMFixedPacker<T>( numberOfBits, precision, offset );
       }

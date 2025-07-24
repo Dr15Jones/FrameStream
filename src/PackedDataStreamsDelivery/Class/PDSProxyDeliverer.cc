@@ -87,7 +87,7 @@
 #include "StorageManagement/SMStorageHelperManager.h"
 #include "StorageManagement/SMProxyBase.h"
 
-#include "BinaryDelivery/ByteSwapping.h"
+#include "StorageManagement/ByteSwapping.h"
 
 // STL classes
 // You may have to uncomment some of these or other stl headers
@@ -131,7 +131,7 @@ class PDSTypeToUnpackingInfoMap : public std::map<TypeTag, PDSTypeUnpackingInfo 
 //
 // constructors and destructor
 //
-PDSProxyDeliverer::PDSProxyDeliverer(istream& iIStream ) :
+PDSProxyDeliverer::PDSProxyDeliverer(std::istream& iIStream ) :
    ProxyDeliverer("PDSProxyDeliverer"),
    m_headerInfo(iIStream),
    m_haveRecordsFromPreviousFiles(false)
@@ -556,12 +556,3 @@ PDSProxyDeliverer::changeIStream( std::istream& iStream )
 //
 // static member functions
 //
-
-typedef DurableDataKey* _find_iterator_;
-typedef DurableDataKey _find_type_;
-#include "STLUtility/instantiate_find.h"
-
-typedef PDSSourceStream** _sort_iterator_ ;
-typedef SourceStreamCompare _sort_compare_class_;
-typedef PDSSourceStream* _sort_value_type_;
-#include "STLUtility/instantiate_sort_compare.h"

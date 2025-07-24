@@ -40,7 +40,7 @@
 
 #include "PackedDataStreamsFormat/PDSPackerTemplate.h"
 #include "PackedDataStreamsFormat/PDSStringPacker.h"
-#include "BinaryDelivery/ByteSwapping.h"
+#include "StorageManagement/ByteSwapping.h"
 
 //
 // constants, enums and typedefs

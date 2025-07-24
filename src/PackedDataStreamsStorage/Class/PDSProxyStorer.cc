@@ -104,7 +104,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-PDSProxyStorer::PDSProxyStorer(ostream& iOStream,
+PDSProxyStorer::PDSProxyStorer(std::ostream& iOStream,
 			       const Stream::Set& iStreams,
 			       const PDSDataToStore& iDataToStore ) :
    m_ostream( iOStream),
@@ -413,7 +413,7 @@ PDSProxyStorer::probeSchema( const std::set<TypeTag>& iFactoryTypes,
 
       //Add to the types left to check only those subtypes found 
       // entries that are not already in the types checked list
-      insert_iterator<std::set<TypeTag>> 
+      std::insert_iterator<std::set<TypeTag>> 
 	 typesLeftToCheckOutputIterator( typesLeftToCheck,
 					 typesLeftToCheck.begin() );
 
@@ -423,7 +423,7 @@ PDSProxyStorer::probeSchema( const std::set<TypeTag>& iFactoryTypes,
 		      typesChecked.end(),
 		      typesLeftToCheckOutputIterator );
 
-      insert_iterator<std::set<TypeTag>> 
+      std::insert_iterator<std::set<TypeTag>> 
 	 subTypesOutputIterator( oSubTypes,
 				 oSubTypes.begin());
       set_difference( schemaProbe.subtypesFound().begin(),

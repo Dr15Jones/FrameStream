@@ -81,7 +81,7 @@ class PDSProxyDeliverer : public ProxyDeliverer
       typedef PDSTypeToUnpackingInfoMap TypeToUnpackingInfoMap;
 
       // ---------- Constructors and destructor ----------------
-      PDSProxyDeliverer(istream& iIStream );
+      PDSProxyDeliverer(std::istream& iIStream );
       virtual ~PDSProxyDeliverer();
 
       // ---------- member functions ---------------------------

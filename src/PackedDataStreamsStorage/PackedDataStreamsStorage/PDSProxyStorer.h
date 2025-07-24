@@ -53,7 +53,7 @@ class PDSProxyStorer : public ProxyStorer
       typedef std::map< TypeTag, SMProxyWriterBase* > WriterMap;
 
       // ---------- Constructors and destructor ----------------
-      PDSProxyStorer(ostream& iOStream, 
+      PDSProxyStorer(std::ostream& iOStream, 
 		     const Stream::Set& iStreams,
 		     const PDSDataToStore& iDataToStore );
       virtual ~PDSProxyStorer();

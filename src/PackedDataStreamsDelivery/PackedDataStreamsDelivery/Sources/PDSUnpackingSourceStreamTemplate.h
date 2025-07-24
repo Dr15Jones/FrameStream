@@ -25,12 +25,12 @@
 // system include files
 
 // user include files
-#include "PackedDataStreamsDelivery/PDSUnpackingSourceStreamBase.h"
+#include "PackedDataStreamsDelivery/Sources/PDSUnpackingSourceStreamBase.h"
 
 // forward declarations
 
 template< class TSMPacker >
-class PDSUnpackingSourceStreamTemplate : class PDSUnpackingSourceStreamBase
+class PDSUnpackingSourceStreamTemplate : public PDSUnpackingSourceStreamBase
 {
       // ---------- friend classes and functions ---------------
 

@@ -31,15 +31,9 @@
 //#include <algorithm>
 //#include <utility>
 
-#if defined(USE_STRSTREAM_RATHER_THAN_STRINGSTREAM_BUG)
-#include <strstream.h>
-#define DEFINE_OSTR(_arg_) ostrstream _arg_; 
-#define GET_STR(_var_) _var_.str()
-#else
 #include <sstream>
-#define DEFINE_OSTR(_arg_) ostringstream _arg_; 
+#define DEFINE_OSTR(_arg_) std::ostringstream _arg_; 
 #define GET_STR(_var_) _var_.str().c_str()
-#endif
 
 // user include files
 //#include "Experiment/report.h"
@@ -55,7 +49,7 @@
 
 #include "PackedDataStreamsFormat/pds_file_header.h"
 
-#include "BinaryDelivery/ByteSwapping.h"
+#include "StorageManagement/ByteSwapping.h"
 
 //
 // constants, enums and typedefs
@@ -76,7 +70,7 @@ static const char* const kTagString = "$Name:  $";
 //
 // constructors and destructor
 //
-PDSFileHeaderInfo::PDSFileHeaderInfo(istream& iIStream ) :
+PDSFileHeaderInfo::PDSFileHeaderInfo(std::istream& iIStream ) :
       m_wordReader(0),
       m_typeToUnpackingInfoMap( new TypeToUnpackingInfoMap )
 {
@@ -134,7 +128,7 @@ PDSFileHeaderInfo::dropOwnershipOfTypeToUnpackingInfoMap() {
 
 void
 PDSFileHeaderInfo::readNameList( const UInt32* & ioHeader, 
-				 std::vector<string>& oNames )
+				 std::vector<std::string>& oNames )
 {
    //First entry is the size (in UInt32s) of the name list
    UInt32 numberOfWords = *ioHeader;
@@ -173,7 +167,7 @@ PDSFileHeaderInfo::readNameList( const UInt32* & ioHeader,
 
 void
 PDSFileHeaderInfo::readTypeNames(const UInt32*& ioHeader, 
-				 std::vector<string>& oNames )
+				 std::vector<std::string>& oNames )
 {
    readNameList( ioHeader, oNames);
    readNameList( ioHeader, oNames);
@@ -255,7 +249,7 @@ PDSFileHeaderInfo::readHeader( std::istream& iIStream )
 
    readStreams(pHeaderUInt32);
 
-   std::vector<string> typeNames;
+   std::vector<std::string> typeNames;
 
    readTypeNames(pHeaderUInt32, typeNames);
 
@@ -348,7 +342,7 @@ PDSFileHeaderInfo::readHeader( std::istream& iIStream )
 void
 PDSFileHeaderInfo::readStreams( const UInt32* &iHeader )
 {
-   std::vector<string> streamNames;
+   std::vector<std::string> streamNames;
    readNameList( iHeader, streamNames );
 
    //Create the streams
@@ -356,7 +350,7 @@ PDSFileHeaderInfo::readStreams( const UInt32* &iHeader )
                               m_indexToStreamType.end() );
    m_indexToStreamType.reserve(streamNames.size());
 
-   for( std::vector<string>::iterator itStreamName = streamNames.begin();
+   for( std::vector<std::string>::iterator itStreamName = streamNames.begin();
 	itStreamName != streamNames.end();
 	++itStreamName ) {
       //cout <<"stream " <<"\""<<*itStreamName<<"\""<< std::endl;
@@ -375,7 +369,7 @@ PDSFileHeaderInfo::readStreams( const UInt32* &iHeader )
 }
 
 void
-PDSFileHeaderInfo::changeFile(istream& iIStream ) {
+PDSFileHeaderInfo::changeFile(std::istream& iIStream ) {
    delete m_wordReader;
    m_wordReader = 0;
    readHeader(iIStream);

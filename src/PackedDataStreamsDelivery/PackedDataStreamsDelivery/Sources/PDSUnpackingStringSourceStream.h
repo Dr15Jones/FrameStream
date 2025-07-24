@@ -108,7 +108,7 @@ class PDSUnpackingStringSourceStream :  public PDSUnpackingSourceStreamBase
       const PDSUnpackingStringSourceStream& operator=( const PDSUnpackingStringSourceStream& ); // stop default
 
       // ---------- private member functions -------------------
-      void fillStringFromBuffer(string& iData);
+      void fillStringFromBuffer(std::string& iData);
 
       // ---------- private const member functions -------------
 

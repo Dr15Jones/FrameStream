@@ -50,7 +50,7 @@ class PDSFileHeaderInfo
       typedef std::map<StreamType, std::vector<DurableDataKey> > StreamTypesMap;
 
       // ---------- Constructors and destructor ----------------
-      PDSFileHeaderInfo(istream& iIStream );
+      PDSFileHeaderInfo(std::istream& iIStream );
       virtual ~PDSFileHeaderInfo();
 
       // ---------- member functions ---------------------------
@@ -97,10 +97,10 @@ class PDSFileHeaderInfo
       void readStreams( const UInt32* &iHeader );
 
       void readNameList( const UInt32* & ioHeader, 
-			 std::vector<string>& oNames );
+			 std::vector<std::string>& oNames );
 
       void readTypeNames(const UInt32*& ioHeader, 
-			 std::vector<string>& oNames );
+			 std::vector<std::string>& oNames );
 
       // ---------- private const member functions -------------
 

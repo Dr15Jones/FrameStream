@@ -595,12 +595,12 @@ PDSSourceController::canRandomAccess( void ) const
    return false;
 }
 
-string
+std::string
 PDSSourceController::dataSourceID( void ) const
 {
    return m_fileName;
 }
-string
+std::string
 PDSSourceController::parameters( void ) const
 {
    return std::string("");

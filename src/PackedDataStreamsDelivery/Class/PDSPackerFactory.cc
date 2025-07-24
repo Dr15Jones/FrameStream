@@ -56,6 +56,7 @@
 #include "PackedDataStreamsFormat/PDSContainerPackedPacker.h"
 #include "PackedDataStreamsFormat/PDSStringPacker.h"
 
+#include "PackedDataStreamsFormat/pds_packing_enums.h"
 
 // STL classes
 // You may have to uncomment some of these or other stl headers
@@ -103,22 +104,22 @@ static
 PDSPackerSubFactoryBase*
 g_subFactories[PDSPacking::kNumberOfTypes][PDSPacking::kNumberOfStrategies];
 
-
+#define SEPARATOR ::
 #define CREATE_SUBFACTORY( _pack_strategy_, _pack_type_, _strategy_, _type_ ) \
-g_subFactories[PDSPacking:: ## _pack_type_ ][PDSPacking:: ## _pack_strategy_ ] = \
+g_subFactories[_pack_type_ ][ _pack_strategy_ ] = \
 new PDSPackerSubFactoryTemplate< PDS ## _strategy_ ## Packer<_type_ > >;
 
 #define CREATE_SUBFACTORY_SPECIAL( _pack_strategy_, _pack_type_, _strategy_) \
-g_subFactories[PDSPacking:: ## _pack_type_ ][PDSPacking:: ## _pack_strategy_ ] = \
+g_subFactories[_pack_type_ ][_pack_strategy_ ] = \
 new PDSPackerSubFactoryTemplate< PDS ## _strategy_ ## Packer >;
 
 #define CREATE_SUBFACTORY_OPTIMIZING_FRACTIONAL( _pack_type_, _type_ ) \
-g_subFactories[PDSPacking:: ## _pack_type_ ][PDSPacking::kFractionalPacking ] = \
+g_subFactories[_pack_type_ ][PDSPacking::kFractionalPacking ] = \
 new PDSFractionalPackerSubFactory<_type_>;
 
 
 #define CREATE_SUBFACTORY_PACKEDCONTAINER( _pack_strategy_ ) \
-g_subFactories[PDSPacking::kContainerType ][PDSPacking:: ## _pack_strategy_ ] = \
+g_subFactories[PDSPacking::kContainerType ][_pack_strategy_ ] = \
 new PDSContainerPackedPackerSubFactory;
 
 
@@ -216,71 +217,71 @@ initSubFactories()
    if( firstTime) {
       firstTime = false;
 
-      memset( reinterpret_cast<char*>(&g_subFactories),
-	      sizeof(g_subFactories), 0 );
+      memset( reinterpret_cast<char*>(&g_subFactories), 0, 
+	      sizeof(g_subFactories));
 
-      CREATE_SUBFACTORY( kNoPacking, kCharType, IntNoPack, char );
-      CREATE_SUBFACTORY( kNoPacking, kShortType, IntNoPack, short );
-      CREATE_SUBFACTORY( kNoPacking, kIntType, IntNoPack, int );
-      CREATE_SUBFACTORY( kNoPacking, kLongType, IntNoPack, long );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kCharType, IntNoPack, char );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kShortType, IntNoPack, short );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kIntType, IntNoPack, int );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kLongType, IntNoPack, long );
 
-      CREATE_SUBFACTORY( kNoPacking, kUCharType, IntNoPack, unsigned char );
-      CREATE_SUBFACTORY( kNoPacking, kUShortType, IntNoPack, unsigned short );
-      CREATE_SUBFACTORY( kNoPacking, kUIntType, IntNoPack, unsigned int );
-      CREATE_SUBFACTORY( kNoPacking, kULongType, IntNoPack, unsigned long );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kUCharType, IntNoPack, unsigned char );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kUShortType, IntNoPack, unsigned short );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kUIntType, IntNoPack, unsigned int );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kULongType, IntNoPack, unsigned long );
 
-      CREATE_SUBFACTORY( kNoPacking, kFloatType, FloatNoPack, float );
-      CREATE_SUBFACTORY( kNoPacking, kDoubleType, FloatNoPack, double );
-
-
-      CREATE_SUBFACTORY( kFixedPacking, kCharType, Fixed, char );
-      CREATE_SUBFACTORY( kFixedPacking, kShortType, Fixed, short );
-      CREATE_SUBFACTORY( kFixedPacking, kIntType, Fixed, int );
-      CREATE_SUBFACTORY( kFixedPacking, kLongType, Fixed, long );
-
-      CREATE_SUBFACTORY( kFixedPacking, kUCharType, Fixed, unsigned char );
-      CREATE_SUBFACTORY( kFixedPacking, kUShortType, Fixed, unsigned short );
-      CREATE_SUBFACTORY( kFixedPacking, kUIntType, Fixed, unsigned int );
-      CREATE_SUBFACTORY( kFixedPacking, kULongType, Fixed, unsigned long );
-
-      CREATE_SUBFACTORY( kFixedPacking, kFloatType, Fixed, float );
-      CREATE_SUBFACTORY( kFixedPacking, kDoubleType, Fixed, double );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kFloatType, FloatNoPack, float );
+      CREATE_SUBFACTORY( PDSPacking::kNoPacking, PDSPacking::kDoubleType, FloatNoPack, double );
 
 
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kCharType, FixedTrueZero, char );
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kShortType, FixedTrueZero, short );
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kIntType, FixedTrueZero, int );
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kLongType, FixedTrueZero, long );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kCharType, Fixed, char );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kShortType, Fixed, short );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kIntType, Fixed, int );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kLongType, Fixed, long );
 
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kUCharType, FixedTrueZero, unsigned char );
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kUShortType, FixedTrueZero, unsigned short );
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kUIntType, FixedTrueZero, unsigned int );
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kULongType, FixedTrueZero, unsigned long );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kUCharType, Fixed, unsigned char );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kUShortType, Fixed, unsigned short );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kUIntType, Fixed, unsigned int );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kULongType, Fixed, unsigned long );
 
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kFloatType, FixedTrueZero, float );
-      CREATE_SUBFACTORY( kFixedTrueZeroPacking, kDoubleType, FixedTrueZero, double );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kFloatType, Fixed, float );
+      CREATE_SUBFACTORY( PDSPacking::kFixedPacking, PDSPacking::kDoubleType, Fixed, double );
 
 
-      CREATE_SUBFACTORY( kFractionalPacking, kCharType, Fractional, char );
-      CREATE_SUBFACTORY( kFractionalPacking, kShortType, Fractional, short );
-      CREATE_SUBFACTORY( kFractionalPacking, kIntType, Fractional, int );
-      CREATE_SUBFACTORY( kFractionalPacking, kLongType, Fractional, long );
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kCharType, FixedTrueZero, char );
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kShortType, FixedTrueZero, short );
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kIntType, FixedTrueZero, int );
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kLongType, FixedTrueZero, long );
 
-      CREATE_SUBFACTORY( kFractionalPacking, kUCharType, Fractional, unsigned char );
-      CREATE_SUBFACTORY( kFractionalPacking, kUShortType, Fractional, unsigned short );
-      CREATE_SUBFACTORY( kFractionalPacking, kUIntType, Fractional, unsigned int );
-      CREATE_SUBFACTORY( kFractionalPacking, kULongType, Fractional, unsigned long );
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kUCharType, FixedTrueZero, unsigned char );
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kUShortType, FixedTrueZero, unsigned short );
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kUIntType, FixedTrueZero, unsigned int );
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kULongType, FixedTrueZero, unsigned long );
 
-      CREATE_SUBFACTORY_OPTIMIZING_FRACTIONAL(kFloatType, float);
-      CREATE_SUBFACTORY_OPTIMIZING_FRACTIONAL(kDoubleType, double);
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kFloatType, FixedTrueZero, float );
+      CREATE_SUBFACTORY( PDSPacking::kFixedTrueZeroPacking, PDSPacking::kDoubleType, FixedTrueZero, double );
+
+
+      CREATE_SUBFACTORY( PDSPacking::kFractionalPacking, PDSPacking::kCharType, Fractional, char );
+      CREATE_SUBFACTORY( PDSPacking::kFractionalPacking, PDSPacking::kShortType, Fractional, short );
+      CREATE_SUBFACTORY( PDSPacking::kFractionalPacking, PDSPacking::kIntType, Fractional, int );
+      CREATE_SUBFACTORY( PDSPacking::kFractionalPacking, PDSPacking::kLongType, Fractional, long );
+
+      CREATE_SUBFACTORY( PDSPacking::kFractionalPacking, PDSPacking::kUCharType, Fractional, unsigned char );
+      CREATE_SUBFACTORY( PDSPacking::kFractionalPacking, PDSPacking::kUShortType, Fractional, unsigned short );
+      CREATE_SUBFACTORY( PDSPacking::kFractionalPacking, PDSPacking::kUIntType, Fractional, unsigned int );
+      CREATE_SUBFACTORY( PDSPacking::kFractionalPacking, PDSPacking::kULongType, Fractional, unsigned long );
+
+      CREATE_SUBFACTORY_OPTIMIZING_FRACTIONAL(PDSPacking::kFloatType, float);
+      CREATE_SUBFACTORY_OPTIMIZING_FRACTIONAL(PDSPacking::kDoubleType, double);
 //      _CREATE_SUBFACTORY( kFractionalPacking, kFloatType, Fractional, float );
 //      _CREATE_SUBFACTORY( kFractionalPacking, kDoubleType, Fractional, double );
 
-      CREATE_SUBFACTORY_SPECIAL( kNoPacking, kClassContainerType, ContainerNoPack );
-      CREATE_SUBFACTORY_PACKEDCONTAINER( kNoPacking );
-      CREATE_SUBFACTORY_PACKEDCONTAINER( kFractionalPacking );
-      CREATE_SUBFACTORY_PACKEDCONTAINER( kFixedPacking );
-      CREATE_SUBFACTORY_PACKEDCONTAINER( kFixedTrueZeroPacking );
+      CREATE_SUBFACTORY_SPECIAL( PDSPacking::kNoPacking, PDSPacking::kClassContainerType, ContainerNoPack );
+      CREATE_SUBFACTORY_PACKEDCONTAINER( PDSPacking::kNoPacking );
+      CREATE_SUBFACTORY_PACKEDCONTAINER( PDSPacking::kFractionalPacking );
+      CREATE_SUBFACTORY_PACKEDCONTAINER( PDSPacking::kFixedPacking );
+      CREATE_SUBFACTORY_PACKEDCONTAINER( PDSPacking::kFixedTrueZeroPacking );
 
       g_subFactories[ PDSPacking::kStringType ][PDSPacking::kNoPacking ] = 
 	 new PDSStringPackerSubFactory;

@@ -30,8 +30,8 @@
 // Revision 1.2  2000/10/02 20:42:17  cdj
 // now compiles and links using cxx
 //
-// Revision 1.1.1.1  2#include "BinaryDelivery/ByteSwapping.h"
-// imported#include "BinaryDelivery/ByteSwapping.h"
+// Revision 1.1.1.1  2#include "StorageManagement/ByteSwapping.h"
+// imported#include "StorageManagement/ByteSwapping.h"
 //
 
 #include "Experiment/Experiment.h"
@@ -61,7 +61,7 @@
 
 #include "PackedDataStreamsDelivery/PDSBuiltinContainerSourceStream.h"
 
-#include "BinaryDelivery/ByteSwapping.h"
+#include "StorageManagement/ByteSwapping.h"
 
 // STL classes
 // You may have to uncomment some of these or other stl headers

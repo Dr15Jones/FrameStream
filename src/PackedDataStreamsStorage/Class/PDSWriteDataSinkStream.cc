@@ -63,7 +63,7 @@
 #include "StorageManagement/Compression/SMIntNoPackPacker.h"
 #include "StorageManagement/SMContentsBase.h"
 
-#include "BinaryDelivery/ByteSwapping.h"
+#include "StorageManagement/ByteSwapping.h"
 
 // STL classes
 // You may have to uncomment some of these or other stl headers

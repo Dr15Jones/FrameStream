@@ -36,6 +36,7 @@
 
 // system include files
 #include <string>
+#include <fstream>
 
 // user include files
 #include "DataDelivery/DataSourceController.h"

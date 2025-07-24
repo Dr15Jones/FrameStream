@@ -39,10 +39,11 @@
 
 // system include files
 #include <stdio.h>
-#include "C++Std/UnixFileHandleStream.h"
 #include <memory>
+#include <fstream>
 
 // user include files
+#include "Experiment/Experiment.h"
 
 // forward declarations
 
@@ -55,66 +56,23 @@ class PDSGunzipIFStreamHolder
 
       // ---------- Constructors and destructor ----------------
       PDSGunzipIFStreamHolder( const std::string& iFileName ) :
-	 m_fileHandle(NULL),
 	 m_errorOccurred(false)
       {
-	 unsigned int kSizeOfExtension = 3;
-	 if( iFileName.size() > kSizeOfExtension) {
-	    if( iFileName.substr(iFileName.size()-kSizeOfExtension,
-				 kSizeOfExtension)
-		== ".gz") {
-	       m_command = std::string("gunzip -c ")+ iFileName;
-	       m_fileHandle = popen(m_command.c_str(), "r");
-	       if( NULL == m_fileHandle) {
-		  m_errorOccurred=true;
-		  return;
-	       }
-	       
-	       m_stream= auto_ptr<istream>(new UnixFileHandleStream(fileNumber()));
-	    }
-	 }
-	 if( NULL==m_fileHandle ){
-	    ifstream* tStream = new ifstream(iFileName.c_str());
-	    m_stream = auto_ptr<istream>(tStream);
+	    std::ifstream* tStream = new std::ifstream(iFileName.c_str());
+	    m_stream = std::unique_ptr<std::istream>(tStream);
 	    
-	    if(
-#if defined(NO_IS_OPEN_FUNCTION_IN_FSTREAM_BUG)
-	       ! (*(*tStream).rdbuf()).is_open()
-#else
-	       ! (*tStream).is_open()
-#endif
-	       ) {
+	    if( ! (*tStream).is_open() ) {
 	       m_errorOccurred = true;
 	    }
-	 }
       }
-      ~PDSGunzipIFStreamHolder() {
-	 if( NULL != m_fileHandle) {
-	    //need to call this before pclose to avoid deadlocks
-	    // (see popen's man page)
-	    fstd::flush(m_fileHandle);
-	    pclose(m_fileHandle);
-	 }
-      }
+      ~PDSGunzipIFStreamHolder() { }
 
       // ---------- member functions ---------------------------
       void resetToBeginning() {
-	 if( m_fileHandle !=NULL ) {
-	    m_stream = auto_ptr<istream>(static_cast<istream*>(0));
-	    //get a new pipe
-	    fstd::flush(m_fileHandle);
-	    pclose(m_fileHandle);
-	    m_fileHandle = popen(m_command.c_str(), "r");
-	    if( NULL == m_fileHandle) {
-	       m_errorOccurred=true;
-	    }
-	    m_stream= auto_ptr<istream>(new UnixFileHandleStream(fileNumber()));
-	 } else {
 	    (*m_stream).seekg(0);
 	    if(!(*m_stream)) {
 	       m_errorOccurred = true;
 	    }
-	 }
       }
 
       std::istream& stream() { return *m_stream;}
@@ -140,15 +98,10 @@ class PDSGunzipIFStreamHolder
       // ---------- private member functions -------------------
 
       // ---------- private const member functions -------------
-      int fileNumber() const {
-	 return fileno(m_fileHandle);
-      }
-
       // ---------- data members -------------------------------
-      FILE* m_fileHandle;
       DABoolean m_errorOccurred;
       std::string m_command;
-      auto_ptr<istream> m_stream;
+      std::unique_ptr<std::istream> m_stream;
 
       // ---------- static data members ------------------------
 

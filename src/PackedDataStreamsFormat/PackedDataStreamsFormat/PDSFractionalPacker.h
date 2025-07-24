@@ -91,32 +91,32 @@ class PDSFractionalPacker : public PDSPackerTemplate<T>
 			     unsigned char& ioStartBit,
 			     std::vector<UInt32>& ioContainer ) const {
 	 UInt32 overflow = 0;
-	 numberOfBitsPacker().pack(m_packer.numberOfBits(),
+	 this->numberOfBitsPacker().pack(m_packer.numberOfBits(),
 				   ioPackedWord,
 				   overflow,
 				   ioStartBit);
-	 putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
+	 this->putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
 					ioContainer);
 
-	 numberOfBitsPacker().pack(m_packer.numberOfExponentBits(),
+	 this->numberOfBitsPacker().pack(m_packer.numberOfExponentBits(),
 				ioPackedWord,
 				overflow,
 				ioStartBit);
-	 putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
+	 this->putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
 					ioContainer);
 
 	 fractionPacker().pack(m_packer.fraction(),
 			       ioPackedWord,
 			       overflow,
 			       ioStartBit);
-	 putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
+	 this->putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
 					ioContainer);
 
 	 exponentOffsetPacker().pack(m_packer.exponentOffset(),
 				     ioPackedWord,
 				     overflow,
 				     ioStartBit);
-	 putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
+	 this->putInContainerIfPackedWordFull(ioPackedWord, overflow, ioStartBit,
 					ioContainer);
 
       }
@@ -134,24 +134,24 @@ class PDSFractionalPacker : public PDSPackerTemplate<T>
 
       static SMFractionalPacker<T> readBuffer(const UInt32*(& ioBuffer), 
 					      unsigned char& ioStartBit ) {
-	 unsigned char numberOfBits = numberOfBitsPacker().unpack( 
+	 unsigned char numberOfBits = PDSPackerTemplate<T>::numberOfBitsPacker().unpack( 
 	    *ioBuffer, *(ioBuffer+1), ioStartBit);
-	 advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
+	 PDSPackerTemplate<T>::advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
 
-	 unsigned char numberOfExponentBits = numberOfBitsPacker().unpack( 
+	 unsigned char numberOfExponentBits = PDSPackerTemplate<T>::numberOfBitsPacker().unpack( 
 	    *ioBuffer, *(ioBuffer+1), ioStartBit);
-	 advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
+	 PDSPackerTemplate<T>::advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
 
 
 	 float fraction = fractionPacker().unpack(*ioBuffer, 
 						  *(ioBuffer+1), 
 						  ioStartBit);
-	 advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
+	 PDSPackerTemplate<T>::advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
 
 	 int exponentOffset = exponentOffsetPacker().unpack(*ioBuffer, 
 							    *(ioBuffer+1), 
 							    ioStartBit);
-	 advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
+	 PDSPackerTemplate<T>::advanceBufferIfReadAllPackedWord( ioBuffer, ioStartBit );
 
 	 return SMFractionalPacker<T>( numberOfBits, 
 				       numberOfExponentBits,

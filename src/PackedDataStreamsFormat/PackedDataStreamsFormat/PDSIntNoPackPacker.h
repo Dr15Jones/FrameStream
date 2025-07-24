@@ -53,7 +53,7 @@ class PDSIntNoPackPacker : public PDSPackerTemplate<T>
 
       // ---------- member functions ---------------------------
       SMPackerTemplate<T>& packer() { return m_packer;}
-      const SMIntNoPackPacker<T>& packerTrueType() const { return m_packer;}
+      SMIntNoPackPacker<T>& packerTrueType() { return m_packer;}
 
       // ---------- const member functions ---------------------
       PDSPacking::Strategies strategy() const { return PDSPacking::kNoPacking; }

@@ -54,7 +54,6 @@
 #include "PackedDataStreamsDelivery/PDSSourceBinder.h"
 #include "PackedDataStreamsDelivery/PDSProxyDeliverer.h"
 #include "PackedDataStreamsDelivery/PDSDExceptionBase.h"
-#include "PackedDataStreamsDelivery/PDSGunzipIFStreamHolder.h"
 #include "DataDelivery/Binder.h"
 
 // STL classes
@@ -140,9 +139,9 @@ PDSSourceFormat::defaultStreams( const std::string& iName )
    static Stream::Set s_set;
    s_set.erase(s_set.begin(), s_set.end());
    try {
-      PDSGunzipIFStreamHolder holder(iName.c_str() );
-      if( !holder.errorOccurred() ) {
-	 PDSProxyDeliverer reader( holder.stream() );
+      std::ifstream f(iName.c_str());
+      if( not f) {
+	 PDSProxyDeliverer reader( f );
 	 s_set = reader.supplies();
       } else {
 	 report(SYSTEM, kFacilityString) <<"Error openning file: "<<iName<<std::endl;
