@@ -63,7 +63,7 @@ class SMCachingFractionalPacker : public SMFractionalPacker<T>
 			const UInt32 iOverflowWord,
 			unsigned char& ioStartBit ) const {
 
-	 UInt32 compressedValue = undoBitShifting( iStartWord,
+	 UInt32 compressedValue = this->undoBitShifting( iStartWord,
 						   iOverflowWord,
 						   ioStartBit );
 	 if( compressedValue == 0 ) {
@@ -71,9 +71,9 @@ class SMCachingFractionalPacker : public SMFractionalPacker<T>
 	 }
 	 //See if the value is supposed to be negative
 	 T sign = 1;
-	 if( signWord() <= compressedValue  ) {
+	 if( this->signWord() <= compressedValue  ) {
 	    sign = -1;
-	    compressedValue -= signWord();
+	    compressedValue -= this->signWord();
 	 }
 	 if( compressedValue == 0 ) {
 	    //this can happen if packed NaN
@@ -82,10 +82,10 @@ class SMCachingFractionalPacker : public SMFractionalPacker<T>
 	 //remove the 1 we added because the packed value was not 0
 	 compressedValue -= 1;
 
-	 T power = m_powerArray[mask() & compressedValue];
+	 T power = m_powerArray[this->mask() & compressedValue];
 	 //cout <<"power " <<power<<std::endl;
 	 //cout <<" index " << (compressedValue >> numberOfExponentBits())<<std::endl;
-	 T f = m_fractionArray[compressedValue >> numberOfExponentBits()];
+	 T f = m_fractionArray[compressedValue >> this->numberOfExponentBits()];
          //cout <<"fraction "<<f<<std::endl;
 	 return sign*f*power;
       }
@@ -97,7 +97,7 @@ class SMCachingFractionalPacker : public SMFractionalPacker<T>
       createFromMinMaxFraction(T iMin, T iMax, float iFraction ) {
 	 float fraction = iFraction/2.0;
 	 unsigned int numberOfNBits = calcNumberOfNBitsNeeded( iMin, iMax );
-	 unsigned int totalNumberOfBits = calcTotalNumberOfBitsNeeded( 
+	 unsigned int totalNumberOfBits = SMFractionalPacker<T>::calcTotalNumberOfBitsNeeded( 
 	    numberOfNBits,
 	    fraction );
 	 int exponentOffset;

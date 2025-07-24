@@ -66,7 +66,7 @@ class SMFixedPacker : public SMPackerTemplate<T>
 	 SMPackerTemplate<T>( iNumberOfBits ),
 	 m_precision( iPrecision ),
 	 m_offset( iOffset ),
-	 m_maxValue( ( ~UInt32(0) >> (32 - numberOfBits()) ) ),
+	 m_maxValue( ( ~UInt32(0) >> (32 - this->numberOfBits()) ) ),
 	 m_tooBig( calculate_tooBig(m_precision,m_offset,m_maxValue) ),
 	 m_shift( SMUnpackingShift<T>::shift(iPrecision))
       {}
@@ -94,7 +94,7 @@ class SMFixedPacker : public SMPackerTemplate<T>
 	    compressedValue = m_maxValue;
 	 }
 
-	 doBitShifting( compressedValue,
+	 this->doBitShifting( compressedValue,
 			ioStartWord,
 			oOverflowWord,
 			ioStartBit );
@@ -104,7 +104,7 @@ class SMFixedPacker : public SMPackerTemplate<T>
 		const UInt32 iOverflowWord,
 		unsigned char& ioStartBit ) const {
 
-	 UInt32 compressedValue = undoBitShifting( iStartWord,
+	 UInt32 compressedValue = this->undoBitShifting( iStartWord,
 						   iOverflowWord,
 						   ioStartBit );
 	 //Now convert this to the proper type
@@ -120,7 +120,7 @@ class SMFixedPacker : public SMPackerTemplate<T>
       static SMFixedPacker<T> createFromMinMaxPrecision( 
 	 T iMin, T iMax, T iPrecision ) {
 	 return SMFixedPacker<T>( 
-	    calcNumberOfBitsNeeded( iMax - iMin, iPrecision ),
+	    SMPackerTemplate<T>::calcNumberOfBitsNeeded( iMax - iMin, iPrecision ),
 	    iPrecision,
 	    iMin );
       }

@@ -70,7 +70,7 @@ class SMFloatNoPackPacker : public SMPackerTemplate<T>
 		 UInt32& oOverflowWord,
 		 unsigned char& ioStartBit ) const {
 	 if ( iValue == 0.0 ) {
-	    doBitShifting( 0,
+	    this->doBitShifting( 0,
 			   ioStartWord,
 			   oOverflowWord,
 			   ioStartBit );
@@ -93,7 +93,7 @@ class SMFloatNoPackPacker : public SMPackerTemplate<T>
 	    compressedValue |= signWord();
 	 }
 
-	 doBitShifting( compressedValue,
+	 this->doBitShifting( compressedValue,
 			ioStartWord,
 			oOverflowWord,
 			ioStartBit );
@@ -103,7 +103,7 @@ class SMFloatNoPackPacker : public SMPackerTemplate<T>
 		const UInt32 iOverflowWord,
 		unsigned char& ioStartBit ) const {
 
-	 UInt32 compressedValue = undoBitShifting( iStartWord,
+	 UInt32 compressedValue = this->undoBitShifting( iStartWord,
 						   iOverflowWord,
 						   ioStartBit );
 	 if( 0 == compressedValue ) {
